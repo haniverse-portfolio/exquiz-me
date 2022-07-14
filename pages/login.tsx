@@ -70,9 +70,7 @@ function nav() {
               border: 0,
               height: 42,
 
-              "&:hover": {
-                backgroundColor: theme.fn.darken("#ffffff", 0.05),
-              },
+              "&:hover": {},
             },
 
             leftIcon: {
@@ -80,7 +78,7 @@ function nav() {
             },
           })}
         >
-          가격안내
+          스탠다드 플랜 이용 중
         </Button>
 
         <Button
@@ -110,7 +108,7 @@ function nav() {
             },
           })}
         >
-          로그인
+          내 퀴즈
         </Button>
       </span>
     </div>
@@ -161,7 +159,7 @@ const Home: NextPage = () => {
               },
             })}
           >
-            한 번 체험해보기
+            문제 제작하기
           </Button>
           <Button
             variant="gradient"
@@ -190,7 +188,7 @@ const Home: NextPage = () => {
               },
             })}
           >
-            방 입장하기
+            방 생성하기
           </Button>
           <p>exquiz.me</p>
         </div>
