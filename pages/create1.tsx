@@ -1,10 +1,19 @@
+import { useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import Link from "next/link";
 
-import { Button, Grid } from "@mantine/core";
+import {
+  Button,
+  Grid,
+  Stepper,
+  SimpleGrid,
+  Tabs,
+  Autocomplete,
+  Tooltip,
+} from "@mantine/core";
 import {
   Emphasis,
   FileX,
@@ -121,55 +130,6 @@ function Nav() {
   );
 }
 
-function SchoolList() {
-  let arr = [
-    "양정여자고등학교",
-    "인덕원고등학교",
-    "서울과학고등학교",
-    "하나고등학교",
-    "민족사관고등학교",
-    "대전과학고등학교",
-    "휘문고등학교",
-    "상산고등학교",
-    "대기고등학교",
-    "포항제철고등학교",
-    "현대고등학교",
-    "배재고등학교",
-    "경북고등학교",
-    "신성고등학교",
-    "서문여자고등학교",
-    "강서고등학교",
-    "목동고등학교",
-    "마포고등학교",
-    "수지고등학교",
-    "서울국제고등학교",
-    "북일고등학교",
-    "서라벌고등학교",
-    "제주고등학교",
-    "오현고등학교",
-  ];
-  let i = 0;
-  return (
-    <Grid grow gutter={30}>
-      {arr.map((school, i) => {
-        return (
-          <Grid.Col
-            key={i}
-            style={{
-              boxShadow:
-                "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
-              borderRadius: "10px",
-            }}
-            span={2}
-          >
-            {school}
-          </Grid.Col>
-        );
-      })}
-    </Grid>
-  );
-}
-
 const Home: NextPage = () => {
   return (
     <div
@@ -191,96 +151,86 @@ const Home: NextPage = () => {
         <div style={{ height: "100vh" }}>
           <div
             style={{
-              height: "55vh",
+              margin: "20px 20vw",
+              height: "10vh",
               textAlign: "center",
             }}
           >
-            <p
-              style={{ fontSize: 36, fontWeight: "bold", textAlign: "center" }}
-            >
-              퀴즈에 경험을 더하다<br></br> exquiz.me
-            </p>
-            <Button
-              variant="gradient"
-              gradient={{ from: "orange", to: "red" }}
-              component="a"
-              rel="noopener noreferrer"
-              href="/create"
-              leftIcon={<Pencil size={32} />}
-              styles={(theme) => ({
-                root: {
-                  fontWeight: "bold",
-                  fontSize: 16,
-                  marginRight: 10,
-                  color: "white",
-                  backgroundColor: "white",
-                  border: 0,
-                  height: 42,
-
-                  "&:hover": {
-                    backgroundColor: theme.fn.darken("#FFFFFF", 0.05),
-                  },
-                },
-
-                leftIcon: {
-                  marginRight: 5,
-                },
-              })}
-            >
-              문제 제작하기
-            </Button>
-            <Button
-              variant="gradient"
-              gradient={{ from: "orange", to: "red" }}
-              component="a"
-              rel="noopener noreferrer"
-              href="/host"
-              leftIcon={<Login size={32} />}
-              styles={(theme) => ({
-                root: {
-                  fontWeight: "bold",
-                  fontSize: 16,
-                  marginRight: 10,
-                  color: "white",
-                  backgroundColor: "white",
-                  border: 0,
-                  height: 42,
-
-                  "&:hover": {
-                    backgroundColor: theme.fn.darken("#FFFFFF", 0.05),
-                  },
-                },
-
-                leftIcon: {
-                  marginRight: 5,
-                },
-              })}
-            >
-              방 생성하기
-            </Button>
+            <Stepper color="red" size="md" active={0}>
+              <Stepper.Step label="빠른설정" description="" />
+              <Stepper.Step label="세부설정" description="" />
+              <Stepper.Step label="완성하기" description="" />
+            </Stepper>
           </div>
-          <div style={{ height: "40vh" }}>
-            <p style={{ fontWeight: "bold", textAlign: "center" }}>
-              약 3,677개의 학교들이<br></br> exquiz.me를 사용중입니다.
+          <div
+            style={{
+              margin: "20px 20vw",
+              height: "10vh",
+              textAlign: "center",
+            }}
+          >
+            <p style={{ textAlign: "left", fontWeight: "bold" }}>
+              {" "}
+              - 문제 종류를 선택해주세요.
             </p>
-            <div style={{ textAlign: "center" }}>{SchoolList()}</div>
+            <Tabs variant="pills">
+              <Tabs.Tab
+                label="객관식"
+                style={{
+                  color: "white",
+                  backgroundImage:
+                    "linear-gradient(to right, #fa584b, #fc7b1b)",
+                }}
+              >
+                <br></br>
+                <Autocomplete
+                  style={{ textAlign: "left" }}
+                  label="선지 개수를 골라주세요."
+                  placeholder="선지 개수"
+                  data={["3개", "4개", "5개", "6개"]}
+                />
+              </Tabs.Tab>
+              <Tabs.Tab
+                label="주관식"
+                style={{
+                  color: "white",
+                  backgroundImage:
+                    "linear-gradient(to right, #4A73F0, #3A8DDA)",
+                }}
+              >
+                Second tab content
+              </Tabs.Tab>
+              <Tabs.Tab
+                label="O/X"
+                style={{
+                  color: "white",
+                  backgroundImage:
+                    "linear-gradient(to right, #23B87F, #79C72F)",
+                }}
+              >
+                Third tab content
+              </Tabs.Tab>
+              <Tooltip
+                label="이런! 프리미엄 구독자만 이용 가능합니다."
+                openDelay={500}
+              >
+                <Tabs.Tab
+                  disabled
+                  label="다이나믹 퀴즈"
+                  style={{
+                    color: "white",
+                    backgroundImage:
+                      "linear-gradient(to right, #F9B204, #FFD400)",
+                  }}
+                >
+                  Third tab content
+                </Tabs.Tab>
+              </Tooltip>
+            </Tabs>
           </div>
+          <div></div>
+          <div style={{ height: "90vh" }}></div>
         </div>
-        <div style={{ height: "100vh" }}></div>
-        <div
-          style={{
-            position: "fixed",
-            background: "white",
-            boxShadow:
-              "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
-            borderRadius: "50%",
-            height: "50px",
-            width: "50px",
-            right: "10px",
-            bottom: "10px",
-            cursor: "pointer",
-          }}
-        ></div>
       </main>
 
       <footer className={styles.footer}>

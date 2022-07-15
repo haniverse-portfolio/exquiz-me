@@ -205,7 +205,7 @@ const Home: NextPage = () => {
               gradient={{ from: "orange", to: "red" }}
               component="a"
               rel="noopener noreferrer"
-              href="/create"
+              href="/create1"
               leftIcon={<Pencil size={32} />}
               styles={(theme) => ({
                 root: {
