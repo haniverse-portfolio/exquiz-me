@@ -59,7 +59,7 @@ function Nav() {
           gradient={{ from: "yellow", to: "orange" }}
           component="a"
           rel="noopener noreferrer"
-          href="/membership"
+          href="#"
           leftIcon={<ReportMoney size={32} />}
           styles={(theme) => ({
             root: {
@@ -85,9 +85,6 @@ function Nav() {
         </Button>
 
         <Button
-          onClick={() => {
-            alert("로그인 되었습니다.");
-          }}
           variant="gradient"
           gradient={{ from: "orange", to: "red" }}
           component="a"
@@ -150,7 +147,7 @@ function SchoolList() {
   ];
   let i = 0;
   return (
-    <Grid grow gutter="xl">
+    <Grid grow gutter={30}>
       {arr.map((school, i) => {
         return (
           <Grid.Col
@@ -175,8 +172,8 @@ const Home: NextPage = () => {
     <div
       style={{
         scrollSnapAlign: "start",
-        scrollSnapType: "y mandatory",
         scrollSnapPointsY: "repeat(100vh)",
+        scrollSnapType: "y mandatory",
       }}
     >
       <Head>
@@ -187,81 +184,103 @@ const Home: NextPage = () => {
 
       <header style={{ position: "sticky", zIndex: "100" }}>{Nav()}</header>
 
-      <main>
+      <main style={{ marginLeft: 20, marginRight: 20 }}>
+        <div style={{ height: "100vh" }}>
+          <div
+            style={{
+              height: "55vh",
+              textAlign: "center",
+            }}
+          >
+            <p
+              style={{ fontSize: 36, fontWeight: "bold", textAlign: "center" }}
+            >
+              퀴즈에 경험을 더하다<br></br> exquiz.me
+            </p>
+            <Button
+              onClick={() => {
+                alert("체험관은 지금 닫았습니다.");
+              }}
+              variant="gradient"
+              gradient={{ from: "orange", to: "red" }}
+              component="a"
+              rel="noopener noreferrer"
+              href="#"
+              leftIcon={<Pencil size={32} />}
+              styles={(theme) => ({
+                root: {
+                  fontWeight: "bold",
+                  fontSize: 16,
+                  marginRight: 10,
+                  color: "white",
+                  backgroundColor: "white",
+                  border: 0,
+                  height: 42,
+
+                  "&:hover": {
+                    backgroundColor: theme.fn.darken("#FFFFFF", 0.05),
+                  },
+                },
+
+                leftIcon: {
+                  marginRight: 5,
+                },
+              })}
+            >
+              한 번 체험해보기
+            </Button>
+            <Button
+              variant="gradient"
+              gradient={{ from: "orange", to: "red" }}
+              component="a"
+              rel="noopener noreferrer"
+              href="/play"
+              leftIcon={<Login size={32} />}
+              styles={(theme) => ({
+                root: {
+                  fontWeight: "bold",
+                  fontSize: 16,
+                  marginRight: 10,
+                  color: "white",
+                  backgroundColor: "white",
+                  border: 0,
+                  height: 42,
+
+                  "&:hover": {
+                    backgroundColor: theme.fn.darken("#FFFFFF", 0.05),
+                  },
+                },
+
+                leftIcon: {
+                  marginRight: 5,
+                },
+              })}
+            >
+              방 입장하기
+            </Button>
+          </div>
+          <div style={{ height: "40vh" }}>
+            <p style={{ fontWeight: "bold", textAlign: "center" }}>
+              약 3,677개의 학교들이<br></br> exquiz.me를 사용중입니다.
+            </p>
+            <div style={{ textAlign: "center" }}>{SchoolList()}</div>
+          </div>
+        </div>
+        <div style={{ height: "100vh" }}></div>
         <div
           style={{
-            height: 600,
-            textAlign: "center",
+            position: "fixed",
+            background: "white",
+            boxShadow:
+              "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
+            borderRadius: "50%",
+            height: "50px",
+            width: "50px",
+            right: "10px",
+            bottom: "10px",
+            cursor: "pointer",
           }}
-        >
-          <p style={{ fontSize: 36, fontWeight: "bold", textAlign: "center" }}>
-            퀴즈에 경험을 더하다<br></br> exquiz.me
-          </p>
-          <Button
-            variant="gradient"
-            gradient={{ from: "orange", to: "red" }}
-            component="a"
-            rel="noopener noreferrer"
-            href="/experience"
-            leftIcon={<Pencil size={32} />}
-            styles={(theme) => ({
-              root: {
-                fontWeight: "bold",
-                fontSize: 16,
-                marginRight: 10,
-                color: "white",
-                backgroundColor: "white",
-                border: 0,
-                height: 42,
-
-                "&:hover": {
-                  backgroundColor: theme.fn.darken("#FFFFFF", 0.05),
-                },
-              },
-
-              leftIcon: {
-                marginRight: 5,
-              },
-            })}
-          >
-            한 번 체험해보기
-          </Button>
-          <Button
-            variant="gradient"
-            gradient={{ from: "orange", to: "red" }}
-            component="a"
-            rel="noopener noreferrer"
-            href="/enter"
-            leftIcon={<Login size={32} />}
-            styles={(theme) => ({
-              root: {
-                fontWeight: "bold",
-                fontSize: 16,
-                marginRight: 10,
-                color: "white",
-                backgroundColor: "white",
-                border: 0,
-                height: 42,
-
-                "&:hover": {
-                  backgroundColor: theme.fn.darken("#FFFFFF", 0.05),
-                },
-              },
-
-              leftIcon: {
-                marginRight: 5,
-              },
-            })}
-          >
-            방 입장하기
-          </Button>
-        </div>
-        <div style={{ height: 400 }}>
-          <p style={{ fontWeight: "bold", textAlign: "center" }}>
-            약 3,677개의 학교들이<br></br> exquiz.me를 사용중입니다.
-          </p>
-          <div style={{ textAlign: "center" }}>{SchoolList()}</div>
-        </div>
+        ></div>
       </main>
 
       <footer className={styles.footer}>
