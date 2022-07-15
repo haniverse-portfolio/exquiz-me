@@ -4,16 +4,17 @@ import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import Link from "next/link";
 
-import { Button } from "@mantine/core";
+import { Button, Grid } from "@mantine/core";
 import {
   Emphasis,
   FileX,
   Login,
   ReportMoney,
   UserCircle,
+  Pencil,
 } from "tabler-icons-react";
 
-function nav() {
+function Nav() {
   return (
     <div
       style={{
@@ -31,7 +32,7 @@ function nav() {
         styles={(theme) => ({
           root: {
             fontWeight: "bold",
-            fontSize: 14,
+            fontSize: 16,
             marginLeft: 10,
             paddingLeft: 0,
             color: "black",
@@ -84,6 +85,9 @@ function nav() {
         </Button>
 
         <Button
+          onClick={() => {
+            alert("로그인 되었습니다.");
+          }}
           variant="gradient"
           gradient={{ from: "orange", to: "red" }}
           component="a"
@@ -117,30 +121,89 @@ function nav() {
   );
 }
 
+function SchoolList() {
+  let arr = [
+    "양정여자고등학교",
+    "인덕원고등학교",
+    "서울과학고등학교",
+    "하나고등학교",
+    "민족사관고등학교",
+    "대전과학고등학교",
+    "휘문고등학교",
+    "상산고등학교",
+    "대기고등학교",
+    "포항제철고등학교",
+    "현대고등학교",
+    "배재고등학교",
+    "경북고등학교",
+    "신성고등학교",
+    "서문여자고등학교",
+    "강서고등학교",
+    "목동고등학교",
+    "마포고등학교",
+    "수지고등학교",
+    "서울국제고등학교",
+    "북일고등학교",
+    "서라벌고등학교",
+    "제주고등학교",
+    "오현고등학교",
+  ];
+  let i = 0;
+  return (
+    <Grid grow gutter="xl">
+      {arr.map((school, i) => {
+        return (
+          <Grid.Col
+            key={i}
+            style={{
+              boxShadow:
+                "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
+              borderRadius: "10px",
+            }}
+            span={2}
+          >
+            {school}
+          </Grid.Col>
+        );
+      })}
+    </Grid>
+  );
+}
+
 const Home: NextPage = () => {
   return (
-    <div className={styles.container}>
+    <div
+      style={{
+        scrollSnapAlign: "start",
+        scrollSnapType: "y mandatory",
+        scrollSnapPointsY: "repeat(100vh)",
+      }}
+    >
       <Head>
         <title>exquiz.me - 실시간 퀴즈 플랫폼</title>
         <meta name="description" content="exquiz.me" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <header style={{ position: "sticky", zIndex: "100" }}>{nav()}</header>
+      <header style={{ position: "sticky", zIndex: "100" }}>{Nav()}</header>
 
       <main>
         <div
           style={{
             height: 600,
+            textAlign: "center",
           }}
         >
+          <p style={{ fontSize: 36, fontWeight: "bold", textAlign: "center" }}>
+            퀴즈에 경험을 더하다<br></br> exquiz.me
+          </p>
           <Button
             variant="gradient"
             gradient={{ from: "orange", to: "red" }}
             component="a"
             rel="noopener noreferrer"
             href="/experience"
-            leftIcon={<Login size={32} />}
+            leftIcon={<Pencil size={32} />}
             styles={(theme) => ({
               root: {
                 fontWeight: "bold",
@@ -192,13 +255,12 @@ const Home: NextPage = () => {
           >
             방 입장하기
           </Button>
-          <p>exquiz.me</p>
         </div>
-
-        <div style={{ height: 400, display: "flex", alignItems: "center" }}>
-          <p style={{ fontWeight: "bold" }}>
+        <div style={{ height: 400 }}>
+          <p style={{ fontWeight: "bold", textAlign: "center" }}>
             약 3,677개의 학교들이<br></br> exquiz.me를 사용중입니다.
           </p>
+          <div style={{ textAlign: "center" }}>{SchoolList()}</div>
         </div>
       </main>
 
