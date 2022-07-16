@@ -260,7 +260,71 @@ const Home: NextPage = () => {
                     "linear-gradient(to right, #4A73F0, #3A8DDA)",
                 }}
               >
-                Second tab content
+                <br></br>
+                <p style={{ textAlign: "left" }}>
+                  {" "}
+                  - 문제 내용을 입력해주세요.
+                </p>
+                <Textarea
+                  maxRows={2}
+                  placeholder="문제 내용"
+                  label=""
+                  required
+                />
+                <br></br>
+                <p style={{ textAlign: "left" }}>
+                  {" "}
+                  - 선지 내용을 입력해주세요.
+                </p>
+                <SimpleGrid cols={2}>
+                  <div>
+                    <div>
+                      <Checkbox label="" />
+                      <Textarea
+                        maxRows={2}
+                        placeholder="선지 1"
+                        label=""
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    {" "}
+                    <div>
+                      <Checkbox label="" />
+                      <Textarea
+                        maxRows={2}
+                        placeholder="선지 2"
+                        label=""
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    {" "}
+                    <div>
+                      <Checkbox label="" />
+                      <Textarea
+                        maxRows={2}
+                        placeholder="선지 3"
+                        label=""
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    {" "}
+                    <div>
+                      <Checkbox label="" />
+                      <Textarea
+                        maxRows={2}
+                        placeholder="선지 4"
+                        label=""
+                        required
+                      />
+                    </div>
+                  </div>
+                </SimpleGrid>
               </Tabs.Tab>
               <Tabs.Tab
                 label="O/X"
@@ -323,13 +387,15 @@ const Home: NextPage = () => {
           <Button variant="gradient" gradient={{ from: "indigo", to: "cyan" }}>
             이대로 제작할래요
           </Button>
-          <Button
-            variant="gradient"
-            gradient={{ from: "teal", to: "lime", deg: 105 }}
-            style={{ marginLeft: "20px" }}
-          >
-            세부 설정 더하기
-          </Button>
+          <Link href="/create2">
+            <Button
+              variant="gradient"
+              gradient={{ from: "teal", to: "lime", deg: 105 }}
+              style={{ marginLeft: "20px" }}
+            >
+              세부 설정 &nbsp;→
+            </Button>
+          </Link>
         </div>
       </main>
 

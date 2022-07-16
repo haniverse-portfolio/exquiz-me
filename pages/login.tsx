@@ -309,7 +309,7 @@ const Home: NextPage = () => {
           </div>
         </div>
 
-        <div style={{ width: "100vw" }}>
+        <div>
           <div style={{ height: "40vh" }}>
             <p style={{ fontWeight: "bold", textAlign: "right" }}>
               exquiz.me는 새로운 퀴즈 경험을 제시합니다 -
@@ -322,7 +322,7 @@ const Home: NextPage = () => {
             </p>
           </div>
         </div>
-        <div style={{ width: "100vw" }}>
+        <div>
           <div style={{ height: "10vh" }}>
             <p style={{ fontWeight: "bold", textAlign: "center" }}>
               아래에서 나에게 가장 맞는 플랜을 선택해보세요.
