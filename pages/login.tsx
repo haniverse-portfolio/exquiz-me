@@ -22,6 +22,7 @@ import {
   ReportMoney,
   UserCircle,
   Pencil,
+  Archive,
 } from "tabler-icons-react";
 
 function Nav() {
@@ -96,19 +97,18 @@ function Nav() {
         >
           스탠다드 플랜 이용 중
         </Button>
-
         <Button
           variant="gradient"
-          gradient={{ from: "orange", to: "red" }}
+          gradient={{ from: "orange", to: "orange" }}
           component="a"
           rel="noopener noreferrer"
-          href="/login"
-          leftIcon={<UserCircle size={32} />}
+          href="/index"
+          leftIcon={<Archive size={32} />}
           styles={(theme) => ({
             root: {
+              marginLeft: 5,
               fontWeight: "bold",
               fontSize: 16,
-              marginRight: 10,
               color: "white",
               backgroundColor: "white",
               border: 0,
@@ -125,6 +125,36 @@ function Nav() {
           })}
         >
           내 퀴즈
+        </Button>
+        <Button
+          variant="gradient"
+          gradient={{ from: "orange", to: "red" }}
+          component="a"
+          rel="noopener noreferrer"
+          href="/index"
+          leftIcon={<UserCircle size={32} />}
+          styles={(theme) => ({
+            root: {
+              fontWeight: "bold",
+              fontSize: 16,
+              marginLeft: 5,
+              marginRight: 10,
+              color: "white",
+              backgroundColor: "white",
+              border: 0,
+              height: 42,
+
+              "&:hover": {
+                backgroundColor: theme.fn.darken("#FFFFFF", 0.05),
+              },
+            },
+
+            leftIcon: {
+              marginRight: 5,
+            },
+          })}
+        >
+          로그아웃
         </Button>
       </span>
     </div>
@@ -275,7 +305,7 @@ const Home: NextPage = () => {
           </div>
           <div style={{ height: "40vh" }}>
             <p style={{ fontWeight: "bold", textAlign: "center" }}>
-              약 3,677개의 학교들이<br></br> exquiz.me를 사용중입니다.
+              약 3,677개의 학교에서<br></br> exquiz.me를 사용중입니다.
             </p>
             <div style={{ textAlign: "center" }}>{SchoolList()}</div>
           </div>

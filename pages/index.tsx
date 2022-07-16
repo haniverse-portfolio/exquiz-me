@@ -12,6 +12,7 @@ import {
   ReportMoney,
   UserCircle,
   Pencil,
+  Archive,
 } from "tabler-icons-react";
 
 function Nav() {
@@ -93,6 +94,7 @@ function Nav() {
           leftIcon={<UserCircle size={32} />}
           styles={(theme) => ({
             root: {
+              marginLeft: 5,
               fontWeight: "bold",
               fontSize: 16,
               marginRight: 10,
@@ -261,7 +263,7 @@ const Home: NextPage = () => {
           </div>
           <div style={{ height: "40vh" }}>
             <p style={{ fontWeight: "bold", textAlign: "center" }}>
-              약 3,677개의 학교들이<br></br> exquiz.me를 사용중입니다.
+              약 3,677개의 학교에서<br></br> exquiz.me를 사용중입니다.
             </p>
             <div style={{ textAlign: "center" }}>{SchoolList()}</div>
           </div>
