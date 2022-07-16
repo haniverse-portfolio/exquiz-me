@@ -4,7 +4,17 @@ import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import Link from "next/link";
 
-import { Button, Grid, SimpleGrid, Input } from "@mantine/core";
+import {
+  Button,
+  Grid,
+  SimpleGrid,
+  Input,
+  Card,
+  Text,
+  Badge,
+  Group,
+  useMantineTheme,
+} from "@mantine/core";
 import {
   Emphasis,
   FileX,
@@ -171,6 +181,10 @@ function SchoolList() {
 }
 
 const Home: NextPage = () => {
+  const theme = useMantineTheme();
+
+  const secondaryColor =
+    theme.colorScheme === "dark" ? theme.colors.dark[1] : theme.colors.gray[7];
   return (
     <div
       style={{
@@ -304,8 +318,110 @@ const Home: NextPage = () => {
 
           <div style={{ height: "40vh" }}>
             <p style={{ fontWeight: "bold", textAlign: "left" }}>
-              - exquiz.me는 극적인 스코어보드와 통계를 제공합니다.
+              - exquiz.me는 재미있는 스코어보드와 통계를 제공합니다.
             </p>
+          </div>
+        </div>
+        <div style={{ width: "100vw" }}>
+          <div style={{ height: "10vh" }}>
+            <p style={{ fontWeight: "bold", textAlign: "center" }}>
+              아래에서 나에게 가장 맞는 플랜을 선택해보세요.
+            </p>
+          </div>
+
+          <div style={{ height: "50vh" }}>
+            <div style={{ width: 340, margin: "auto" }}>
+              <Card shadow="sm" p="lg">
+                <Card.Section></Card.Section>
+
+                <Group
+                  position="apart"
+                  style={{ marginBottom: 5, marginTop: theme.spacing.sm }}
+                >
+                  <Text weight={500}>무료 플랜</Text>
+                </Group>
+
+                <Text
+                  size="sm"
+                  style={{ color: secondaryColor, lineHeight: 1.5 }}
+                >
+                  익스퀴즈미가 제공하는 무료 서비스 입니다.
+                </Text>
+
+                <Button
+                  variant="light"
+                  color="gray"
+                  fullWidth
+                  style={{ marginTop: 14 }}
+                >
+                  현재 이용 중
+                </Button>
+              </Card>
+              <Card shadow="sm" p="lg">
+                <Card.Section></Card.Section>
+
+                <Group
+                  position="apart"
+                  style={{ marginBottom: 5, marginTop: theme.spacing.sm }}
+                >
+                  <Text weight={500}>스탠다드 플랜 (실속형)</Text>
+                  <Badge color="blue" variant="light">
+                    30% 할인 특가
+                  </Badge>
+                </Group>
+
+                <Text
+                  size="sm"
+                  style={{ color: secondaryColor, lineHeight: 1.5 }}
+                >
+                  퀴즈 제작 및 참여의 필수적인 기능만 골라서 합리적인 가격에
+                  제공합니다.
+                </Text>
+
+                <Button
+                  variant="light"
+                  color="blue"
+                  fullWidth
+                  style={{ marginTop: 14 }}
+                >
+                  <span
+                    style={{ color: "gray", textDecoration: "line-through" }}
+                  >
+                    월 5,990
+                  </span>{" "}
+                  &nbsp;→ 월 3,990원
+                </Button>
+              </Card>
+              <Card shadow="sm" p="lg">
+                <Card.Section></Card.Section>
+
+                <Group
+                  position="apart"
+                  style={{ marginBottom: 5, marginTop: theme.spacing.sm }}
+                >
+                  <Text weight={500}>프리미엄 플랜</Text>
+                  <Badge color="orange" variant="light">
+                    모든 서비스 이용 가능
+                  </Badge>
+                </Group>
+
+                <Text
+                  size="sm"
+                  style={{ color: secondaryColor, lineHeight: 1.5 }}
+                >
+                  퀴즈 제작 및 참여의 모든 과정에서 최고의 서비스를 제공합니다.
+                </Text>
+
+                <Button
+                  variant="light"
+                  color="orange"
+                  fullWidth
+                  style={{ marginTop: 14 }}
+                >
+                  월 7,990원
+                </Button>
+              </Card>
+            </div>
           </div>
         </div>
         <div
@@ -326,7 +442,7 @@ const Home: NextPage = () => {
 
       <footer className={styles.footer}>
         <a
-          style={{ textDecoration: "none" }}
+          style={{ textDecoration: "none", color: "black" }}
           href="https://retro5pect.tistory.com/"
           target="_blank"
           rel="noopener noreferrer"
