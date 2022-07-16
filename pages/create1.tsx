@@ -13,6 +13,12 @@ import {
   Tabs,
   Autocomplete,
   Tooltip,
+  NativeSelect,
+  Input,
+  TextInput,
+  Checkbox,
+  Textarea,
+  ScrollArea,
 } from "@mantine/core";
 import {
   Emphasis,
@@ -21,6 +27,7 @@ import {
   ReportMoney,
   UserCircle,
   Pencil,
+  Hash,
 } from "tabler-icons-react";
 
 function Nav() {
@@ -148,7 +155,7 @@ const Home: NextPage = () => {
       <header style={{ position: "sticky", zIndex: "100" }}>{Nav()}</header>
 
       <main style={{ marginLeft: 20, marginRight: 20 }}>
-        <div style={{ height: "100vh" }}>
+        <div style={{ height: "75vh" }}>
           <div
             style={{
               margin: "20px 20vw",
@@ -169,10 +176,7 @@ const Home: NextPage = () => {
               textAlign: "center",
             }}
           >
-            <p style={{ textAlign: "left", fontWeight: "bold" }}>
-              {" "}
-              - 문제 종류를 선택해주세요.
-            </p>
+            <p style={{ textAlign: "left" }}> - 문제 종류를 선택해주세요.</p>
             <Tabs variant="pills">
               <Tabs.Tab
                 label="객관식"
@@ -182,13 +186,71 @@ const Home: NextPage = () => {
                     "linear-gradient(to right, #fa584b, #fc7b1b)",
                 }}
               >
+                {/* 객관식 내용물 */}
                 <br></br>
-                <Autocomplete
-                  style={{ textAlign: "left" }}
-                  label="선지 개수를 골라주세요."
-                  placeholder="선지 개수"
-                  data={["3개", "4개", "5개", "6개"]}
+                <p style={{ textAlign: "left" }}>
+                  {" "}
+                  - 문제 내용을 입력해주세요.
+                </p>
+                <TextInput
+                  placeholder="키워드가 들어간 문제는 검색 알고리즘 향상에 도움이 됩니다."
+                  label=""
+                  required
                 />
+                <br></br>
+                <p style={{ textAlign: "left" }}>
+                  {" "}
+                  - 선지 내용을 입력해주세요.
+                </p>
+                <SimpleGrid cols={2}>
+                  <div>
+                    <div>
+                      <Checkbox label="" />
+                      <Textarea
+                        maxRows={2}
+                        placeholder="선지 1"
+                        label=""
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    {" "}
+                    <div>
+                      <Checkbox label="" />
+                      <Textarea
+                        maxRows={2}
+                        placeholder="선지 2"
+                        label=""
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    {" "}
+                    <div>
+                      <Checkbox label="" />
+                      <Textarea
+                        maxRows={2}
+                        placeholder="선지 3"
+                        label=""
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    {" "}
+                    <div>
+                      <Checkbox label="" />
+                      <Textarea
+                        maxRows={2}
+                        placeholder="선지 4"
+                        label=""
+                        required
+                      />
+                    </div>
+                  </div>
+                </SimpleGrid>
               </Tabs.Tab>
               <Tabs.Tab
                 label="주관식"
@@ -208,34 +270,72 @@ const Home: NextPage = () => {
                     "linear-gradient(to right, #23B87F, #79C72F)",
                 }}
               >
-                Third tab content
-              </Tabs.Tab>
-              <Tooltip
-                label="이런! 프리미엄 구독자만 이용 가능합니다."
-                openDelay={500}
-              >
-                <Tabs.Tab
-                  disabled
-                  label="다이나믹 퀴즈"
+                {/* 객관식 내용물 */}
+                <br></br>
+                <p style={{ textAlign: "left" }}>
+                  {" "}
+                  - 문제 내용을 입력해주세요.
+                </p>
+                <TextInput
+                  placeholder="키워드가 들어간 문제는 검색 알고리즘 향상에 도움이 됩니다."
+                  label=""
+                  required
+                />
+                <br></br>
+                <p style={{ textAlign: "left" }}> - 정답을 선택해주세요.</p>
+                <Button
                   style={{
-                    color: "white",
-                    backgroundImage:
-                      "linear-gradient(to right, #F9B204, #FFD400)",
+                    fontSize: "36px",
+                    height: "160px",
+                    width: "40%",
+                    marginRight: "20px",
                   }}
+                  variant="outline"
                 >
-                  Third tab content
-                </Tabs.Tab>
-              </Tooltip>
+                  O
+                </Button>
+                <Button
+                  style={{
+                    fontSize: "36px",
+                    height: "160px",
+                    width: "40%",
+                    color: "red",
+                  }}
+                  variant="outline"
+                >
+                  X
+                </Button>
+              </Tabs.Tab>
+              <Tabs.Tab
+                label="다이나믹 퀴즈"
+                style={{
+                  color: "white",
+                  backgroundImage:
+                    "linear-gradient(to right, #F9B204, #FFD400)",
+                }}
+              >
+                *제작 준비 중입니다.
+              </Tabs.Tab>
             </Tabs>
           </div>
-          <div></div>
-          <div style={{ height: "90vh" }}></div>
+        </div>
+        <div style={{ height: "9vh", textAlign: "center" }}>
+          <Button variant="gradient" gradient={{ from: "indigo", to: "cyan" }}>
+            이대로 제작할래요
+          </Button>
+          <Button
+            variant="gradient"
+            gradient={{ from: "teal", to: "lime", deg: 105 }}
+            style={{ marginLeft: "20px" }}
+          >
+            세부 설정 더하기
+          </Button>
         </div>
       </main>
 
       <footer className={styles.footer}>
         <a
-          style={{ textDecoration: "none" }}
+          style={{ textDecoration: "none", color: "black" }}
           href="https://retro5pect.tistory.com/"
           target="_blank"
           rel="noopener noreferrer"
