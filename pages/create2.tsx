@@ -176,7 +176,14 @@ const Home: NextPage = () => {
               textAlign: "center",
             }}
           >
-            <p style={{ textAlign: "left" }}> - 문제 난이도를 평가해주세요.</p>
+            <p style={{ textAlign: "left" }}>
+              {" "}
+              -{" "}
+              <span style={{ textDecoration: "underline orange 5px" }}>
+                문제 난이도
+              </span>
+              를 평가해주세요.
+            </p>
             <Button
               style={{
                 fontSize: "22px",
@@ -212,7 +219,14 @@ const Home: NextPage = () => {
               어려움
             </Button>
 
-            <p style={{ textAlign: "left" }}> - 제한 시간을 설정해주세요.</p>
+            <p style={{ textAlign: "left" }}>
+              {" "}
+              -{" "}
+              <span style={{ textDecoration: "underline orange 5px" }}>
+                제한 시간
+              </span>
+              을 설정해주세요.
+            </p>
             <Button
               style={{
                 fontSize: "22px",

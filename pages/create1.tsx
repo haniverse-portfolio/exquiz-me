@@ -18,7 +18,9 @@ import {
   TextInput,
   Checkbox,
   Textarea,
+  Navbar,
   ScrollArea,
+  Center,
 } from "@mantine/core";
 import {
   Emphasis,
@@ -28,7 +30,71 @@ import {
   UserCircle,
   Pencil,
   Hash,
+  Database,
 } from "tabler-icons-react";
+// 85vh 20vw
+function Slide() {
+  return (
+    <ScrollArea style={{ width: "20vw", height: "85vh" }}>
+      <p style={{ textAlign: "center", fontWeight: "bold" }}>
+        현재 제작 완료된 퀴즈
+      </p>
+      <hr></hr>
+      <div style={{ textAlign: "left" }}>
+        <Button
+          component="a"
+          rel="noopener noreferrer"
+          href="#"
+          leftIcon={<Database size={18} />}
+          styles={(theme) => ({
+            root: {
+              backgroundColor: "#fc7b1b",
+              border: 0,
+              height: 42,
+              paddingLeft: 20,
+              paddingRight: 20,
+
+              "&:hover": {
+                backgroundColor: theme.fn.darken("gray", 0.05),
+              },
+            },
+
+            leftIcon: {
+              marginRight: 15,
+            },
+          })}
+        >
+          가장 높은 산은?
+        </Button>
+        <Button
+          component="a"
+          rel="noopener noreferrer"
+          href="#"
+          leftIcon={<Database size={18} />}
+          styles={(theme) => ({
+            root: {
+              backgroundColor: "#79C72F",
+              border: 0,
+              height: 42,
+              paddingLeft: 20,
+              paddingRight: 20,
+
+              "&:hover": {
+                backgroundColor: theme.fn.darken("gray", 0.05),
+              },
+            },
+
+            leftIcon: {
+              marginRight: 15,
+            },
+          })}
+        >
+          left는 영어로 왼쪽?
+        </Button>
+      </div>
+    </ScrollArea>
+  );
+}
 
 function Nav() {
   return (
@@ -176,7 +242,14 @@ const Home: NextPage = () => {
               textAlign: "center",
             }}
           >
-            <p style={{ textAlign: "left" }}> - 문제 종류를 선택해주세요.</p>
+            <p style={{ textAlign: "left" }}>
+              {" "}
+              -{" "}
+              <span style={{ textDecoration: "underline orange 5px" }}>
+                문제 종류
+              </span>
+              를 선택해주세요.
+            </p>
             <Tabs variant="pills">
               <Tabs.Tab
                 label="객관식"
@@ -190,7 +263,11 @@ const Home: NextPage = () => {
                 <br></br>
                 <p style={{ textAlign: "left" }}>
                   {" "}
-                  - 문제 내용을 입력해주세요.
+                  -{" "}
+                  <span style={{ textDecoration: "underline orange 5px" }}>
+                    문제 내용
+                  </span>
+                  을 입력해주세요.
                 </p>
                 <TextInput
                   placeholder="키워드가 들어간 문제는 검색 알고리즘 향상에 도움이 됩니다."
@@ -200,7 +277,11 @@ const Home: NextPage = () => {
                 <br></br>
                 <p style={{ textAlign: "left" }}>
                   {" "}
-                  - 선지 내용을 입력해주세요.
+                  -{" "}
+                  <span style={{ textDecoration: "underline orange 5px" }}>
+                    선지 내용
+                  </span>
+                  을 입력해주세요.
                 </p>
                 <SimpleGrid cols={2}>
                   <div>
@@ -263,7 +344,11 @@ const Home: NextPage = () => {
                 <br></br>
                 <p style={{ textAlign: "left" }}>
                   {" "}
-                  - 문제 내용을 입력해주세요.
+                  -{" "}
+                  <span style={{ textDecoration: "underline orange 5px" }}>
+                    문제 내용
+                  </span>
+                  을 입력해주세요.
                 </p>
                 <Textarea
                   maxRows={2}
@@ -274,7 +359,11 @@ const Home: NextPage = () => {
                 <br></br>
                 <p style={{ textAlign: "left" }}>
                   {" "}
-                  - 선지 내용을 입력해주세요.
+                  -{" "}
+                  <span style={{ textDecoration: "underline orange 5px" }}>
+                    선지 내용
+                  </span>
+                  을 입력해주세요.
                 </p>
                 <SimpleGrid cols={2}>
                   <div>
@@ -338,7 +427,11 @@ const Home: NextPage = () => {
                 <br></br>
                 <p style={{ textAlign: "left" }}>
                   {" "}
-                  - 문제 내용을 입력해주세요.
+                  -{" "}
+                  <span style={{ textDecoration: "underline orange 5px" }}>
+                    문제 내용
+                  </span>
+                  을 입력해주세요.
                 </p>
                 <TextInput
                   placeholder="키워드가 들어간 문제는 검색 알고리즘 향상에 도움이 됩니다."
@@ -346,7 +439,14 @@ const Home: NextPage = () => {
                   required
                 />
                 <br></br>
-                <p style={{ textAlign: "left" }}> - 정답을 선택해주세요.</p>
+                <p style={{ textAlign: "left" }}>
+                  {" "}
+                  -{" "}
+                  <span style={{ textDecoration: "underline orange 5px" }}>
+                    정답
+                  </span>
+                  을 선택해주세요.
+                </p>
                 <Button
                   style={{
                     fontSize: "36px",
@@ -396,6 +496,16 @@ const Home: NextPage = () => {
               세부 설정 &nbsp;→
             </Button>
           </Link>
+        </div>
+        <div
+          style={{
+            backgroundColor: "orange",
+            position: "fixed",
+            top: 44,
+            left: 0,
+          }}
+        >
+          <Slide></Slide>
         </div>
       </main>
 

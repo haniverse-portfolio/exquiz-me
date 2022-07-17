@@ -131,7 +131,7 @@ function Nav() {
           gradient={{ from: "orange", to: "red" }}
           component="a"
           rel="noopener noreferrer"
-          href="/index"
+          href="/"
           leftIcon={<UserCircle size={32} />}
           styles={(theme) => ({
             root: {
@@ -229,7 +229,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <header style={{ position: "sticky", zIndex: "100" }}>{Nav()}</header>
+      <header style={{}}>{Nav()}</header>
 
       <main style={{ marginLeft: 20, marginRight: 20 }}>
         <div style={{ height: "100vh" }}>
@@ -239,11 +239,40 @@ const Home: NextPage = () => {
               textAlign: "center",
             }}
           >
-            <p
-              style={{ fontSize: 36, fontWeight: "bold", textAlign: "center" }}
+            <div
+              style={{
+                height: "30vh",
+                display: "flex",
+                justifyContent: "space-between",
+                backgroundImage: "linear-gradient(to left,#F9B204, #fc7b1b)",
+              }}
             >
-              퀴즈에 경험을 더하다<br></br> exquiz.me
-            </p>
+              <div style={{ marginLeft: 20, marginRight: 20 }}>
+                <div
+                  style={{
+                    textAlign: "right",
+                    height: "400px",
+                    width: "400px",
+                    borderRadius: "50%",
+                    backgroundColor: "white",
+                  }}
+                >
+                  <span
+                    style={{
+                      fontSize: 36,
+                      textDecoration: "underline orange 10px",
+                      fontWeight: "bold",
+                      textAlign: "right",
+                    }}
+                  >
+                    <br></br>
+                    퀴즈에 경험을 더하다<br></br> exquiz.me
+                  </span>
+                </div>
+              </div>
+            </div>
+            <br></br>
+            <br></br>
             <Button
               variant="gradient"
               gradient={{ from: "orange", to: "red" }}
