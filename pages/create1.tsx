@@ -36,16 +36,13 @@ import {
 function Slide() {
   return (
     <ScrollArea style={{ width: "20vw", height: "85vh" }}>
-      <p style={{ textAlign: "center", fontWeight: "bold" }}>
-        현재 제작 완료된 퀴즈
-      </p>
+      <p style={{ textAlign: "center", fontWeight: "bold" }}>문제 보관함</p>
       <hr></hr>
       <div style={{ textAlign: "left" }}>
         <Button
           component="a"
           rel="noopener noreferrer"
           href="#"
-          leftIcon={<Database size={18} />}
           styles={(theme) => ({
             root: {
               backgroundColor: "#fc7b1b",
@@ -58,19 +55,14 @@ function Slide() {
                 backgroundColor: theme.fn.darken("gray", 0.05),
               },
             },
-
-            leftIcon: {
-              marginRight: 15,
-            },
           })}
         >
-          가장 높은 산은?
+          Q1. 가장 높은 산은?
         </Button>
         <Button
           component="a"
           rel="noopener noreferrer"
           href="#"
-          leftIcon={<Database size={18} />}
           styles={(theme) => ({
             root: {
               backgroundColor: "#79C72F",
@@ -83,13 +75,449 @@ function Slide() {
                 backgroundColor: theme.fn.darken("gray", 0.05),
               },
             },
+          })}
+        >
+          Q2. left는 영어로 왼쪽?
+        </Button>
+        <Button
+          component="a"
+          rel="noopener noreferrer"
+          href="#"
+          styles={(theme) => ({
+            root: {
+              backgroundColor: "#fc7b1b",
+              border: 0,
+              height: 42,
+              paddingLeft: 20,
+              paddingRight: 20,
 
-            leftIcon: {
-              marginRight: 15,
+              "&:hover": {
+                backgroundColor: theme.fn.darken("gray", 0.05),
+              },
             },
           })}
         >
-          left는 영어로 왼쪽?
+          Q1. 가장 높은 산은?
+        </Button>
+        <Button
+          component="a"
+          rel="noopener noreferrer"
+          href="#"
+          styles={(theme) => ({
+            root: {
+              backgroundColor: "#79C72F",
+              border: 0,
+              height: 42,
+              paddingLeft: 20,
+              paddingRight: 20,
+
+              "&:hover": {
+                backgroundColor: theme.fn.darken("gray", 0.05),
+              },
+            },
+          })}
+        >
+          Q2. left는 영어로 왼쪽?
+        </Button>
+        <Button
+          component="a"
+          rel="noopener noreferrer"
+          href="#"
+          styles={(theme) => ({
+            root: {
+              backgroundColor: "#fc7b1b",
+              border: 0,
+              height: 42,
+              paddingLeft: 20,
+              paddingRight: 20,
+
+              "&:hover": {
+                backgroundColor: theme.fn.darken("gray", 0.05),
+              },
+            },
+          })}
+        >
+          Q1. 가장 높은 산은?
+        </Button>
+        <Button
+          component="a"
+          rel="noopener noreferrer"
+          href="#"
+          styles={(theme) => ({
+            root: {
+              backgroundColor: "#79C72F",
+              border: 0,
+              height: 42,
+              paddingLeft: 20,
+              paddingRight: 20,
+
+              "&:hover": {
+                backgroundColor: theme.fn.darken("gray", 0.05),
+              },
+            },
+          })}
+        >
+          Q2. left는 영어로 왼쪽?
+        </Button>
+        <Button
+          component="a"
+          rel="noopener noreferrer"
+          href="#"
+          styles={(theme) => ({
+            root: {
+              backgroundColor: "#fc7b1b",
+              border: 0,
+              height: 42,
+              paddingLeft: 20,
+              paddingRight: 20,
+
+              "&:hover": {
+                backgroundColor: theme.fn.darken("gray", 0.05),
+              },
+            },
+          })}
+        >
+          Q1. 가장 높은 산은?
+        </Button>
+        <Button
+          component="a"
+          rel="noopener noreferrer"
+          href="#"
+          styles={(theme) => ({
+            root: {
+              backgroundColor: "#79C72F",
+              border: 0,
+              height: 42,
+              paddingLeft: 20,
+              paddingRight: 20,
+
+              "&:hover": {
+                backgroundColor: theme.fn.darken("gray", 0.05),
+              },
+            },
+          })}
+        >
+          Q2. left는 영어로 왼쪽?
+        </Button>
+        <Button
+          component="a"
+          rel="noopener noreferrer"
+          href="#"
+          styles={(theme) => ({
+            root: {
+              backgroundColor: "#fc7b1b",
+              border: 0,
+              height: 42,
+              paddingLeft: 20,
+              paddingRight: 20,
+
+              "&:hover": {
+                backgroundColor: theme.fn.darken("gray", 0.05),
+              },
+            },
+          })}
+        >
+          Q1. 가장 높은 산은?
+        </Button>
+        <Button
+          component="a"
+          rel="noopener noreferrer"
+          href="#"
+          styles={(theme) => ({
+            root: {
+              backgroundColor: "#79C72F",
+              border: 0,
+              height: 42,
+              paddingLeft: 20,
+              paddingRight: 20,
+
+              "&:hover": {
+                backgroundColor: theme.fn.darken("gray", 0.05),
+              },
+            },
+          })}
+        >
+          Q2. left는 영어로 왼쪽?
+        </Button>
+        <Button
+          component="a"
+          rel="noopener noreferrer"
+          href="#"
+          styles={(theme) => ({
+            root: {
+              backgroundColor: "#fc7b1b",
+              border: 0,
+              height: 42,
+              paddingLeft: 20,
+              paddingRight: 20,
+
+              "&:hover": {
+                backgroundColor: theme.fn.darken("gray", 0.05),
+              },
+            },
+          })}
+        >
+          Q1. 가장 높은 산은?
+        </Button>
+        <Button
+          component="a"
+          rel="noopener noreferrer"
+          href="#"
+          styles={(theme) => ({
+            root: {
+              backgroundColor: "#79C72F",
+              border: 0,
+              height: 42,
+              paddingLeft: 20,
+              paddingRight: 20,
+
+              "&:hover": {
+                backgroundColor: theme.fn.darken("gray", 0.05),
+              },
+            },
+          })}
+        >
+          Q2. left는 영어로 왼쪽?
+        </Button>
+        <Button
+          component="a"
+          rel="noopener noreferrer"
+          href="#"
+          styles={(theme) => ({
+            root: {
+              backgroundColor: "#fc7b1b",
+              border: 0,
+              height: 42,
+              paddingLeft: 20,
+              paddingRight: 20,
+
+              "&:hover": {
+                backgroundColor: theme.fn.darken("gray", 0.05),
+              },
+            },
+          })}
+        >
+          Q1. 가장 높은 산은?
+        </Button>
+        <Button
+          component="a"
+          rel="noopener noreferrer"
+          href="#"
+          styles={(theme) => ({
+            root: {
+              backgroundColor: "#79C72F",
+              border: 0,
+              height: 42,
+              paddingLeft: 20,
+              paddingRight: 20,
+
+              "&:hover": {
+                backgroundColor: theme.fn.darken("gray", 0.05),
+              },
+            },
+          })}
+        >
+          Q2. left는 영어로 왼쪽?
+        </Button>
+        <Button
+          component="a"
+          rel="noopener noreferrer"
+          href="#"
+          styles={(theme) => ({
+            root: {
+              backgroundColor: "#fc7b1b",
+              border: 0,
+              height: 42,
+              paddingLeft: 20,
+              paddingRight: 20,
+
+              "&:hover": {
+                backgroundColor: theme.fn.darken("gray", 0.05),
+              },
+            },
+          })}
+        >
+          Q1. 가장 높은 산은?
+        </Button>
+        <Button
+          component="a"
+          rel="noopener noreferrer"
+          href="#"
+          styles={(theme) => ({
+            root: {
+              backgroundColor: "#79C72F",
+              border: 0,
+              height: 42,
+              paddingLeft: 20,
+              paddingRight: 20,
+
+              "&:hover": {
+                backgroundColor: theme.fn.darken("gray", 0.05),
+              },
+            },
+          })}
+        >
+          Q2. left는 영어로 왼쪽?
+        </Button>
+        <Button
+          component="a"
+          rel="noopener noreferrer"
+          href="#"
+          styles={(theme) => ({
+            root: {
+              backgroundColor: "#fc7b1b",
+              border: 0,
+              height: 42,
+              paddingLeft: 20,
+              paddingRight: 20,
+
+              "&:hover": {
+                backgroundColor: theme.fn.darken("gray", 0.05),
+              },
+            },
+          })}
+        >
+          Q1. 가장 높은 산은?
+        </Button>
+        <Button
+          component="a"
+          rel="noopener noreferrer"
+          href="#"
+          styles={(theme) => ({
+            root: {
+              backgroundColor: "#79C72F",
+              border: 0,
+              height: 42,
+              paddingLeft: 20,
+              paddingRight: 20,
+
+              "&:hover": {
+                backgroundColor: theme.fn.darken("gray", 0.05),
+              },
+            },
+          })}
+        >
+          Q2. left는 영어로 왼쪽?
+        </Button>
+        <Button
+          component="a"
+          rel="noopener noreferrer"
+          href="#"
+          styles={(theme) => ({
+            root: {
+              backgroundColor: "#fc7b1b",
+              border: 0,
+              height: 42,
+              paddingLeft: 20,
+              paddingRight: 20,
+
+              "&:hover": {
+                backgroundColor: theme.fn.darken("gray", 0.05),
+              },
+            },
+          })}
+        >
+          Q1. 가장 높은 산은?
+        </Button>
+        <Button
+          component="a"
+          rel="noopener noreferrer"
+          href="#"
+          styles={(theme) => ({
+            root: {
+              backgroundColor: "#79C72F",
+              border: 0,
+              height: 42,
+              paddingLeft: 20,
+              paddingRight: 20,
+
+              "&:hover": {
+                backgroundColor: theme.fn.darken("gray", 0.05),
+              },
+            },
+          })}
+        >
+          Q2. left는 영어로 왼쪽?
+        </Button>
+        <Button
+          component="a"
+          rel="noopener noreferrer"
+          href="#"
+          styles={(theme) => ({
+            root: {
+              backgroundColor: "#fc7b1b",
+              border: 0,
+              height: 42,
+              paddingLeft: 20,
+              paddingRight: 20,
+
+              "&:hover": {
+                backgroundColor: theme.fn.darken("gray", 0.05),
+              },
+            },
+          })}
+        >
+          Q1. 가장 높은 산은?
+        </Button>
+        <Button
+          component="a"
+          rel="noopener noreferrer"
+          href="#"
+          styles={(theme) => ({
+            root: {
+              backgroundColor: "#79C72F",
+              border: 0,
+              height: 42,
+              paddingLeft: 20,
+              paddingRight: 20,
+
+              "&:hover": {
+                backgroundColor: theme.fn.darken("gray", 0.05),
+              },
+            },
+          })}
+        >
+          Q2. left는 영어로 왼쪽?
+        </Button>
+        <Button
+          component="a"
+          rel="noopener noreferrer"
+          href="#"
+          styles={(theme) => ({
+            root: {
+              backgroundColor: "#fc7b1b",
+              border: 0,
+              height: 42,
+              paddingLeft: 20,
+              paddingRight: 20,
+
+              "&:hover": {
+                backgroundColor: theme.fn.darken("gray", 0.05),
+              },
+            },
+          })}
+        >
+          Q1. 가장 높은 산은?
+        </Button>
+        <Button
+          component="a"
+          rel="noopener noreferrer"
+          href="#"
+          styles={(theme) => ({
+            root: {
+              backgroundColor: "#79C72F",
+              border: 0,
+              height: 42,
+              paddingLeft: 20,
+              paddingRight: 20,
+
+              "&:hover": {
+                backgroundColor: theme.fn.darken("gray", 0.05),
+              },
+            },
+          })}
+        >
+          Q2. left는 영어로 왼쪽?
         </Button>
       </div>
     </ScrollArea>
@@ -224,7 +652,7 @@ const Home: NextPage = () => {
         <div style={{ height: "75vh" }}>
           <div
             style={{
-              margin: "20px 20vw",
+              margin: "20px 22vw",
               height: "10vh",
               textAlign: "center",
             }}

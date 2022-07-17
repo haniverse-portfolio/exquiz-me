@@ -225,11 +225,14 @@ const Home: NextPage = () => {
               </p>
             </div>
             <Button
+              onClick={() => {
+                alert("체험관은 지금 닫았습니다. 돌아가");
+              }}
               variant="gradient"
               gradient={{ from: "orange", to: "red" }}
               component="a"
               rel="noopener noreferrer"
-              href="/create1"
+              href="/#"
               leftIcon={<Pencil size={32} />}
               styles={(theme) => ({
                 root: {
@@ -258,7 +261,7 @@ const Home: NextPage = () => {
               gradient={{ from: "orange", to: "red" }}
               component="a"
               rel="noopener noreferrer"
-              href="/host"
+              href="/play"
               leftIcon={<Login size={32} />}
               styles={(theme) => ({
                 root: {

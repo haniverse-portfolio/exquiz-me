@@ -158,7 +158,7 @@ const Home: NextPage = () => {
         <div style={{ height: "75vh" }}>
           <div
             style={{
-              margin: "20px 20vw",
+              margin: "20px 22vw",
               height: "10vh",
               textAlign: "center",
             }}
