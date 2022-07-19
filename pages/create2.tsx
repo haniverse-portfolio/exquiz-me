@@ -4,6 +4,7 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import Link from "next/link";
+import NavIndex from "./components/navIndex";
 
 import {
   Button,
@@ -19,6 +20,8 @@ import {
   Checkbox,
   Textarea,
   ScrollArea,
+  RadioGroup,
+  Radio,
 } from "@mantine/core";
 import {
   Emphasis,
@@ -29,113 +32,6 @@ import {
   Pencil,
   Hash,
 } from "tabler-icons-react";
-
-function Nav() {
-  return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        boxShadow: "0 3px 4px -4px black",
-      }}
-    >
-      <Button
-        component="a"
-        rel="noopener noreferrer"
-        href="/"
-        leftIcon={<Emphasis size={32} />}
-        styles={(theme) => ({
-          root: {
-            fontWeight: "bold",
-            fontSize: 16,
-            marginLeft: 10,
-            paddingLeft: 0,
-            color: "black",
-            backgroundColor: "white",
-            border: 0,
-            height: 42,
-
-            "&:hover": {
-              backgroundColor: "white",
-              //backgroundColor: theme.fn.darken("#ffffff", 0.05),
-            },
-          },
-
-          leftIcon: {
-            marginRight: 0,
-          },
-        })}
-      >
-        xquiz.me
-      </Button>
-      <span>
-        <Button
-          onClick={() => {
-            alert("구독 연장까지 90일 남았습니다.");
-          }}
-          variant="gradient"
-          gradient={{ from: "yellow", to: "orange" }}
-          component="a"
-          rel="noopener noreferrer"
-          href="#"
-          leftIcon={<ReportMoney size={32} />}
-          styles={(theme) => ({
-            root: {
-              fontWeight: "bold",
-              fontSize: 16,
-              paddingLeft: 15,
-              color: "white",
-              backgroundColor: "white",
-              border: 0,
-              height: 42,
-
-              "&:hover": {
-                backgroundColor: theme.fn.darken("#ffffff", 0.05),
-              },
-            },
-
-            leftIcon: {
-              marginRight: 5,
-            },
-          })}
-        >
-          스탠다드 플랜 이용 중
-        </Button>
-
-        <Button
-          variant="gradient"
-          gradient={{ from: "orange", to: "red" }}
-          component="a"
-          rel="noopener noreferrer"
-          href="/login"
-          leftIcon={<UserCircle size={32} />}
-          styles={(theme) => ({
-            root: {
-              fontWeight: "bold",
-              fontSize: 16,
-              marginRight: 10,
-              color: "white",
-              backgroundColor: "white",
-              border: 0,
-              height: 42,
-
-              "&:hover": {
-                backgroundColor: theme.fn.darken("#FFFFFF", 0.05),
-              },
-            },
-
-            leftIcon: {
-              marginRight: 5,
-            },
-          })}
-        >
-          내 퀴즈
-        </Button>
-      </span>
-    </div>
-  );
-}
 
 const Home: NextPage = () => {
   return (
@@ -152,7 +48,9 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <header style={{ position: "sticky", zIndex: "100" }}>{Nav()}</header>
+      <header style={{ position: "sticky", zIndex: "100" }}>
+        {NavIndex()}
+      </header>
 
       <main style={{ marginLeft: 20, marginRight: 20 }}>
         <div style={{ height: "75vh" }}>
@@ -176,91 +74,53 @@ const Home: NextPage = () => {
               textAlign: "center",
             }}
           >
-            <p style={{ textAlign: "left" }}>
-              {" "}
-              -{" "}
-              <span style={{ textDecoration: "underline orange 5px" }}>
-                문제 난이도
-              </span>
-              를 평가해주세요.
+            <p
+              style={{
+                textAlign: "left",
+                textDecoration: "underline orange 5px",
+              }}
+            >
+              1. 문제 배점을 정해주세요
             </p>
-            <Button
-              style={{
-                fontSize: "22px",
-                height: "80px",
-                width: "27%",
-              }}
-              variant="outline"
+            <RadioGroup
+              label=""
+              description=""
+              spacing="xl"
+              size="md"
+              color="red"
+              required
             >
-              쉬움
-            </Button>
-            <Button
-              style={{
-                marginLeft: "5px",
-                fontSize: "22px",
-                height: "80px",
-                width: "27%",
-                color: "gray",
-              }}
-              variant="outline"
-            >
-              보통
-            </Button>
-            <Button
-              style={{
-                marginLeft: "5px",
-                fontSize: "22px",
-                height: "80px",
-                width: "27%",
-                color: "red",
-              }}
-              variant="outline"
-            >
-              어려움
-            </Button>
+              <Radio value="1" label="" />
+              <Radio value="2" label="" />
+              <Radio value="3" label="" />
+              <Radio value="4" label="" />
+              <Radio value="5" label="" />
+              <Radio value="6" label="" />
+            </RadioGroup>
 
-            <p style={{ textAlign: "left" }}>
-              {" "}
-              -{" "}
-              <span style={{ textDecoration: "underline orange 5px" }}>
-                제한 시간
-              </span>
-              을 설정해주세요.
+            <p
+              style={{
+                textAlign: "left",
+                textDecoration: "underline orange 5px",
+              }}
+            >
+              2. 제한 시간을 설정해주세요.
             </p>
-            <Button
-              style={{
-                fontSize: "22px",
-                height: "80px",
-                width: "27%",
-              }}
-              variant="outline"
+            <RadioGroup
+              label=""
+              description=""
+              spacing="xl"
+              size="md"
+              color="red"
+              required
             >
-              15초
-            </Button>
-            <Button
-              style={{
-                marginLeft: "5px",
-                fontSize: "22px",
-                height: "80px",
-                width: "27%",
-                color: "gray",
-              }}
-              variant="outline"
-            >
-              30초
-            </Button>
-            <Button
-              style={{
-                marginLeft: "5px",
-                fontSize: "22px",
-                height: "80px",
-                width: "27%",
-                color: "red",
-              }}
-              variant="outline"
-            >
-              45초
-            </Button>
+              <Radio value="1" label="" />
+              <Radio value="2" label="" />
+              <Radio value="3" label="" />
+              <Radio value="4" label="" />
+              <Radio value="5" label="" />
+              <Radio value="6" label="" />
+            </RadioGroup>
           </div>
         </div>
         <div style={{ height: "9vh", textAlign: "center" }}>

@@ -4,6 +4,8 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import Link from "next/link";
+import NavIndex from "./components/navIndex";
+import Slide from "./components/slide";
 
 import {
   Button,
@@ -33,603 +35,6 @@ import {
   Database,
 } from "tabler-icons-react";
 // 85vh 20vw
-function Slide() {
-  return (
-    <ScrollArea style={{ width: "20vw", height: "85vh" }}>
-      <p style={{ textAlign: "center", fontWeight: "bold" }}>문제 보관함</p>
-      <hr></hr>
-      <div style={{ textAlign: "left" }}>
-        <Button
-          component="a"
-          rel="noopener noreferrer"
-          href="#"
-          styles={(theme) => ({
-            root: {
-              backgroundColor: "#fc7b1b",
-              border: 0,
-              height: 42,
-              paddingLeft: 20,
-              paddingRight: 20,
-
-              "&:hover": {
-                backgroundColor: theme.fn.darken("gray", 0.05),
-              },
-            },
-          })}
-        >
-          Q1. 가장 높은 산은?
-        </Button>
-        <Button
-          component="a"
-          rel="noopener noreferrer"
-          href="#"
-          styles={(theme) => ({
-            root: {
-              backgroundColor: "#79C72F",
-              border: 0,
-              height: 42,
-              paddingLeft: 20,
-              paddingRight: 20,
-
-              "&:hover": {
-                backgroundColor: theme.fn.darken("gray", 0.05),
-              },
-            },
-          })}
-        >
-          Q2. left는 영어로 왼쪽?
-        </Button>
-        <Button
-          component="a"
-          rel="noopener noreferrer"
-          href="#"
-          styles={(theme) => ({
-            root: {
-              backgroundColor: "#fc7b1b",
-              border: 0,
-              height: 42,
-              paddingLeft: 20,
-              paddingRight: 20,
-
-              "&:hover": {
-                backgroundColor: theme.fn.darken("gray", 0.05),
-              },
-            },
-          })}
-        >
-          Q1. 가장 높은 산은?
-        </Button>
-        <Button
-          component="a"
-          rel="noopener noreferrer"
-          href="#"
-          styles={(theme) => ({
-            root: {
-              backgroundColor: "#79C72F",
-              border: 0,
-              height: 42,
-              paddingLeft: 20,
-              paddingRight: 20,
-
-              "&:hover": {
-                backgroundColor: theme.fn.darken("gray", 0.05),
-              },
-            },
-          })}
-        >
-          Q2. left는 영어로 왼쪽?
-        </Button>
-        <Button
-          component="a"
-          rel="noopener noreferrer"
-          href="#"
-          styles={(theme) => ({
-            root: {
-              backgroundColor: "#fc7b1b",
-              border: 0,
-              height: 42,
-              paddingLeft: 20,
-              paddingRight: 20,
-
-              "&:hover": {
-                backgroundColor: theme.fn.darken("gray", 0.05),
-              },
-            },
-          })}
-        >
-          Q1. 가장 높은 산은?
-        </Button>
-        <Button
-          component="a"
-          rel="noopener noreferrer"
-          href="#"
-          styles={(theme) => ({
-            root: {
-              backgroundColor: "#79C72F",
-              border: 0,
-              height: 42,
-              paddingLeft: 20,
-              paddingRight: 20,
-
-              "&:hover": {
-                backgroundColor: theme.fn.darken("gray", 0.05),
-              },
-            },
-          })}
-        >
-          Q2. left는 영어로 왼쪽?
-        </Button>
-        <Button
-          component="a"
-          rel="noopener noreferrer"
-          href="#"
-          styles={(theme) => ({
-            root: {
-              backgroundColor: "#fc7b1b",
-              border: 0,
-              height: 42,
-              paddingLeft: 20,
-              paddingRight: 20,
-
-              "&:hover": {
-                backgroundColor: theme.fn.darken("gray", 0.05),
-              },
-            },
-          })}
-        >
-          Q1. 가장 높은 산은?
-        </Button>
-        <Button
-          component="a"
-          rel="noopener noreferrer"
-          href="#"
-          styles={(theme) => ({
-            root: {
-              backgroundColor: "#79C72F",
-              border: 0,
-              height: 42,
-              paddingLeft: 20,
-              paddingRight: 20,
-
-              "&:hover": {
-                backgroundColor: theme.fn.darken("gray", 0.05),
-              },
-            },
-          })}
-        >
-          Q2. left는 영어로 왼쪽?
-        </Button>
-        <Button
-          component="a"
-          rel="noopener noreferrer"
-          href="#"
-          styles={(theme) => ({
-            root: {
-              backgroundColor: "#fc7b1b",
-              border: 0,
-              height: 42,
-              paddingLeft: 20,
-              paddingRight: 20,
-
-              "&:hover": {
-                backgroundColor: theme.fn.darken("gray", 0.05),
-              },
-            },
-          })}
-        >
-          Q1. 가장 높은 산은?
-        </Button>
-        <Button
-          component="a"
-          rel="noopener noreferrer"
-          href="#"
-          styles={(theme) => ({
-            root: {
-              backgroundColor: "#79C72F",
-              border: 0,
-              height: 42,
-              paddingLeft: 20,
-              paddingRight: 20,
-
-              "&:hover": {
-                backgroundColor: theme.fn.darken("gray", 0.05),
-              },
-            },
-          })}
-        >
-          Q2. left는 영어로 왼쪽?
-        </Button>
-        <Button
-          component="a"
-          rel="noopener noreferrer"
-          href="#"
-          styles={(theme) => ({
-            root: {
-              backgroundColor: "#fc7b1b",
-              border: 0,
-              height: 42,
-              paddingLeft: 20,
-              paddingRight: 20,
-
-              "&:hover": {
-                backgroundColor: theme.fn.darken("gray", 0.05),
-              },
-            },
-          })}
-        >
-          Q1. 가장 높은 산은?
-        </Button>
-        <Button
-          component="a"
-          rel="noopener noreferrer"
-          href="#"
-          styles={(theme) => ({
-            root: {
-              backgroundColor: "#79C72F",
-              border: 0,
-              height: 42,
-              paddingLeft: 20,
-              paddingRight: 20,
-
-              "&:hover": {
-                backgroundColor: theme.fn.darken("gray", 0.05),
-              },
-            },
-          })}
-        >
-          Q2. left는 영어로 왼쪽?
-        </Button>
-        <Button
-          component="a"
-          rel="noopener noreferrer"
-          href="#"
-          styles={(theme) => ({
-            root: {
-              backgroundColor: "#fc7b1b",
-              border: 0,
-              height: 42,
-              paddingLeft: 20,
-              paddingRight: 20,
-
-              "&:hover": {
-                backgroundColor: theme.fn.darken("gray", 0.05),
-              },
-            },
-          })}
-        >
-          Q1. 가장 높은 산은?
-        </Button>
-        <Button
-          component="a"
-          rel="noopener noreferrer"
-          href="#"
-          styles={(theme) => ({
-            root: {
-              backgroundColor: "#79C72F",
-              border: 0,
-              height: 42,
-              paddingLeft: 20,
-              paddingRight: 20,
-
-              "&:hover": {
-                backgroundColor: theme.fn.darken("gray", 0.05),
-              },
-            },
-          })}
-        >
-          Q2. left는 영어로 왼쪽?
-        </Button>
-        <Button
-          component="a"
-          rel="noopener noreferrer"
-          href="#"
-          styles={(theme) => ({
-            root: {
-              backgroundColor: "#fc7b1b",
-              border: 0,
-              height: 42,
-              paddingLeft: 20,
-              paddingRight: 20,
-
-              "&:hover": {
-                backgroundColor: theme.fn.darken("gray", 0.05),
-              },
-            },
-          })}
-        >
-          Q1. 가장 높은 산은?
-        </Button>
-        <Button
-          component="a"
-          rel="noopener noreferrer"
-          href="#"
-          styles={(theme) => ({
-            root: {
-              backgroundColor: "#79C72F",
-              border: 0,
-              height: 42,
-              paddingLeft: 20,
-              paddingRight: 20,
-
-              "&:hover": {
-                backgroundColor: theme.fn.darken("gray", 0.05),
-              },
-            },
-          })}
-        >
-          Q2. left는 영어로 왼쪽?
-        </Button>
-        <Button
-          component="a"
-          rel="noopener noreferrer"
-          href="#"
-          styles={(theme) => ({
-            root: {
-              backgroundColor: "#fc7b1b",
-              border: 0,
-              height: 42,
-              paddingLeft: 20,
-              paddingRight: 20,
-
-              "&:hover": {
-                backgroundColor: theme.fn.darken("gray", 0.05),
-              },
-            },
-          })}
-        >
-          Q1. 가장 높은 산은?
-        </Button>
-        <Button
-          component="a"
-          rel="noopener noreferrer"
-          href="#"
-          styles={(theme) => ({
-            root: {
-              backgroundColor: "#79C72F",
-              border: 0,
-              height: 42,
-              paddingLeft: 20,
-              paddingRight: 20,
-
-              "&:hover": {
-                backgroundColor: theme.fn.darken("gray", 0.05),
-              },
-            },
-          })}
-        >
-          Q2. left는 영어로 왼쪽?
-        </Button>
-        <Button
-          component="a"
-          rel="noopener noreferrer"
-          href="#"
-          styles={(theme) => ({
-            root: {
-              backgroundColor: "#fc7b1b",
-              border: 0,
-              height: 42,
-              paddingLeft: 20,
-              paddingRight: 20,
-
-              "&:hover": {
-                backgroundColor: theme.fn.darken("gray", 0.05),
-              },
-            },
-          })}
-        >
-          Q1. 가장 높은 산은?
-        </Button>
-        <Button
-          component="a"
-          rel="noopener noreferrer"
-          href="#"
-          styles={(theme) => ({
-            root: {
-              backgroundColor: "#79C72F",
-              border: 0,
-              height: 42,
-              paddingLeft: 20,
-              paddingRight: 20,
-
-              "&:hover": {
-                backgroundColor: theme.fn.darken("gray", 0.05),
-              },
-            },
-          })}
-        >
-          Q2. left는 영어로 왼쪽?
-        </Button>
-        <Button
-          component="a"
-          rel="noopener noreferrer"
-          href="#"
-          styles={(theme) => ({
-            root: {
-              backgroundColor: "#fc7b1b",
-              border: 0,
-              height: 42,
-              paddingLeft: 20,
-              paddingRight: 20,
-
-              "&:hover": {
-                backgroundColor: theme.fn.darken("gray", 0.05),
-              },
-            },
-          })}
-        >
-          Q1. 가장 높은 산은?
-        </Button>
-        <Button
-          component="a"
-          rel="noopener noreferrer"
-          href="#"
-          styles={(theme) => ({
-            root: {
-              backgroundColor: "#79C72F",
-              border: 0,
-              height: 42,
-              paddingLeft: 20,
-              paddingRight: 20,
-
-              "&:hover": {
-                backgroundColor: theme.fn.darken("gray", 0.05),
-              },
-            },
-          })}
-        >
-          Q2. left는 영어로 왼쪽?
-        </Button>
-        <Button
-          component="a"
-          rel="noopener noreferrer"
-          href="#"
-          styles={(theme) => ({
-            root: {
-              backgroundColor: "#fc7b1b",
-              border: 0,
-              height: 42,
-              paddingLeft: 20,
-              paddingRight: 20,
-
-              "&:hover": {
-                backgroundColor: theme.fn.darken("gray", 0.05),
-              },
-            },
-          })}
-        >
-          Q1. 가장 높은 산은?
-        </Button>
-        <Button
-          component="a"
-          rel="noopener noreferrer"
-          href="#"
-          styles={(theme) => ({
-            root: {
-              backgroundColor: "#79C72F",
-              border: 0,
-              height: 42,
-              paddingLeft: 20,
-              paddingRight: 20,
-
-              "&:hover": {
-                backgroundColor: theme.fn.darken("gray", 0.05),
-              },
-            },
-          })}
-        >
-          Q2. left는 영어로 왼쪽?
-        </Button>
-      </div>
-    </ScrollArea>
-  );
-}
-
-function Nav() {
-  return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        boxShadow: "0 3px 4px -4px black",
-      }}
-    >
-      <Button
-        component="a"
-        rel="noopener noreferrer"
-        href="/"
-        leftIcon={<Emphasis size={32} />}
-        styles={(theme) => ({
-          root: {
-            fontWeight: "bold",
-            fontSize: 16,
-            marginLeft: 10,
-            paddingLeft: 0,
-            color: "black",
-            backgroundColor: "white",
-            border: 0,
-            height: 42,
-
-            "&:hover": {
-              backgroundColor: "white",
-              //backgroundColor: theme.fn.darken("#ffffff", 0.05),
-            },
-          },
-
-          leftIcon: {
-            marginRight: 0,
-          },
-        })}
-      >
-        xquiz.me
-      </Button>
-      <span>
-        <Button
-          onClick={() => {
-            alert("구독 연장까지 90일 남았습니다.");
-          }}
-          variant="gradient"
-          gradient={{ from: "yellow", to: "orange" }}
-          component="a"
-          rel="noopener noreferrer"
-          href="#"
-          leftIcon={<ReportMoney size={32} />}
-          styles={(theme) => ({
-            root: {
-              fontWeight: "bold",
-              fontSize: 16,
-              paddingLeft: 15,
-              color: "white",
-              backgroundColor: "white",
-              border: 0,
-              height: 42,
-
-              "&:hover": {
-                backgroundColor: theme.fn.darken("#ffffff", 0.05),
-              },
-            },
-
-            leftIcon: {
-              marginRight: 5,
-            },
-          })}
-        >
-          스탠다드 플랜 이용 중
-        </Button>
-
-        <Button
-          variant="gradient"
-          gradient={{ from: "orange", to: "red" }}
-          component="a"
-          rel="noopener noreferrer"
-          href="/login"
-          leftIcon={<UserCircle size={32} />}
-          styles={(theme) => ({
-            root: {
-              fontWeight: "bold",
-              fontSize: 16,
-              marginRight: 10,
-              color: "white",
-              backgroundColor: "white",
-              border: 0,
-              height: 42,
-
-              "&:hover": {
-                backgroundColor: theme.fn.darken("#FFFFFF", 0.05),
-              },
-            },
-
-            leftIcon: {
-              marginRight: 5,
-            },
-          })}
-        >
-          내 퀴즈
-        </Button>
-      </span>
-    </div>
-  );
-}
 
 const Home: NextPage = () => {
   return (
@@ -646,7 +51,9 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <header style={{ position: "sticky", zIndex: "100" }}>{Nav()}</header>
+      <header style={{ position: "sticky", zIndex: "100" }}>
+        {NavIndex()}
+      </header>
 
       <main style={{ marginLeft: 20, marginRight: 20 }}>
         <div style={{ height: "75vh" }}>
@@ -670,13 +77,13 @@ const Home: NextPage = () => {
               textAlign: "center",
             }}
           >
-            <p style={{ textAlign: "left" }}>
-              {" "}
-              -{" "}
-              <span style={{ textDecoration: "underline orange 5px" }}>
-                문제 종류
-              </span>
-              를 선택해주세요.
+            <p
+              style={{
+                textAlign: "left",
+                textDecoration: "underline orange 5px",
+              }}
+            >
+              - 문제 종류를 선택해주세요.
             </p>
             <Tabs variant="pills">
               <Tabs.Tab
@@ -689,13 +96,13 @@ const Home: NextPage = () => {
               >
                 {/* 객관식 내용물 */}
                 <br></br>
-                <p style={{ textAlign: "left" }}>
-                  {" "}
-                  -{" "}
-                  <span style={{ textDecoration: "underline orange 5px" }}>
-                    문제 내용
-                  </span>
-                  을 입력해주세요.
+                <p
+                  style={{
+                    textAlign: "left",
+                    textDecoration: "underline orange 5px",
+                  }}
+                >
+                  - 문제 내용을 입력해주세요.
                 </p>
                 <TextInput
                   placeholder="키워드가 들어간 문제는 검색 알고리즘 향상에 도움이 됩니다."
@@ -703,13 +110,13 @@ const Home: NextPage = () => {
                   required
                 />
                 <br></br>
-                <p style={{ textAlign: "left" }}>
-                  {" "}
-                  -{" "}
-                  <span style={{ textDecoration: "underline orange 5px" }}>
-                    선지 내용
-                  </span>
-                  을 입력해주세요.
+                <p
+                  style={{
+                    textAlign: "left",
+                    textDecoration: "underline orange 5px",
+                  }}
+                >
+                  선지 내용 을 입력해주세요.
                 </p>
                 <SimpleGrid cols={2}>
                   <div>
@@ -770,13 +177,13 @@ const Home: NextPage = () => {
                 }}
               >
                 <br></br>
-                <p style={{ textAlign: "left" }}>
-                  {" "}
-                  -{" "}
-                  <span style={{ textDecoration: "underline orange 5px" }}>
-                    문제 내용
-                  </span>
-                  을 입력해주세요.
+                <p
+                  style={{
+                    textAlign: "left",
+                    textDecoration: "underline orange 5px",
+                  }}
+                >
+                  - 문제 내용을 입력해주세요.
                 </p>
                 <Textarea
                   maxRows={2}
@@ -785,13 +192,13 @@ const Home: NextPage = () => {
                   required
                 />
                 <br></br>
-                <p style={{ textAlign: "left" }}>
-                  {" "}
-                  -{" "}
-                  <span style={{ textDecoration: "underline orange 5px" }}>
-                    선지 내용
-                  </span>
-                  을 입력해주세요.
+                <p
+                  style={{
+                    textAlign: "left",
+                    textDecoration: "underline orange 5px",
+                  }}
+                >
+                  - 선지 내용을 입력해주세요.
                 </p>
                 <SimpleGrid cols={2}>
                   <div>
@@ -853,13 +260,13 @@ const Home: NextPage = () => {
               >
                 {/* 객관식 내용물 */}
                 <br></br>
-                <p style={{ textAlign: "left" }}>
-                  {" "}
-                  -{" "}
-                  <span style={{ textDecoration: "underline orange 5px" }}>
-                    문제 내용
-                  </span>
-                  을 입력해주세요.
+                <p
+                  style={{
+                    textAlign: "left",
+                    textDecoration: "underline orange 5px",
+                  }}
+                >
+                  - 문제 내용을 입력해주세요.
                 </p>
                 <TextInput
                   placeholder="키워드가 들어간 문제는 검색 알고리즘 향상에 도움이 됩니다."
@@ -867,13 +274,13 @@ const Home: NextPage = () => {
                   required
                 />
                 <br></br>
-                <p style={{ textAlign: "left" }}>
-                  {" "}
-                  -{" "}
-                  <span style={{ textDecoration: "underline orange 5px" }}>
-                    정답
-                  </span>
-                  을 선택해주세요.
+                <p
+                  style={{
+                    textAlign: "left",
+                    textDecoration: "underline orange 5px",
+                  }}
+                >
+                  - 정답을 선택해주세요.
                 </p>
                 <Button
                   style={{
