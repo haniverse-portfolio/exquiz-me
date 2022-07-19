@@ -83,7 +83,7 @@ const Home: NextPage = () => {
                 textDecoration: "underline orange 5px",
               }}
             >
-              - 문제 종류를 선택해주세요.
+              문제 종류를 선택해주세요
             </p>
             <Tabs variant="pills">
               <Tabs.Tab
@@ -102,7 +102,7 @@ const Home: NextPage = () => {
                     textDecoration: "underline orange 5px",
                   }}
                 >
-                  - 문제 내용을 입력해주세요.
+                  문제 내용을 입력해주세요
                 </p>
                 <TextInput
                   placeholder="키워드가 들어간 문제는 검색 알고리즘 향상에 도움이 됩니다."
@@ -116,7 +116,7 @@ const Home: NextPage = () => {
                     textDecoration: "underline orange 5px",
                   }}
                 >
-                  선지 내용 을 입력해주세요.
+                  선지 내용을 입력해주세요
                 </p>
                 <SimpleGrid cols={2}>
                   <div>
@@ -183,7 +183,7 @@ const Home: NextPage = () => {
                     textDecoration: "underline orange 5px",
                   }}
                 >
-                  - 문제 내용을 입력해주세요.
+                  문제 내용을 입력해주세요
                 </p>
                 <Textarea
                   maxRows={2}
@@ -198,7 +198,7 @@ const Home: NextPage = () => {
                     textDecoration: "underline orange 5px",
                   }}
                 >
-                  - 선지 내용을 입력해주세요.
+                  선지 내용을 입력해주세요
                 </p>
                 <SimpleGrid cols={2}>
                   <div>
@@ -266,7 +266,7 @@ const Home: NextPage = () => {
                     textDecoration: "underline orange 5px",
                   }}
                 >
-                  - 문제 내용을 입력해주세요.
+                  문제 내용을 입력해주세요
                 </p>
                 <TextInput
                   placeholder="키워드가 들어간 문제는 검색 알고리즘 향상에 도움이 됩니다."
@@ -280,7 +280,7 @@ const Home: NextPage = () => {
                     textDecoration: "underline orange 5px",
                   }}
                 >
-                  - 정답을 선택해주세요.
+                  정답을 선택해주세요
                 </p>
                 <Button
                   style={{

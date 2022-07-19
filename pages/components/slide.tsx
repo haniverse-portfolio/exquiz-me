@@ -36,36 +36,69 @@ function Slide() {
   ];
 
   return (
-    <ScrollArea style={{ width: "20vw", height: "85vh" }}>
-      <p style={{ textAlign: "center", fontWeight: "bold" }}>문제 보관함</p>
-      <hr></hr>
-      {arr.map((school, i) => {
-        return (
-          <div key={i} style={{ textAlign: "left" }}>
-            <Button
-              component="a"
-              rel="noopener noreferrer"
-              href="#"
-              styles={(theme) => ({
-                root: {
-                  backgroundColor: "#fc7b1b",
-                  border: 0,
-                  height: 42,
-                  paddingLeft: 20,
-                  paddingRight: 20,
+    <div style={{ textAlign: "center" }}>
+      <p
+        style={{ margin: "20px 0px", textAlign: "center", fontWeight: "bold" }}
+      >
+        문제 보관함
+      </p>
+      <Button
+        style={{
+          textAlign: "center",
+          fontSize: "18px",
+          height: "40px",
+          width: "90%",
+        }}
+        variant="outline"
+      >
+        추가하기
+      </Button>
+      <ScrollArea
+        style={{ width: "20vw", height: "70vh", textAlign: "center" }}
+      >
+        <br></br>
+        <br></br>
+        {arr.map((school, i) => {
+          return (
+            <div key={i} style={{ textAlign: "left" }}>
+              <Button
+                component="a"
+                rel="noopener noreferrer"
+                href="#"
+                styles={(theme) => ({
+                  root: {
+                    backgroundColor: "#fc7b1b",
+                    border: 0,
+                    height: 42,
+                    paddingLeft: 20,
+                    paddingRight: 20,
 
-                  "&:hover": {
-                    backgroundColor: theme.fn.darken("gray", 0.05),
+                    "&:hover": {
+                      backgroundColor: theme.fn.darken("gray", 0.05),
+                    },
                   },
-                },
-              })}
-            >
-              Q{i + 1}. {arr[i].quizContents}
-            </Button>
-          </div>
-        );
-      })}
-    </ScrollArea>
+                })}
+              >
+                Q{i + 1}. {arr[i].quizContents}
+              </Button>
+            </div>
+          );
+        })}
+      </ScrollArea>
+      <Link href="./create3">
+        <Button
+          style={{
+            textAlign: "center",
+            fontSize: "18px",
+            height: "40px",
+            width: "90%",
+          }}
+          variant="outline"
+        >
+          완성하기
+        </Button>
+      </Link>
+    </div>
   );
 }
 
