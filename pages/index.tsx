@@ -46,7 +46,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <header style={{}}>{NavIndex()}</header>
+      <header>{NavIndex()}</header>
 
       <main style={{ marginLeft: 20, marginRight: 20 }}>
         <div style={{ height: "100vh" }}>
@@ -56,28 +56,46 @@ const Home: NextPage = () => {
               textAlign: "center",
             }}
           >
-            <div>
-              <div></div>
-              <p
-                style={{
-                  fontSize: 36,
-                  textDecoration: "underline orange 10px",
-                  fontWeight: "bold",
-                  textAlign: "right",
-                }}
-              >
-                퀴즈에 경험을 더하다<br></br> exquiz.me
-              </p>
-            </div>
-            <Button
-              onClick={() => {
-                alert("체험관은 지금 닫았습니다. 돌아가");
+            <div
+              style={{
+                height: "30vh",
+                display: "flex",
+                justifyContent: "space-between",
+                backgroundImage: "linear-gradient(to left,#F9B204, #fc7b1b)",
               }}
+            >
+              <div style={{ marginLeft: 20, marginRight: 20 }}>
+                <div
+                  style={{
+                    textAlign: "right",
+                    height: "400px",
+                    width: "400px",
+                    borderRadius: "50%",
+                    backgroundColor: "white",
+                  }}
+                >
+                  <span
+                    style={{
+                      fontSize: 36,
+                      textDecoration: "underline orange 10px",
+                      fontWeight: "bold",
+                      textAlign: "right",
+                    }}
+                  >
+                    <br></br>
+                    퀴즈에 경험을 더하다<br></br> exquiz.me
+                  </span>
+                </div>
+              </div>
+            </div>
+            <br></br>
+            <br></br>
+            <Button
               variant="gradient"
               gradient={{ from: "orange", to: "red" }}
               component="a"
               rel="noopener noreferrer"
-              href="/#"
+              href="/create1"
               leftIcon={<Pencil size={32} />}
               styles={(theme) => ({
                 root: {
@@ -99,14 +117,14 @@ const Home: NextPage = () => {
                 },
               })}
             >
-              한 번 체험해보기
+              문제 제작하기
             </Button>
             <Button
               variant="gradient"
               gradient={{ from: "orange", to: "red" }}
               component="a"
               rel="noopener noreferrer"
-              href="/play"
+              href="/host"
               leftIcon={<Login size={32} />}
               styles={(theme) => ({
                 root: {
@@ -128,7 +146,7 @@ const Home: NextPage = () => {
                 },
               })}
             >
-              방 입장하기
+              방 생성하기
             </Button>
           </div>
           <div style={{ height: "40vh" }}>

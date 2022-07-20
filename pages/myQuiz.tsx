@@ -81,23 +81,13 @@ const Home: NextPage = () => {
                 textDecoration: "underline orange 5px",
               }}
             >
-              문제 배점을 정해주세요
+              퀴즈 제목을 정해주세요
             </p>
-            <RadioGroup
+            <TextInput
+              placeholder="키워드가 들어간 문제는 검색 알고리즘 향상에 도움이 됩니다."
               label=""
-              description=""
-              spacing="xl"
-              size="md"
-              color="red"
               required
-            >
-              <Radio value="1" label="" />
-              <Radio value="2" label="" />
-              <Radio value="3" label="" />
-              <Radio value="4" label="" />
-              <Radio value="5" label="" />
-              <Radio value="6" label="" />
-            </RadioGroup>
+            />
 
             <p
               style={{
@@ -105,27 +95,17 @@ const Home: NextPage = () => {
                 textDecoration: "underline orange 5px",
               }}
             >
-              제한 시간을 설정해주세요
+              클로징 멘트를 작성해주세요
             </p>
-            <RadioGroup
+            <TextInput
+              placeholder="키워드가 들어간 문제는 검색 알고리즘 향상에 도움이 됩니다."
               label=""
-              description=""
-              spacing="xl"
-              size="md"
-              color="red"
               required
-            >
-              <Radio value="1" label="" />
-              <Radio value="2" label="" />
-              <Radio value="3" label="" />
-              <Radio value="4" label="" />
-              <Radio value="5" label="" />
-              <Radio value="6" label="" />
-            </RadioGroup>
+            />
           </div>
         </div>
         <div style={{ height: "9vh", textAlign: "center" }}>
-          <Link href="/create1">
+          <Link href="/myQuiz">
             <Button
               variant="gradient"
               gradient={{ from: "#fa584b", to: "#fc7b1b" }}
@@ -133,13 +113,6 @@ const Home: NextPage = () => {
               ← &nbsp;빠른 설정
             </Button>
           </Link>
-          <Button
-            variant="gradient"
-            gradient={{ from: "teal", to: "lime", deg: 105 }}
-            style={{ marginLeft: "20px" }}
-          >
-            이대로 만들래요
-          </Button>
         </div>
         <div
           style={{

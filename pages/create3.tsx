@@ -23,6 +23,7 @@ import {
   ScrollArea,
   RadioGroup,
   Radio,
+  Select,
 } from "@mantine/core";
 import {
   Emphasis,
@@ -62,7 +63,7 @@ const Home: NextPage = () => {
               textAlign: "center",
             }}
           >
-            <Stepper color="red" size="md" active={1}>
+            <Stepper color="red" size="md" active={2}>
               <Stepper.Step label="빠른설정" description="" />
               <Stepper.Step label="세부설정" description="" />
               <Stepper.Step label="완성하기" description="" />
@@ -81,23 +82,13 @@ const Home: NextPage = () => {
                 textDecoration: "underline orange 5px",
               }}
             >
-              문제 배점을 정해주세요
+              퀴즈 제목을 정해주세요
             </p>
-            <RadioGroup
+            <TextInput
+              placeholder="키워드가 들어간 문제는 검색 알고리즘 향상에 도움이 됩니다."
               label=""
-              description=""
-              spacing="xl"
-              size="md"
-              color="red"
               required
-            >
-              <Radio value="1" label="" />
-              <Radio value="2" label="" />
-              <Radio value="3" label="" />
-              <Radio value="4" label="" />
-              <Radio value="5" label="" />
-              <Radio value="6" label="" />
-            </RadioGroup>
+            />
 
             <p
               style={{
@@ -105,41 +96,47 @@ const Home: NextPage = () => {
                 textDecoration: "underline orange 5px",
               }}
             >
-              제한 시간을 설정해주세요
+              클로징 멘트를 작성해주세요
             </p>
-            <RadioGroup
+            <TextInput
+              placeholder="키워드가 들어간 문제는 검색 알고리즘 향상에 도움이 됩니다."
               label=""
-              description=""
-              spacing="xl"
-              size="md"
-              color="red"
               required
+            />
+            <p
+              style={{
+                textAlign: "left",
+                textDecoration: "underline orange 5px",
+              }}
             >
-              <Radio value="1" label="" />
-              <Radio value="2" label="" />
-              <Radio value="3" label="" />
-              <Radio value="4" label="" />
-              <Radio value="5" label="" />
-              <Radio value="6" label="" />
-            </RadioGroup>
+              과목 분류를 선택해주세요
+            </p>
+            <Select
+              label=""
+              placeholder="과목"
+              data={[
+                { value: "korean", label: "국어" },
+                { value: "mathmatics", label: "수학" },
+                { value: "english", label: "영어" },
+                { value: "science", label: "과학" },
+
+                { value: "society", label: "사회" },
+                { value: "athletes", label: "체육" },
+                { value: "music", label: "음악" },
+                { value: "art", label: "미술" },
+              ]}
+            />
           </div>
         </div>
         <div style={{ height: "9vh", textAlign: "center" }}>
-          <Link href="/create1">
+          <Link href="/myQuiz">
             <Button
               variant="gradient"
               gradient={{ from: "#fa584b", to: "#fc7b1b" }}
             >
-              ← &nbsp;빠른 설정
+              완성하기
             </Button>
           </Link>
-          <Button
-            variant="gradient"
-            gradient={{ from: "teal", to: "lime", deg: 105 }}
-            style={{ marginLeft: "20px" }}
-          >
-            이대로 만들래요
-          </Button>
         </div>
         <div
           style={{
