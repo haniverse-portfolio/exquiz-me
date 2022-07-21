@@ -3,6 +3,7 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import Link from "next/link";
+import React, { useState } from "react";
 
 import {
   Button,
@@ -14,6 +15,7 @@ import {
   ScrollArea,
   Accordion,
   ThemeIcon,
+  Stepper,
 } from "@mantine/core";
 import {
   Emphasis,
@@ -27,6 +29,7 @@ import {
   Photo,
   SquareCheck,
   Parentheses,
+  AB,
 } from "tabler-icons-react";
 
 function logoRt(type: string) {
@@ -64,7 +67,7 @@ function colorRt(type: string) {
           backgroundImage: "linear-gradient(to right, #23B87F, #79C72F)",
         }}
       >
-        <SquareCheck color="white" />
+        <AB color="white" />
       </ThemeIcon>
     );
   if (type == "dynamic") return "gold";
@@ -98,49 +101,37 @@ function Slide() {
     },
   ];
 
+  const [slideActive, setSlideActive] = useState(-1);
+
   return (
     <section style={{ textAlign: "center" }}>
-      <p
-        style={{ margin: "20px 0px", textAlign: "center", fontWeight: "bold" }}
-      >
-        문제 보관함
-      </p>
-      <Button
-        style={{
-          textAlign: "center",
-          fontSize: "18px",
-          height: "40px",
-          width: "90%",
-        }}
-        variant="outline"
-      >
-        추가하기
-      </Button>
-      <ScrollArea
-        style={{ width: "20vw", height: "70vh", textAlign: "center" }}
-      >
-        <br></br>
-        <br></br>
-        <Accordion disableIconRotation multiple={false}>
-          {arr.map((school, i) => {
-            return (
-              <Accordion.Item
-                key={i}
-                label={"Q".concat(
-                  (i + 1).toString(),
-                  ". ",
-                  arr[i].quizContents
-                )}
-                icon={colorRt(arr[i].quizType)}
-              >
-                <ThemeIcon>
-                  <Photo />
-                </ThemeIcon>
-              </Accordion.Item>
-            );
-          })}
-        </Accordion>
-      </ScrollArea>
+      <Center>
+        <ScrollArea
+          style={{ width: "20vw", height: "40vh", textAlign: "center" }}
+        >
+          <br></br>
+          <br></br>
+          <Stepper
+            color="orange"
+            active={slideActive}
+            onStepClick={setSlideActive}
+            orientation="vertical"
+          >
+            {arr.map((school, i) => {
+              return (
+                <Stepper.Step
+                  iconPosition="left"
+                  color="orange"
+                  style={{ backgroundColor: "none" }}
+                  key={i}
+                  label={i + 1}
+                  icon={colorRt(arr[i].quizType)}
+                ></Stepper.Step>
+              );
+            })}
+          </Stepper>
+        </ScrollArea>
+      </Center>
       <Link href="./create3">
         <Button
           style={{

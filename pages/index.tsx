@@ -91,7 +91,7 @@ const Home: NextPage = () => {
             <br></br>
             <br></br>
             <Button
-              variant="gradient"
+              variant="outline"
               gradient={{ from: "orange", to: "red" }}
               component="a"
               rel="noopener noreferrer"
@@ -102,9 +102,9 @@ const Home: NextPage = () => {
                   fontWeight: "bold",
                   fontSize: 16,
                   marginRight: 10,
-                  color: "white",
+                  color: "orange",
                   backgroundColor: "white",
-                  border: 0,
+                  border: "2px solid orange",
                   height: 42,
 
                   "&:hover": {

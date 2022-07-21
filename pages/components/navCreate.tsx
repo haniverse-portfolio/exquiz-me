@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
@@ -11,6 +12,7 @@ import {
   Input,
   TextInput,
   Center,
+  Drawer,
 } from "@mantine/core";
 import {
   Emphasis,
@@ -22,7 +24,9 @@ import {
   Archive,
 } from "tabler-icons-react";
 
-function NavIndex() {
+function NavCreate() {
+  let [title, setTitle] = useState("");
+  const [opened, setOpened] = useState(true);
   return (
     <div
       style={{
@@ -32,41 +36,60 @@ function NavIndex() {
         boxShadow: "0 3px 4px -4px black",
       }}
     >
-      <Button
-        component="a"
-        rel="noopener noreferrer"
-        href="/"
-        leftIcon={<Emphasis size={32} />}
-        styles={(theme) => ({
-          root: {
-            fontWeight: "bold",
-            fontSize: 16,
-            marginLeft: 10,
-            paddingLeft: 0,
-            color: "black",
-            backgroundColor: "white",
-            border: 0,
-            height: 42,
-
-            "&:hover": {
-              backgroundColor: "white",
-              //backgroundColor: theme.fn.darken("#ffffff", 0.05),
-            },
-          },
-
-          leftIcon: {
-            marginRight: 0,
-          },
-        })}
+      <Drawer
+        opened={opened}
+        onClose={() => setOpened(false)}
+        title="퀴즈 설정"
+        padding="xl"
+        size="100%"
       >
-        xquiz.me
-      </Button>
+        퀴즈 제목을 입력하세요
+      </Drawer>
+      <span style={{ textAlign: "center" }}>
+        <Button
+          component="a"
+          rel="noopener noreferrer"
+          href="/"
+          leftIcon={<Emphasis size={32} />}
+          styles={(theme) => ({
+            root: {
+              fontWeight: "bold",
+              fontSize: 16,
+              marginLeft: 10,
+              paddingLeft: 0,
+              color: "black",
+              backgroundColor: "white",
+              border: 0,
+              height: 42,
+
+              "&:hover": {
+                backgroundColor: "white",
+                //backgroundColor: theme.fn.darken("#ffffff", 0.05),
+              },
+            },
+
+            leftIcon: {
+              marginRight: 0,
+            },
+          })}
+        ></Button>
+        <Button
+          variant="default"
+          color="black"
+          style={{ border: "none", textAlign: "center" }}
+          onClick={() => {
+            setOpened(true);
+          }}
+        >
+          title 들어갈 예정{title}
+        </Button>
+      </span>
       <span>
         <Button
           onClick={() => {
             alert("구독 연장까지 90일 남았습니다.");
           }}
-          variant="outline"
+          variant="gradient"
           gradient={{ from: "yellow", to: "orange" }}
           component="a"
           rel="noopener noreferrer"
@@ -77,9 +100,9 @@ function NavIndex() {
               fontWeight: "bold",
               fontSize: 16,
               paddingLeft: 15,
-              color: "orange",
-              border: "2px solid orange",
+              color: "white",
               backgroundColor: "white",
+              border: 0,
               height: 42,
 
               "&:hover": {
@@ -130,4 +153,4 @@ function NavIndex() {
   );
 }
 
-export default NavIndex;
+export default NavCreate;
