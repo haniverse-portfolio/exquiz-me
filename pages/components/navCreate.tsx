@@ -13,6 +13,7 @@ import {
   TextInput,
   Center,
   Drawer,
+  Select,
 } from "@mantine/core";
 import {
   Emphasis,
@@ -43,7 +44,28 @@ function NavCreate() {
         padding="xl"
         size="100%"
       >
-        퀴즈 제목을 입력하세요
+        <div style={{ margin: "0px 30vw" }}>
+          <br />
+          <TextInput
+            placeholder="퀴즈 제목을 입력해주세요"
+            label="퀴즈 제목"
+            required
+          />
+          <br />
+          <TextInput
+            placeholder="퀴즈 설명을 입력해주세요"
+            label="퀴즈 설명"
+            required
+          />
+          <br />
+          <Select
+            label="과목 선택"
+            placeholder="과목을 선택해주세요"
+            searchable
+            nothingFound="No options"
+            data={["미분류", "국어", "수학", "영어", "과학"]}
+          />
+        </div>
       </Drawer>
       <span style={{ textAlign: "center" }}>
         <Button
@@ -89,7 +111,7 @@ function NavCreate() {
           onClick={() => {
             alert("구독 연장까지 90일 남았습니다.");
           }}
-          variant="gradient"
+          variant="outline"
           gradient={{ from: "yellow", to: "orange" }}
           component="a"
           rel="noopener noreferrer"
@@ -100,9 +122,9 @@ function NavCreate() {
               fontWeight: "bold",
               fontSize: 16,
               paddingLeft: 15,
-              color: "white",
+              color: "orange",
+              border: "2px solid orange",
               backgroundColor: "white",
-              border: 0,
               height: 42,
 
               "&:hover": {

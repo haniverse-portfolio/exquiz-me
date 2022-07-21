@@ -124,7 +124,11 @@ function Slide() {
                   color="orange"
                   style={{ backgroundColor: "none" }}
                   key={i}
-                  label={i + 1}
+                  label={"Q".concat(
+                    (i + 1).toString(),
+                    ". ",
+                    arr[i].quizContents
+                  )}
                   icon={colorRt(arr[i].quizType)}
                 ></Stepper.Step>
               );

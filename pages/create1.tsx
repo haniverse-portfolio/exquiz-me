@@ -72,32 +72,11 @@ const Home: NextPage = () => {
         {NavCreate()}
       </header>
       <main style={{ marginLeft: 20, marginRight: 20 }}>
-        <div
-          style={{
-            margin: "20px 22vw",
-            height: "10vh",
-            textAlign: "center",
-          }}
-        >
-          <Stepper
-            color="red"
-            size="md"
-            active={progressActive}
-            onStepClick={setProgressActive}
-          >
-            <Stepper.Step icon={<Notes size={18} />} label="" description="" />
-            <Stepper.Step
-              icon={<AdjustmentsHorizontal size={18} />}
-              label=""
-              description=""
-            />
-          </Stepper>
-        </div>
         <section>
           <div
             style={{
-              margin: "20px 20vw",
-              height: "60vh",
+              margin: "5vh 20vw",
+              height: "65vh",
             }}
           >
             <Tabs position="center" variant="pills">
