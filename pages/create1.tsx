@@ -68,9 +68,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <header style={{ position: "sticky", zIndex: "100" }}>
-        {NavCreate()}
-      </header>
+      <header style={{}}>{NavCreate()}</header>
       <main style={{ marginLeft: 20, marginRight: 20 }}>
         <section>
           <div

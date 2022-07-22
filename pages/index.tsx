@@ -16,6 +16,11 @@ import {
   Badge,
   Group,
   useMantineTheme,
+  Center,
+  Tabs,
+  ThemeIcon,
+  Container,
+  Textarea,
 } from "@mantine/core";
 import {
   Emphasis,
@@ -25,6 +30,13 @@ import {
   UserCircle,
   Pencil,
   Archive,
+  BrowserPlus,
+  SquareCheck,
+  AB,
+  QuestionMark,
+  Apps,
+  Checkbox,
+  Parentheses,
 } from "tabler-icons-react";
 
 const Home: NextPage = () => {
@@ -48,8 +60,8 @@ const Home: NextPage = () => {
 
       <header>{NavIndex()}</header>
 
-      <main style={{ marginLeft: 20, marginRight: 20 }}>
-        <div style={{ height: "100vh" }}>
+      <main>
+        <section>
           <div
             style={{
               height: "55vh",
@@ -153,10 +165,22 @@ const Home: NextPage = () => {
             <p style={{ fontWeight: "bold", textAlign: "center" }}>
               약 3,677개의 학교에서<br></br> exquiz.me를 사용중입니다.
             </p>
-            <div style={{ textAlign: "center" }}>{SchoolList()}</div>
+            <Center>
+              <div
+                style={{
+                  height: "5px",
+                  width: "30px",
+                  backgroundColor: "black",
+                }}
+              ></div>
+              <br></br>
+              <br></br>
+            </Center>
+            <Center style={{ textAlign: "center" }}>{SchoolList()}</Center>
           </div>
-        </div>
-        <div style={{ height: "100vh" }}>
+        </section>
+
+        <section>
           <div style={{ height: "40vh" }}>
             <p style={{ fontWeight: "bold", textAlign: "center" }}>
               아래에서 간단히 체험해보세요.
@@ -167,23 +191,335 @@ const Home: NextPage = () => {
               - exquiz.me는 직관적인 문제 제작 툴을 제공합니다. 직접 해보세요!
             </p>
             <div style={{ width: "60vw", textAlign: "center" }}>
-              <SimpleGrid cols={2} spacing="xs">
-                <div>
-                  <Input variant="default" placeholder="선지 1" />
-                </div>
-                <div>
-                  <Input variant="default" placeholder="선지 2" />
-                </div>
-                <div>
-                  <Input variant="default" placeholder="선지 3" />
-                </div>
-                <div>
-                  <Input variant="default" placeholder="선지 4" />
-                </div>
-              </SimpleGrid>
+              <Tabs position="center" variant="pills">
+                <Tabs.Tab
+                  label={
+                    <ThemeIcon
+                      style={{
+                        backgroundColor: "#babbbd",
+                      }}
+                    >
+                      <BrowserPlus color="white" />
+                    </ThemeIcon>
+                  }
+                  style={{
+                    border: "1px dotted",
+                    borderRadius: "10px",
+                    height: "50px",
+                    width: "50px",
+                    color: "black",
+                    backgroundColor: "#babbbd",
+                  }}
+                >
+                  <Container
+                    style={{
+                      height: "500px",
+                      width: "100%",
+                      boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
+                    }}
+                  >
+                    <Textarea
+                      placeholder="슬라이드 내용을 입력하세요."
+                      label=""
+                      required
+                    />
+                  </Container>
+                </Tabs.Tab>
+                <Tabs.Tab
+                  label={
+                    <ThemeIcon
+                      style={{
+                        backgroundImage:
+                          "linear-gradient(to right, #fa584b, #fc7b1b)",
+                      }}
+                    >
+                      <SquareCheck color="white" />
+                    </ThemeIcon>
+                  }
+                  style={{
+                    borderRadius: "10px",
+                    height: "50px",
+                    width: "50px",
+                    color: "white",
+                    backgroundImage:
+                      "linear-gradient(to right, #fa584b, #fc7b1b)",
+                  }}
+                >
+                  <Container
+                    style={{
+                      height: "500px",
+                      width: "100%",
+                      boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
+                    }}
+                  >
+                    <Textarea
+                      placeholder="문제 내용을 입력하세요."
+                      label=""
+                      required
+                    />
+                    <br></br>
+                    <SimpleGrid cols={2}>
+                      <div>
+                        <div>
+                          <Checkbox />
+                          <Textarea
+                            maxRows={2}
+                            placeholder="선지 1"
+                            label=""
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        {" "}
+                        <div>
+                          <Checkbox />
+                          <Textarea
+                            maxRows={2}
+                            placeholder="선지 2"
+                            label=""
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        {" "}
+                        <div>
+                          <Checkbox />
+                          <Textarea
+                            maxRows={2}
+                            placeholder="선지 3"
+                            label=""
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        {" "}
+                        <div>
+                          <Checkbox />
+                          <Textarea
+                            maxRows={2}
+                            placeholder="선지 4"
+                            label=""
+                            required
+                          />
+                        </div>
+                      </div>
+                    </SimpleGrid>
+                  </Container>
+                </Tabs.Tab>
+                <Tabs.Tab
+                  label={
+                    <ThemeIcon
+                      style={{
+                        backgroundImage:
+                          "linear-gradient(to right, #4A73F0, #3A8DDA)",
+                      }}
+                    >
+                      <Parentheses color="white" />
+                    </ThemeIcon>
+                  }
+                  style={{
+                    borderRadius: "10px",
+                    height: "50px",
+                    width: "50px",
+                    color: "white",
+                    backgroundImage:
+                      "linear-gradient(to right, #4A73F0, #3A8DDA)",
+                  }}
+                >
+                  <Container
+                    style={{
+                      height: "500px",
+                      width: "100%",
+                      boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
+                    }}
+                  >
+                    <Textarea
+                      placeholder="문제 내용을 입력하세요."
+                      label=""
+                      required
+                    />
+                    <br></br>
+                    <SimpleGrid cols={2}>
+                      <div>
+                        <div>
+                          <Checkbox />
+                          <Textarea
+                            maxRows={2}
+                            placeholder="선지 1"
+                            label=""
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        {" "}
+                        <div>
+                          <Checkbox />
+                          <Textarea
+                            maxRows={2}
+                            placeholder="선지 2"
+                            label=""
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        {" "}
+                        <div>
+                          <Checkbox />
+                          <Textarea
+                            maxRows={2}
+                            placeholder="선지 3"
+                            label=""
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        {" "}
+                        <div>
+                          <Checkbox />
+                          <Textarea
+                            maxRows={2}
+                            placeholder="선지 4"
+                            label=""
+                            required
+                          />
+                        </div>
+                      </div>
+                    </SimpleGrid>
+                  </Container>
+                </Tabs.Tab>
+                <Tabs.Tab
+                  label={
+                    <ThemeIcon
+                      style={{
+                        backgroundImage:
+                          "linear-gradient(to right, #23B87F, #79C72F)",
+                      }}
+                    >
+                      <AB color="white" />
+                    </ThemeIcon>
+                  }
+                  style={{
+                    borderRadius: "10px",
+                    height: "50px",
+                    width: "50px",
+                    color: "white",
+                    backgroundImage:
+                      "linear-gradient(to right, #23B87F, #79C72F)",
+                  }}
+                >
+                  {/* 객관식 내용물 */}
+                  <br></br>
+                  <Container
+                    style={{
+                      height: "500px",
+                      width: "100%",
+                      boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
+                    }}
+                  >
+                    <Textarea
+                      placeholder="문제 내용을 입력하세요."
+                      label=""
+                      required
+                    />
+                    <br></br>
+                    <Center>
+                      <Button
+                        style={{
+                          fontSize: "36px",
+                          height: "160px",
+                          width: "40%",
+                          marginRight: "20px",
+                        }}
+                        variant="outline"
+                      >
+                        O
+                      </Button>
+                      <Button
+                        style={{
+                          fontSize: "36px",
+                          height: "160px",
+                          width: "40%",
+                          color: "red",
+                        }}
+                        variant="outline"
+                      >
+                        X
+                      </Button>
+                    </Center>
+                  </Container>
+                </Tabs.Tab>
+
+                <Tabs.Tab
+                  label={
+                    <ThemeIcon
+                      style={{
+                        backgroundImage:
+                          "linear-gradient(to right, #F9B204, #FFD400)",
+                      }}
+                    >
+                      <QuestionMark color="white" />
+                    </ThemeIcon>
+                  }
+                  style={{
+                    borderRadius: "10px",
+                    height: "50px",
+                    width: "50px",
+                    color: "white",
+                    backgroundImage:
+                      "linear-gradient(to right, #F9B204, #FFD400)",
+                  }}
+                >
+                  <Container
+                    style={{
+                      height: "500px",
+                      width: "100%",
+                      boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
+                    }}
+                  >
+                    *제작 준비 중입니다.
+                  </Container>
+                </Tabs.Tab>
+
+                <Tabs.Tab
+                  label={
+                    <ThemeIcon
+                      style={{
+                        backgroundImage:
+                          "linear-gradient(to right, #946cee, #b464eb)",
+                      }}
+                    >
+                      <Apps color="white" />
+                    </ThemeIcon>
+                  }
+                  style={{
+                    borderRadius: "10px",
+                    height: "50px",
+                    width: "50px",
+                    color: "white",
+                    backgroundImage:
+                      "linear-gradient(to right, #946cee, #b464eb)",
+                  }}
+                >
+                  <Container
+                    style={{
+                      height: "500px",
+                      width: "100%",
+                      boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
+                    }}
+                  >
+                    *제작 준비 중입니다.
+                  </Container>
+                </Tabs.Tab>
+              </Tabs>
             </div>
           </div>
-        </div>
+        </section>
 
         <div>
           <div style={{ height: "40vh" }}>

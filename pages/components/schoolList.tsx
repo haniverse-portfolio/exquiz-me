@@ -11,6 +11,8 @@ import {
   Input,
   TextInput,
   Center,
+  Group,
+  Container,
 } from "@mantine/core";
 import {
   Emphasis,
@@ -49,19 +51,26 @@ function SchoolList() {
     "제주고등학교",
     "오현고등학교",
   ];
-  let i = 0;
+  let colorCode = [
+    "#ffdddd",
+    "#ffeedd",
+    "#ddffdd",
+    "#ddf6ff",
+    "#ddddff",
+    "#eeddff",
+  ];
   return (
-    <Grid grow gutter={30}>
+    <Grid>
       {arr.map((school, i) => {
         return (
           <Grid.Col
+            span={2}
             key={i}
             style={{
               boxShadow:
                 "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
-              borderRadius: "10px",
+              borderRadius: "16px",
             }}
-            span={2}
           >
             {school}
           </Grid.Col>
