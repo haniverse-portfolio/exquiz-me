@@ -237,6 +237,16 @@ const Home: NextPage = () => {
     ["linear-gradient(to right, #F9B204, #FFD400)"],
     ["linear-gradient(to right, #946cee, #b464eb)"],
   ];
+
+  let tabTooltip = [
+    "빈 슬라이드",
+    "객관식",
+    "주관식",
+    "O/X",
+    "넌센스",
+    "다이나믹",
+  ];
+
   return (
     <div
       style={{
@@ -254,36 +264,40 @@ const Home: NextPage = () => {
       <header style={{}}>{NavCreate()}</header>
       <main style={{ marginLeft: 20, marginRight: 20 }}>
         <section style={{ margin: "5vh 20vw" }}>
-          <Center>
-            <Group>
-              {tabColorCode.map((colorCode, i) => {
-                return (
-                  <Button
-                    onClick={() => {
-                      setQuizTypeIdx(i);
-                    }}
-                    key={i}
-                    style={{
-                      borderRadius: "10px",
-                      height: "50px",
-                      width: "50px",
-                      color: "white",
-                      backgroundImage: colorCode.toString(),
-                    }}
-                  >
-                    <ThemeIcon
-                      style={{
-                        backgroundImage:
-                          "linear-gradient(to right, #fa584b, #fc7b1b)",
-                      }}
-                    >
-                      {tabIconCode(i)}
-                    </ThemeIcon>
-                  </Button>
-                );
-              })}
-            </Group>
-          </Center>
+          <Container
+            style={{
+              margin: "20px 20px",
+              borderRadius: "10px",
+              boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
+            }}
+          >
+            <Center>
+              <Group>
+                {tabColorCode.map((colorCode, i) => {
+                  return (
+                    <Tooltip key={i} label={tabTooltip[i]}>
+                      <ThemeIcon
+                        onClick={() => {
+                          setQuizTypeIdx(i);
+                        }}
+                        key={i}
+                        style={{
+                          cursor: "pointer",
+                          borderRadius: "10px",
+                          height: "50px",
+                          width: "50px",
+                          color: "white",
+                          backgroundImage: colorCode.toString(),
+                        }}
+                      >
+                        {tabIconCode(i)}
+                      </ThemeIcon>
+                    </Tooltip>
+                  );
+                })}
+              </Group>
+            </Center>
+          </Container>
           {form(quizTypeIdx)}
 
           <div style={{ height: "9vh", textAlign: "center" }}>
