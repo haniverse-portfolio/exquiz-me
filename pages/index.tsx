@@ -21,6 +21,7 @@ import {
   ThemeIcon,
   Container,
   Textarea,
+  Tooltip,
 } from "@mantine/core";
 import {
   Emphasis,
@@ -107,7 +108,7 @@ const Home: NextPage = () => {
               gradient={{ from: "orange", to: "red" }}
               component="a"
               rel="noopener noreferrer"
-              href="/create1"
+              href="/create"
               leftIcon={<Pencil size={32} />}
               styles={(theme) => ({
                 root: {
@@ -586,10 +587,9 @@ const Home: NextPage = () => {
                   size="sm"
                   style={{ color: secondaryColor, lineHeight: 1.5 }}
                 >
-                  퀴즈 제작 및 참여의 필수적인 기능만 골라서 합리적인 가격에
+                  퀴즈 제작 및 참여의 필수적인 기능만 담아서 합리적인 가격에
                   제공합니다.
                 </Text>
-
                 <Button
                   variant="light"
                   color="blue"
@@ -597,7 +597,10 @@ const Home: NextPage = () => {
                   style={{ marginTop: 14 }}
                 >
                   <span
-                    style={{ color: "gray", textDecoration: "line-through" }}
+                    style={{
+                      color: "gray",
+                      textDecoration: "line-through",
+                    }}
                   >
                     월 5,990
                   </span>{" "}
