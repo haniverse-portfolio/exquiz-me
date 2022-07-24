@@ -248,22 +248,17 @@ const Home: NextPage = () => {
   ];
 
   return (
-    <div
-      style={{
-        scrollSnapAlign: "start",
-        scrollSnapPointsY: "repeat(100vh)",
-        scrollSnapType: "y mandatory",
-      }}
-    >
+    <div>
       <Head>
         <title>exquiz.me - 실시간 퀴즈 플랫폼</title>
         <meta name="description" content="exquiz.me" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      {/* Navigation Bar */}
+      <header>{NavCreate()}</header>
 
-      <header style={{}}>{NavCreate()}</header>
       <main style={{ marginLeft: 20, marginRight: 20 }}>
-        <section style={{ margin: "5vh 20vw" }}>
+        <section style={{ height: "75vh", margin: "5vh 20vw" }}>
           <Container
             style={{
               margin: "20px 20px",
@@ -314,9 +309,7 @@ const Home: NextPage = () => {
             top: 44,
             left: 0,
           }}
-        >
-          <Slide></Slide>
-        </div>
+        ></div>
       </main>
 
       <footer className={styles.footer}>
@@ -329,6 +322,11 @@ const Home: NextPage = () => {
           Copyright ⓒ 2022 exquiz.me All rights reserved. | Team MUMOMU.
         </a>
       </footer>
+
+      {/* Slide - Side Bar */}
+      <div style={{ position: "fixed", left: 0, top: 100 }}>
+        <Slide></Slide>
+      </div>
     </div>
   );
 };
