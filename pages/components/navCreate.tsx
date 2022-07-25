@@ -28,6 +28,7 @@ import {
 function NavCreate() {
   let [title, setTitle] = useState("");
   const [opened, setOpened] = useState(true);
+
   return (
     <div
       style={{

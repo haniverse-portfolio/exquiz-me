@@ -47,6 +47,7 @@ import {
   Notes,
   BrowserPlus,
   Plus,
+  Trash,
 } from "tabler-icons-react";
 // 85vh 20vw
 
@@ -212,6 +213,56 @@ function form(idx: number) {
   }
 }
 
+function colorRt(type: string) {
+  if (type == "subjective")
+    return (
+      <ThemeIcon
+        style={{
+          borderRadius: "50%",
+          backgroundImage: "linear-gradient(to right, #4A73F0, #3A8DDA)",
+        }}
+      >
+        <Parentheses color="white" />
+      </ThemeIcon>
+    );
+  if (type == "objective")
+    return (
+      <ThemeIcon
+        style={{
+          borderRadius: "50%",
+          backgroundImage: "linear-gradient(to right, #fa584b, #fc7b1b)",
+        }}
+      >
+        <SquareCheck color="white" />
+      </ThemeIcon>
+    );
+  if (type == "ox")
+    return (
+      <ThemeIcon
+        style={{
+          borderRadius: "50%",
+          backgroundImage: "linear-gradient(to right, #23B87F, #79C72F)",
+        }}
+      >
+        <AB color="white" />
+      </ThemeIcon>
+    );
+  if (type == "dynamic") return "gold";
+}
+
+function addQuizSet(arr: any) {
+  let rt = [...arr];
+  rt.push({
+    quizType: "objective",
+    quizContents: "",
+    selection: [],
+    answerNumber: [],
+    scoredRate: 3,
+    timeLimit: [0, 1, 0],
+  });
+  return;
+}
+
 function tabIconCode(idx: number) {
   if (idx == 0) return <BrowserPlus />;
   if (idx == 1) return <SquareCheck />;
@@ -220,14 +271,46 @@ function tabIconCode(idx: number) {
   if (idx == 4) return <QuestionMark />;
   if (idx == 5) return <Apps />;
 }
-
-function fastSetting() {}
-function detailSetting() {}
-function quizSetting() {}
 // 빈 슬라이드 객관식 주관식 O/X 넌센스 다이나믹
 const Home: NextPage = () => {
   let [quizTypeIdx, setQuizTypeIdx] = useState(-1);
   const [progressActive, setProgressActive] = useState(-1);
+
+  let arr = [
+    {
+      quizType: "subjective",
+      quizContents: "가장 높은 산은 ()이다?",
+      selection: ["지리산", "북한산", "한라산", "설악산"],
+      answerNumber: ["1"],
+      scoredRate: 3,
+      timeLimit: [0, 1, 0],
+    },
+    {
+      quizType: "ox",
+      quizContents: "대한민국은 영어로 korea이다.",
+      selection: ["O", "X"],
+      answerNumber: ["0"],
+      scoredRate: 3,
+      timeLimit: [0, 1, 0],
+    },
+    {
+      quizType: "objective",
+      quizContents: "소프트웨어 마에스트로가 있는 건물은?",
+      selection: ["센터필드", "아남타워", "황해주택", "인하주택"],
+      answerNumber: ["2"],
+      scoredRate: 3,
+      timeLimit: [0, 1, 0],
+    },
+  ];
+
+  let gridSet = [
+    [1, 0, 0],
+    [0, 1, 0],
+    [0, 0, 1],
+  ];
+
+  const [slideActive, setSlideActive] = useState(-1);
+  let [quizSet, setQuizSet] = useState(arr);
 
   let tabColorCode = [
     ["linear-gradient(to right, #babbbd, #babbbd)"],
@@ -256,61 +339,62 @@ const Home: NextPage = () => {
       </Head>
       {/* Navigation Bar */}
       <header>{NavCreate()}</header>
+      {/* Navigation Bar */}
 
+      {/* Main Bar */}
       <main style={{ marginLeft: 20, marginRight: 20 }}>
         <section style={{ height: "75vh", margin: "5vh 20vw" }}>
-          <Container
-            style={{
-              margin: "20px 20px",
-              borderRadius: "10px",
-              boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
-            }}
-          >
-            <Center>
-              <Group>
-                {tabColorCode.map((colorCode, i) => {
-                  return (
-                    <Tooltip key={i} label={tabTooltip[i]}>
-                      <ThemeIcon
-                        onClick={() => {
-                          setQuizTypeIdx(i);
-                        }}
-                        key={i}
-                        style={{
-                          cursor: "pointer",
-                          borderRadius: "10px",
-                          height: "50px",
-                          width: "50px",
-                          color: "white",
-                          backgroundImage: colorCode.toString(),
-                        }}
-                      >
-                        {tabIconCode(i)}
-                      </ThemeIcon>
-                    </Tooltip>
-                  );
-                })}
-              </Group>
-            </Center>
-          </Container>
+          <Center>
+            <Container
+              style={{
+                margin: "20px 20px",
+                borderRadius: "10px",
+                boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
+              }}
+            >
+              <Center>
+                <Group>
+                  {tabColorCode.map((colorCode, i) => {
+                    return (
+                      <Tooltip key={i} label={tabTooltip[i]}>
+                        <ThemeIcon
+                          onClick={() => {
+                            setQuizTypeIdx((prevState) => i);
+                          }}
+                          key={i}
+                          style={{
+                            cursor: "pointer",
+                            borderRadius: "10px",
+                            height: "50px",
+                            width: "50px",
+                            color: "white",
+                            backgroundImage: colorCode.toString(),
+                          }}
+                        >
+                          {tabIconCode(i)}
+                        </ThemeIcon>
+                      </Tooltip>
+                    );
+                  })}
+                </Group>
+              </Center>
+            </Container>
+          </Center>
+          {/* Main Form */}
           {form(quizTypeIdx)}
+          {/* Main Form */}
 
-          <div style={{ height: "9vh", textAlign: "center" }}>
-            <Link href="/create2">
-              <ThemeIcon>
-                <Plus style={{ color: "white" }} />
-              </ThemeIcon>
-            </Link>
+          <div
+            onClick={() => {}}
+            style={{ height: "9vh", textAlign: "center", cursor: "pointer" }}
+          >
+            <ThemeIcon>
+              <Plus style={{ color: "white" }} />
+            </ThemeIcon>
           </div>
         </section>
-        <div
-          style={{
-            position: "fixed",
-            top: 44,
-            left: 0,
-          }}
-        ></div>
       </main>
+      {/* Main Bar */}
 
       <footer className={styles.footer}>
         <a
@@ -325,8 +409,102 @@ const Home: NextPage = () => {
 
       {/* Slide - Side Bar */}
       <div style={{ position: "fixed", left: 0, top: 100 }}>
-        <Slide></Slide>
+        <section style={{ height: "80vh", width: "18vw", marginLeft: "10px" }}>
+          <Center>
+            <ScrollArea
+              style={{ width: "20vw", height: "60vh", textAlign: "center" }}
+            >
+              <Center>
+                <Grid style={{ width: "10vw" }}>
+                  <Grid.Col style={{ height: "40px", width: "40px" }} span={4}>
+                    15s
+                  </Grid.Col>
+                  <Grid.Col style={{ height: "40px", width: "40px" }} span={4}>
+                    30s
+                  </Grid.Col>
+
+                  <Grid.Col style={{ height: "40px", width: "40px" }} span={4}>
+                    45s
+                  </Grid.Col>
+                </Grid>
+                <br></br>
+              </Center>
+              {quizSet.map((quiz, i) => {
+                return (
+                  <div key={i}>
+                    <Tooltip
+                      label={"Q".concat(
+                        (i + 1).toString(),
+                        ". ",
+                        quiz.quizContents
+                      )}
+                    >
+                      <br></br>
+                      <Grid>
+                        {quizSet[i].timeLimit.map((time, j) => {
+                          return (
+                            <div key={i}>
+                              <Grid.Col
+                                onClick={() => {
+                                  quizSet[i].timeLimit = gridSet[j];
+                                }}
+                                onDragOver={() => {
+                                  alert("hello!");
+                                }}
+                                style={{
+                                  cursor: "pointer",
+                                  height: "30px",
+                                  width: "30px",
+                                  borderRadius: "50%",
+                                  boxShadow:
+                                    "0 10px 15px -3px rgb(0 0 0 / 0.1)",
+                                }}
+                                span={4}
+                              >
+                                {quizSet[i].timeLimit[j] == 1 ? (
+                                  colorRt(quizSet[i].quizType)
+                                ) : (
+                                  <span />
+                                )}
+                              </Grid.Col>
+                              <br></br>
+                            </div>
+                          );
+                        })}
+                      </Grid>
+                      <ThemeIcon style={{ cursor: "pointer" }} color="gray">
+                        <Trash
+                          onClick={() => {
+                            let copy = [...quizSet];
+                            copy.splice(i, 1);
+                            setQuizSet(copy);
+                          }}
+                        >
+                          삭제
+                        </Trash>
+                      </ThemeIcon>
+                    </Tooltip>
+                  </div>
+                );
+              })}
+            </ScrollArea>
+          </Center>
+          <Link href="./create3">
+            <Button
+              style={{
+                textAlign: "center",
+                fontSize: "18px",
+                height: "40px",
+                width: "90%",
+              }}
+              variant="outline"
+            >
+              완성하기
+            </Button>
+          </Link>
+        </section>
       </div>
+      {/* Slide - Side Bar */}
     </div>
   );
 };
@@ -351,4 +529,24 @@ export default Home;
                 >
                   입력
                 </button> */
+}
+
+{
+  /*      {글제목.map(function (a, i) {
+        return (
+          <div className="list" key={i}>
+            <h4 onClick={()=>{setModal(true); setTitle(i)}}>{글제목[i]}
+              <span onClick={(e) => {e.stopPropagation(); sec[i](value[i] + 1);}}>
+                👍</span>{value[i]}
+            </h4>
+            <p>2월 17일 발행</p>
+            <button onClick={()=>{let copy = [...글제목]; copy.splice(i, 1); 글제목변경(copy)}}>삭제</button>
+          </div>
+        );
+      })}
+      <input onChange={(e)=>{입력값변경(e.target.value);}} />
+      <button onClick={()=>{let copy = [...글제목]; copy.unshift(입력값); 글제목변경(copy)}} >
+      글발행 </button>
+
+    {modal == true ? <Modal title={title} 글제목={글제목}/> : null}*/
 }
