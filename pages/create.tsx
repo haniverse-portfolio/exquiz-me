@@ -250,19 +250,6 @@ function colorRt(type: string) {
   if (type == "dynamic") return "gold";
 }
 
-function addQuizSet(arr: any) {
-  let rt = [...arr];
-  rt.push({
-    quizType: "objective",
-    quizContents: "",
-    selection: [],
-    answerNumber: [],
-    scoredRate: 3,
-    timeLimit: [0, 1, 0],
-  });
-  return;
-}
-
 function tabIconCode(idx: number) {
   if (idx == 0) return <BrowserPlus />;
   if (idx == 1) return <SquareCheck />;
@@ -386,9 +373,23 @@ const Home: NextPage = () => {
 
           <div
             onClick={() => {}}
-            style={{ height: "9vh", textAlign: "center", cursor: "pointer" }}
+            style={{ height: "9vh", textAlign: "center" }}
           >
-            <ThemeIcon>
+            <ThemeIcon
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                let copy = [...quizSet];
+                copy.unshift({
+                  quizType: "objective",
+                  quizContents: "",
+                  selection: [],
+                  answerNumber: [],
+                  scoredRate: 3,
+                  timeLimit: [0, 1, 0],
+                });
+                setQuizSet(copy);
+              }}
+            >
               <Plus style={{ color: "white" }} />
             </ThemeIcon>
           </div>
