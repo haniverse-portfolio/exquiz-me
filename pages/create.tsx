@@ -351,13 +351,21 @@ const Home: NextPage = () => {
                       <ThemeIcon
                         onClick={() => {
                           setQuizTypeIdx((prevState) => i);
+                          setTabClickedState([
+                            i == 0 ? 1 : 0,
+                            i == 1 ? 1 : 0,
+                            i == 2 ? 1 : 0,
+                            i == 3 ? 1 : 0,
+                            i == 4 ? 1 : 0,
+                            i == 5 ? 1 : 0,
+                          ]);
                         }}
                         key={i}
                         style={{
                           boxShadow:
-                            tabClickedState[i] === 1
-                              ? "0 10px 15px -3px rgb(0 0 0 / 0.1)"
-                              : "inset 0 2px 4px 0 rgb(0 0 0 / 0.05)",
+                            tabClickedState[i] === 0
+                              ? "0 10px 15px -3px rgb(0 0 0 / 0.05)"
+                              : "inset 0 2px 4px 0 rgb(0 0 0 / 0.5)",
                           cursor: "pointer",
                           borderRadius: "10px",
                           height: "50px",
