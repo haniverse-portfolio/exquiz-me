@@ -419,29 +419,22 @@ const Home: NextPage = () => {
 
       {/* Slide - Side Bar */}
       <div style={{ position: "fixed", left: 0, top: 100 }}>
-        <section style={{ height: "80vh", width: "18vw", marginLeft: "10px" }}>
+        <section style={{ height: "80vh", width: "20vw", marginLeft: "10px" }}>
           <Center>
             <ScrollArea
               style={{ width: "20vw", height: "60vh", textAlign: "center" }}
             >
-              <Center>
-                <Grid style={{ width: "10vw" }}>
-                  <Grid.Col style={{ height: "40px", width: "40px" }} span={4}>
-                    15s
-                  </Grid.Col>
-                  <Grid.Col style={{ height: "40px", width: "40px" }} span={4}>
-                    30s
-                  </Grid.Col>
-
-                  <Grid.Col style={{ height: "40px", width: "40px" }} span={4}>
-                    45s
-                  </Grid.Col>
-                </Grid>
-                <br></br>
-              </Center>
               {quizSet.map((quiz, i) => {
                 return (
-                  <div key={i}>
+                  <div
+                    style={{
+                      borderRadius: "10%",
+                      height: "200px",
+                      width: "18vw",
+                      boxShadow: "0 0 15px -3px rgb(0 0 0 / 0.1)",
+                    }}
+                    key={i}
+                  >
                     <Tooltip
                       label={"Q".concat(
                         (i + 1).toString(),
@@ -481,6 +474,7 @@ const Home: NextPage = () => {
                                   <span />
                                 )}
                               </Grid.Col>
+                              <br></br>
                               <br></br>
                             </div>
                           );

@@ -118,24 +118,21 @@ function Slide() {
   return (
     <section style={{ height: "80vh", width: "18vw", marginLeft: "10px" }}>
       <Center>
+        <Grid>
+          <Grid.Col style={{ height: "40px", width: "40px" }} span={4}>
+            15s
+          </Grid.Col>
+          <Grid.Col style={{ height: "40px", width: "40px" }} span={4}>
+            30s
+          </Grid.Col>
+
+          <Grid.Col style={{ height: "40px", width: "40px" }} span={4}>
+            45s
+          </Grid.Col>
+        </Grid>
         <ScrollArea
           style={{ width: "20vw", height: "60vh", textAlign: "center" }}
         >
-          <Center>
-            <Grid style={{ width: "10vw" }}>
-              <Grid.Col style={{ height: "40px", width: "40px" }} span={4}>
-                15s
-              </Grid.Col>
-              <Grid.Col style={{ height: "40px", width: "40px" }} span={4}>
-                30s
-              </Grid.Col>
-
-              <Grid.Col style={{ height: "40px", width: "40px" }} span={4}>
-                45s
-              </Grid.Col>
-            </Grid>
-            <br></br>
-          </Center>
           {quizSet.map((school, i) => {
             return (
               <div key={i}>
@@ -146,7 +143,12 @@ function Slide() {
                     quizSet[i].quizContents
                   )}
                 >
-                  <Grid>
+                  <Grid
+                    style={{
+                      borderRadius: "10%",
+                      boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
+                    }}
+                  >
                     {quizSet[i].timeLimit.map((time, j) => {
                       return (
                         <div key={i}>
