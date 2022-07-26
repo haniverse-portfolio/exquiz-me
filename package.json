@@ -23,6 +23,7 @@
     "@mantine/prism": "^4.2.12",
     "@mantine/rte": "^4.2.12",
     "@mantine/spotlight": "^4.2.12",
+    "axios": "^0.27.2",
     "css-scroll-snap-polyfill": "^0.1.2",
     "dayjs": "^1.11.3",
     "framer-motion": "^6.5.0",

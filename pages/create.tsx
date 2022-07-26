@@ -6,6 +6,7 @@ import styles from "../styles/Home.module.css";
 import Link from "next/link";
 import NavCreate from "./components/navCreate";
 import Slide from "./components/slide";
+import axios from "axios";
 
 import {
   Button,
@@ -59,6 +60,7 @@ function form(idx: number) {
         style={{
           height: "500px",
           width: "100%",
+          borderRadius: "10px",
           boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
         }}
       >
@@ -290,12 +292,6 @@ const Home: NextPage = () => {
     },
   ];
 
-  let gridSet = [
-    [1, 0, 0],
-    [0, 1, 0],
-    [0, 0, 1],
-  ];
-
   const [slideActive, setSlideActive] = useState(-1);
   let [quizSet, setQuizSet] = useState(quizSetExample);
 
@@ -329,7 +325,6 @@ const Home: NextPage = () => {
       {/* Navigation Bar */}
       <header>{NavCreate()}</header>
       {/* Navigation Bar */}
-
       {/* Main Bar */}
       <main style={{ marginLeft: 20, marginRight: 20 }}>
         <section style={{ height: "75vh", margin: "5vh 20vw" }}>
@@ -456,12 +451,16 @@ const Home: NextPage = () => {
                     >
                       <br></br>
                       <Grid>
-                        {quizSet[i].timeLimit.map((time, j) => {
+                        {quiz.timeLimit.map((time, j) => {
                           return (
-                            <div key={i}>
+                            <div key={j}>
                               <Grid.Col
                                 onClick={() => {
-                                  quizSet[i].timeLimit = gridSet[j];
+                                  quiz.timeLimit = [
+                                    j == 0 ? 1 : 0,
+                                    j == 1 ? 1 : 0,
+                                    j == 2 ? 1 : 0,
+                                  ];
                                 }}
                                 onDragOver={() => {
                                   alert("hello!");

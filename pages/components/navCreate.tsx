@@ -4,6 +4,7 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import Link from "next/link";
+import axios from "axios";
 
 import {
   Button,
@@ -67,6 +68,38 @@ function NavCreate() {
             data={["미분류", "국어", "수학", "영어", "과학"]}
           />
         </div>
+
+        <button
+          onClick={() => {
+            axios
+              .post("http://api/room/100000/signup", {
+                params: { name: "강상진", ninkname: "브랜든캉" },
+              })
+              .then((result) => {
+                alert(result.data);
+              })
+              .catch((error) => {
+                alert(error);
+              });
+          }}
+        >
+          post
+        </button>
+
+        <button
+          onClick={() => {
+            axios
+              .get("http://13.209.24.56/api/room/100000/participants", {})
+              .then((result) => {
+                alert(result.data);
+              })
+              .catch((error) => {
+                alert(error);
+              });
+          }}
+        >
+          get
+        </button>
       </Drawer>
       <span style={{ textAlign: "center" }}>
         <Button
