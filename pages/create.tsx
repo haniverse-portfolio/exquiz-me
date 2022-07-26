@@ -263,7 +263,7 @@ const Home: NextPage = () => {
   let [quizTypeIdx, setQuizTypeIdx] = useState(-1);
   const [progressActive, setProgressActive] = useState(-1);
 
-  let arr = [
+  let quizSetExample = [
     {
       quizType: "subjective",
       quizContents: "가장 높은 산은 ()이다?",
@@ -297,9 +297,9 @@ const Home: NextPage = () => {
   ];
 
   const [slideActive, setSlideActive] = useState(-1);
-  let [quizSet, setQuizSet] = useState(arr);
+  let [quizSet, setQuizSet] = useState(quizSetExample);
 
-  let tabColorCode = [
+  const tabColorCode = [
     ["linear-gradient(to right, #babbbd, #babbbd)"],
     ["linear-gradient(to right, #fa584b, #fc7b1b)"],
     ["linear-gradient(to right, #4A73F0, #3A8DDA)"],
@@ -308,7 +308,7 @@ const Home: NextPage = () => {
     ["linear-gradient(to right, #946cee, #b464eb)"],
   ];
 
-  let tabTooltip = [
+  const tabTooltip = [
     "빈 슬라이드",
     "객관식",
     "주관식",
@@ -316,6 +316,8 @@ const Home: NextPage = () => {
     "넌센스",
     "다이나믹",
   ];
+
+  let [tabClickedState, setTabClickedState] = useState([0, 0, 0, 0, 0, 0]);
 
   return (
     <div>
@@ -334,37 +336,42 @@ const Home: NextPage = () => {
           <Center>
             <Container
               style={{
+                height: "7vh",
                 margin: "20px 20px",
                 borderRadius: "10px",
                 boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
+                display: "flex",
+                alignItems: "center",
               }}
             >
-              <Center>
-                <Group>
-                  {tabColorCode.map((colorCode, i) => {
-                    return (
-                      <Tooltip key={i} label={tabTooltip[i]}>
-                        <ThemeIcon
-                          onClick={() => {
-                            setQuizTypeIdx((prevState) => i);
-                          }}
-                          key={i}
-                          style={{
-                            cursor: "pointer",
-                            borderRadius: "10px",
-                            height: "50px",
-                            width: "50px",
-                            color: "white",
-                            backgroundImage: colorCode.toString(),
-                          }}
-                        >
-                          {tabIconCode(i)}
-                        </ThemeIcon>
-                      </Tooltip>
-                    );
-                  })}
-                </Group>
-              </Center>
+              <Group>
+                {tabColorCode.map((colorCode, i) => {
+                  return (
+                    <Tooltip key={i} label={tabTooltip[i]}>
+                      <ThemeIcon
+                        onClick={() => {
+                          setQuizTypeIdx((prevState) => i);
+                        }}
+                        key={i}
+                        style={{
+                          boxShadow:
+                            tabClickedState[i] === 1
+                              ? "0 10px 15px -3px rgb(0 0 0 / 0.1)"
+                              : "inset 0 2px 4px 0 rgb(0 0 0 / 0.05)",
+                          cursor: "pointer",
+                          borderRadius: "10px",
+                          height: "50px",
+                          width: "50px",
+                          color: "white",
+                          backgroundImage: colorCode.toString(),
+                        }}
+                      >
+                        {tabIconCode(i)}
+                      </ThemeIcon>
+                    </Tooltip>
+                  );
+                })}
+              </Group>
             </Container>
           </Center>
           {/* Main Form */}
@@ -400,7 +407,6 @@ const Home: NextPage = () => {
       <footer className={styles.footer}>
         <a
           style={{ textDecoration: "none", color: "black" }}
-          href="https://retro5pect.tistory.com/"
           target="_blank"
           rel="noopener noreferrer"
         >
