@@ -56,6 +56,7 @@ import {
   BrowserPlus,
   Plus,
   Trash,
+  Check,
 } from "tabler-icons-react";
 // 85vh 20vw
 
@@ -80,6 +81,7 @@ function form(idx: number) {
         style={{
           height: "500px",
           width: "100%",
+          borderRadius: "10px",
           boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
         }}
       >
@@ -122,6 +124,7 @@ function form(idx: number) {
         style={{
           height: "500px",
           width: "100%",
+          borderRadius: "10px",
           boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
         }}
       >
@@ -164,6 +167,7 @@ function form(idx: number) {
         style={{
           height: "500px",
           width: "100%",
+          borderRadius: "10px",
           boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
         }}
       >
@@ -201,6 +205,7 @@ function form(idx: number) {
         style={{
           height: "500px",
           width: "100%",
+          borderRadius: "10px",
           boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
         }}
       >
@@ -213,6 +218,7 @@ function form(idx: number) {
         style={{
           height: "500px",
           width: "100%",
+          borderRadius: "10px",
           boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
         }}
       >
@@ -337,11 +343,11 @@ const Home: NextPage = () => {
   let [tabClickedState, setTabClickedState] = useState([0, 0, 0, 0, 0, 0]);
 
   const MARKSTIME = [
-    { value: 0, label: "xs" },
-    { value: 25, label: "sm" },
-    { value: 50, label: "md" },
-    { value: 75, label: "lg" },
-    { value: 100, label: "xl" },
+    { value: 0, label: "15초" },
+    { value: 25, label: "20초" },
+    { value: 50, label: "30초" },
+    { value: 75, label: "45초" },
+    { value: 100, label: "1분" },
   ];
 
   return (
@@ -409,26 +415,6 @@ const Home: NextPage = () => {
           {/* Main Form */}
           {form(quizTypeIdx)}
           {/* Main Form */}
-
-          <div style={{ height: "9vh", textAlign: "center" }}>
-            <ThemeIcon
-              style={{ cursor: "pointer" }}
-              onClick={() => {
-                let copy = [...quizSet];
-                copy.unshift({
-                  quizType: "objective",
-                  quizContents: "",
-                  selection: [],
-                  answerNumber: [],
-                  scoredRate: "50",
-                  timeLimit: "50",
-                });
-                setQuizSet(copy);
-              }}
-            >
-              <Plus style={{ color: "white" }} />
-            </ThemeIcon>
-          </div>
         </section>
       </main>
       {/* Main Bar */}
@@ -453,7 +439,13 @@ const Home: NextPage = () => {
               <Accordion chevronSize={0} variant="separated">
                 {quizSet.map((quiz, i) => {
                   return (
-                    <Accordion.Item key={i} value={(i + 1).toString()}>
+                    <Accordion.Item
+                      style={{
+                        boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.05)",
+                      }}
+                      key={i}
+                      value={(i + 1).toString()}
+                    >
                       <Box sx={{ display: "flex", alignItems: "center" }}>
                         <Accordion.Control icon={sideIconCode(quiz.quizType)}>
                           {"Q".concat(
@@ -478,7 +470,7 @@ const Home: NextPage = () => {
                         <Center>
                           <Slider
                             // label={(val) =>
-                            //   MARKSTIME.find((mark) => mark.value === val).label
+                            //   MARKSTIME.find((mark) => (mark.value === val)).label
                             // }
                             defaultValue={50}
                             step={25}
@@ -507,19 +499,82 @@ const Home: NextPage = () => {
               </Accordion>
             </ScrollArea>
           </Center>
-          <Link href="#">
+          <div>
             <Button
-              style={{
-                textAlign: "center",
-                fontSize: "18px",
-                height: "40px",
-                width: "90%",
-              }}
               variant="outline"
+              gradient={{ from: "orange", to: "red" }}
+              component="a"
+              rel="noopener noreferrer"
+              href="/create"
+              leftIcon={<Plus size={32} />}
+              onClick={() => {
+                let copy = [...quizSet];
+                copy.unshift({
+                  quizType: "objective",
+                  quizContents: "",
+                  selection: [],
+                  answerNumber: [],
+                  scoredRate: "50",
+                  timeLimit: "50",
+                });
+                setQuizSet(copy);
+              }}
+              styles={(theme) => ({
+                root: {
+                  display: "block",
+                  fontWeight: "bold",
+                  fontSize: 16,
+                  marginRight: 10,
+                  color: "orange",
+                  backgroundColor: "white",
+                  border: "2px solid orange",
+                  height: 42,
+
+                  "&:hover": {
+                    backgroundColor: theme.fn.darken("#FFFFFF", 0.05),
+                  },
+                },
+
+                leftIcon: {
+                  marginRight: 5,
+                },
+              })}
             >
-              완성하기
+              추가하기
             </Button>
-          </Link>
+            <Link href="/myQuiz">
+              <Button
+                variant="gradient"
+                gradient={{ from: "orange", to: "red" }}
+                component="a"
+                rel="noopener noreferrer"
+                href="#"
+                leftIcon={<Check size={32} />}
+                styles={(theme) => ({
+                  root: {
+                    display: "block",
+                    fontWeight: "bold",
+                    fontSize: 16,
+                    marginRight: 10,
+                    color: "white",
+                    backgroundColor: "white",
+                    border: 0,
+                    height: 42,
+
+                    "&:hover": {
+                      backgroundColor: theme.fn.darken("#FFFFFF", 0.05),
+                    },
+                  },
+
+                  leftIcon: {
+                    marginRight: 5,
+                  },
+                })}
+              >
+                완성하기
+              </Button>
+            </Link>
+          </div>
         </section>
       </div>
       {/* Slide - Side Bar */}
