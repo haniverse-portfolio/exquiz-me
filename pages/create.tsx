@@ -13,7 +13,6 @@ import {
   Grid,
   Stepper,
   SimpleGrid,
-  Tabs,
   Autocomplete,
   Tooltip,
   NativeSelect,
@@ -33,6 +32,8 @@ import {
   AccordionControlProps,
   Box,
   ActionIcon,
+  Radio,
+  Slider,
 } from "@mantine/core";
 
 import {
@@ -276,17 +277,6 @@ function tabIconCode(idx: number) {
   if (idx == 5) return <Apps />;
 }
 
-function AccordionControl(props: AccordionControlProps) {
-  return (
-    <Box sx={{ display: "flex", alignItems: "center" }}>
-      <Accordion.Control {...props} />
-      <ActionIcon size="lg">
-        <Trash size={16} />
-      </ActionIcon>
-    </Box>
-  );
-}
-
 // 빈 슬라이드 객관식 주관식 O/X 넌센스 다이나믹
 const Home: NextPage = () => {
   let [quizTypeIdx, setQuizTypeIdx] = useState(-1);
@@ -298,24 +288,24 @@ const Home: NextPage = () => {
       quizContents: "가장 높은 산은 ()이다?",
       selection: ["지리산", "북한산", "한라산", "설악산"],
       answerNumber: ["1"],
-      scoredRate: 3,
-      timeLimit: 30,
+      scoredRate: "50",
+      timeLimit: "50",
     },
     {
       quizType: "ox",
       quizContents: "대한민국은 영어로 korea이다.",
       selection: ["O", "X"],
       answerNumber: ["0"],
-      scoredRate: 3,
-      timeLimit: 30,
+      scoredRate: "50",
+      timeLimit: "50",
     },
     {
       quizType: "objective",
       quizContents: "소프트웨어 마에스트로가 있는 건물은?",
       selection: ["센터필드", "아남타워", "황해주택", "인하주택"],
       answerNumber: ["2"],
-      scoredRate: 3,
-      timeLimit: 30,
+      scoredRate: "50",
+      timeLimit: "50",
     },
   ];
 
@@ -345,6 +335,14 @@ const Home: NextPage = () => {
   ];
 
   let [tabClickedState, setTabClickedState] = useState([0, 0, 0, 0, 0, 0]);
+
+  const MARKSTIME = [
+    { value: 0, label: "xs" },
+    { value: 25, label: "sm" },
+    { value: 50, label: "md" },
+    { value: 75, label: "lg" },
+    { value: 100, label: "xl" },
+  ];
 
   return (
     <div>
@@ -422,8 +420,8 @@ const Home: NextPage = () => {
                   quizContents: "",
                   selection: [],
                   answerNumber: [],
-                  scoredRate: 3,
-                  timeLimit: 30,
+                  scoredRate: "50",
+                  timeLimit: "50",
                 });
                 setQuizSet(copy);
               }}
@@ -456,25 +454,52 @@ const Home: NextPage = () => {
                 {quizSet.map((quiz, i) => {
                   return (
                     <Accordion.Item key={i} value={(i + 1).toString()}>
-                      <AccordionControl icon={sideIconCode(quiz.quizType)}>
-                        {"Q".concat(
-                          (i + 1).toString(),
-                          ". ",
-                          quiz.quizContents
-                        )}
-                      </AccordionControl>
+                      <Box sx={{ display: "flex", alignItems: "center" }}>
+                        <Accordion.Control icon={sideIconCode(quiz.quizType)}>
+                          {"Q".concat(
+                            (i + 1).toString(),
+                            ". ",
+                            quiz.quizContents
+                          )}
+                        </Accordion.Control>
+
+                        <ActionIcon
+                          onClick={() => {
+                            let copy = [...quizSet];
+                            copy.splice(i, 1);
+                            setQuizSet(copy);
+                          }}
+                          size="lg"
+                        >
+                          <Trash size={16} />
+                        </ActionIcon>
+                      </Box>
                       <Accordion.Panel>
-                        <ThemeIcon style={{ cursor: "pointer" }} color="gray">
-                          <Trash
-                            onClick={() => {
-                              let copy = [...quizSet];
-                              copy.splice(i, 1);
-                              setQuizSet(copy);
-                            }}
+                        <Center>
+                          <Slider
+                            // label={(val) =>
+                            //   MARKSTIME.find((mark) => mark.value === val).label
+                            // }
+                            defaultValue={50}
+                            step={25}
+                            marks={MARKSTIME}
+                            styles={{ markLabel: { display: "none" } }}
+                          />
+                        </Center>
+                        <Center>
+                          <Radio.Group
+                            label=""
+                            description=""
+                            spacing="xs"
+                            size="md"
+                            color="blue"
+                            required
                           >
-                            삭제
-                          </Trash>
-                        </ThemeIcon>
+                            <Radio value="1" label="절반" />
+                            <Radio value="2" label="보통" />
+                            <Radio value="3" label="두배" />
+                          </Radio.Group>
+                        </Center>
                       </Accordion.Panel>
                     </Accordion.Item>
                   );
@@ -482,7 +507,7 @@ const Home: NextPage = () => {
               </Accordion>
             </ScrollArea>
           </Center>
-          <Link href="./create3">
+          <Link href="#">
             <Button
               style={{
                 textAlign: "center",

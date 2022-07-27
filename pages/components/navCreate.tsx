@@ -63,7 +63,6 @@ function NavCreate() {
           <Select
             label="과목 선택"
             placeholder="과목을 선택해주세요"
-            searchable
             nothingFound="검색 결과 없음"
             data={["미분류", "국어", "수학", "영어", "과학"]}
           />
