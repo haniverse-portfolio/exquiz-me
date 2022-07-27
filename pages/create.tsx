@@ -28,7 +28,13 @@ import {
   Checkbox,
   Drawer,
   Group,
+  Accordion,
+  useMantineTheme,
+  AccordionControlProps,
+  Box,
+  ActionIcon,
 } from "@mantine/core";
+
 import {
   Emphasis,
   FileX,
@@ -252,6 +258,15 @@ function colorRt(type: string) {
   if (type == "dynamic") return "gold";
 }
 
+function sideIconCode(idx: string) {
+  if (idx == "empty") return <BrowserPlus size={20} color={"#babbbd"} />;
+  if (idx == "objective") return <SquareCheck size={20} color={"#fa584b"} />;
+  if (idx == "subjective") return <Parentheses size={20} color={"#4A73F0"} />;
+  if (idx == "ox") return <AB size={20} color={"#23B87F"} />;
+  if (idx == "nonsense") return <QuestionMark size={20} color={"#F9B204"} />;
+  if (idx == "dynamic") return <Apps size={20} color={"#946cee"} />;
+}
+
 function tabIconCode(idx: number) {
   if (idx == 0) return <BrowserPlus />;
   if (idx == 1) return <SquareCheck />;
@@ -260,6 +275,18 @@ function tabIconCode(idx: number) {
   if (idx == 4) return <QuestionMark />;
   if (idx == 5) return <Apps />;
 }
+
+function AccordionControl(props: AccordionControlProps) {
+  return (
+    <Box sx={{ display: "flex", alignItems: "center" }}>
+      <Accordion.Control {...props} />
+      <ActionIcon size="lg">
+        <Trash size={16} />
+      </ActionIcon>
+    </Box>
+  );
+}
+
 // 빈 슬라이드 객관식 주관식 O/X 넌센스 다이나믹
 const Home: NextPage = () => {
   let [quizTypeIdx, setQuizTypeIdx] = useState(-1);
@@ -272,7 +299,7 @@ const Home: NextPage = () => {
       selection: ["지리산", "북한산", "한라산", "설악산"],
       answerNumber: ["1"],
       scoredRate: 3,
-      timeLimit: [0, 1, 0],
+      timeLimit: 30,
     },
     {
       quizType: "ox",
@@ -280,7 +307,7 @@ const Home: NextPage = () => {
       selection: ["O", "X"],
       answerNumber: ["0"],
       scoredRate: 3,
-      timeLimit: [0, 1, 0],
+      timeLimit: 30,
     },
     {
       quizType: "objective",
@@ -288,12 +315,16 @@ const Home: NextPage = () => {
       selection: ["센터필드", "아남타워", "황해주택", "인하주택"],
       answerNumber: ["2"],
       scoredRate: 3,
-      timeLimit: [0, 1, 0],
+      timeLimit: 30,
     },
   ];
 
   const [slideActive, setSlideActive] = useState(-1);
   let [quizSet, setQuizSet] = useState(quizSetExample);
+
+  const theme = useMantineTheme();
+  const getColor = (color: string) =>
+    theme.colors[color][theme.colorScheme === "dark" ? 5 : 7];
 
   const tabColorCode = [
     ["linear-gradient(to right, #babbbd, #babbbd)"],
@@ -381,10 +412,7 @@ const Home: NextPage = () => {
           {form(quizTypeIdx)}
           {/* Main Form */}
 
-          <div
-            onClick={() => {}}
-            style={{ height: "9vh", textAlign: "center" }}
-          >
+          <div style={{ height: "9vh", textAlign: "center" }}>
             <ThemeIcon
               style={{ cursor: "pointer" }}
               onClick={() => {
@@ -395,7 +423,7 @@ const Home: NextPage = () => {
                   selection: [],
                   answerNumber: [],
                   scoredRate: 3,
-                  timeLimit: [0, 1, 0],
+                  timeLimit: 30,
                 });
                 setQuizSet(copy);
               }}
@@ -424,77 +452,34 @@ const Home: NextPage = () => {
             <ScrollArea
               style={{ width: "20vw", height: "60vh", textAlign: "center" }}
             >
-              {quizSet.map((quiz, i) => {
-                return (
-                  <div
-                    style={{
-                      borderRadius: "10%",
-                      height: "200px",
-                      width: "18vw",
-                      boxShadow: "0 0 15px -3px rgb(0 0 0 / 0.1)",
-                    }}
-                    key={i}
-                  >
-                    <Tooltip
-                      label={"Q".concat(
-                        (i + 1).toString(),
-                        ". ",
-                        quiz.quizContents
-                      )}
-                    >
-                      <br></br>
-                      <Grid>
-                        {quiz.timeLimit.map((time, j) => {
-                          return (
-                            <div key={j}>
-                              <Grid.Col
-                                onClick={() => {
-                                  quiz.timeLimit = [
-                                    j == 0 ? 1 : 0,
-                                    j == 1 ? 1 : 0,
-                                    j == 2 ? 1 : 0,
-                                  ];
-                                }}
-                                onDragOver={() => {
-                                  alert("hello!");
-                                }}
-                                style={{
-                                  cursor: "pointer",
-                                  height: "30px",
-                                  width: "30px",
-                                  borderRadius: "50%",
-                                  boxShadow:
-                                    "0 10px 15px -3px rgb(0 0 0 / 0.1)",
-                                }}
-                                span={4}
-                              >
-                                {quizSet[i].timeLimit[j] == 1 ? (
-                                  colorRt(quizSet[i].quizType)
-                                ) : (
-                                  <span />
-                                )}
-                              </Grid.Col>
-                              <br></br>
-                              <br></br>
-                            </div>
-                          );
-                        })}
-                      </Grid>
-                      <ThemeIcon style={{ cursor: "pointer" }} color="gray">
-                        <Trash
-                          onClick={() => {
-                            let copy = [...quizSet];
-                            copy.splice(i, 1);
-                            setQuizSet(copy);
-                          }}
-                        >
-                          삭제
-                        </Trash>
-                      </ThemeIcon>
-                    </Tooltip>
-                  </div>
-                );
-              })}
+              <Accordion chevronSize={0} variant="separated">
+                {quizSet.map((quiz, i) => {
+                  return (
+                    <Accordion.Item key={i} value={(i + 1).toString()}>
+                      <AccordionControl icon={sideIconCode(quiz.quizType)}>
+                        {"Q".concat(
+                          (i + 1).toString(),
+                          ". ",
+                          quiz.quizContents
+                        )}
+                      </AccordionControl>
+                      <Accordion.Panel>
+                        <ThemeIcon style={{ cursor: "pointer" }} color="gray">
+                          <Trash
+                            onClick={() => {
+                              let copy = [...quizSet];
+                              copy.splice(i, 1);
+                              setQuizSet(copy);
+                            }}
+                          >
+                            삭제
+                          </Trash>
+                        </ThemeIcon>
+                      </Accordion.Panel>
+                    </Accordion.Item>
+                  );
+                })}
+              </Accordion>
             </ScrollArea>
           </Center>
           <Link href="./create3">
