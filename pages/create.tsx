@@ -61,8 +61,24 @@ import {
 // 85vh 20vw
 
 function form(idx: number) {
-  if (idx == -1) return;
-  else if (idx == 0) {
+  if (idx == -1) {
+    return (
+      <Container
+        style={{
+          height: "500px",
+          width: "100%",
+          borderRadius: "10px",
+          boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        <Container style={{ textAlign: "center" }}>
+          <p>문제를 추가하세요!</p>
+        </Container>
+      </Container>
+    );
+  } else if (idx == 0) {
     return (
       <Container
         style={{
@@ -245,7 +261,7 @@ function colorRt(type: string) {
       <ThemeIcon
         style={{
           borderRadius: "50%",
-          backgroundImage: "linear-gradient(to right, #fa584b, #fc7b1b)",
+          backgroundImage: "linear-gradient(to right, #fa584b, #fb7b1b)",
         }}
       >
         <SquareCheck color="white" />
@@ -270,7 +286,7 @@ function sideIconCode(idx: string) {
   if (idx == "objective") return <SquareCheck size={20} color={"#fa584b"} />;
   if (idx == "subjective") return <Parentheses size={20} color={"#4A73F0"} />;
   if (idx == "ox") return <AB size={20} color={"#23B87F"} />;
-  if (idx == "nonsense") return <QuestionMark size={20} color={"#F9B204"} />;
+  if (idx == "nonsense") return <QuestionMark size={20} color={"#F4B404"} />;
   if (idx == "dynamic") return <Apps size={20} color={"#946cee"} />;
 }
 
@@ -413,7 +429,24 @@ const Home: NextPage = () => {
             </Container>
           </Center>
           {/* Main Form */}
-          {form(quizTypeIdx)}
+          <div
+            style={{
+              height: "55vh",
+              borderRadius: "10px",
+              boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.05)",
+              backgroundColor: "#fc7b1b",
+            }}
+          >
+            <div
+              style={{
+                margin: "15px 15px",
+                boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
+                backgroundColor: "white",
+              }}
+            >
+              {form(quizTypeIdx)}
+            </div>
+          </div>
           {/* Main Form */}
         </section>
       </main>
@@ -505,7 +538,6 @@ const Home: NextPage = () => {
               gradient={{ from: "orange", to: "red" }}
               component="a"
               rel="noopener noreferrer"
-              href="/create"
               leftIcon={<Plus size={32} />}
               onClick={() => {
                 let copy = [...quizSet];

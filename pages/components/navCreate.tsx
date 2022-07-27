@@ -15,6 +15,7 @@ import {
   Center,
   Drawer,
   Select,
+  Container,
 } from "@mantine/core";
 import {
   Emphasis,
@@ -29,7 +30,25 @@ import {
 function NavCreate() {
   let [title, setTitle] = useState("");
   const [opened, setOpened] = useState(true);
-
+  let [getData, setGetData] = useState([
+    {
+      id: null,
+      uuid: "",
+      name: "",
+      nickname: "",
+      roomDto: {
+        id: null,
+        pin: "",
+        maxParticipantCount: null,
+        startDate: null,
+        endDate: null,
+        currentState: null,
+        currentProblemNum: null,
+      },
+      entryDate: null,
+      currentScore: null,
+    },
+  ]);
   return (
     <div
       style={{
@@ -40,38 +59,45 @@ function NavCreate() {
       }}
     >
       <Drawer
+        transition="rotate-left"
+        transitionDuration={250}
+        transitionTimingFunction="ease"
         opened={opened}
         onClose={() => setOpened(false)}
         title="퀴즈 설정"
-        padding="xl"
-        size="100%"
+        position="left"
+        size="xl"
       >
-        <div style={{ margin: "0px 30vw" }}>
-          <br />
-          <TextInput
-            placeholder="퀴즈 제목을 입력해주세요"
-            label="퀴즈 제목"
-            required
-          />
-          <br />
-          <TextInput
-            placeholder="퀴즈 설명을 입력해주세요"
-            label="퀴즈 설명"
-            required
-          />
-          <br />
-          <Select
-            label="과목 선택"
-            placeholder="과목을 선택해주세요"
-            nothingFound="검색 결과 없음"
-            data={["미분류", "국어", "수학", "영어", "과학"]}
-          />
-        </div>
+        <Container
+          style={{ display: "flex", alignItems: "center", textAlign: "center" }}
+        >
+          <Container style={{ textAlign: "center" }}>
+            <br />
+            <TextInput
+              placeholder="퀴즈 제목을 입력해주세요"
+              label="퀴즈 제목"
+              required
+            />
+            <br />
+            <TextInput
+              placeholder="퀴즈 설명을 입력해주세요"
+              label="퀴즈 설명"
+              required
+            />
+            <br />
+            <Select
+              label="과목 선택"
+              placeholder="과목을 선택해주세요"
+              nothingFound="검색 결과 없음"
+              data={["미분류", "국어", "수학", "영어", "과학"]}
+            />
+          </Container>
+        </Container>
 
         <button
           onClick={() => {
             axios
-              .post("http://api/room/100000/signup", {
+              .post("https://exquiz.net/api/room/100000/signup", {
                 params: { name: "강상진", ninkname: "브랜든캉" },
               })
               .then((result) => {
@@ -82,23 +108,54 @@ function NavCreate() {
               });
           }}
         >
-          post
+          닉네임 등록하기
         </button>
 
         <button
           onClick={() => {
             axios
-              .get("http://13.209.24.56/api/room/100000/participants", {})
+              .get("https://exquiz.net/api/room/100000/participants", {})
               .then((result) => {
-                alert(result.data);
+                setGetData(result.data);
               })
               .catch((error) => {
                 alert(error);
               });
           }}
         >
-          get
+          10만번째방에 참가한 참가자들 정보 GET하기
         </button>
+
+        <p>방에 참가한 학생1 정보</p>
+        {getData[0].id}
+        <p>UUID : </p>
+        {getData[0].uuid}
+        <p>UUID : </p>
+        {getData[0].name}
+
+        <p>UUID : </p>
+        {getData[0].nickname}
+        <p>UUID : </p>
+        {getData[0].entryDate}
+        <p>UUID : </p>
+        {getData[0].currentScore}
+
+        <br></br>
+        <p>이제 roomDto 정보입니다.</p>
+        <p>id : </p>
+        {getData[0].roomDto.id}
+        <p>id : </p>
+        {getData[0].roomDto.pin}
+        <p>id : </p>
+        {getData[0].roomDto.maxParticipantCount}
+        <p>id : </p>
+        {getData[0].roomDto.startDate}
+        <p>id : </p>
+        {getData[0].roomDto.endDate}
+        <p>id : </p>
+        {getData[0].roomDto.currentState}
+        <p>id : </p>
+        {getData[0].roomDto.currentProblemNum}
       </Drawer>
       <span style={{ textAlign: "center" }}>
         <Button

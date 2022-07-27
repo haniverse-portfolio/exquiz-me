@@ -133,11 +133,14 @@ const Home: NextPage = () => {
               문제 제작하기
             </Button>
             <Button
+              onClick={() => {
+                alert("아직 들어가지 마세요");
+              }}
               variant="gradient"
               gradient={{ from: "orange", to: "red" }}
               component="a"
               rel="noopener noreferrer"
-              href="/host"
+              href="/#"
               leftIcon={<Login size={32} />}
               styles={(theme) => ({
                 root: {

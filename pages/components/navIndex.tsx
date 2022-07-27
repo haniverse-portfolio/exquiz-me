@@ -100,8 +100,11 @@ function NavIndex() {
           gradient={{ from: "orange", to: "red" }}
           component="a"
           rel="noopener noreferrer"
-          href="/login"
+          href="/#"
           leftIcon={<UserCircle size={32} />}
+          onClick={() => {
+            alert("로그인 된 걸로 합시다");
+          }}
           styles={(theme) => ({
             root: {
               fontWeight: "bold",
