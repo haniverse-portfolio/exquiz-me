@@ -93,12 +93,11 @@ function NavCreate() {
             />
           </Container>
         </Container>
-
         <button
           onClick={() => {
             axios
               .post("https://exquiz.net/api/room/100000/signup", {
-                params: { name: "강상진", ninkname: "브랜든캉" },
+                params: { name: "kangsangjin", ninkname: "brandonkang" },
               })
               .then((result) => {
                 alert(result.data);
@@ -110,7 +109,6 @@ function NavCreate() {
         >
           닉네임 등록하기
         </button>
-
         <button
           onClick={() => {
             axios
@@ -127,34 +125,35 @@ function NavCreate() {
         </button>
 
         <p>방에 참가한 학생1 정보</p>
+        <p>id : </p>
         {getData[0].id}
-        <p>UUID : </p>
+        <p>uuid : </p>
         {getData[0].uuid}
-        <p>UUID : </p>
+        <p>name : </p>
         {getData[0].name}
 
-        <p>UUID : </p>
+        <p>nickname : </p>
         {getData[0].nickname}
-        <p>UUID : </p>
+        <p>entryDate : </p>
         {getData[0].entryDate}
-        <p>UUID : </p>
+        <p>currentScore : </p>
         {getData[0].currentScore}
 
         <br></br>
         <p>이제 roomDto 정보입니다.</p>
         <p>id : </p>
         {getData[0].roomDto.id}
-        <p>id : </p>
+        <p>pin : </p>
         {getData[0].roomDto.pin}
-        <p>id : </p>
+        <p>maxParticipantCount : </p>
         {getData[0].roomDto.maxParticipantCount}
-        <p>id : </p>
+        <p>startDate : </p>
         {getData[0].roomDto.startDate}
-        <p>id : </p>
+        <p>endDate : </p>
         {getData[0].roomDto.endDate}
-        <p>id : </p>
+        <p>currentState : </p>
         {getData[0].roomDto.currentState}
-        <p>id : </p>
+        <p>currentProblemNum : </p>
         {getData[0].roomDto.currentProblemNum}
       </Drawer>
       <span style={{ textAlign: "center" }}>
