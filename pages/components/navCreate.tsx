@@ -29,7 +29,7 @@ import {
 
 function componentDidMount() {
   // Simple POST request with a JSON body using axios
-  const userData = { name: "kangsangjin", ninkname: "brandonkang" };
+  const userData = { name: "kangsangjin", nickname: "brandonkang" };
   axios
     .post("https://exquiz.net/api/room/100000/signup", userData)
     .then((result) => {
