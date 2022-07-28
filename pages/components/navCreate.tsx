@@ -27,6 +27,19 @@ import {
   Archive,
 } from "tabler-icons-react";
 
+function componentDidMount() {
+  // Simple POST request with a JSON body using axios
+  const userData = { name: "kangsangjin", ninkname: "brandonkang" };
+  axios
+    .post("https://exquiz.net/api/room/100000/signup", userData)
+    .then((result) => {
+      alert("성공!");
+    })
+    .catch((error) => {
+      alert(error);
+    });
+}
+
 function NavCreate() {
   let [title, setTitle] = useState("");
   const [opened, setOpened] = useState(true);
@@ -95,20 +108,9 @@ function NavCreate() {
         </Container>
         <button
           onClick={() => {
-            axios
-              .post("https://exquiz.net/api/room/100000/signup", {
-                params: { name: "kangsangjin", ninkname: "brandonkang" },
-              })
-              .then((result) => {
-                alert(result.data);
-              })
-              .catch((error) => {
-                alert(error);
-              });
+            componentDidMount();
           }}
-        >
-          닉네임 등록하기
-        </button>
+        ></button>
         <button
           onClick={() => {
             axios
