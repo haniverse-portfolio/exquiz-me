@@ -70,7 +70,11 @@ const Home: NextPage = () => {
 
       <footer className={styles.footer}>
         <a
-          style={{ textDecoration: "none", color: "black" }}
+          style={{
+            backgroundColor: "white",
+            textDecoration: "none",
+            color: "black",
+          }}
           href="https://retro5pect.tistory.com/"
           target="_blank"
           rel="noopener noreferrer"

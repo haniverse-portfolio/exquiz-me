@@ -77,12 +77,21 @@ const Home: NextPage = () => {
                 backgroundImage: "linear-gradient(to left,#F9B204, #fc7b1b)",
               }}
             >
-              <div style={{ marginLeft: 20, marginRight: 20 }}>
-                <div
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginLeft: 20,
+                  marginRight: 20,
+                }}
+              >
+                <span
                   style={{
+                    marginTop: "100px",
                     textAlign: "right",
-                    height: "400px",
-                    width: "400px",
+                    height: "350px",
+                    width: "350px",
                     borderRadius: "50%",
                     backgroundColor: "white",
                   }}
@@ -98,7 +107,38 @@ const Home: NextPage = () => {
                     <br></br>
                     퀴즈에 경험을 더하다<br></br> exquiz.me
                   </span>
-                </div>
+                </span>
+                <Link href="/play">
+                  <Button
+                    variant="outline"
+                    gradient={{ from: "orange", to: "red" }}
+                    component="a"
+                    rel="noopener noreferrer"
+                    href="/create"
+                    leftIcon={<Pencil size={32} />}
+                    styles={(theme) => ({
+                      root: {
+                        fontWeight: "bold",
+                        fontSize: 16,
+                        marginRight: 10,
+                        color: "orange",
+                        backgroundColor: "white",
+                        border: "2px solid orange",
+                        height: 42,
+
+                        "&:hover": {
+                          backgroundColor: theme.fn.darken("#FFFFFF", 0.05),
+                        },
+                      },
+
+                      leftIcon: {
+                        marginRight: 5,
+                      },
+                    })}
+                  >
+                    방 입장하기
+                  </Button>
+                </Link>
               </div>
             </div>
             <br></br>

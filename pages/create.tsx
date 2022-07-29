@@ -290,6 +290,15 @@ function sideIconCode(idx: string) {
   if (idx == "dynamic") return <Apps size={20} color={"#946cee"} />;
 }
 
+function rtColor(idx: string) {
+  if (idx == "empty") return "#babbbd";
+  if (idx == "objective") return "#fa584b";
+  if (idx == "subjective") return "#4A73F0";
+  if (idx == "ox") return "#23B87F";
+  if (idx == "nonsense") return "#F4B404";
+  if (idx == "dynamic") return "#946cee";
+}
+
 function tabIconCode(idx: number) {
   if (idx == 0) return <BrowserPlus />;
   if (idx == 1) return <SquareCheck />;
@@ -366,6 +375,13 @@ const Home: NextPage = () => {
     { value: 100, label: "1분" },
   ];
 
+  const MARKSCORE = [
+    { value: 0, label: "매우 적게" },
+    { value: 25, label: "적게" },
+    { value: 50, label: "보통" },
+    { value: 75, label: "많이" },
+    { value: 100, label: "매우 많이" },
+  ];
   return (
     <div>
       <Head>
@@ -429,24 +445,7 @@ const Home: NextPage = () => {
             </Container>
           </Center>
           {/* Main Form */}
-          <div
-            style={{
-              height: "55vh",
-              borderRadius: "10px",
-              boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.05)",
-              backgroundColor: "#fc7b1b",
-            }}
-          >
-            <div
-              style={{
-                margin: "15px 15px",
-                boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
-                backgroundColor: "white",
-              }}
-            >
-              {form(quizTypeIdx)}
-            </div>
-          </div>
+          {form(quizTypeIdx)}
           {/* Main Form */}
         </section>
       </main>
@@ -500,31 +499,27 @@ const Home: NextPage = () => {
                         </ActionIcon>
                       </Box>
                       <Accordion.Panel>
-                        <Center>
-                          <Slider
-                            // label={(val) =>
-                            //   MARKSTIME.find((mark) => (mark.value === val)).label
-                            // }
-                            defaultValue={50}
-                            step={25}
-                            marks={MARKSTIME}
-                            styles={{ markLabel: { display: "none" } }}
-                          />
-                        </Center>
-                        <Center>
-                          <Radio.Group
-                            label=""
-                            description=""
-                            spacing="xs"
-                            size="md"
-                            color="blue"
-                            required
-                          >
-                            <Radio value="1" label="절반" />
-                            <Radio value="2" label="보통" />
-                            <Radio value="3" label="두배" />
-                          </Radio.Group>
-                        </Center>
+                        <Slider
+                          color={"gray"}
+                          label={(val) =>
+                            MARKSTIME.find((mark) => mark.value === val)?.label
+                          }
+                          defaultValue={50}
+                          step={25}
+                          marks={MARKSTIME}
+                          styles={{ markLabel: { display: "none" } }}
+                        />
+                        <Slider
+                          // {rtColor(quiz.quizType)}
+                          color={"gray"}
+                          label={(val) =>
+                            MARKSCORE.find((mark) => mark.value === val)?.label
+                          }
+                          defaultValue={50}
+                          step={25}
+                          marks={MARKSCORE}
+                          styles={{ markLabel: { display: "none" } }}
+                        />
                       </Accordion.Panel>
                     </Accordion.Item>
                   );
