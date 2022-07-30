@@ -141,7 +141,7 @@ const Home: NextPage = () => {
                       axios
                         .get("https://exquiz.net/api/room/100000/participants")
                         .then((result) => {
-                          setProblemset(result.data);
+                          setGetData(result.data);
                         })
                         .catch((error) => {
                           alert(error);
@@ -208,7 +208,7 @@ const Home: NextPage = () => {
                     axios
                       .get("https://prod.exquiz.net/api/problemsets/1")
                       .then((result) => {
-                        setGetData(result.data);
+                        setProblemset(result.data);
                       })
                       .catch((error) => {
                         alert(error);
