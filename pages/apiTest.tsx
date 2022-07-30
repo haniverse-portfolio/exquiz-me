@@ -156,7 +156,6 @@ const Home: NextPage = () => {
                   >
                     GET
                   </Button>
-                  <Center></Center>
 
                   <br></br>
                   <p>이제 roomDto 정보입니다.</p>
