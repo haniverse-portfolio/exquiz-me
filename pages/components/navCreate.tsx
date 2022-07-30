@@ -27,41 +27,10 @@ import {
   Archive,
 } from "tabler-icons-react";
 
-function componentDidMount() {
-  // Simple POST request with a JSON body using axios
-  const userData = { name: "kangsangjin", nickname: "brandonkang" };
-  axios
-    .post("https://exquiz.net/api/room/100000/signup", userData)
-    .then((result) => {
-      alert("성공!");
-    })
-    .catch((error) => {
-      alert(error);
-    });
-}
-
 function NavCreate() {
   let [title, setTitle] = useState("");
   const [opened, setOpened] = useState(true);
-  let [getData, setGetData] = useState([
-    {
-      id: null,
-      uuid: "",
-      name: "",
-      nickname: "",
-      roomDto: {
-        id: null,
-        pin: "",
-        maxParticipantCount: null,
-        startDate: null,
-        endDate: null,
-        currentState: null,
-        currentProblemNum: null,
-      },
-      entryDate: null,
-      currentScore: null,
-    },
-  ]);
+
   return (
     <div
       style={{
@@ -72,14 +41,14 @@ function NavCreate() {
       }}
     >
       <Drawer
-        transition="rotate-left"
-        transitionDuration={250}
+        transition={"slide-down"}
+        transitionDuration={1500}
         transitionTimingFunction="ease"
         opened={opened}
         onClose={() => setOpened(false)}
         title="퀴즈 설정"
-        position="left"
-        size="xl"
+        position="top"
+        size="100%"
       >
         <Container
           style={{ display: "flex", alignItems: "center", textAlign: "center" }}
@@ -106,57 +75,6 @@ function NavCreate() {
             />
           </Container>
         </Container>
-        <button
-          onClick={() => {
-            componentDidMount();
-          }}
-        ></button>
-        <button
-          onClick={() => {
-            axios
-              .get("https://exquiz.net/api/room/100000/participants", {})
-              .then((result) => {
-                setGetData(result.data);
-              })
-              .catch((error) => {
-                alert(error);
-              });
-          }}
-        >
-          10만번째방에 참가한 참가자들 정보 GET하기
-        </button>
-
-        <p>방에 참가한 학생1 정보</p>
-        <p>id : </p>
-        {getData[0].id}
-        <p>uuid : </p>
-        {getData[0].uuid}
-        <p>name : </p>
-        {getData[0].name}
-
-        <p>nickname : </p>
-        {getData[0].nickname}
-        <p>entryDate : </p>
-        {getData[0].entryDate}
-        <p>currentScore : </p>
-        {getData[0].currentScore}
-
-        <br></br>
-        <p>이제 roomDto 정보입니다.</p>
-        <p>id : </p>
-        {getData[0].roomDto.id}
-        <p>pin : </p>
-        {getData[0].roomDto.pin}
-        <p>maxParticipantCount : </p>
-        {getData[0].roomDto.maxParticipantCount}
-        <p>startDate : </p>
-        {getData[0].roomDto.startDate}
-        <p>endDate : </p>
-        {getData[0].roomDto.endDate}
-        <p>currentState : </p>
-        {getData[0].roomDto.currentState}
-        <p>currentProblemNum : </p>
-        {getData[0].roomDto.currentProblemNum}
       </Drawer>
       <span style={{ textAlign: "center" }}>
         <Button

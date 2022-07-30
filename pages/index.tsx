@@ -46,13 +46,7 @@ const Home: NextPage = () => {
   const secondaryColor =
     theme.colorScheme === "dark" ? theme.colors.dark[1] : theme.colors.gray[7];
   return (
-    <div
-      style={{
-        scrollSnapAlign: "start",
-        scrollSnapPointsY: "repeat(100vh)",
-        scrollSnapType: "y mandatory",
-      }}
-    >
+    <div>
       <Head>
         <title>exquiz.me - 실시간 퀴즈 플랫폼</title>
         <meta name="description" content="exquiz.me" />
@@ -61,7 +55,7 @@ const Home: NextPage = () => {
 
       <header>{NavIndex()}</header>
 
-      <main>
+      <main style={{ margin: "0px 10px" }}>
         <section>
           <div
             style={{
@@ -74,7 +68,7 @@ const Home: NextPage = () => {
                 height: "30vh",
                 display: "flex",
                 justifyContent: "space-between",
-                backgroundImage: "linear-gradient(to left,#F9B204, #fc7b1b)",
+                // backgroundImage: "linear-gradient(to left,#F9B204, #fc7b1b)",
               }}
             >
               <div
@@ -108,37 +102,6 @@ const Home: NextPage = () => {
                     퀴즈에 경험을 더하다<br></br> exquiz.me
                   </span>
                 </span>
-                <Link href="/play">
-                  <Button
-                    variant="outline"
-                    gradient={{ from: "orange", to: "red" }}
-                    component="a"
-                    rel="noopener noreferrer"
-                    href="/create"
-                    leftIcon={<Pencil size={32} />}
-                    styles={(theme) => ({
-                      root: {
-                        fontWeight: "bold",
-                        fontSize: 16,
-                        marginRight: 10,
-                        color: "orange",
-                        backgroundColor: "white",
-                        border: "2px solid orange",
-                        height: 42,
-
-                        "&:hover": {
-                          backgroundColor: theme.fn.darken("#FFFFFF", 0.05),
-                        },
-                      },
-
-                      leftIcon: {
-                        marginRight: 5,
-                      },
-                    })}
-                  >
-                    방 입장하기
-                  </Button>
-                </Link>
               </div>
             </div>
             <br></br>
@@ -205,31 +168,9 @@ const Home: NextPage = () => {
               방 생성하기
             </Button>
           </div>
-          <div style={{ height: "40vh" }}>
-            <p style={{ fontWeight: "bold", textAlign: "center" }}>
-              약 3,677개의 학교에서<br></br> exquiz.me를 사용중입니다.
-            </p>
-            <Center>
-              <div
-                style={{
-                  height: "5px",
-                  width: "30px",
-                  backgroundColor: "black",
-                }}
-              ></div>
-              <br></br>
-              <br></br>
-            </Center>
-            <Center style={{ textAlign: "center" }}>{SchoolList()}</Center>
-          </div>
         </section>
 
         <section>
-          <div style={{ height: "40vh" }}>
-            <p style={{ fontWeight: "bold", textAlign: "center" }}>
-              아래에서 간단히 체험해보세요.
-            </p>
-          </div>
           <div style={{ height: "40vh" }}>
             <p style={{ fontWeight: "bold", textAlign: "left" }}>
               - exquiz.me는 직관적인 문제 제작 툴을 제공합니다. 직접 해보세요!
@@ -238,7 +179,7 @@ const Home: NextPage = () => {
           </div>
         </section>
 
-        <div>
+        <section>
           <div style={{ height: "40vh" }}>
             <p style={{ fontWeight: "bold", textAlign: "right" }}>
               exquiz.me는 새로운 퀴즈 경험을 제시합니다 -
@@ -250,8 +191,9 @@ const Home: NextPage = () => {
               - exquiz.me는 재미있는 스코어보드와 통계를 제공합니다.
             </p>
           </div>
-        </div>
-        <div>
+        </section>
+
+        <section>
           <div style={{ height: "10vh" }}>
             <p style={{ fontWeight: "bold", textAlign: "center" }}>
               아래에서 나에게 가장 맞는 플랜을 선택해보세요.
@@ -259,102 +201,116 @@ const Home: NextPage = () => {
           </div>
 
           <div style={{ height: "50vh" }}>
-            <div style={{ width: 340, margin: "auto" }}>
-              <Card shadow="sm" p="lg">
-                <Card.Section></Card.Section>
-
-                <Group
-                  position="apart"
-                  style={{ marginBottom: 5, marginTop: theme.spacing.sm }}
+            <div style={{ margin: "auto" }}>
+              <Center style={{ margin: "0px 40px" }}>
+                <Card
+                  style={{ margin: "0px 10px", width: "40vw" }}
+                  shadow="sm"
+                  p="lg"
                 >
-                  <Text weight={500}>무료 플랜</Text>
-                </Group>
-
-                <Text
-                  size="sm"
-                  style={{ color: secondaryColor, lineHeight: 1.5 }}
-                >
-                  익스퀴즈미가 제공하는 무료 서비스 입니다.
-                </Text>
-
-                <Button
-                  variant="light"
-                  color="gray"
-                  fullWidth
-                  style={{ marginTop: 14 }}
-                >
-                  현재 이용 중
-                </Button>
-              </Card>
-              <Card shadow="sm" p="lg">
-                <Card.Section></Card.Section>
-
-                <Group
-                  position="apart"
-                  style={{ marginBottom: 5, marginTop: theme.spacing.sm }}
-                >
-                  <Text weight={500}>스탠다드 플랜 (실속형)</Text>
-                  <Badge color="blue" variant="light">
-                    30% 할인 특가
-                  </Badge>
-                </Group>
-
-                <Text
-                  size="sm"
-                  style={{ color: secondaryColor, lineHeight: 1.5 }}
-                >
-                  퀴즈 제작 및 참여의 필수적인 기능만 담아서 합리적인 가격에
-                  제공합니다.
-                </Text>
-                <Button
-                  variant="light"
-                  color="blue"
-                  fullWidth
-                  style={{ marginTop: 14 }}
-                >
-                  <span
-                    style={{
-                      color: "gray",
-                      textDecoration: "line-through",
-                    }}
+                  <Group
+                    position="apart"
+                    style={{ marginBottom: 5, marginTop: theme.spacing.sm }}
                   >
-                    월 5,990
-                  </span>{" "}
-                  &nbsp;→ 월 3,990원
-                </Button>
-              </Card>
-              <Card shadow="sm" p="lg">
-                <Card.Section></Card.Section>
+                    <Text style={{ display: "block" }} weight={500}>
+                      무료 플랜
+                    </Text>
+                    <Badge color="gray" variant="light">
+                      익스퀴즈미 회원 무료 제공
+                    </Badge>
+                  </Group>
 
-                <Group
-                  position="apart"
-                  style={{ marginBottom: 5, marginTop: theme.spacing.sm }}
-                >
-                  <Text weight={500}>프리미엄 플랜</Text>
-                  <Badge color="orange" variant="light">
-                    모든 서비스 이용 가능
-                  </Badge>
-                </Group>
+                  <Text
+                    size="sm"
+                    style={{ color: secondaryColor, lineHeight: 1.5 }}
+                  >
+                    익스퀴즈미가 제공하는 무료 서비스 입니다.
+                  </Text>
 
-                <Text
-                  size="sm"
-                  style={{ color: secondaryColor, lineHeight: 1.5 }}
+                  <Button
+                    variant="light"
+                    color="gray"
+                    fullWidth
+                    style={{ marginTop: 14 }}
+                  >
+                    현재 이용 중
+                  </Button>
+                </Card>
+                <Card
+                  style={{ margin: "0px 10px", width: "40vw" }}
+                  shadow="sm"
+                  p="lg"
                 >
-                  퀴즈 제작 및 참여의 모든 과정에서 최고의 서비스를 제공합니다.
-                </Text>
+                  <Group
+                    position="apart"
+                    style={{ marginBottom: 5, marginTop: theme.spacing.sm }}
+                  >
+                    <Text weight={500}>스탠다드 플랜 (실속형)</Text>
+                    <Badge color="blue" variant="light">
+                      30% 할인 특가
+                    </Badge>
+                  </Group>
 
-                <Button
-                  variant="light"
-                  color="orange"
-                  fullWidth
-                  style={{ marginTop: 14 }}
+                  <Text
+                    size="sm"
+                    style={{ color: secondaryColor, lineHeight: 1.5 }}
+                  >
+                    퀴즈 제작 및 참여의 필수적인 기능을 합리적인 가격에
+                    제공합니다.
+                  </Text>
+                  <Button
+                    variant="light"
+                    color="blue"
+                    fullWidth
+                    style={{ marginTop: 14 }}
+                  >
+                    <span
+                      style={{
+                        color: "gray",
+                        textDecoration: "line-through",
+                      }}
+                    >
+                      월 5,990
+                    </span>
+                    &nbsp;→ 월 3,990원
+                  </Button>
+                </Card>
+                <Card
+                  style={{ margin: "0px 10px", width: "40vw" }}
+                  shadow="sm"
+                  p="lg"
                 >
-                  월 7,990원
-                </Button>
-              </Card>
+                  <Group
+                    position="apart"
+                    style={{ marginBottom: 5, marginTop: theme.spacing.sm }}
+                  >
+                    <Text weight={500}>프리미엄 플랜</Text>
+                    <Badge color="orange" variant="light">
+                      모든 서비스 이용 가능
+                    </Badge>
+                  </Group>
+
+                  <Text
+                    size="sm"
+                    style={{ color: secondaryColor, lineHeight: 1.5 }}
+                  >
+                    퀴즈 제작 및 참여의 모든 과정에서 최고의 서비스를
+                    제공합니다.
+                  </Text>
+
+                  <Button
+                    variant="light"
+                    color="orange"
+                    fullWidth
+                    style={{ marginTop: 14 }}
+                  >
+                    월 7,990원
+                  </Button>
+                </Card>
+              </Center>
             </div>
           </div>
-        </div>
+        </section>
         <div
           style={{
             position: "fixed",
@@ -374,7 +330,7 @@ const Home: NextPage = () => {
       <footer className={styles.footer}>
         <a
           style={{ textDecoration: "none", color: "black" }}
-          href="https://retro5pect.tistory.com/"
+          href="/apiTest"
           target="_blank"
           rel="noopener noreferrer"
         >

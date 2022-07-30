@@ -7,45 +7,27 @@ import Link from "next/link";
 import NavCreate from "./components/navCreate";
 import Slide from "./components/slide";
 import axios from "axios";
+import { useRef } from "react";
 
 import {
   Button,
-  Grid,
-  Stepper,
   SimpleGrid,
-  Autocomplete,
   Tooltip,
-  NativeSelect,
-  Input,
-  TextInput,
   Textarea,
-  Navbar,
   ScrollArea,
   Center,
   Container,
   ThemeIcon,
   Checkbox,
-  Drawer,
   Group,
   Accordion,
   useMantineTheme,
-  AccordionControlProps,
   Box,
   ActionIcon,
-  Radio,
   Slider,
 } from "@mantine/core";
 
 import {
-  Emphasis,
-  FileX,
-  Login,
-  ReportMoney,
-  UserCircle,
-  Pencil,
-  Hash,
-  Database,
-  Tool,
   SquareCheck,
   Parentheses,
   QuestionMark,
@@ -61,7 +43,7 @@ import {
 // 85vh 20vw
 
 function form(idx: number) {
-  if (idx == -1) {
+  if (idx === -1) {
     return (
       <Container
         style={{
@@ -78,7 +60,7 @@ function form(idx: number) {
         </Container>
       </Container>
     );
-  } else if (idx == 0) {
+  } else if (idx === 0) {
     return (
       <Container
         style={{
@@ -91,7 +73,7 @@ function form(idx: number) {
         <Textarea placeholder="슬라이드 내용을 입력하세요." label="" required />
       </Container>
     );
-  } else if (idx == 1) {
+  } else if (idx === 1) {
     return (
       <Container
         style={{
@@ -104,33 +86,21 @@ function form(idx: number) {
         <Textarea placeholder="문제 내용을 입력하세요." label="" required />
         <br></br>
         <SimpleGrid cols={2}>
-          <div>
-            <div>
-              <Checkbox label="" />
-              <Textarea maxRows={2} placeholder="선지 1" label="" required />
-            </div>
-          </div>
-          <div>
-            {" "}
-            <div>
-              <Checkbox label="" />
-              <Textarea maxRows={2} placeholder="선지 2" label="" required />
-            </div>
-          </div>
-          <div>
-            {" "}
-            <div>
-              <Checkbox label="" />
-              <Textarea maxRows={2} placeholder="선지 3" label="" required />
-            </div>
-          </div>
-          <div>
-            {" "}
-            <div>
-              <Checkbox label="" />
-              <Textarea maxRows={2} placeholder="선지 4" label="" required />
-            </div>
-          </div>
+          <>
+            <Textarea maxRows={2} placeholder="선지 1" label="" required />
+          </>
+          <>
+            <Textarea maxRows={2} placeholder="선지 2" label="" required />
+          </>
+          <>
+            <Textarea maxRows={2} placeholder="선지 3" label="" required />
+          </>
+          <>
+            <Textarea maxRows={2} placeholder="선지 4" label="" required />
+          </>
+          {/* <Group position="center" mt="md">
+            <Button onClick={() => openRef.current()}>Select files</Button>
+          </Group> */}
         </SimpleGrid>
       </Container>
     );
@@ -223,9 +193,13 @@ function form(idx: number) {
           width: "100%",
           borderRadius: "10px",
           boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
+          display: "flex",
+          alignItems: "center",
         }}
       >
-        *제작 준비 중입니다.
+        <Container style={{ textAlign: "center" }}>
+          <p style={{ color: "gray" }}>2차 서비스 개발 시 배포 예정입니다</p>
+        </Container>
       </Container>
     );
   } else {
@@ -236,9 +210,13 @@ function form(idx: number) {
           width: "100%",
           borderRadius: "10px",
           boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
+          display: "flex",
+          alignItems: "center",
         }}
       >
-        *제작 준비 중입니다.
+        <Container style={{ textAlign: "center" }}>
+          <p style={{ color: "gray" }}>2차 서비스 개발 시 배포 예정입니다</p>
+        </Container>
       </Container>
     );
   }
@@ -310,33 +288,45 @@ function tabIconCode(idx: number) {
 
 // 빈 슬라이드 객관식 주관식 O/X 넌센스 다이나믹
 const Home: NextPage = () => {
-  let [quizTypeIdx, setQuizTypeIdx] = useState(-1);
+  let [dtypeIdx, setdtypeIdx] = useState(-1);
   const [progressActive, setProgressActive] = useState(-1);
 
   let quizSetExample = [
     {
-      quizType: "subjective",
-      quizContents: "가장 높은 산은 ()이다?",
+      answer: "-1",
+      description: "가장 높은 산은 ()이다?",
+      dtype: "subjective",
+      index: "-1",
+      picture: "",
+      problemsetId: "0",
+      scord: "0",
+      timLimit: "50",
+      title: "",
       selection: ["지리산", "북한산", "한라산", "설악산"],
-      answerNumber: ["1"],
-      scoredRate: "50",
-      timeLimit: "50",
     },
     {
-      quizType: "ox",
-      quizContents: "대한민국은 영어로 korea이다.",
+      answer: "-1",
+      description: "대한민국은 영어로 korea이다.",
+      dtype: "ox",
+      index: "-1",
+      picture: "",
+      problemsetId: "0",
+      scord: "0",
+      timLimit: "50",
+      title: "",
       selection: ["O", "X"],
-      answerNumber: ["0"],
-      scoredRate: "50",
-      timeLimit: "50",
     },
     {
-      quizType: "objective",
-      quizContents: "소프트웨어 마에스트로가 있는 건물은?",
+      answer: "2",
+      description: "소프트웨어 마에스트로가 있는 건물은?",
+      dtype: "objective",
+      index: "-1",
+      picture: "",
+      problemsetId: "0",
+      scord: "0",
+      timLimit: "50",
+      title: "",
       selection: ["센터필드", "아남타워", "황해주택", "인하주택"],
-      answerNumber: ["2"],
-      scoredRate: "50",
-      timeLimit: "50",
     },
   ];
 
@@ -412,7 +402,7 @@ const Home: NextPage = () => {
                     <Tooltip key={i} label={tabTooltip[i]}>
                       <ThemeIcon
                         onClick={() => {
-                          setQuizTypeIdx((prevState) => i);
+                          setdtypeIdx((prevState) => i);
                           setTabClickedState([
                             i == 0 ? 1 : 0,
                             i == 1 ? 1 : 0,
@@ -445,7 +435,7 @@ const Home: NextPage = () => {
             </Container>
           </Center>
           {/* Main Form */}
-          {form(quizTypeIdx)}
+          {form(dtypeIdx)}
           {/* Main Form */}
         </section>
       </main>
@@ -469,7 +459,7 @@ const Home: NextPage = () => {
               style={{ width: "20vw", height: "60vh", textAlign: "center" }}
             >
               <Accordion chevronSize={0} variant="separated">
-                {quizSet.map((quiz, i) => {
+                {quizSet.map(({ dtype, description }, i) => {
                   return (
                     <Accordion.Item
                       style={{
@@ -479,12 +469,8 @@ const Home: NextPage = () => {
                       value={(i + 1).toString()}
                     >
                       <Box sx={{ display: "flex", alignItems: "center" }}>
-                        <Accordion.Control icon={sideIconCode(quiz.quizType)}>
-                          {"Q".concat(
-                            (i + 1).toString(),
-                            ". ",
-                            quiz.quizContents
-                          )}
+                        <Accordion.Control icon={sideIconCode(dtype)}>
+                          {`Q${i + 1}. ${description}`}
                         </Accordion.Control>
 
                         <ActionIcon
@@ -510,7 +496,7 @@ const Home: NextPage = () => {
                           styles={{ markLabel: { display: "none" } }}
                         />
                         <Slider
-                          // {rtColor(quiz.quizType)}
+                          // {rtColor(quiz.dtype)}
                           color={"gray"}
                           label={(val) =>
                             MARKSCORE.find((mark) => mark.value === val)?.label
@@ -535,16 +521,21 @@ const Home: NextPage = () => {
               rel="noopener noreferrer"
               leftIcon={<Plus size={32} />}
               onClick={() => {
-                let copy = [...quizSet];
-                copy.unshift({
-                  quizType: "objective",
-                  quizContents: "",
-                  selection: [],
-                  answerNumber: [],
-                  scoredRate: "50",
-                  timeLimit: "50",
-                });
-                setQuizSet(copy);
+                setQuizSet([
+                  ...quizSet,
+                  {
+                    answer: "-1",
+                    description: "",
+                    dtype: "subjective",
+                    index: "-1",
+                    picture: "",
+                    problemsetId: "0",
+                    scord: "0",
+                    timLimit: "50",
+                    title: "",
+                    selection: [],
+                  },
+                ]);
               }}
               styles={(theme) => ({
                 root: {
