@@ -123,6 +123,7 @@ const Home: NextPage = () => {
       <main>
         <section>
           <div> retro5pect's customized swagger-ui</div>
+          <p>상빈이형의 퀴즈 배포 파트</p>
           <Accordion defaultValue="customization" variant="separated">
             <Accordion.Item
               value="customization"
@@ -192,10 +193,19 @@ const Home: NextPage = () => {
                     componentDidMount();
                   }}
                 >
-                  POST
+                  GET
                 </Button>
               </Accordion.Panel>
-
+            </Accordion.Item>
+          </Accordion>
+          <p>민겸이형의 퀴즈 제작 파트</p>
+          <Accordion defaultValue="customization" variant="separated">
+            <Accordion.Item
+              value="customization"
+              style={{
+                boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.05)",
+              }}
+            >
               <Accordion.Control icon={<CloudDownload />}>
                 POST /api/problemsets/hostID (호스트가 가지고 있는 problemset
                 목록 조회){" "}
