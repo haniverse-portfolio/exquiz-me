@@ -150,24 +150,34 @@ const Home: NextPage = () => {
                   >
                     GET
                   </Button>
-                  <p>closingMent : </p>
-                  {problemset[0].closingMent}
-                  <p>createAt : </p>
-                  <p>{problemset[0].createdAt}</p>
-                  <p>deleted : </p>
-                  <p>{problemset[0].deleted}</p>
-                  <p>deletedAt : </p>
-                  <p>{problemset[0].deletedAt}</p>
-                  <p>description : </p>
-                  <p>{problemset[0].description}</p>
+                  <p>방에 참가한 학생1 정보</p>
+                  {getData[0].id}
+                  <p>UUID : </p>
+                  {getData[0].uuid}
+                  <p>UUID : </p>
+                  {getData[0].name}
+                  <p>UUID : </p>
+                  {getData[0].nickname}
+                  <p>UUID : </p>
+                  {getData[0].entryDate}
+                  <p>UUID : </p>
+                  {getData[0].currentScore}
+                  <br></br>
+                  <p>이제 roomDto 정보입니다.</p>
                   <p>id : </p>
-                  <p> {problemset[0].id}</p>
-                  <p>title : </p>
-                  <p> {problemset[0].title}</p>
-                  <p>totalParticipant : </p>
-                  <p> {problemset[0].totalParticipant}</p>
-                  <p>updatedAt : </p>
-                  <p> {problemset[0].updatedAt}</p>
+                  {getData[0].roomDto.id}
+                  <p>id : </p>
+                  {getData[0].roomDto.pin}
+                  <p>id : </p>
+                  {getData[0].roomDto.maxParticipantCount}
+                  <p>id : </p>
+                  {getData[0].roomDto.startDate}
+                  <p>id : </p>
+                  {getData[0].roomDto.endDate}
+                  <p>id : </p>
+                  {getData[0].roomDto.currentState}
+                  <p>id : </p>
+                  {getData[0].roomDto.currentProblemNum}
                 </>
               </Accordion.Panel>
 
@@ -207,34 +217,24 @@ const Home: NextPage = () => {
                 >
                   GET
                 </Button>
-                <p>방에 참가한 학생1 정보</p>
-                {getData[0].id}
-                <p>UUID : </p>
-                {getData[0].uuid}
-                <p>UUID : </p>
-                {getData[0].name}
-                <p>UUID : </p>
-                {getData[0].nickname}
-                <p>UUID : </p>
-                {getData[0].entryDate}
-                <p>UUID : </p>
-                {getData[0].currentScore}
-                <br></br>
-                <p>이제 roomDto 정보입니다.</p>
+                <p>closingMent : </p>
+                {problemset[0].closingMent}
+                <p>createAt : </p>
+                <p>{problemset[0].createdAt}</p>
+                <p>deleted : </p>
+                <p>{problemset[0].deleted}</p>
+                <p>deletedAt : </p>
+                <p>{problemset[0].deletedAt}</p>
+                <p>description : </p>
+                <p>{problemset[0].description}</p>
                 <p>id : </p>
-                {getData[0].roomDto.id}
-                <p>id : </p>
-                {getData[0].roomDto.pin}
-                <p>id : </p>
-                {getData[0].roomDto.maxParticipantCount}
-                <p>id : </p>
-                {getData[0].roomDto.startDate}
-                <p>id : </p>
-                {getData[0].roomDto.endDate}
-                <p>id : </p>
-                {getData[0].roomDto.currentState}
-                <p>id : </p>
-                {getData[0].roomDto.currentProblemNum}
+                <p> {problemset[0].id}</p>
+                <p>title : </p>
+                <p> {problemset[0].title}</p>
+                <p>totalParticipant : </p>
+                <p> {problemset[0].totalParticipant}</p>
+                <p>updatedAt : </p>
+                <p> {problemset[0].updatedAt}</p>
               </Accordion.Panel>
             </Accordion.Item>
           </Accordion>
