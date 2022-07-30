@@ -150,18 +150,24 @@ const Home: NextPage = () => {
                   >
                     GET
                   </Button>
+                  <p>closingMent : </p>
                   {problemset[0].closingMent}
-                  {problemset[0].createdAt}
-                  {problemset[0].deleted}
-                  {problemset[0].deletedAt}
-                  {problemset[0].description}
-                  {problemset[0].id}
-                  {problemset[0].problems}
-                  {problemset[0].problemsetTags}
-                  {problemset[0].rooms}
-                  {problemset[0].title}
-                  {problemset[0].totalParticipant}
-                  {problemset[0].updatedAt}
+                  <p>createAt : </p>
+                  <p>{problemset[0].createdAt}</p>
+                  <p>deleted : </p>
+                  <p>{problemset[0].deleted}</p>
+                  <p>deletedAt : </p>
+                  <p>{problemset[0].deletedAt}</p>
+                  <p>description : </p>
+                  <p>{problemset[0].description}</p>
+                  <p>id : </p>
+                  <p> {problemset[0].id}</p>
+                  <p>title : </p>
+                  <p> {problemset[0].title}</p>
+                  <p>totalParticipant : </p>
+                  <p> {problemset[0].totalParticipant}</p>
+                  <p>updatedAt : </p>
+                  <p> {problemset[0].updatedAt}</p>
                 </>
               </Accordion.Panel>
 
