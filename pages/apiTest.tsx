@@ -121,8 +121,13 @@ const Home: NextPage = () => {
       </Head>
 
       <main>
-        <section>
-          <div> retro5pect's customized swagger-ui</div>
+        <section style={{ margin: "0px 20px" }}>
+          <Center>
+            <div style={{ fontSize: "30px", fontWeight: "bold" }}>
+              {" "}
+              레트로스펙트의 private 스웩한-ui
+            </div>
+          </Center>
           <p>상빈이형의 퀴즈 배포 파트</p>
           <Accordion defaultValue="customization" variant="separated">
             <Accordion.Item
@@ -151,19 +156,8 @@ const Home: NextPage = () => {
                   >
                     GET
                   </Button>
-                  <p>방에 참가한 학생1 정보</p>
-                  <p>ID : </p>
-                  {getData[0].id}
-                  <p>UUID : </p>
-                  {getData[0].uuid}
-                  <p>Name : </p>
-                  {getData[0].name}
-                  <p>Nickname : </p>
-                  {getData[0].nickname}
-                  <p>Entrydate : </p>
-                  {getData[0].entryDate}
-                  <p>CurrentScore : </p>
-                  {getData[0].currentScore}
+                  <Center></Center>
+
                   <br></br>
                   <p>이제 roomDto 정보입니다.</p>
                   <p>id : </p>
