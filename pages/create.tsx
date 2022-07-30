@@ -537,7 +537,9 @@ const Home: NextPage = () => {
                   },
                 ]);
               }}
-              styles={(theme) => ({
+              styles={(theme: {
+                fn: { darken: (arg0: string, arg1: number) => any };
+              }) => ({
                 root: {
                   display: "block",
                   fontWeight: "bold",
@@ -568,7 +570,9 @@ const Home: NextPage = () => {
                 rel="noopener noreferrer"
                 href="#"
                 leftIcon={<Check size={32} />}
-                styles={(theme) => ({
+                styles={(theme: {
+                  fn: { darken: (arg0: string, arg1: number) => any };
+                }) => ({
                   root: {
                     display: "block",
                     fontWeight: "bold",

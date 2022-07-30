@@ -82,7 +82,7 @@ function NavCreate() {
           rel="noopener noreferrer"
           href="/"
           leftIcon={<Emphasis size={32} />}
-          styles={(theme) => ({
+          styles={(theme: any) => ({
             root: {
               fontWeight: "bold",
               fontSize: 16,
@@ -126,7 +126,9 @@ function NavCreate() {
           rel="noopener noreferrer"
           href="#"
           leftIcon={<ReportMoney size={32} />}
-          styles={(theme) => ({
+          styles={(theme: {
+            fn: { darken: (arg0: string, arg1: number) => any };
+          }) => ({
             root: {
               fontWeight: "bold",
               fontSize: 16,
@@ -156,7 +158,9 @@ function NavCreate() {
           rel="noopener noreferrer"
           href="/login"
           leftIcon={<UserCircle size={32} />}
-          styles={(theme) => ({
+          styles={(theme: {
+            fn: { darken: (arg0: string, arg1: number) => any };
+          }) => ({
             root: {
               fontWeight: "bold",
               fontSize: 16,
