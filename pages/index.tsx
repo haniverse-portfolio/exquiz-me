@@ -113,7 +113,9 @@ const Home: NextPage = () => {
               rel="noopener noreferrer"
               href="/create"
               leftIcon={<Pencil size={32} />}
-              styles={(theme) => ({
+              styles={(theme: {
+                fn: { darken: (arg0: string, arg1: number) => any };
+              }) => ({
                 root: {
                   fontWeight: "bold",
                   fontSize: 16,
@@ -145,7 +147,9 @@ const Home: NextPage = () => {
               rel="noopener noreferrer"
               href="/#"
               leftIcon={<Login size={32} />}
-              styles={(theme) => ({
+              styles={(theme: {
+                fn: { darken: (arg0: string, arg1: number) => any };
+              }) => ({
                 root: {
                   fontWeight: "bold",
                   fontSize: 16,
