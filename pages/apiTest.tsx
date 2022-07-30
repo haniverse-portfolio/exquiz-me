@@ -156,7 +156,19 @@ const Home: NextPage = () => {
                   >
                     GET
                   </Button>
-
+                  <p>방에 참가한 학생1 정보</p>
+                  <p>ID : </p>
+                  {getData[0].id}
+                  <p>UUID : </p>
+                  {getData[0].uuid}
+                  <p>Name : </p>
+                  {getData[0].name}
+                  <p>Nickname : </p>
+                  {getData[0].nickname}
+                  <p>Entrydate : </p>
+                  {getData[0].entryDate}
+                  <p>CurrentScore : </p>
+                  {getData[0].currentScore}
                   <br></br>
                   <p>이제 roomDto 정보입니다.</p>
                   <p>id : </p>

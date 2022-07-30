@@ -484,7 +484,10 @@ const Home: NextPage = () => {
                           <Trash size={16} />
                         </ActionIcon>
                       </Box>
-                      <Accordion.Panel>
+                      <Accordion.Panel
+                        style={{ height: "0px" }}
+                      ></Accordion.Panel>
+                      {/* <Accordion.Panel>
                         <Slider
                           color={"gray"}
                           label={(val) =>
@@ -506,7 +509,7 @@ const Home: NextPage = () => {
                           marks={MARKSCORE}
                           styles={{ markLabel: { display: "none" } }}
                         />
-                      </Accordion.Panel>
+                      </Accordion.Panel> */}
                     </Accordion.Item>
                   );
                 })}
