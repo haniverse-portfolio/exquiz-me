@@ -25,6 +25,7 @@ import {
   Box,
   ActionIcon,
   Slider,
+  BackgroundImage,
 } from "@mantine/core";
 
 import {
@@ -42,7 +43,7 @@ import {
 } from "tabler-icons-react";
 // 85vh 20vw
 
-function form(idx: number) {
+function form(idx: number, array: any) {
   if (idx === -1) {
     return (
       <Container
@@ -56,7 +57,7 @@ function form(idx: number) {
         }}
       >
         <Container style={{ textAlign: "center" }}>
-          <p>문제를 추가하세요!</p>
+          <p style={{ color: "gray" }}>문제를 추가 해주세요.</p>
         </Container>
       </Container>
     );
@@ -70,7 +71,12 @@ function form(idx: number) {
           boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
         }}
       >
-        <Textarea placeholder="슬라이드 내용을 입력하세요." label="" required />
+        <Textarea
+          style={{}}
+          placeholder="슬라이드 내용을 입력하세요."
+          label=""
+          required
+        />
       </Container>
     );
   } else if (idx === 1) {
@@ -118,31 +124,20 @@ function form(idx: number) {
         <br></br>
         <SimpleGrid cols={2}>
           <div>
-            <div>
-              <Checkbox label="" />
-              <Textarea maxRows={2} placeholder="선지 1" label="" required />
-            </div>
+            <Checkbox label="" />
+            <Textarea maxRows={2} placeholder="선지 1" label="" required />
           </div>
           <div>
-            {" "}
-            <div>
-              <Checkbox label="" />
-              <Textarea maxRows={2} placeholder="선지 2" label="" required />
-            </div>
+            <Checkbox label="" />
+            <Textarea maxRows={2} placeholder="선지 2" label="" required />
           </div>
           <div>
-            {" "}
-            <div>
-              <Checkbox label="" />
-              <Textarea maxRows={2} placeholder="선지 3" label="" required />
-            </div>
+            <Checkbox label="" />
+            <Textarea maxRows={2} placeholder="선지 3" label="" required />
           </div>
           <div>
-            {" "}
-            <div>
-              <Checkbox label="" />
-              <Textarea maxRows={2} placeholder="선지 4" label="" required />
-            </div>
+            <Checkbox label="" />
+            <Textarea maxRows={2} placeholder="선지 4" label="" required />
           </div>
         </SimpleGrid>
       </Container>
@@ -223,6 +218,13 @@ function form(idx: number) {
 }
 
 function colorRt(type: string) {
+  let t = ["empty", "objective", "objective", "ox", "nonsense", "dynamic"];
+  let lg = [
+    "gray",
+    "linear-gradient(to right, #fa584b, #fb7b1b)",
+    "linear-gradient(to right, #4A73F0, #3A8DDA)",
+    "linear-gradient(to right, #23B87F, #79C72F)",
+  ];
   if (type == "subjective")
     return (
       <ThemeIcon
@@ -379,10 +381,10 @@ const Home: NextPage = () => {
         <meta name="description" content="exquiz.me" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      {/* Main Bar */}
       {/* Navigation Bar */}
       <header>{NavCreate()}</header>
       {/* Navigation Bar */}
-      {/* Main Bar */}
       <main style={{ marginLeft: 20, marginRight: 20 }}>
         <section style={{ height: "75vh", margin: "5vh 20vw" }}>
           <Center>
@@ -404,12 +406,12 @@ const Home: NextPage = () => {
                         onClick={() => {
                           setdtypeIdx((prevState) => i);
                           setTabClickedState([
-                            i == 0 ? 1 : 0,
-                            i == 1 ? 1 : 0,
-                            i == 2 ? 1 : 0,
-                            i == 3 ? 1 : 0,
-                            i == 4 ? 1 : 0,
-                            i == 5 ? 1 : 0,
+                            i === 0 ? 1 : 0,
+                            i === 1 ? 1 : 0,
+                            i === 2 ? 1 : 0,
+                            i === 3 ? 1 : 0,
+                            i === 4 ? 1 : 0,
+                            i === 5 ? 1 : 0,
                           ]);
                         }}
                         key={i}
@@ -435,7 +437,7 @@ const Home: NextPage = () => {
             </Container>
           </Center>
           {/* Main Form */}
-          {form(dtypeIdx)}
+          {form(dtypeIdx, quizSet)}
           {/* Main Form */}
         </section>
       </main>
@@ -458,7 +460,11 @@ const Home: NextPage = () => {
             <ScrollArea
               style={{ width: "20vw", height: "60vh", textAlign: "center" }}
             >
-              <Accordion chevronSize={0} variant="separated">
+              <Accordion
+                chevronSize={0}
+                variant="separated"
+                transitionDuration={0}
+              >
                 {quizSet.map(({ dtype, description }, i) => {
                   return (
                     <Accordion.Item
@@ -484,9 +490,6 @@ const Home: NextPage = () => {
                           <Trash size={16} />
                         </ActionIcon>
                       </Box>
-                      <Accordion.Panel
-                        style={{ height: "0px" }}
-                      ></Accordion.Panel>
                       {/* <Accordion.Panel>
                         <Slider
                           color={"gray"}
@@ -602,6 +605,7 @@ const Home: NextPage = () => {
           </div>
         </section>
       </div>
+
       {/* Slide - Side Bar */}
     </div>
   );

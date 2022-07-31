@@ -46,25 +46,20 @@ function NavCreate() {
         transitionTimingFunction="ease"
         opened={opened}
         onClose={() => setOpened(false)}
-        title="퀴즈 설정"
         position="top"
         size="100%"
       >
-        <Container
-          style={{ display: "flex", alignItems: "center", textAlign: "center" }}
-        >
+        <Container style={{ display: "flex", alignItems: "center" }}>
           <Container style={{ textAlign: "center" }}>
             <br />
             <TextInput
               placeholder="퀴즈 제목을 입력해주세요"
               label="퀴즈 제목"
-              required
             />
             <br />
             <TextInput
               placeholder="퀴즈 설명을 입력해주세요"
               label="퀴즈 설명"
-              required
             />
             <br />
             <Select
