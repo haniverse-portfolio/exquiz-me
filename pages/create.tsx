@@ -46,49 +46,22 @@ import {
 function form(idx: number, array: any) {
   if (idx === -1) {
     return (
-      <Container
-        style={{
-          height: "500px",
-          width: "100%",
-          borderRadius: "10px",
-          boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
-        <Container style={{ textAlign: "center" }}>
-          <p style={{ color: "gray" }}>문제를 추가 해주세요.</p>
-        </Container>
+      <Container style={{ textAlign: "center" }}>
+        <p style={{ color: "gray" }}>문제를 추가 해주세요.</p>
       </Container>
     );
   } else if (idx === 0) {
     return (
-      <Container
-        style={{
-          height: "500px",
-          width: "100%",
-          borderRadius: "10px",
-          boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
-        }}
-      >
-        <Textarea
-          style={{}}
-          placeholder="슬라이드 내용을 입력하세요."
-          label=""
-          required
-        />
-      </Container>
+      <Textarea
+        style={{}}
+        placeholder="슬라이드 내용을 입력하세요."
+        label=""
+        required
+      />
     );
   } else if (idx === 1) {
     return (
-      <Container
-        style={{
-          height: "500px",
-          width: "100%",
-          borderRadius: "10px",
-          boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
-        }}
-      >
+      <>
         <Textarea placeholder="문제 내용을 입력하세요." label="" required />
         <br></br>
         <SimpleGrid cols={2}>
@@ -108,18 +81,11 @@ function form(idx: number, array: any) {
             <Button onClick={() => openRef.current()}>Select files</Button>
           </Group> */}
         </SimpleGrid>
-      </Container>
+      </>
     );
   } else if (idx == 2) {
     return (
-      <Container
-        style={{
-          height: "500px",
-          width: "100%",
-          borderRadius: "10px",
-          boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
-        }}
-      >
+      <>
         <Textarea placeholder="문제 내용을 입력하세요." label="" required />
         <br></br>
         <SimpleGrid cols={2}>
@@ -140,18 +106,11 @@ function form(idx: number, array: any) {
             <Textarea maxRows={2} placeholder="선지 4" label="" required />
           </div>
         </SimpleGrid>
-      </Container>
+      </>
     );
   } else if (idx == 3) {
     return (
-      <Container
-        style={{
-          height: "500px",
-          width: "100%",
-          borderRadius: "10px",
-          boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
-        }}
-      >
+      <>
         <Textarea placeholder="문제 내용을 입력하세요." label="" required />
         <br></br>
         <Center>
@@ -178,41 +137,21 @@ function form(idx: number, array: any) {
             X
           </Button>
         </Center>
-      </Container>
+      </>
     );
   } else if (idx == 4) {
     return (
-      <Container
-        style={{
-          height: "500px",
-          width: "100%",
-          borderRadius: "10px",
-          boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
-        <Container style={{ textAlign: "center" }}>
-          <p style={{ color: "gray" }}>2차 서비스 개발 시 배포 예정입니다</p>
-        </Container>
+      <Container style={{ textAlign: "center" }}>
+        <p style={{ color: "gray" }}>2차 서비스 개발 시 배포 예정입니다</p>
       </Container>
     );
   } else {
     return (
-      <Container
-        style={{
-          height: "500px",
-          width: "100%",
-          borderRadius: "10px",
-          boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
-          display: "flex",
-          alignItems: "center",
-        }}
-      >
+      <>
         <Container style={{ textAlign: "center" }}>
           <p style={{ color: "gray" }}>2차 서비스 개발 시 배포 예정입니다</p>
         </Container>
-      </Container>
+      </>
     );
   }
 }
@@ -386,7 +325,7 @@ const Home: NextPage = () => {
       <header>{NavCreate()}</header>
       {/* Navigation Bar */}
       <main style={{ marginLeft: 20, marginRight: 20 }}>
-        <section style={{ height: "75vh", margin: "5vh 20vw" }}>
+        <section style={{ height: "75vh" }}>
           <Center>
             <Container
               style={{
@@ -437,7 +376,17 @@ const Home: NextPage = () => {
             </Container>
           </Center>
           {/* Main Form */}
-          {form(dtypeIdx, quizSet)}
+
+          <Container
+            style={{
+              height: "60vh",
+              width: "100%",
+              borderRadius: "10px",
+              boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
+            }}
+          >
+            {form(dtypeIdx, quizSet)}
+          </Container>
           {/* Main Form */}
         </section>
       </main>
@@ -490,29 +439,6 @@ const Home: NextPage = () => {
                           <Trash size={16} />
                         </ActionIcon>
                       </Box>
-                      {/* <Accordion.Panel>
-                        <Slider
-                          color={"gray"}
-                          label={(val) =>
-                            MARKSTIME.find((mark) => mark.value === val)?.label
-                          }
-                          defaultValue={50}
-                          step={25}
-                          marks={MARKSTIME}
-                          styles={{ markLabel: { display: "none" } }}
-                        />
-                        <Slider
-                          // {rtColor(quiz.dtype)}
-                          color={"gray"}
-                          label={(val) =>
-                            MARKSCORE.find((mark) => mark.value === val)?.label
-                          }
-                          defaultValue={50}
-                          step={25}
-                          marks={MARKSCORE}
-                          styles={{ markLabel: { display: "none" } }}
-                        />
-                      </Accordion.Panel> */}
                     </Accordion.Item>
                   );
                 })}
@@ -612,43 +538,3 @@ const Home: NextPage = () => {
 };
 
 export default Home;
-
-{
-  /* <button
-                  onClick={() => {
-                    axios
-                      .get("http://localhost:8081/api/test", {
-                        params: { str: "abcdefg!" },
-                      })
-                      .then((result) => {
-                        setTmp(result.data.str);
-                        alert(result.data.str);
-                      })
-                      .catch((error) => {
-                        alert(error);
-                      });
-                  }}
-                >
-                  입력
-                </button> */
-}
-
-{
-  /*      {글제목.map(function (a, i) {
-        return (
-          <div className="list" key={i}>
-            <h4 onClick={()=>{setModal(true); setTitle(i)}}>{글제목[i]}
-              <span onClick={(e) => {e.stopPropagation(); sec[i](value[i] + 1);}}>
-                👍</span>{value[i]}
-            </h4>
-            <p>2월 17일 발행</p>
-            <button onClick={()=>{let copy = [...글제목]; copy.splice(i, 1); 글제목변경(copy)}}>삭제</button>
-          </div>
-        );
-      })}
-      <input onChange={(e)=>{입력값변경(e.target.value);}} />
-      <button onClick={()=>{let copy = [...글제목]; copy.unshift(입력값); 글제목변경(copy)}} >
-      글발행 </button>
-
-    {modal == true ? <Modal title={title} 글제목={글제목}/> : null}*/
-}

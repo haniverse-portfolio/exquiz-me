@@ -213,7 +213,7 @@ const Home: NextPage = () => {
               }}
             >
               <Accordion.Control icon={<CloudDownload />}>
-                POST /api/problemsets/hostID (호스트가 가지고 있는 problemset
+                GET /api/problemsets/hostID (호스트가 가지고 있는 problemset
                 목록 조회){" "}
               </Accordion.Control>
 
@@ -251,6 +251,33 @@ const Home: NextPage = () => {
                 <p> {problemset[0].totalParticipant}</p>
                 <p>updatedAt : </p>
                 <p> {problemset[0].updatedAt}</p>
+              </Accordion.Panel>
+
+              <Accordion.Control icon={<CloudDownload />}>
+                POST /api/problemset (makeProblemset){" "}
+              </Accordion.Control>
+
+              <Accordion.Panel>
+                {" "}
+                <Button
+                  onClick={() => {
+                    axios
+                      .post("https://prod.exquiz.net/api/problemset", {
+                        closingMent: "끝났으니 나가라",
+                        description: "설명설명",
+                        hostID: 1,
+                        title: "제목제목",
+                      })
+                      .then((result) => {
+                        alert("전송되었습니다!");
+                      })
+                      .catch((error) => {
+                        alert(error);
+                      });
+                  }}
+                >
+                  POST
+                </Button>
               </Accordion.Panel>
             </Accordion.Item>
           </Accordion>
