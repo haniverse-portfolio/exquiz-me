@@ -109,7 +109,7 @@ const Home: NextPage = () => {
   const problemsetData = {
     closingMent: "끝났으니 나가라",
     description: "설명설명",
-    hostID: 1,
+    hostId: 1,
     title: "제목제목",
   };
 
