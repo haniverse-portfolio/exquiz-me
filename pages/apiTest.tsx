@@ -261,19 +261,16 @@ const Home: NextPage = () => {
                 {" "}
                 <Button
                   onClick={() => {
-                    axios
-                      .post("https://prod.exquiz.net/api/problemset", {
+                    axios({
+                      method: "post",
+                      url: "https://prod.exquiz.net/api/problemset",
+                      data: {
                         closingMent: "끝났으니 나가라",
                         description: "설명설명",
                         hostID: 1,
                         title: "제목제목",
-                      })
-                      .then((result) => {
-                        alert("전송되었습니다!");
-                      })
-                      .catch((error) => {
-                        alert(error);
-                      });
+                      },
+                    });
                   }}
                 >
                   POST
