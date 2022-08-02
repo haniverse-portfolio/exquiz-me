@@ -225,365 +225,336 @@ const Home: NextPage = () => {
         <meta name="description" content="exquiz.me" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {/* Main Bar */}
-      {/* Navigation Bar */}
-      <header>{NavCreate()}</header>
-      {/* Navigation Bar */}
-      <main style={{ marginLeft: 20, marginRight: 20 }}>
-        <section style={{ height: "88vh" }}>
-          <Center style={{}}>
+      <Container style={{ height: "100vh", width: "100vw" }}>
+        {/* Main Bar */}
+        {/* Navigation Bar */}
+        <header>{NavCreate()}</header>
+        {/* Navigation Bar */}
+        <main style={{ marginLeft: 20, marginRight: 20 }}>
+          <section style={{ height: "88vh" }}>
+            <Center style={{}}>
+              <Container
+                style={{
+                  height: "7vh",
+                  width: "32vw",
+                  margin: "20px 20px",
+                  borderRadius: "10px",
+                  boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <Group>
+                  {tabColorCode.map((colorCode, i) => {
+                    return (
+                      <Tooltip key={i} label={tabTooltip[i]}>
+                        <ThemeIcon
+                          onClick={() => {
+                            setdtypeIdx((prevState) => i);
+                            let copy = quizSet;
+                            copy[currentIdx].dtype = idxToString[i];
+                            setQuizSet(copy);
+                          }}
+                          key={i}
+                          style={{
+                            boxShadow:
+                              dtypeIdx === i
+                                ? "inset 0 2px 4px 0 rgb(0 0 0 / 0.5)"
+                                : "0 10px 15px -3px rgb(0 0 0 / 0.05)",
+                            cursor: "pointer",
+                            borderRadius: "10px",
+                            height: "3vw",
+                            width: "3vw",
+                            color: "white",
+                            backgroundImage: colorCode.toString(),
+                          }}
+                        >
+                          {tabIconCode(i)}
+                        </ThemeIcon>
+                      </Tooltip>
+                    );
+                  })}
+                </Group>
+              </Container>
+            </Center>
+            {/* Main Form */}
             <Container
               style={{
-                height: "7vh",
-                width: "32vw",
-                margin: "20px 20px",
+                height: "70vh",
+                width: "40vw",
                 borderRadius: "10px",
                 boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
-                display: "flex",
-                alignItems: "center",
               }}
             >
-              <Group>
-                {tabColorCode.map((colorCode, i) => {
-                  return (
-                    <Tooltip key={i} label={tabTooltip[i]}>
-                      <ThemeIcon
-                        onClick={() => {
-                          setdtypeIdx((prevState) => i);
-                          let copy = quizSet;
-                          copy[currentIdx].dtype = idxToString[i];
-                          setQuizSet(copy);
-                        }}
-                        key={i}
-                        style={{
-                          boxShadow:
-                            dtypeIdx === i
-                              ? "inset 0 2px 4px 0 rgb(0 0 0 / 0.5)"
-                              : "0 10px 15px -3px rgb(0 0 0 / 0.05)",
-                          cursor: "pointer",
-                          borderRadius: "10px",
-                          height: "3vw",
-                          width: "3vw",
-                          color: "white",
-                          backgroundImage: colorCode.toString(),
-                        }}
-                      >
-                        {tabIconCode(i)}
-                      </ThemeIcon>
-                    </Tooltip>
-                  );
-                })}
-              </Group>
-            </Container>
-          </Center>
-          {/* Main Form */}
-          <Container
-            style={{
-              height: "70vh",
-              width: "40vw",
-              borderRadius: "10px",
-              boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
-            }}
-          >
-            {dtypeIdx === 0 ? (
-              <Textarea
-                style={{ textAlign: "center", fontSize: "5ems" }}
-                maxLength={1000}
-                minRows={17}
-                maxRows={2}
-                size="xl"
-                placeholder="슬라이드 내용을 입력하세요."
-                label=""
-                required
-              />
-            ) : null}
-            {dtypeIdx === 1 ? (
-              <>
+              {dtypeIdx === 0 ? (
                 <Textarea
-                  placeholder="문제 내용을 입력하세요."
-                  label={quizSet[currentIdx].description}
-                  required
-                />
-                <br></br>
-                <SimpleGrid cols={2}>
-                  {quizSet[currentIdx].options.map((selection, i) => {
-                    return (
-                      <div key={i}>
-                        <Checkbox label="" />
-                        <Textarea
-                          maxRows={2}
-                          placeholder={`선지 ${i + 1}`}
-                          label={quizSet[currentIdx].options[i].description}
-                          required
-                        />
-                      </div>
-                    );
-                  })}
-                </SimpleGrid>
-              </>
-            ) : null}
-            {dtypeIdx === 2 ? (
-              <>
-                <Textarea
-                  placeholder="문제 내용을 입력하세요."
+                  style={{ textAlign: "center", fontSize: "5ems" }}
+                  maxLength={1000}
+                  minRows={17}
+                  maxRows={2}
+                  size="xl"
+                  placeholder="슬라이드 내용을 입력하세요."
                   label=""
                   required
                 />
-                <br></br>
-                <SimpleGrid cols={2}>
-                  <div>
-                    <Checkbox label="" />
-                    <Textarea
-                      maxRows={2}
-                      placeholder="선지 1"
-                      label=""
-                      required
-                    />
-                  </div>
-                  <div>
-                    <Checkbox label="" />
-                    <Textarea
-                      maxRows={2}
-                      placeholder="선지 2"
-                      label=""
-                      required
-                    />
-                  </div>
-                  <div>
-                    <Checkbox label="" />
-                    <Textarea
-                      maxRows={2}
-                      placeholder="선지 3"
-                      label=""
-                      required
-                    />
-                  </div>
-                  <div>
-                    <Checkbox label="" />
-                    <Textarea
-                      maxRows={2}
-                      placeholder="선지 4"
-                      label=""
-                      required
-                    />
-                  </div>
-                </SimpleGrid>
-                <Switch onLabel="영어" offLabel="한글" size="xl" />
-              </>
-            ) : null}
-            {dtypeIdx === 3 ? (
-              <>
-                <Textarea
-                  placeholder="문제 내용을 입력하세요."
-                  label=""
-                  required
-                />
-                <br></br>
-                <Center>
-                  <Button
-                    style={{
-                      fontSize: "36px",
-                      height: "160px",
-                      width: "40%",
-                      marginRight: "20px",
-                    }}
-                    variant="outline"
-                  >
-                    O
-                  </Button>
-                  <Button
-                    style={{
-                      fontSize: "36px",
-                      height: "160px",
-                      width: "40%",
-                      color: "red",
-                    }}
-                    variant="outline"
-                  >
-                    X
-                  </Button>
-                </Center>
-              </>
-            ) : null}
+              ) : null}
+              {dtypeIdx === 1 ? (
+                <>
+                  <Textarea
+                    placeholder="문제 내용을 입력하세요."
+                    label={quizSet[currentIdx].description}
+                    required
+                  />
+                  <br></br>
+                  <SimpleGrid cols={2}>
+                    {quizSet[currentIdx].options.map((selection, i) => {
+                      return (
+                        <div key={i}>
+                          {/* 선택 박스 */}
+                          <Checkbox label="" />
+                          {/* 입력 영역 */}
+                          <Textarea
+                            maxRows={2}
+                            placeholder={`선지 ${i + 1}`}
+                            label={quizSet[currentIdx].options[i].description}
+                            required
+                          />
+                        </div>
+                      );
+                    })}
+                  </SimpleGrid>
+                </>
+              ) : null}
+              {dtypeIdx === 2 ? (
+                <>
+                  <Textarea
+                    placeholder="문제 내용을 입력하세요."
+                    label=""
+                    required
+                  />
+                  <br></br>
+                  <SimpleGrid cols={2}>
+                    <div>
+                      <Checkbox label="" />
+                      <Textarea
+                        maxRows={2}
+                        placeholder="선지 1"
+                        label=""
+                        required
+                      />
+                    </div>
+                    <div>
+                      <Checkbox label="" />
+                      <Textarea
+                        maxRows={2}
+                        placeholder="선지 2"
+                        label=""
+                        required
+                      />
+                    </div>
+                    <div>
+                      <Checkbox label="" />
+                      <Textarea
+                        maxRows={2}
+                        placeholder="선지 3"
+                        label=""
+                        required
+                      />
+                    </div>
+                    <div>
+                      <Checkbox label="" />
+                      <Textarea
+                        maxRows={2}
+                        placeholder="선지 4"
+                        label=""
+                        required
+                      />
+                    </div>
+                  </SimpleGrid>
+                  <Switch onLabel="영어" offLabel="한글" size="xl" />
+                </>
+              ) : null}
+              {dtypeIdx === 3 ? (
+                <>
+                  <Textarea
+                    placeholder="문제 내용을 입력하세요."
+                    label=""
+                    required
+                  />
+                  <br></br>
+                  <Center>
+                    <Button
+                      style={{
+                        fontSize: "36px",
+                        height: "160px",
+                        width: "40%",
+                        marginRight: "20px",
+                      }}
+                      variant="outline"
+                    >
+                      O
+                    </Button>
+                    <Button
+                      style={{
+                        fontSize: "36px",
+                        height: "160px",
+                        width: "40%",
+                        color: "red",
+                      }}
+                      variant="outline"
+                    >
+                      X
+                    </Button>
+                  </Center>
+                </>
+              ) : null}
 
-            {dtypeIdx === 4 ? (
-              <Container style={{ textAlign: "center" }}>
-                <p style={{ color: "gray" }}>
-                  2차 서비스 개발 시 배포 예정입니다
-                </p>
-              </Container>
-            ) : null}
-            {dtypeIdx === 5 ? (
-              <Container style={{ textAlign: "center" }}>
-                <p style={{ color: "gray" }}>
-                  2차 서비스 개발 시 배포 예정입니다
-                </p>
-              </Container>
-            ) : null}
-          </Container>
-          {/* Main Form */}
-        </section>
-      </main>
-      {/* Main Bar */}
-
-      {/* Slide - Side Bar */}
-      <div style={{ position: "fixed", left: 0, top: 100 }}>
-        <section style={{ height: "80vh", width: "24vw", marginLeft: "10px" }}>
-          <Center>
-            <ScrollArea
-              scrollbarSize={0}
-              style={{
-                width: "24vw",
-                height: "60vh",
-                textAlign: "center",
-              }}
-            >
-              <Center>
-                <Container style={{ margin: "0px 20px" }}>
-                  {quizSet.map(({ dtype, description }, i) => {
-                    return (
-                      <Container
-                        onClick={() => {
-                          if (currentIdx === i) {
-                          } else setCurrentIdx(i);
-
-                          setdtypeIdx((prevstate) =>
-                            stringToIdx(quizSet[i].dtype)
-                          );
-                        }}
-                        style={{
-                          cursor: "pointer",
-                          margin: "10px 0px",
-                          height: "5vh",
-                          width: "20vw",
-                          boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.05)",
-                          border: currentIdx === i ? "orange 2px solid" : "",
-                        }}
-                      >
-                        <Box sx={{ display: "flex", alignItems: "center" }}>
-                          <ThemeIcon style={{ backgroundColor: "white" }}>
-                            {sideIconCode(dtype)}
-                          </ThemeIcon>
-                          {`${i + 1}.${description}`}
-
-                          <ActionIcon
-                            onClick={() => {
-                              if (i === 0) return;
-                              let copy = [...quizSet];
-                              copy.splice(i, 1);
-                              setQuizSet(copy);
-                              if (currentIdx === i) {
-                                setCurrentIdx(i - 1);
-                              }
-                              // document.getElementById("acc").style.value = currentIdx;
-                            }}
-                            size="lg"
-                          >
-                            <Trash size={16} />
-                          </ActionIcon>
-                        </Box>
-                      </Container>
-                    );
-                  })}
+              {dtypeIdx === 4 ? (
+                <Container style={{ textAlign: "center" }}>
+                  <p style={{ color: "gray" }}>
+                    2차 서비스 개발 시 배포 예정입니다
+                  </p>
                 </Container>
-              </Center>
-            </ScrollArea>
-          </Center>
-          <Center>
-            <div style={{ marginTop: "10vh", width: "21vw" }}>
-              <Button
-                variant="outline"
-                gradient={{ from: "orange", to: "red" }}
-                component="a"
-                rel="noopener noreferrer"
-                leftIcon={<Plus size={32} />}
-                onClick={() => {
-                  setQuizSet([
-                    ...quizSet,
-                    {
-                      answer: "-1",
-                      description: "",
-                      dtype: idxToString[dtypeIdx],
-                      index: "-1",
-                      picture: "",
-                      problemsetId: "0",
-                      score: "0",
-                      timeLimit: "30",
-                      title: "",
-                      options: [
-                        {
-                          description: "",
-                          index: 0,
-                          picture: "",
-                          problemId: 0,
-                        },
-                        {
-                          description: "",
-                          index: 1,
-                          picture: "",
-                          problemId: 0,
-                        },
-                        {
-                          description: "",
-                          index: 2,
-                          picture: "string",
-                          problemId: 0,
-                        },
-                        {
-                          description: "",
-                          index: 3,
-                          picture: "string",
-                          problemId: 0,
-                        },
-                      ],
-                    },
-                  ]);
+              ) : null}
+              {dtypeIdx === 5 ? (
+                <Container style={{ textAlign: "center" }}>
+                  <p style={{ color: "gray" }}>
+                    2차 서비스 개발 시 배포 예정입니다
+                  </p>
+                </Container>
+              ) : null}
+            </Container>
+            {/* Main Form */}
+          </section>
+        </main>
+        {/* Main Bar */}
+
+        {/* Slide - Side Bar */}
+        <div style={{ position: "fixed", left: 0, top: 100 }}>
+          <section
+            style={{ height: "80vh", width: "24vw", marginLeft: "10px" }}
+          >
+            <Center>
+              <ScrollArea
+                scrollbarSize={0}
+                style={{
+                  width: "24vw",
+                  height: "60vh",
+                  textAlign: "center",
                 }}
-                styles={(theme: {
-                  fn: { darken: (arg0: string, arg1: number) => any };
-                }) => ({
-                  root: {
-                    display: "block",
-                    fontWeight: "bold",
-                    fontSize: 16,
-                    marginRight: 10,
-                    color: "orange",
-                    backgroundColor: "white",
-                    border: "2px solid orange",
-                    height: 42,
-
-                    "&:hover": {
-                      backgroundColor: theme.fn.darken("#FFFFFF", 0.05),
-                    },
-                  },
-
-                  leftIcon: {
-                    marginRight: 5,
-                  },
-                })}
               >
-                추가하기
-              </Button>
-              <Link href="/myQuiz">
+                <Center>
+                  <Container style={{ margin: "0px 20px" }}>
+                    {quizSet.map(({ dtype, description }, i) => {
+                      return (
+                        <Container
+                          onClick={() => {
+                            if (currentIdx === i) {
+                            } else setCurrentIdx(i);
+
+                            setdtypeIdx((prevstate) =>
+                              stringToIdx(quizSet[i].dtype)
+                            );
+                          }}
+                          style={{
+                            cursor: "pointer",
+                            margin: "10px 0px",
+                            height: "5vh",
+                            width: "20vw",
+                            boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.05)",
+                            border: currentIdx === i ? "orange 2px solid" : "",
+                          }}
+                        >
+                          <Box sx={{ display: "flex", alignItems: "center" }}>
+                            <ThemeIcon style={{ backgroundColor: "white" }}>
+                              {sideIconCode(dtype)}
+                            </ThemeIcon>
+                            {`${i + 1}.${description}`}
+
+                            <ActionIcon
+                              onClick={() => {
+                                if (i === 0) return;
+                                let copy = [...quizSet];
+                                copy.splice(i, 1);
+                                setQuizSet(copy);
+                                if (currentIdx === i) {
+                                  setCurrentIdx(i - 1);
+                                }
+                                // document.getElementById("acc").style.value = currentIdx;
+                              }}
+                              size="lg"
+                            >
+                              <Trash size={16} />
+                            </ActionIcon>
+                          </Box>
+                        </Container>
+                      );
+                    })}
+                  </Container>
+                </Center>
+              </ScrollArea>
+            </Center>
+            <Center>
+              <div style={{ marginTop: "10vh", width: "21vw" }}>
                 <Button
-                  variant="gradient"
+                  variant="outline"
                   gradient={{ from: "orange", to: "red" }}
                   component="a"
                   rel="noopener noreferrer"
-                  href="#"
-                  leftIcon={<Check size={32} />}
+                  leftIcon={<Plus size={32} />}
+                  onClick={() => {
+                    setQuizSet([
+                      ...quizSet,
+                      {
+                        answer: "-1",
+                        description: "",
+                        dtype: idxToString[dtypeIdx],
+                        index: "-1",
+                        picture: "",
+                        problemsetId: "0",
+                        score: "0",
+                        timeLimit: "30",
+                        title: "",
+                        options: [
+                          {
+                            description: "",
+                            index: 0,
+                            picture: "",
+                            problemId: 0,
+                          },
+                          {
+                            description: "",
+                            index: 1,
+                            picture: "",
+                            problemId: 0,
+                          },
+                          {
+                            description: "",
+                            index: 2,
+                            picture: "string",
+                            problemId: 0,
+                          },
+                          {
+                            description: "",
+                            index: 3,
+                            picture: "string",
+                            problemId: 0,
+                          },
+                        ],
+                      },
+                    ]);
+                  }}
                   styles={(theme: {
                     fn: { darken: (arg0: string, arg1: number) => any };
                   }) => ({
                     root: {
-                      marginTop: "1vh",
                       display: "block",
                       fontWeight: "bold",
                       fontSize: 16,
                       marginRight: 10,
-                      color: "white",
+                      color: "orange",
                       backgroundColor: "white",
-                      border: 0,
+                      border: "2px solid orange",
                       height: 42,
 
                       "&:hover": {
@@ -596,13 +567,48 @@ const Home: NextPage = () => {
                     },
                   })}
                 >
-                  완성하기
+                  추가하기
                 </Button>
-              </Link>
-            </div>
-          </Center>
-        </section>
-      </div>
+                <Link href="/myQuiz">
+                  <Button
+                    variant="gradient"
+                    gradient={{ from: "orange", to: "red" }}
+                    component="a"
+                    rel="noopener noreferrer"
+                    href="#"
+                    leftIcon={<Check size={32} />}
+                    styles={(theme: {
+                      fn: { darken: (arg0: string, arg1: number) => any };
+                    }) => ({
+                      root: {
+                        marginTop: "1vh",
+                        display: "block",
+                        fontWeight: "bold",
+                        fontSize: 16,
+                        marginRight: 10,
+                        color: "white",
+                        backgroundColor: "white",
+                        border: 0,
+                        height: 42,
+
+                        "&:hover": {
+                          backgroundColor: theme.fn.darken("#FFFFFF", 0.05),
+                        },
+                      },
+
+                      leftIcon: {
+                        marginRight: 5,
+                      },
+                    })}
+                  >
+                    완성하기
+                  </Button>
+                </Link>
+              </div>
+            </Center>
+          </section>
+        </div>
+      </Container>
 
       {/* Slide - Side Bar */}
     </div>

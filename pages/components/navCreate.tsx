@@ -16,6 +16,7 @@ import {
   Drawer,
   Select,
   Container,
+  ActionIcon,
 } from "@mantine/core";
 import {
   Emphasis,
@@ -25,6 +26,9 @@ import {
   UserCircle,
   Pencil,
   Archive,
+  Home2,
+  Menu2,
+  Folder,
 } from "tabler-icons-react";
 
 function NavCreate() {
@@ -76,7 +80,7 @@ function NavCreate() {
           component="a"
           rel="noopener noreferrer"
           href="/"
-          leftIcon={<Emphasis size={32} />}
+          leftIcon={<Home2 size={32} />}
           styles={(theme: any) => ({
             root: {
               fontWeight: "bold",
@@ -111,73 +115,13 @@ function NavCreate() {
         </Button>
       </span>
       <span>
-        <Button
-          onClick={() => {
-            alert("구독 연장까지 90일 남았습니다.");
-          }}
-          variant="outline"
-          gradient={{ from: "yellow", to: "orange" }}
-          component="a"
-          rel="noopener noreferrer"
-          href="#"
-          leftIcon={<ReportMoney size={32} />}
-          styles={(theme: {
-            fn: { darken: (arg0: string, arg1: number) => any };
-          }) => ({
-            root: {
-              fontWeight: "bold",
-              fontSize: 16,
-              paddingLeft: 15,
-              color: "orange",
-              border: "2px solid orange",
-              backgroundColor: "white",
-              height: 42,
+        <ActionIcon>
+          <Folder></Folder>
+        </ActionIcon>
 
-              "&:hover": {
-                backgroundColor: theme.fn.darken("#ffffff", 0.05),
-              },
-            },
-
-            leftIcon: {
-              marginRight: 5,
-            },
-          })}
-        >
-          멤버십
-        </Button>
-
-        <Button
-          variant="gradient"
-          gradient={{ from: "orange", to: "red" }}
-          component="a"
-          rel="noopener noreferrer"
-          href="/login"
-          leftIcon={<UserCircle size={32} />}
-          styles={(theme: {
-            fn: { darken: (arg0: string, arg1: number) => any };
-          }) => ({
-            root: {
-              fontWeight: "bold",
-              fontSize: 16,
-              marginLeft: 5,
-              marginRight: 10,
-              color: "white",
-              backgroundColor: "white",
-              border: 0,
-              height: 42,
-
-              "&:hover": {
-                backgroundColor: theme.fn.darken("#FFFFFF", 0.05),
-              },
-            },
-
-            leftIcon: {
-              marginRight: 5,
-            },
-          })}
-        >
-          로그인
-        </Button>
+        <ActionIcon>
+          <Menu2></Menu2>
+        </ActionIcon>
       </span>
     </div>
   );
