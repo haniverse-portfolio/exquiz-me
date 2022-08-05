@@ -1,6 +1,5 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import Link from "next/link";
 
@@ -11,6 +10,8 @@ import {
   Input,
   TextInput,
   Center,
+  Container,
+  Image,
 } from "@mantine/core";
 import {
   Emphasis,
@@ -20,12 +21,14 @@ import {
   UserCircle,
   Pencil,
   Archive,
+  Folders,
 } from "tabler-icons-react";
 
 function NavIndex() {
   return (
     <div
       style={{
+        height: "5vh",
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
@@ -96,6 +99,39 @@ function NavIndex() {
         </Button>
 
         <Button
+          className="bg-orange-500"
+          variant="gradient"
+          gradient={{ from: "orange", to: "red" }}
+          component="a"
+          rel="noopener noreferrer"
+          href="/#"
+          leftIcon={<Folders size={32} />}
+          onClick={() => {
+            alert("로그인 된 걸로 합시다");
+          }}
+          styles={(theme) => ({
+            root: {
+              fontWeight: "bold",
+              fontSize: 16,
+              marginLeft: 5,
+              color: "white",
+              backgroundColor: "orange",
+              border: 0,
+              height: 42,
+
+              "&:hover": {},
+            },
+
+            leftIcon: {
+              marginRight: 5,
+            },
+          })}
+        >
+          퀴즈 관리
+        </Button>
+
+        <Button
+          className="bg-orange-500"
           variant="gradient"
           gradient={{ from: "orange", to: "red" }}
           component="a"
@@ -112,13 +148,11 @@ function NavIndex() {
               marginLeft: 5,
               marginRight: 10,
               color: "white",
-              backgroundColor: "white",
+              backgroundColor: "orange",
               border: 0,
               height: 42,
 
-              "&:hover": {
-                backgroundColor: theme.fn.darken("#FFFFFF", 0.05),
-              },
+              "&:hover": {},
             },
 
             leftIcon: {

@@ -8,6 +8,9 @@
 ::-webkit-scrollbar {
   display: none;
 } */
+* {
+  font-family: "IBM Plex Sans KR", sans-serif !important;
+}
 
 html,
 body {
@@ -36,4 +39,8 @@ section {
   scroll-snap-align: start;
   text-align: center;
   position: relative;
+}
+
+h2 {
+  font-weight: bold;
 }

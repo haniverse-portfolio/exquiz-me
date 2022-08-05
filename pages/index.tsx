@@ -5,6 +5,8 @@ import styles from "../styles/Home.module.css";
 import Link from "next/link";
 import NavIndex from "./components/navIndex";
 import SchoolList from "./components/schoolList";
+import { useState } from "react";
+import { useRef } from "react";
 
 import {
   Button,
@@ -22,6 +24,9 @@ import {
   Container,
   Textarea,
   Tooltip,
+  Stack,
+  Stepper,
+  ActionIcon,
 } from "@mantine/core";
 import {
   Emphasis,
@@ -38,6 +43,15 @@ import {
   Apps,
   Checkbox,
   Parentheses,
+  Settings,
+  Plus,
+  Check,
+  Number1,
+  Number2,
+  Number3,
+  Circle,
+  Triangle,
+  X,
 } from "tabler-icons-react";
 
 const Home: NextPage = () => {
@@ -45,6 +59,8 @@ const Home: NextPage = () => {
 
   const secondaryColor =
     theme.colorScheme === "dark" ? theme.colors.dark[1] : theme.colors.gray[7];
+
+  const [active, setActive] = useState(0);
   return (
     <div>
       <Head>
@@ -57,278 +73,156 @@ const Home: NextPage = () => {
 
       <main style={{ margin: "0px 10px" }}>
         <section>
-          <div
-            style={{
-              height: "55vh",
-              textAlign: "center",
-            }}
-          >
-            <div
-              style={{
-                height: "30vh",
-                display: "flex",
-                justifyContent: "space-between",
-                // backgroundImage: "linear-gradient(to left,#F9B204, #fc7b1b)",
-              }}
-            >
-              <div
+          <Group className="items-center flex contents-between">
+            <Stack>
+              <Group
                 style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  marginLeft: 20,
-                  marginRight: 20,
+                  fontSize: 36,
+                  textDecoration: "underline orange 10px",
+                  fontWeight: "bold",
+                  textAlign: "right",
                 }}
               >
-                <span
-                  style={{
-                    marginTop: "100px",
-                    textAlign: "right",
-                    height: "350px",
-                    width: "350px",
-                    borderRadius: "50%",
-                    backgroundColor: "white",
-                  }}
-                >
-                  <span
-                    style={{
-                      fontSize: 36,
-                      textDecoration: "underline orange 10px",
+                <br></br>더 쉽고 더 재밌는 모르겠다<br></br>퀴즈의 새로운 경험을
+                제시하다
+                <br></br> exquiz.me 상빈이형이 지어줘
+              </Group>
+              <Group>
+                <Button
+                  variant="outline"
+                  gradient={{ from: "orange", to: "red" }}
+                  component="a"
+                  rel="noopener noreferrer"
+                  href="/create_rf"
+                  leftIcon={<Pencil size={32} />}
+                  styles={(theme: {
+                    fn: { darken: (arg0: string, arg1: number) => any };
+                  }) => ({
+                    root: {
                       fontWeight: "bold",
-                      textAlign: "right",
-                    }}
-                  >
-                    <br></br>
-                    퀴즈에 경험을 더하다<br></br> exquiz.me
-                  </span>
-                </span>
-              </div>
-            </div>
-            <br></br>
-            <br></br>
-            <Button
-              variant="outline"
-              gradient={{ from: "orange", to: "red" }}
-              component="a"
-              rel="noopener noreferrer"
-              href="/create"
-              leftIcon={<Pencil size={32} />}
-              styles={(theme: {
-                fn: { darken: (arg0: string, arg1: number) => any };
-              }) => ({
-                root: {
-                  fontWeight: "bold",
-                  fontSize: 16,
-                  marginRight: 10,
-                  color: "orange",
-                  backgroundColor: "white",
-                  border: "2px solid orange",
-                  height: 42,
+                      fontSize: 16,
+                      marginRight: 10,
+                      color: "orange",
+                      backgroundColor: "white",
+                      border: "2px solid orange",
+                      height: 42,
 
-                  "&:hover": {
-                    backgroundColor: theme.fn.darken("#FFFFFF", 0.05),
-                  },
-                },
+                      "&:hover": {
+                        backgroundColor: theme.fn.darken("#FFFFFF", 0.05),
+                      },
+                    },
 
-                leftIcon: {
-                  marginRight: 5,
-                },
-              })}
-            >
-              문제 제작하기
-            </Button>
-            <Button
-              onClick={() => {
-                alert("아직 들어가지 마세요");
-              }}
-              variant="gradient"
-              gradient={{ from: "orange", to: "red" }}
-              component="a"
-              rel="noopener noreferrer"
-              href="/#"
-              leftIcon={<Login size={32} />}
-              styles={(theme: {
-                fn: { darken: (arg0: string, arg1: number) => any };
-              }) => ({
-                root: {
-                  fontWeight: "bold",
-                  fontSize: 16,
-                  marginRight: 10,
-                  color: "white",
-                  backgroundColor: "white",
-                  border: 0,
-                  height: 42,
-
-                  "&:hover": {
-                    backgroundColor: theme.fn.darken("#FFFFFF", 0.05),
-                  },
-                },
-
-                leftIcon: {
-                  marginRight: 5,
-                },
-              })}
-            >
-              방 생성하기
-            </Button>
-          </div>
-        </section>
-
-        <section>
-          <div style={{ height: "40vh" }}>
-            <p style={{ fontWeight: "bold", textAlign: "left" }}>
-              - exquiz.me는 직관적인 문제 제작 툴을 제공합니다. 직접 해보세요!
-            </p>
-            <div style={{ width: "60vw", textAlign: "center" }}></div>
-          </div>
-        </section>
-
-        <section>
-          <div style={{ height: "40vh" }}>
-            <p style={{ fontWeight: "bold", textAlign: "right" }}>
-              exquiz.me는 새로운 퀴즈 경험을 제시합니다 -
-            </p>
-          </div>
-
-          <div style={{ height: "40vh" }}>
-            <p style={{ fontWeight: "bold", textAlign: "left" }}>
-              - exquiz.me는 재미있는 스코어보드와 통계를 제공합니다.
-            </p>
-          </div>
-        </section>
-
-        <section>
-          <div style={{ height: "10vh" }}>
-            <p style={{ fontWeight: "bold", textAlign: "center" }}>
-              아래에서 나에게 가장 맞는 플랜을 선택해보세요.
-            </p>
-          </div>
-
-          <div style={{ height: "50vh" }}>
-            <div style={{ margin: "auto" }}>
-              <Center style={{ margin: "0px 40px" }}>
-                <Card
-                  style={{ margin: "0px 10px", width: "40vw" }}
-                  shadow="sm"
-                  p="lg"
+                    leftIcon: {
+                      marginRight: 5,
+                    },
+                  })}
                 >
-                  <Group
-                    position="apart"
-                    style={{ marginBottom: 5, marginTop: theme.spacing.sm }}
-                  >
-                    <Text style={{ display: "block" }} weight={500}>
-                      무료 플랜
-                    </Text>
-                    <Badge color="gray" variant="light">
-                      익스퀴즈미 회원 무료 제공
-                    </Badge>
-                  </Group>
+                  문제 제작하기
+                </Button>
+                <Button
+                  className="bg-orange-500"
+                  onClick={() => {
+                    alert("아직 들어가지 마세요");
+                  }}
+                  variant="gradient"
+                  gradient={{ from: "orange", to: "red" }}
+                  component="a"
+                  rel="noopener noreferrer"
+                  href="/#"
+                  leftIcon={<Login size={32} />}
+                  styles={(theme: {
+                    fn: { darken: (arg0: string, arg1: number) => any };
+                  }) => ({
+                    root: {
+                      fontWeight: "bold",
+                      fontSize: 16,
+                      marginRight: 10,
+                      color: "white",
+                      backgroundColor: "white",
+                      border: 0,
+                      height: 42,
 
-                  <Text
-                    size="sm"
-                    style={{ color: secondaryColor, lineHeight: 1.5 }}
-                  >
-                    익스퀴즈미가 제공하는 무료 서비스 입니다.
-                  </Text>
+                      "&:hover": {},
+                    },
 
-                  <Button
-                    variant="light"
-                    color="gray"
-                    fullWidth
-                    style={{ marginTop: 14 }}
-                  >
-                    현재 이용 중
-                  </Button>
-                </Card>
-                <Card
-                  style={{ margin: "0px 10px", width: "40vw" }}
-                  shadow="sm"
-                  p="lg"
+                    leftIcon: {
+                      marginRight: 5,
+                    },
+                  })}
                 >
-                  <Group
-                    position="apart"
-                    style={{ marginBottom: 5, marginTop: theme.spacing.sm }}
-                  >
-                    <Text weight={500}>스탠다드 플랜 (실속형)</Text>
-                    <Badge color="blue" variant="light">
-                      30% 할인 특가
-                    </Badge>
-                  </Group>
+                  방 생성하기
+                </Button>
+              </Group>
+            </Stack>
+            {/* 아미지 - 봉투 */}
+            <Group spacing={0}>
+              <Group className="shadow-lg" spacing={0}>
+                <Group className="border-r-2 border-gray-300 shadow-lg h-32 w-4 bg-amber-200" />
+                <Group>
+                  <Stack spacing={0}>
+                    <Group className="border-b-2 border-gray-300 m-0 p-0 h-16 w-48 bg-amber-200" />
+                    <Group className=" m-0 p-0 h-16 w-48 bg-amber-200" />
+                  </Stack>
+                </Group>
+              </Group>
+              <Group className="shadow-lg m-0 p-0 h-28 w-8 bg-white"></Group>
+            </Group>
+          </Group>
+          <br />
+          <br />
+          <br />
 
-                  <Text
-                    size="sm"
-                    style={{ color: secondaryColor, lineHeight: 1.5 }}
-                  >
-                    퀴즈 제작 및 참여의 필수적인 기능을 합리적인 가격에
-                    제공합니다.
-                  </Text>
-                  <Button
-                    variant="light"
-                    color="blue"
-                    fullWidth
-                    style={{ marginTop: 14 }}
-                  >
-                    <span
-                      style={{
-                        color: "gray",
-                        textDecoration: "line-through",
-                      }}
-                    >
-                      월 5,990
-                    </span>
-                    &nbsp;→ 월 3,990원
-                  </Button>
-                </Card>
-                <Card
-                  style={{ margin: "0px 10px", width: "40vw" }}
-                  shadow="sm"
-                  p="lg"
-                >
-                  <Group
-                    position="apart"
-                    style={{ marginBottom: 5, marginTop: theme.spacing.sm }}
-                  >
-                    <Text weight={500}>프리미엄 플랜</Text>
-                    <Badge color="orange" variant="light">
-                      모든 서비스 이용 가능
-                    </Badge>
-                  </Group>
+          <br />
+          <br />
+          <br />
 
-                  <Text
-                    size="sm"
-                    style={{ color: secondaryColor, lineHeight: 1.5 }}
-                  >
-                    퀴즈 제작 및 참여의 모든 과정에서 최고의 서비스를
-                    제공합니다.
-                  </Text>
+          <br />
+          <br />
+          <br />
+          <Center>
+            <Group className=" m-auto">
+              <Stack className="transition ease-in-out hover:scale-105 h-72 w-80 rounded-2xl shadow-lg">
+                <Center>
+                  <ActionIcon className="transition ease-in-out hover:rotate-90">
+                    <Plus />
+                  </ActionIcon>
+                </Center>
+                <p className="font-semibold">제작하기</p>
+                <p className="mx-4">
+                  직관적이고 커스터마이징이 간편한 퀴즈 제작 툴을 만나보세요.
+                </p>
+                <p className="mx-4">
+                  배점부터 시간까지 설정은 여러분의 자유입니다.
+                </p>
+              </Stack>
 
-                  <Button
-                    variant="light"
-                    color="orange"
-                    fullWidth
-                    style={{ marginTop: 14 }}
-                  >
-                    월 7,990원
-                  </Button>
-                </Card>
-              </Center>
-            </div>
-          </div>
+              <Stack className="transition ease-in-out hover:scale-105 h-72 w-80 rounded-2xl shadow-lg">
+                <Center>
+                  <ActionIcon className="transition ease-in-out hover:rotate-[120deg]">
+                    <Triangle />
+                  </ActionIcon>
+                </Center>
+                <p className="font-semibold">참여하기</p>
+                <p className="mx-4">
+                  수업을 듣는 학생 여러분들은 여기로 오시면 됩니다. 뭔가 적고
+                  있지만 떠오르지가 않네요.
+                </p>
+                <p className="mx-4">아래에 핀번호를 입력하세요.</p>
+              </Stack>
+
+              <Stack className="transition ease-in-out hover:scale-105 h-72 w-80 rounded-2xl shadow-lg">
+                <Center>
+                  <ActionIcon className="transition ease-in-out hover:-translate-y-2">
+                    <Circle />
+                  </ActionIcon>
+                </Center>
+                <p className="font-semibold">방만들기</p>
+                <p className="mx-4">방을 만들어보세요.</p>
+                <p className="mx-4">^^</p>
+              </Stack>
+            </Group>
+          </Center>
         </section>
-        <div
-          style={{
-            position: "fixed",
-            background: "white",
-            boxShadow:
-              "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
-            borderRadius: "50%",
-            height: "50px",
-            width: "50px",
-            right: "10px",
-            bottom: "10px",
-            cursor: "pointer",
-          }}
-        ></div>
       </main>
 
       <footer className={styles.footer}>

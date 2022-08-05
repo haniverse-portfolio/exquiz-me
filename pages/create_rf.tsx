@@ -1,7 +1,6 @@
 import { useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import Link from "next/link";
 import NavCreate from "./components/navCreate";
@@ -27,21 +26,45 @@ import {
   Slider,
   BackgroundImage,
   Switch,
+  Stack,
+  MantineProvider,
+  Grid,
+  Stepper,
+  TextInput,
+  Image,
+  Paper,
 } from "@mantine/core";
 
+import { useScrollIntoView } from "@mantine/hooks";
+
 import {
-  SquareCheck,
-  Parentheses,
-  QuestionMark,
-  AB,
-  Apps,
   AdjustmentsHorizontal,
   Notes,
-  BrowserPlus,
   Plus,
   Trash,
   Check,
+  Home2,
+  Emphasis,
+  FileX,
+  Login,
+  ReportMoney,
+  UserCircle,
+  Pencil,
+  Archive,
+  BrowserPlus,
+  SquareCheck,
+  AB,
+  QuestionMark,
+  Apps,
+  Parentheses,
+  Folders,
+  FileSettings,
+  FilePlus,
+  FileCheck,
+  Settings,
 } from "tabler-icons-react";
+
+import { NotificationsProvider } from "@mantine/notifications";
 import { copyFileSync } from "fs";
 // 85vh 20vw
 
@@ -64,21 +87,12 @@ function rtColor(idx: string) {
   if (idx == "dynamic") return "#946cee";
 }
 
-function tabIconCode(idx: number) {
-  if (idx == 0) return <BrowserPlus size={"2vw"} />;
-  if (idx == 1) return <SquareCheck size={"2vw"} />;
-  if (idx == 2) return <Parentheses size={"2vw"} />;
-  if (idx == 3) return <AB size={"2vw"} />;
-  if (idx == 4) return <QuestionMark size={"2vw"} />;
-  if (idx == 5) return <Apps size={"2vw"} />;
-}
-
 // 빈 슬라이드 객관식 주관식 O/X 넌센스 다이나믹
 const Home: NextPage = () => {
   /* slide */
   let [currentIdx, setCurrentIdx] = useState(-1);
   /* form */
-  let [dtypeIdx, setdtypeIdx] = useState(0);
+  let [tabIdx, setTabIdx] = useState(0);
   const [progressActive, setProgressActive] = useState(-1);
 
   let input = [
@@ -120,22 +134,39 @@ const Home: NextPage = () => {
       ],
     },
   ];
-
-  const [slideActive, setSlideActive] = useState(-1);
+  {
+    /* *** main state *** */
+  }
   let [quizSet, setQuizSet] = useState(input);
+  const [slideActive, setSlideActive] = useState(-1);
 
+  {
+    /* mantine statement */
+  }
   const theme = useMantineTheme();
   const getColor = (color: string) =>
     theme.colors[color][theme.colorScheme === "dark" ? 5 : 7];
 
-  const tabColorCode = [
-    "linear-gradient(to right, #babbbd, #babbbd)",
-    "linear-gradient(to right, #fa584b, #fc7b1b)",
-    "linear-gradient(to right, #4A73F0, #3A8DDA)",
-    "linear-gradient(to right, #23B87F, #79C72F)",
-    "linear-gradient(to right, #F9B204, #FFD400)",
-    "linear-gradient(to right, #946cee, #b464eb)",
+  {
+    /* 2. 문제 추가 - subNav - tab */
+  }
+  const tabInfo = [
+    { name: "빈 슬라이드", startColor: "gray-400", endColor: "gray-400" },
+    { name: "객관식", startColor: "red-500", endColor: "orange-500" },
+    { name: "주관식", startColor: "blue-700", endColor: "blue-500" },
+    { name: "O/X", startColor: "green-500", endColor: "lime-500" },
+    { name: "넌센스", startColor: "amber-500", endColor: "yellow-400" },
+    { name: "다이나믹", startColor: "purple-700", endColor: "fuchsia-600" },
   ];
+
+  function tabIcon(idx: number) {
+    if (idx == 0) return <BrowserPlus className="m-auto" size={"2vw"} />;
+    if (idx == 1) return <SquareCheck className="m-auto" size={"2vw"} />;
+    if (idx == 2) return <Parentheses className="m-auto" size={"2vw"} />;
+    if (idx == 3) return <AB className="m-auto" size={"2vw"} />;
+    if (idx == 4) return <QuestionMark className="m-auto" size={"2vw"} />;
+    if (idx == 5) return <Apps className="m-auto" size={"2vw"} />;
+  }
 
   const tabTooltip = [
     "빈 슬라이드",
@@ -146,6 +177,9 @@ const Home: NextPage = () => {
     "다이나믹",
   ];
 
+  {
+    /* custom converter */
+  }
   const idxToString = [
     "empty",
     "MultipleChoiceProblem",
@@ -167,11 +201,11 @@ const Home: NextPage = () => {
   }
 
   const MARKSTIME = [
-    { value: 0, label: "15초" },
-    { value: 25, label: "20초" },
-    { value: 50, label: "30초" },
-    { value: 75, label: "45초" },
-    { value: 100, label: "1분" },
+    { value: 0, label: "X" },
+    { value: 25, label: "10" },
+    { value: 50, label: "20" },
+    { value: 75, label: "30" },
+    { value: 100, label: "1M" },
   ];
 
   const MARKSCORE = [
@@ -181,6 +215,23 @@ const Home: NextPage = () => {
     { value: 75, label: "많이" },
     { value: 100, label: "매우 많이" },
   ];
+  {
+    /* 1. 퀴즈 설정 - 메인 #과목 선택 */
+  }
+  let [subjectIdx, setSubjectIdx] = useState(0);
+  const subjectInfo = [
+    { name: "미분류", startColor: "gray", endColor: "gray" },
+    { name: "언어", startColor: "orange", endColor: "red" },
+    { name: "이공계", startColor: "blue", endColor: "green" },
+    { name: "인문계", startColor: "purple", endColor: "pink" },
+    { name: "예체능", startColor: "yellow", endColor: "orange" },
+  ];
+
+  {
+    /* 1. 퀴즈 설정 - 사이드바 - #stepper */
+  }
+  const { scrollIntoView, targetRef, scrollableRef } = useScrollIntoView();
+  const [active, setActive] = useState(0);
   return (
     <div>
       <Head>
@@ -189,12 +240,200 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <section className=" bg-gradient-to-r from-purple-500 to-pink-500">
+      <section className="bg-gradient-to-r from-orange-500 to-yellow-500">
         <Center>
-          <Container className="m-10 p-10 h-500 w-80vw bg-white shadow-lg sm:rounded-3xl backdrop-blur-xl bg-opacity-80">
-            hello wefwefwef wefwefweffwe fewf wefwefwef
-          </Container>
-          <Container>hello</Container>
+          <Center className=" my-2 h-23/24 w-23/24">
+            <Stack>
+              <Center>
+                <Group className="items-center p-10 bg-white shadow-lg sm:rounded-3xl backdrop-blur-xl bg-opacity-80">
+                  <Stepper
+                    color="orange"
+                    active={active}
+                    onStepClick={setActive}
+                    orientation="horizontal"
+                  >
+                    <Stepper.Step
+                      icon={<Settings size={18} />}
+                      label="퀴즈 설정"
+                      description=""
+                    />
+                    <Stepper.Step
+                      icon={<Plus size={18} />}
+                      label="문제 추가"
+                      description=""
+                      onClick={() => scrollIntoView()}
+                    />
+                    <Stepper.Step
+                      icon={<Check size={18} />}
+                      label="퀴즈 배포"
+                      description=""
+                    />
+                  </Stepper>
+                </Group>
+              </Center>
+              <Group className="items-center m-2 p-10 bg-white shadow-lg sm:rounded-3xl backdrop-blur-xl bg-opacity-80">
+                <Stack>
+                  {/* Navigation Bar */}
+                  <Group className="justify-between">
+                    <Tooltip label="홈">
+                      <ActionIcon color="orange" component="a" href="/">
+                        <Home2 />
+                      </ActionIcon>
+                    </Tooltip>
+                    <Group>
+                      <Tooltip label="멤버십">
+                        <ActionIcon
+                          color="orange"
+                          component="a"
+                          href="/membership"
+                        >
+                          <ReportMoney />
+                        </ActionIcon>
+                      </Tooltip>
+                      <Tooltip label="퀴즈 관리">
+                        <ActionIcon
+                          color="orange"
+                          component="a"
+                          href="/membership"
+                        >
+                          <Folders />
+                        </ActionIcon>
+                      </Tooltip>
+                      <Tooltip label="계정 관리">
+                        <ActionIcon
+                          color="orange"
+                          component="a"
+                          href="#"
+                          // variant="transparent"
+                        >
+                          <UserCircle />
+                        </ActionIcon>
+                      </Tooltip>
+                    </Group>
+                  </Group>
+
+                  <Group>
+                    <ScrollArea scrollbarSize={0} style={{ height: 500 }}>
+                      <Stack>
+                        <Group>
+                          <Stack>
+                            {/* 텍스트 - 퀴즈 정보 */}
+                            <Group>
+                              <h2 className="font-semibold">퀴즈 정보</h2>
+                            </Group>
+                            {/* 컨텐츠 - 퀴즈 정보 */}
+
+                            <Group className="p-10 bg-white shadow-lg sm:rounded-3xl backdrop-blur-xl bg-opacity-50">
+                              {/* 이미지 - 봉투 */}
+                              <Group spacing={0}>
+                                <Group className="shadow-lg" spacing={0}>
+                                  <Group className="border-r-2 border-gray-300 shadow-lg h-32 w-4 bg-amber-200" />
+                                  <Group>
+                                    <Stack spacing={0}>
+                                      <Group className="border-b-2 border-gray-300 m-0 p-0 h-16 w-48 bg-amber-200" />
+                                      <Group className=" m-0 p-0 h-16 w-48 bg-amber-200">
+                                        <Group
+                                          onClick={() => {
+                                            setSubjectIdx(0);
+                                          }}
+                                          className={`mx-3 text-white cursor-pointer w-12 h-12 bg-gradient-to-r from-${subjectInfo[subjectIdx].startColor}-500 to-${subjectInfo[subjectIdx].endColor}-500 rounded-full`}
+                                        >
+                                          <p className="m-auto">
+                                            {subjectInfo[subjectIdx].name}
+                                          </p>
+                                        </Group>
+                                      </Group>
+                                    </Stack>
+                                  </Group>
+                                </Group>
+                                <Group className="shadow-lg m-0 p-0 h-28 w-8 bg-white"></Group>
+                              </Group>
+                              {/* 입력 - 퀴즈 정보 */}
+                              <Group>
+                                <Stack>
+                                  {/* 입력 - 퀴즈 재목 */}
+                                  <TextInput
+                                    color="orange"
+                                    placeholder="퀴즈 제목"
+                                    icon={<Plus size={14} />}
+                                  />
+                                  {/* 입력 - 퀴즈 설명 */}
+                                  <Textarea
+                                    placeholder="퀴즈 설명"
+                                    autosize
+                                    minRows={4}
+                                    maxRows={4}
+                                  />
+                                </Stack>
+                              </Group>
+                            </Group>
+                          </Stack>
+                        </Group>
+                        <Group>
+                          <Stack>
+                            {/* 텍스트 - 과목 선택 */}
+                            <Group className="font-semibold">과목 선택</Group>
+                            {/* 입력 - 과목 선택*/}
+                            <Group>
+                              {subjectInfo.map(
+                                ({ name, startColor, endColor }, i) => {
+                                  return i === 0 ? (
+                                    <></>
+                                  ) : (
+                                    <Group
+                                      onClick={() => {
+                                        setSubjectIdx((prevState) => i);
+                                      }}
+                                      key={i}
+                                      className={`bg-gradient-to-r from-${startColor}-500 to-${endColor}-500 shadow-lg text-white cursor-pointer w-32 h-32 rounded-full`}
+                                    >
+                                      <p className="m-auto">{name}</p>
+                                    </Group>
+                                  );
+                                }
+                              )}
+                            </Group>
+                          </Stack>
+                        </Group>
+                      </Stack>
+                      <br></br>
+                      <br></br>
+
+                      <br />
+                      <br />
+                      <Group className="p-10 bg-white shadow-lg sm:rounded-3xl backdrop-blur-xl bg-opacity-30">
+                        퀴즈 들어갈거에요
+                      </Group>
+                    </ScrollArea>
+                  </Group>
+                </Stack>
+              </Group>
+              <Center>
+                <Group className="items-center p-4 bg-white shadow-lg sm:rounded-3xl backdrop-blur-xl bg-opacity-80">
+                  {tabInfo.map(({ name, startColor, endColor }, i) => {
+                    return (
+                      <Group
+                        onClick={() => {
+                          setTabIdx((prevState) => i);
+                        }}
+                        key={i}
+                        className={`w-20 h-20 rounded-lg shadow-${
+                          i === tabIdx ? "inner" : "lg"
+                        }`}
+                      >
+                        <Group
+                          className={`m-auto bg-gradient-to-r from-${startColor} to-${endColor} text-white cursor-pointer w-16 h-16 rounded-lg`}
+                        >
+                          {tabIcon(i)}
+                        </Group>
+                      </Group>
+                    );
+                  })}
+                  {/* <Group ref={targetRef}>.</Group> */}
+                </Group>
+              </Center>
+            </Stack>
+          </Center>
         </Center>
       </section>
     </div>
