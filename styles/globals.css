@@ -25,6 +25,7 @@ a {
 }
 
 * {
+  transition: ease-in-out;
   box-sizing: border-box;
 }
 
