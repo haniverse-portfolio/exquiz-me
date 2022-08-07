@@ -828,12 +828,12 @@
   dependencies:
     "@mantine/utils" "5.0.0"
 
-"@mantine/dropzone@^5.0.0":
-  version "5.0.0"
-  resolved "https://registry.npmjs.org/@mantine/dropzone/-/dropzone-5.0.0.tgz"
-  integrity sha512-60UHNvDoF76pHy1Hjo2SGHdfAxI1OAKUajEkBY8ogCg4O089aQ9GraJyMstBRc/e1ZEUeLj4ovjlOyc33xZlNg==
+"@mantine/dropzone@^5.0.3":
+  version "5.0.3"
+  resolved "https://registry.yarnpkg.com/@mantine/dropzone/-/dropzone-5.0.3.tgz#c298f3c67e01cf068033eb3f1478b3006b061c3d"
+  integrity sha512-lBqLwT+T1ZdA/cyF9t3GyuFrmhQFTCY1CYhGdwmxwxVhNiGSNHVBS2VtPF4Fa8xEFWjiXUH7cbONlwLkYBktwg==
   dependencies:
-    "@mantine/utils" "5.0.0"
+    "@mantine/utils" "5.0.3"
     react-dropzone "14.2.1"
 
 "@mantine/form@^5.0.0":
@@ -927,6 +927,11 @@
   version "5.0.2"
   resolved "https://registry.yarnpkg.com/@mantine/utils/-/utils-5.0.2.tgz#311746843158a9fefd6945ad3e8c43f0df736ea0"
   integrity sha512-WCuUL+mJ0+8n3anMYb5no93ohyuMilIG49ZJ7XNZUN3g/ZxoKnKF3dEUpXqIUxKgUIwzAsiS9AFFpZSStgAPvw==
+
+"@mantine/utils@5.0.3":
+  version "5.0.3"
+  resolved "https://registry.yarnpkg.com/@mantine/utils/-/utils-5.0.3.tgz#6d878169644b015cee921ada2af4ebe32341c3af"
+  integrity sha512-WZRHF7A2YQhalYwMqkS1hyjK8tu639EQDJxaaptBHQvsAilNS4qD2PD87Cz7np1XhI87SEj5a0U4crzT1jTdDg==
 
 "@motionone/animation@^10.12.0":
   version "10.12.0"

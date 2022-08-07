@@ -93,7 +93,7 @@ const Home: NextPage = () => {
                   gradient={{ from: "orange", to: "red" }}
                   component="a"
                   rel="noopener noreferrer"
-                  href="/create_rf"
+                  href="/create"
                   leftIcon={<Pencil size={32} />}
                   styles={(theme: {
                     fn: { darken: (arg0: string, arg1: number) => any };
