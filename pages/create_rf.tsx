@@ -34,6 +34,7 @@ import {
   Image,
   Paper,
   Tabs,
+  Modal,
 } from "@mantine/core";
 
 import { useScrollIntoView } from "@mantine/hooks";
@@ -93,17 +94,17 @@ function rtColor(idx: string) {
 // 빈 슬라이드 객관식 주관식 O/X 넌센스 다이나믹
 const Home: NextPage = () => {
   /* slide */
-  let [currentIdx, setCurrentIdx] = useState(-1);
+  let [curIdx, setCurIdx] = useState(0);
   /* form */
   let [tabIdx, setTabIdx] = useState(0);
   const [progressActive, setProgressActive] = useState(-1);
 
   let input = [
     {
-      answer: "-1",
-      description: "",
+      answer: "0",
+      description: "문제 1 예시",
       dtype: "MultipleChoiceProblem",
-      index: "-1",
+      index: "0",
       picture: "",
       problemsetId: "0",
       score: "0",
@@ -111,27 +112,27 @@ const Home: NextPage = () => {
       title: "",
       options: [
         {
-          description: "",
+          description: "선지 1 예시",
           index: 0,
           picture: "",
           problemId: 0,
         },
         {
-          description: "",
+          description: "선지 2 예시",
           index: 1,
           picture: "",
           problemId: 0,
         },
         {
-          description: "",
+          description: "선지 3 예시",
           index: 2,
-          picture: "string",
+          picture: "",
           problemId: 0,
         },
         {
-          description: "",
+          description: "선지 4 예시",
           index: 3,
-          picture: "string",
+          picture: "",
           problemId: 0,
         },
       ],
@@ -140,6 +141,12 @@ const Home: NextPage = () => {
   {
     /* *** main state *** */
   }
+  let [problemSet, setProblemSet] = useState({
+    closingMent: "",
+    description: "",
+    hostId: "",
+    title: "",
+  });
   let [quizSet, setQuizSet] = useState(input);
   const [slideActive, setSlideActive] = useState(-1);
 
@@ -163,43 +170,43 @@ const Home: NextPage = () => {
   ];
 
   function tabIcon(idx: number) {
-    if (idx == 0) return <SquareCheck className="m-auto" size={"2vw"} />;
-    if (idx == 1) return <Parentheses className="m-auto" size={"2vw"} />;
-    if (idx == 2) return <AB className="m-auto" size={"2vw"} />;
-    if (idx == 3) return <QuestionMark className="m-auto" size={"2vw"} />;
-    if (idx == 4) return <Apps className="m-auto" size={"2vw"} />;
-    if (idx == 5) return <BrowserPlus className="m-auto" size={"2vw"} />;
+    if (idx == 0) return <SquareCheck className="m-auto" size={"30px"} />;
+    if (idx == 1) return <Parentheses className="m-auto" size={"30px"} />;
+    if (idx == 2) return <AB className="m-auto" size={"30px"} />;
+    if (idx == 3) return <QuestionMark className="m-auto" size={"30px"} />;
+    if (idx == 4) return <Apps className="m-auto" size={"30px"} />;
+    if (idx == 5) return <BrowserPlus className="m-auto" size={"30px"} />;
   }
 
   const tabTooltip = [
-    "빈 슬라이드",
     "객관식",
     "주관식",
     "O/X",
     "넌센스",
     "다이나믹",
+    "빈 슬라이드",
   ];
 
   {
     /* custom converter */
   }
   const idxToString = [
-    "empty",
     "MultipleChoiceProblem",
     "subjective",
     "ox",
     "nonsense",
     "dynamic",
+    "empty",
   ];
 
   function stringToIdx(x: string) {
-    let rt = 1;
-    if (x === "empty") rt = 0;
-    if (x === "MultipleChoiceProblem") rt = 1;
-    if (x === "subjective") rt = 2;
-    if (x === "ox") rt = 3;
-    if (x === "nonsense") rt = 4;
-    if (x === "dynamic") rt = 5;
+    let rt = 0;
+    if (x === "MultipleChoiceProblem") rt = 0;
+    if (x === "subjective") rt = 1;
+    if (x === "ox") rt = 2;
+    if (x === "nonsense") rt = 3;
+    if (x === "dynamic") rt = 4;
+    if (x === "empty") rt = 5;
     return rt;
   }
 
@@ -234,7 +241,10 @@ const Home: NextPage = () => {
     /* 1. 퀴즈 설정 - 사이드바 - #stepper */
   }
   const { scrollIntoView, targetRef, scrollableRef } = useScrollIntoView();
-  const [active, setActive] = useState(0);
+  const [step, setStep] = useState(0);
+
+  /* 2. modal */
+  const [modalOpened, setModalOpened] = useState(false);
   return (
     <div>
       <Head>
@@ -250,8 +260,15 @@ const Home: NextPage = () => {
           subjectInfo[subjectIdx + (subjectIdx === 0 ? 4 : 0)].endColor
         }-500`}
       >
+        <Modal
+          opened={modalOpened}
+          onClose={() => setModalOpened(false)}
+          title="Introduce yourself!"
+        >
+          {/* Modal content */}
+        </Modal>
         <Center>
-          <Center className=" my-2 h-23/24 w-23/24">
+          <Center className=" my-2 h-[115vh] w-[99vw]">
             <Stack>
               {/* nav - stepper */}
               <Center>
@@ -261,8 +278,8 @@ const Home: NextPage = () => {
                       subjectInfo[subjectIdx + (subjectIdx === 0 ? 4 : 0)]
                         .startColor
                     }
-                    active={active}
-                    onStepClick={setActive}
+                    active={step}
+                    onStepClick={setStep}
                     orientation="horizontal"
                   >
                     <Stepper.Step
@@ -285,30 +302,22 @@ const Home: NextPage = () => {
                 </Group>
               </Center>
               {/* main */}
-              <Group>
+              {step === 0 ? (
                 <Group>
-                  <ActionIcon variant="transparent">
-                    <ArrowBarLeft color="white" />
-                  </ActionIcon>
-                </Group>
-                <Group className="items-center m-2 p-10 bg-white shadow-lg sm:rounded-3xl backdrop-blur-xl bg-opacity-80">
-                  <Stack>
-                    {/* Navigation Bar */}
-                    <Group className="justify-between">
-                      <Tooltip label="홈">
-                        <ActionIcon
-                          color={
-                            subjectInfo[subjectIdx + (subjectIdx === 0 ? 4 : 0)]
-                              .startColor
-                          }
-                          component="a"
-                          href="/"
-                        >
-                          <Home2 />
-                        </ActionIcon>
-                      </Tooltip>
-                      <Group>
-                        <Tooltip label="멤버십">
+                  <Group>
+                    <ActionIcon variant="transparent">
+                      <ArrowBarLeft
+                        className="cursor-default opacity-0"
+                        color="white"
+                        size="xl"
+                      />
+                    </ActionIcon>
+                  </Group>
+                  <Group className="items-center m-2 p-10 bg-white shadow-lg sm:rounded-3xl backdrop-blur-xl bg-opacity-80">
+                    <Stack>
+                      {/* Navigation Bar */}
+                      <Group className="justify-between">
+                        <Tooltip label="홈">
                           <ActionIcon
                             color={
                               subjectInfo[
@@ -316,98 +325,122 @@ const Home: NextPage = () => {
                               ].startColor
                             }
                             component="a"
-                            href="/membership"
+                            href="/"
                           >
-                            <ReportMoney />
+                            <Home2 />
                           </ActionIcon>
                         </Tooltip>
-                        <Tooltip label="퀴즈 관리">
-                          <ActionIcon
-                            color={
-                              subjectInfo[
-                                subjectIdx + (subjectIdx === 0 ? 4 : 0)
-                              ].startColor
-                            }
-                            component="a"
-                            href="/membership"
-                          >
-                            <Folders />
-                          </ActionIcon>
-                        </Tooltip>
-                        <Tooltip label="계정 관리">
-                          <ActionIcon
-                            color={
-                              subjectInfo[
-                                subjectIdx + (subjectIdx === 0 ? 4 : 0)
-                              ].startColor
-                            }
-                            component="a"
-                            href="#"
-                            // variant="transparent"
-                          >
-                            <UserCircle />
-                          </ActionIcon>
-                        </Tooltip>
+                        <Group>
+                          <Tooltip label="멤버십">
+                            <ActionIcon
+                              color={
+                                subjectInfo[
+                                  subjectIdx + (subjectIdx === 0 ? 4 : 0)
+                                ].endColor
+                              }
+                              component="a"
+                              href="/membership"
+                            >
+                              <ReportMoney />
+                            </ActionIcon>
+                          </Tooltip>
+                          <Tooltip label="퀴즈 관리">
+                            <ActionIcon
+                              color={
+                                subjectInfo[
+                                  subjectIdx + (subjectIdx === 0 ? 4 : 0)
+                                ].endColor
+                              }
+                              component="a"
+                              href="/membership"
+                            >
+                              <Folders />
+                            </ActionIcon>
+                          </Tooltip>
+                          <Tooltip label="계정 관리">
+                            <ActionIcon
+                              color={
+                                subjectInfo[
+                                  subjectIdx + (subjectIdx === 0 ? 4 : 0)
+                                ].endColor
+                              }
+                              component="a"
+                              href="#"
+                              // variant="transparent"
+                            >
+                              <UserCircle />
+                            </ActionIcon>
+                          </Tooltip>
+                        </Group>
                       </Group>
-                    </Group>
 
-                    <Group>
-                      <ScrollArea scrollbarSize={0} style={{ height: 500 }}>
-                        <Stack>
+                      <Group>
+                        <ScrollArea scrollbarSize={0} style={{ height: 500 }}>
                           <Stack>
-                            {/* 텍스트 - 퀴즈 정보 */}
-                            <Group>
+                            <Stack>
+                              {/* 텍스트 - 퀴즈 정보 */}
                               <h2 className="font-semibold">퀴즈 정보</h2>
-                            </Group>
-                            {/* 컨텐츠 - 퀴즈 정보 */}
-                            <Group className="p-10 bg-white shadow-lg sm:rounded-3xl backdrop-blur-xl bg-opacity-50">
-                              {/* 이미지 - 봉투 */}
-                              <Tooltip
-                                position="bottom-start"
-                                transition="scale-y"
-                                transitionDuration={300}
-                                withArrow
-                                label={
-                                  subjectIdx === 0
-                                    ? "아래 과목을 선택해 태그를 지정하세요."
-                                    : "스티커를 누르면 미분류로 지정됩니다."
-                                }
-                              >
-                                <Group spacing={0}>
-                                  <Group className="shadow-lg" spacing={0}>
-                                    <Group className="border-r-2 border-gray-300 shadow-lg h-32 w-4 bg-amber-200" />
-                                    <Group>
-                                      <Stack spacing={0}>
-                                        <Group className="border-b-2 border-gray-300 m-0 p-0 h-16 w-48 bg-amber-200" />
-                                        <Group className=" m-0 p-0 h-16 w-48 bg-amber-200">
-                                          <Group
-                                            onClick={() => {
-                                              setSubjectIdx(0);
-                                            }}
-                                            className={`mx-3 text-white cursor-pointer w-12 h-12 bg-gradient-to-r from-${subjectInfo[subjectIdx].startColor}-500 to-${subjectInfo[subjectIdx].endColor}-500 rounded-full`}
-                                          >
-                                            <p className="text-xs m-auto">
-                                              {subjectInfo[subjectIdx].name}
-                                            </p>
+                              {/* 컨텐츠 - 퀴즈 정보 */}
+                              <Group className="p-10 bg-white shadow-lg sm:rounded-3xl backdrop-blur-xl bg-opacity-50">
+                                {/* 이미지 - 봉투 */}
+                                <Tooltip
+                                  position="bottom-start"
+                                  transition="scale-y"
+                                  transitionDuration={300}
+                                  withArrow
+                                  label={
+                                    subjectIdx === 0
+                                      ? "아래 과목을 선택해 태그를 지정하세요."
+                                      : "스티커를 누르면 미분류로 지정됩니다."
+                                  }
+                                >
+                                  <Group spacing={0}>
+                                    <Group className="shadow-lg" spacing={0}>
+                                      <Group className="border-r-2 border-gray-300 shadow-lg h-32 w-4 bg-amber-200" />
+                                      <Group>
+                                        <Stack spacing={0}>
+                                          <Group className="border-b-2 border-gray-300 m-0 p-0 h-16 w-48 bg-amber-200" />
+                                          <Group className=" m-0 p-0 h-16 w-48 bg-amber-200">
+                                            <Group
+                                              onClick={() => {
+                                                setSubjectIdx(0);
+                                              }}
+                                              className={`mx-3 text-white cursor-pointer w-12 h-12 bg-gradient-to-r from-${subjectInfo[subjectIdx].startColor}-500 to-${subjectInfo[subjectIdx].endColor}-500 rounded-full`}
+                                            >
+                                              <p className="text-xs m-auto">
+                                                {subjectInfo[subjectIdx].name}
+                                              </p>
+                                            </Group>
                                           </Group>
-                                        </Group>
-                                      </Stack>
+                                        </Stack>
+                                      </Group>
                                     </Group>
+                                    <Group className="shadow-lg m-0 p-0 h-28 w-8 bg-white"></Group>
                                   </Group>
-                                  <Group className="shadow-lg m-0 p-0 h-28 w-8 bg-white"></Group>
-                                </Group>
-                              </Tooltip>
-                              {/* 입력 - 퀴즈 정보 */}
-                              <Group>
+                                </Tooltip>
+                                {/* 입력 - 퀴즈 정보 */}
                                 <Stack>
-                                  {/* 입력 - 퀴즈 재목 */}
+                                  {/* 입력 - 퀴즈 제목 */}
                                   <TextInput
+                                    onChange={(event) => {
+                                      let copy = { ...problemSet };
+                                      copy.title = event.currentTarget.value;
+                                      setProblemSet(copy);
+                                    }}
+                                    value={problemSet.title}
                                     color="orange"
                                     placeholder="퀴즈 제목"
                                     icon={<Plus size={14} />}
                                   />
                                   {/* 입력 - 퀴즈 설명 */}
                                   <Textarea
+                                    onChange={(event) => {
+                                      let copy = { ...problemSet };
+                                      copy.description =
+                                        event.currentTarget.value;
+                                      setProblemSet(copy);
+                                    }}
+                                    value={problemSet.description}
                                     placeholder="퀴즈 설명"
                                     autosize
                                     minRows={4}
@@ -415,124 +448,480 @@ const Home: NextPage = () => {
                                   />
                                 </Stack>
                               </Group>
-                            </Group>
-                          </Stack>
-                          <Stack>
-                            {/* 텍스트 - 과목 선택 */}
-                            <Group className="font-semibold">과목 선택</Group>
-                            {/* 입력 - 과목 선택*/}
-                            <Group className="mx-2">
-                              <Tabs
-                                id="subjectTab"
-                                allowTabDeactivation={true}
-                                defaultValue="0"
-                                variant="outline"
-                              >
-                                <Tabs.List>
-                                  {subjectInfo.map(
-                                    /* 구조 분해 할당 */
-                                    ({ name, startColor, endColor }, i) => {
-                                      let current = `transition ease-in-out hover:scale-105 bg-gradient-to-r from-${startColor}-500 to-${endColor}-500 shadow-lg text-white cursor-pointer w-32 h-32 rounded-full`;
-                                      return i === 0 ? (
-                                        <></>
-                                      ) : (
-                                        <Tabs.Tab
-                                          className="w-36 h-36 rounded-full bg-opacity-0 "
-                                          value={i.toString()}
-                                          key={i}
-                                        >
-                                          <Group
-                                            onClick={() => {
-                                              setSubjectIdx((prevState) =>
-                                                prevState === i ? prevState : i
-                                              );
-                                            }}
-                                            className={current}
+                            </Stack>
+                            <Stack>
+                              {/* 텍스트 - 과목 선택 */}
+                              <Group className="font-semibold">과목 선택</Group>
+                              {/* 입력 - 과목 선택*/}
+                              <Group className="mx-2">
+                                <Tabs
+                                  id="subjectTab"
+                                  allowTabDeactivation={true}
+                                  defaultValue="0"
+                                  variant="outline"
+                                >
+                                  <Tabs.List>
+                                    {subjectInfo.map(
+                                      /* 구조 분해 할당 */
+                                      ({ name, startColor, endColor }, i) => {
+                                        let current = `transition ease-in-out hover:scale-105 bg-gradient-to-r from-${startColor}-500 to-${endColor}-500 shadow-lg text-white cursor-pointer w-32 h-32 rounded-full`;
+                                        return i === 0 ? (
+                                          <></>
+                                        ) : (
+                                          <Tabs.Tab
+                                            className="w-36 h-36 rounded-full bg-opacity-0 "
+                                            value={i.toString()}
+                                            key={i}
                                           >
-                                            <p className="m-auto">{name}</p>
-                                          </Group>
-                                        </Tabs.Tab>
-                                      );
-                                    }
-                                  )}
-                                  <Tabs.Panel value="0">test용</Tabs.Panel>
-                                  <Tabs.Panel value="1">
-                                    세분화된 카테고리 제공 예정
-                                  </Tabs.Panel>
-                                  <Tabs.Panel value="2">
-                                    세분화된 카테고리 제공 예정
-                                  </Tabs.Panel>
-                                  <Tabs.Panel value="3">
-                                    세분화된 카테고리 제공 예정
-                                  </Tabs.Panel>
-                                  <Tabs.Panel value="4">
-                                    세분화된 카테고리 제공 예정
-                                  </Tabs.Panel>
-                                </Tabs.List>
-                              </Tabs>
-                            </Group>
+                                            <Group
+                                              onClick={() => {
+                                                setSubjectIdx((prevState) =>
+                                                  prevState === i
+                                                    ? prevState
+                                                    : i
+                                                );
+                                              }}
+                                              className={current}
+                                            >
+                                              <p className="m-auto">{name}</p>
+                                            </Group>
+                                          </Tabs.Tab>
+                                        );
+                                      }
+                                    )}
+                                    <Tabs.Panel value="0">test용</Tabs.Panel>
+                                    <Tabs.Panel value="1">
+                                      세분화된 카테고리 제공 예정
+                                    </Tabs.Panel>
+                                    <Tabs.Panel value="2">
+                                      세분화된 카테고리 제공 예정
+                                    </Tabs.Panel>
+                                    <Tabs.Panel value="3">
+                                      세분화된 카테고리 제공 예정
+                                    </Tabs.Panel>
+                                    <Tabs.Panel value="4">
+                                      세분화된 카테고리 제공 예정
+                                    </Tabs.Panel>
+                                  </Tabs.List>
+                                </Tabs>
+                              </Group>
+                            </Stack>
+                            <Stack>
+                              <br />
+                              <br />
+                              <br />
+                              <br />
+                              <br />
+                              <br />
+                              <Group className="p-10 bg-white shadow-lg sm:rounded-3xl backdrop-blur-xl bg-opacity-30">
+                                퀴즈 들어갈거에요
+                              </Group>
+                            </Stack>
                           </Stack>
-                          <Stack>
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <br />
-                            <Group className="p-10 bg-white shadow-lg sm:rounded-3xl backdrop-blur-xl bg-opacity-30">
-                              퀴즈 들어갈거에요
-                            </Group>
-                          </Stack>
-                        </Stack>
-                      </ScrollArea>
-                    </Group>
-                  </Stack>
-                </Group>
-                <Group>
-                  <ActionIcon variant="transparent">
-                    <ArrowBarRight size="xl" color="white" />
-                  </ActionIcon>
-                </Group>
-              </Group>
-              {/* tab */}
-              <Center>
-                <Group className="items-center p-4 bg-white shadow-lg sm:rounded-3xl backdrop-blur-xl bg-opacity-80">
-                  {tabInfo.map(({ name, startColor, endColor }, i) => {
-                    return (
-                      <Group
+                        </ScrollArea>
+                      </Group>
+                    </Stack>
+                  </Group>
+                  <Group>
+                    <ActionIcon variant="transparent">
+                      <ArrowBarRight
                         onClick={() => {
-                          setTabIdx((prevState) => i);
+                          setStep((prevState) => prevState + 1);
                         }}
-                        key={i}
-                        className={`w-20 h-20 bg-white rounded-lg shadow-${
-                          i === tabIdx
-                            ? "-shadow[inset_0_-2px_4px_rgba(0,0,0,0.5)]"
-                            : "lg"
-                        }`}
+                        size="xl"
+                        color="white"
+                      />
+                    </ActionIcon>
+                  </Group>
+                </Group>
+              ) : (
+                <></>
+              )}
+
+              {step === 1 ? (
+                <Group>
+                  <Group className="h-[60vh] items-center m-2 p-10 bg-white shadow-lg sm:rounded-3xl backdrop-blur-xl bg-opacity-80">
+                    <Stack>
+                      <ScrollArea
+                        className="h-[40vh] w-[15vw]"
+                        scrollbarSize={0}
                       >
-                        <Group
-                          className={`m-auto bg-gradient-to-r from-${startColor} to-${endColor} text-white cursor-pointer w-16 h-16 rounded-lg`}
-                        >
-                          {tabIcon(i)}
+                        {quizSet.map(({ dtype, description }, i) => {
+                          return (
+                            <Tooltip
+                              offset={-10}
+                              key={i}
+                              position="left"
+                              label={i + 1}
+                            >
+                              <Stack className="m-0 p-0 w-[14vw]">
+                                <Group
+                                  onClick={() => {
+                                    if (curIdx === i) {
+                                    } else setCurIdx(i);
+
+                                    setTabIdx((prevstate) =>
+                                      stringToIdx(quizSet[i].dtype)
+                                    );
+                                  }}
+                                  className={`w-[13vw] justify-between cursor-pointer my-4 shadow-lg rounded-md border-solid border-2 border-${
+                                    curIdx === i
+                                      ? subjectInfo[
+                                          subjectIdx +
+                                            (subjectIdx === 0 ? 4 : 0)
+                                        ].startColor
+                                      : "white"
+                                  }-500`}
+                                >
+                                  <Group>
+                                    <ActionIcon variant="transparent">
+                                      {sideIconCode(dtype)}
+                                    </ActionIcon>
+
+                                    <p>{`${description}`}</p>
+                                  </Group>
+                                  <ActionIcon
+                                    className="rounded-full"
+                                    variant="subtle"
+                                    onClick={() => {
+                                      if (i === 0) return;
+                                      let copy = [...quizSet];
+                                      copy.splice(i, 1);
+                                      setQuizSet(copy);
+                                      if (curIdx === i) {
+                                        setCurIdx(i - 1);
+                                      }
+                                      // document.getElementById("acc").style.value = curIdx;
+                                    }}
+                                    size="lg"
+                                  >
+                                    <Trash size={16} />
+                                  </ActionIcon>
+                                </Group>
+                              </Stack>
+                            </Tooltip>
+                          );
+                        })}
+                      </ScrollArea>
+                      <Button
+                        variant="outline"
+                        color={
+                          subjectInfo[subjectIdx + (subjectIdx === 0 ? 4 : 0)]
+                            .startColor
+                        }
+                        leftIcon={<Plus size={32} />}
+                        onClick={() => {
+                          setQuizSet([
+                            ...quizSet,
+                            {
+                              answer: "-1",
+                              description: "",
+                              dtype: idxToString[tabIdx],
+                              index: "-1",
+                              picture: "",
+                              problemsetId: "0",
+                              score: "0",
+                              timeLimit: "30",
+                              title: "",
+                              options: [
+                                {
+                                  description: "",
+                                  index: 0,
+                                  picture: "",
+                                  problemId: 0,
+                                },
+                                {
+                                  description: "",
+                                  index: 1,
+                                  picture: "",
+                                  problemId: 0,
+                                },
+                                {
+                                  description: "",
+                                  index: 2,
+                                  picture: "",
+                                  problemId: 0,
+                                },
+                                {
+                                  description: "",
+                                  index: 3,
+                                  picture: "",
+                                  problemId: 0,
+                                },
+                              ],
+                            },
+                          ]);
+                        }}
+                      >
+                        추가하기
+                      </Button>
+                    </Stack>
+                  </Group>
+                  <Group>
+                    <ActionIcon variant="transparent">
+                      <ArrowBarLeft
+                        onClick={() => {
+                          setStep((prevState) => prevState - 1);
+                        }}
+                        color="white"
+                        size="xl"
+                      />
+                    </ActionIcon>
+                  </Group>
+                  <Group className="w-[50vw] items-center m-2 p-10 bg-white shadow-lg sm:rounded-3xl backdrop-blur-xl bg-opacity-80">
+                    <Stack>
+                      {/* Navigation Bar */}
+                      <Group className="justify-between">
+                        <Tooltip label="홈">
+                          <ActionIcon
+                            color={
+                              subjectInfo[
+                                subjectIdx + (subjectIdx === 0 ? 4 : 0)
+                              ].startColor
+                            }
+                            component="a"
+                            href="/"
+                          >
+                            <Home2 />
+                          </ActionIcon>
+                        </Tooltip>
+                        <Group>
+                          <Tooltip label="멤버십">
+                            <ActionIcon
+                              color={
+                                subjectInfo[
+                                  subjectIdx + (subjectIdx === 0 ? 4 : 0)
+                                ].endColor
+                              }
+                              component="a"
+                              href="/membership"
+                            >
+                              <ReportMoney />
+                            </ActionIcon>
+                          </Tooltip>
+                          <Tooltip label="퀴즈 관리">
+                            <ActionIcon
+                              color={
+                                subjectInfo[
+                                  subjectIdx + (subjectIdx === 0 ? 4 : 0)
+                                ].endColor
+                              }
+                              component="a"
+                              href="/membership"
+                            >
+                              <Folders />
+                            </ActionIcon>
+                          </Tooltip>
+                          <Tooltip label="계정 관리">
+                            <ActionIcon
+                              color={
+                                subjectInfo[
+                                  subjectIdx + (subjectIdx === 0 ? 4 : 0)
+                                ].endColor
+                              }
+                              component="a"
+                              href="#"
+                              // variant="transparent"
+                            >
+                              <UserCircle />
+                            </ActionIcon>
+                          </Tooltip>
                         </Group>
                       </Group>
-                    );
-                  })}
-                  {/* <Group ref={targetRef}>.</Group> */}
-                </Group>
-              </Center>
-              <Group className=" bg-gradient-to-r from-gray-500 to-gray-500 w-0 h-0" />
-              <Group className="bg-gradient-to-r from-orange-500 to-red-500 w-0 h-0" />
-              <Group className="bg-gradient-to-r from-blue-500 to-green-500 w-0 h-0" />
-              <Group className="bg-gradient-to-r from-violet-500 to-orange-500 w-0 h-0" />
-              <Group className="bg-gradient-to-r from-yellow-500 to-orange-500 w-0 h-0" />
 
-              <Group className="bg-gradient-to-r from-gray-400 to-gray-400 w-0 h-0" />
-              <Group className="bg-gradient-to-r from-red-500 to-orange-500 w-0 h-0" />
-              <Group className="bg-gradient-to-r from-blue-700 to-blue-500 w-0 h-0" />
-              <Group className="bg-gradient-to-r from-green-500 to-lime-500 w-0 h-0" />
-              <Group className="bg-gradient-to-r from-amber-500 to-yellow-400 w-0 h-0" />
-              <Group className="bg-gradient-to-r from-violet-700 to-fuchsia-600 w-0 h-0" />
+                      <Group>
+                        <ScrollArea scrollbarSize={0} className="h-[50vh]">
+                          <Stack>
+                            <Stack className="p-10 bg-white shadow-lg sm:rounded-3xl backdrop-blur-xl bg-opacity-50">
+                              {/* 입력 - 문제 설명 */}
+                              <TextInput
+                                onChange={(event) => {
+                                  let copy = [...quizSet];
+                                  copy[curIdx].description =
+                                    event.currentTarget.value;
+                                  setQuizSet(copy);
+                                }}
+                                value={quizSet[curIdx].description}
+                                // [quizSet[curIdx].description] => event.currentTarget.value}
+                                // value={quizSet[curIdx].description}
+                                color="orange"
+                                placeholder="문제 설명"
+                                icon={<Plus size={14} />}
+                              ></TextInput>
+                              {/* 입력 - 문제 사진 및 동영상 */}
+                              <Textarea
+                                placeholder="사진 및 동영상"
+                                autosize
+                                minRows={4}
+                                maxRows={4}
+                              ></Textarea>
+                            </Stack>
+                            <Stack>
+                              {/* 컨텐츠 - 문제 정보 */}
+                              <Group className="p-10 bg-white shadow-lg sm:rounded-3xl backdrop-blur-xl bg-opacity-50">
+                                {/* 입력 - 선지 정보 */}
+                                {
+                                  <Grid>
+                                    {quizSet[curIdx].options.map(
+                                      (
+                                        {
+                                          description,
+                                          index,
+                                          picture,
+                                          problemId,
+                                        },
+                                        i
+                                      ) => {
+                                        const ans = quizSet[curIdx].answer;
+                                        return (
+                                          <Grid.Col key={i} span={5}>
+                                            <Group>
+                                              <Checkbox
+                                                onClick={(event) => {
+                                                  let copy = [...quizSet];
+                                                  // (this.checked === true)?:"":
+                                                  copy[curIdx].answer =
+                                                    i.toString();
+                                                  setQuizSet(copy);
+                                                }}
+                                                checked={
+                                                  quizSet[curIdx].answer ===
+                                                  i.toString()
+                                                    ? true
+                                                    : false
+                                                }
+                                                // checked={true}
+
+                                                color={
+                                                  subjectInfo[
+                                                    subjectIdx +
+                                                      (subjectIdx === 0 ? 4 : 0)
+                                                  ].startColor
+                                                }
+                                                size="xl"
+                                              />
+                                              <Textarea
+                                                onChange={(event) => {
+                                                  let copy = [...quizSet];
+                                                  copy[curIdx].options[
+                                                    i
+                                                  ].description =
+                                                    event.currentTarget.value;
+                                                  setQuizSet(copy);
+                                                }}
+                                                value={description}
+                                                placeholder={`선지 ${i + 1}`}
+                                                autosize
+                                                minRows={4}
+                                                maxRows={4}
+                                              />
+                                            </Group>
+                                          </Grid.Col>
+                                        );
+                                      }
+                                    )}
+                                  </Grid>
+                                }
+                              </Group>
+                            </Stack>
+                          </Stack>
+                        </ScrollArea>
+                      </Group>
+                    </Stack>
+                  </Group>
+                  <Group>
+                    <ActionIcon variant="transparent">
+                      <ArrowBarRight
+                        onClick={() => {
+                          setStep((prevState) => prevState + 1);
+                        }}
+                        size="xl"
+                        color="white"
+                      />
+                    </ActionIcon>
+                  </Group>
+                  <Group className="h-[60vh] items-center m-2 p-10 bg-white shadow-lg sm:rounded-3xl backdrop-blur-xl bg-opacity-80">
+                    <Stack className="w-[15vw]">
+                      <p>배점 설정</p>
+                      <Slider
+                        color={
+                          subjectInfo[subjectIdx + (subjectIdx === 0 ? 4 : 0)]
+                            .endColor
+                        }
+                        label={(val) =>
+                          MARKSCORE.find((mark) => mark.value === val)?.label
+                        }
+                        defaultValue={50}
+                        step={25}
+                        marks={MARKSCORE}
+                        styles={{ markLabel: { display: "none" } }}
+                      />
+
+                      <p>시간 설정</p>
+                      <Slider
+                        color={
+                          subjectInfo[subjectIdx + (subjectIdx === 0 ? 4 : 0)]
+                            .endColor
+                        }
+                        label={(val) =>
+                          MARKSTIME.find((mark) => mark.value === val)?.label
+                        }
+                        defaultValue={50}
+                        step={25}
+                        marks={MARKSTIME}
+                        styles={{ markLabel: { display: "none" } }}
+                      />
+                    </Stack>
+                  </Group>
+                </Group>
+              ) : (
+                <></>
+              )}
+              {/* tab */}
+              {step === 1 ? (
+                <Center>
+                  <Group className="items-center p-4 bg-white shadow-lg sm:rounded-3xl backdrop-blur-xl bg-opacity-80">
+                    {tabInfo.map(({ name, startColor, endColor }, i) => {
+                      return (
+                        <Tooltip label={tabTooltip[i]}>
+                          <Group
+                            onClick={() => {
+                              setTabIdx((prevState) => i);
+                            }}
+                            key={i}
+                            className={`w-20 h-20 bg-white rounded-lg shadow-${
+                              i === tabIdx
+                                ? "-shadow[inset_0_-2px_4px_rgba(0,0,0,0.5)]"
+                                : "lg"
+                            }`}
+                          >
+                            <Group
+                              className={`m-auto bg-gradient-to-r from-${startColor} to-${endColor} text-white cursor-pointer w-16 h-16 rounded-lg`}
+                            >
+                              {tabIcon(i)}
+                            </Group>
+                          </Group>
+                        </Tooltip>
+                      );
+                    })}
+                    {/* <Group ref={targetRef}>.</Group> */}
+                  </Group>
+                </Center>
+              ) : (
+                <></>
+              )}
+              {/* caching tailwind css */}
+              <Group className=" bg-gradient-to-r border-gray-500 from-gray-500 to-gray-500 w-0 h-0" />
+              <Group className="bg-gradient-to-r border-orange-500 from-orange-500 to-red-500 w-0 h-0" />
+              <Group className="bg-gradient-to-r border-blue-500 from-blue-500 to-green-500 w-0 h-0" />
+              <Group className="bg-gradient-to-r border-violet-500 from-violet-500 to-orange-500 w-0 h-0" />
+              <Group className="bg-gradient-to-r border-yellow-500 from-yellow-500 to-orange-500 w-0 h-0" />
+              <Group className="bg-gradient-to-r border-gray-500 from-gray-400 to-gray-400 w-0 h-0" />
+              <Group className="bg-gradient-to-r border-red-500 from-red-500 to-orange-500 w-0 h-0" />
+              <Group className="bg-gradient-to-r border-blue-500 from-blue-700 to-blue-500 w-0 h-0" />
+              <Group className="bg-gradient-to-r border-green-500 from-green-500 to-lime-500 w-0 h-0" />
+              <Group className="bg-gradient-to-r border-amber-500 from-amber-500 to-yellow-400 w-0 h-0" />
+              <Group className="bg-gradient-to-r border-violet-500 from-violet-700 to-fuchsia-600 w-0 h-0" />
             </Stack>
           </Center>
         </Center>
