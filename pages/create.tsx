@@ -292,6 +292,7 @@ const Home: NextPage = () => {
               subjectInfo[subjectIdx + (subjectIdx === 0 ? 4 : 0)].endColor
             }
             onClick={() => {
+              let problemsetId = 0;
               setModalOpened(false);
               setStep(step + 1);
               {
@@ -299,36 +300,51 @@ const Home: NextPage = () => {
               }
               axios
                 .post("https://prod.exquiz.net/api/problemset", problemSet)
-                .then((result) => {})
+                .then((result) => {
+                  problemsetId = result.data.id;
+                })
                 .catch((error) => {
                   alert(error);
                 });
 
-              let copy = [...quizSet];
-              for (let i = 0; i < copy.length; i++) copy[i].idx = i;
+              let copyQuizSet = [...quizSet];
+              let copyOption = [...option];
+              for (let i = 0; i < copyQuizSet.length; i++) {
+                copyQuizSet[i].idx = i;
+                copyQuizSet[i].problemsetId = problemsetId;
+              }
 
-              // for (let i = 0; i < quizSet.length; i++) {
-              //   {
-              //     /* POST - problem */
-              //   }
+              for (let i = 0; i < copyQuizSet.length; i++) {
+                {
+                  /* POST - problem */
+                }
+                let problemId = 0;
+                axios
+                  .post("https://prod.exquiz.net/api/problem", copyQuizSet)
+                  .then((result) => {
+                    problemId = result.data.id;
+                  })
+                  .catch((error) => {
+                    alert(error);
+                  });
 
-              //   axios
-              //     .post("https://prod.exquiz.net/api/problem", copy)
-              //     .then((result) => {})
-              //     .catch((error) => {
-              //       alert(error);
-              //     });
-
-              //   {
-              //     /* POST - problem_option*/
-              //   }
-              //   axios
-              //     .post("https://prod.exquiz.net/api/problem_option", option[i])
-              //     .then((result) => {})
-              //     .catch((error) => {
-              //       alert(error);
-              //     });
-              // }
+                for (let j = 0; j < copyOption.length; j++) {
+                  copyOption[i][j].idx = j;
+                  copyOption[i][j].problemId = problemId;
+                }
+                {
+                  /* POST - problem_option*/
+                }
+                axios
+                  .post(
+                    "https://prod.exquiz.net/api/problem_option",
+                    copyOption[i]
+                  )
+                  .then((result) => {})
+                  .catch((error) => {
+                    alert(error);
+                  });
+              }
               alert("완료!");
               // sleep(3000).then(() => location.replace("/myQuiz"));
             }}
