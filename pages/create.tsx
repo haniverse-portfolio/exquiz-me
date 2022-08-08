@@ -329,6 +329,8 @@ const Home: NextPage = () => {
                     alert(error);
                   });
               }
+              alert("완료!");
+              // sleep(3000).then(() => location.replace("/myQuiz"));
             }}
           >
             넵
@@ -1313,3 +1315,6 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+function sleep(arg0: number) {
+  throw new Error("Function not implemented.");
+}
