@@ -151,7 +151,7 @@ const Home: NextPage = () => {
   let [problemSet, setProblemSet] = useState({
     closingMent: "",
     description: "",
-    hostId: 0,
+    hostId: 1,
     title: "",
   });
   let [quizSet, setQuizSet] = useState(problemInput);
@@ -307,28 +307,28 @@ const Home: NextPage = () => {
               let copy = [...quizSet];
               for (let i = 0; i < copy.length; i++) copy[i].idx = i;
 
-              for (let i = 0; i < quizSet.length; i++) {
-                {
-                  /* POST - problem */
-                }
+              // for (let i = 0; i < quizSet.length; i++) {
+              //   {
+              //     /* POST - problem */
+              //   }
 
-                axios
-                  .post("https://prod.exquiz.net/api/problem", copy)
-                  .then((result) => {})
-                  .catch((error) => {
-                    alert(error);
-                  });
+              //   axios
+              //     .post("https://prod.exquiz.net/api/problem", copy)
+              //     .then((result) => {})
+              //     .catch((error) => {
+              //       alert(error);
+              //     });
 
-                {
-                  /* POST - problem_option*/
-                }
-                axios
-                  .post("https://prod.exquiz.net/api/problem_option", option[i])
-                  .then((result) => {})
-                  .catch((error) => {
-                    alert(error);
-                  });
-              }
+              //   {
+              //     /* POST - problem_option*/
+              //   }
+              //   axios
+              //     .post("https://prod.exquiz.net/api/problem_option", option[i])
+              //     .then((result) => {})
+              //     .catch((error) => {
+              //       alert(error);
+              //     });
+              // }
               alert("완료!");
               // sleep(3000).then(() => location.replace("/myQuiz"));
             }}
