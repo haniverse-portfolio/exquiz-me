@@ -108,11 +108,11 @@ const Home: NextPage = () => {
       answer: "0",
       description: "문제 1 예시",
       dtype: "MultipleChoiceProblem",
-      index: "0",
+      idx: 0,
       picture: "",
-      problemsetId: "0",
-      score: "0",
-      timeLimit: "30",
+      problemsetId: 0,
+      score: 0,
+      timelimit: 30,
       title: "",
     },
   ];
@@ -121,25 +121,25 @@ const Home: NextPage = () => {
     [
       {
         description: "선지 1 예시",
-        index: 0,
+        idx: 0,
         picture: "",
         problemId: 0,
       },
       {
         description: "선지 2 예시",
-        index: 1,
+        idx: 1,
         picture: "",
         problemId: 0,
       },
       {
         description: "선지 3 예시",
-        index: 2,
+        idx: 2,
         picture: "",
         problemId: 0,
       },
       {
         description: "선지 4 예시",
-        index: 3,
+        idx: 3,
         picture: "",
         problemId: 0,
       },
@@ -151,7 +151,7 @@ const Home: NextPage = () => {
   let [problemSet, setProblemSet] = useState({
     closingMent: "",
     description: "",
-    hostId: "",
+    hostId: 0,
     title: "",
   });
   let [quizSet, setQuizSet] = useState(problemInput);
@@ -304,13 +304,16 @@ const Home: NextPage = () => {
                   alert(error);
                 });
 
+              let copy = [...quizSet];
+              for (let i = 0; i < copy.length; i++) copy[i].idx = i;
+
               for (let i = 0; i < quizSet.length; i++) {
                 {
                   /* POST - problem */
                 }
 
                 axios
-                  .post("https://prod.exquiz.net/api/problem", quizSet[i])
+                  .post("https://prod.exquiz.net/api/problem", copy)
                   .then((result) => {})
                   .catch((error) => {
                     alert(error);
@@ -699,11 +702,11 @@ const Home: NextPage = () => {
                               answer: "-1",
                               description: "",
                               dtype: idxToString[tabIdx],
-                              index: "-1",
+                              idx: 0,
                               picture: "",
-                              problemsetId: "0",
-                              score: "0",
-                              timeLimit: "30",
+                              problemsetId: 0,
+                              score: 0,
+                              timelimit: 30,
                               title: "",
                             },
                           ]);
@@ -713,25 +716,25 @@ const Home: NextPage = () => {
                             [
                               {
                                 description: "",
-                                index: 0,
+                                idx: 0,
                                 picture: "",
                                 problemId: 0,
                               },
                               {
                                 description: "",
-                                index: 1,
+                                idx: 1,
                                 picture: "",
                                 problemId: 0,
                               },
                               {
                                 description: "",
-                                index: 2,
+                                idx: 2,
                                 picture: "",
                                 problemId: 0,
                               },
                               {
                                 description: "",
-                                index: 3,
+                                idx: 3,
                                 picture: "",
                                 problemId: 0,
                               },
@@ -856,7 +859,7 @@ const Home: NextPage = () => {
                                       (
                                         {
                                           description,
-                                          index,
+                                          idx,
                                           picture,
                                           problemId,
                                         },
