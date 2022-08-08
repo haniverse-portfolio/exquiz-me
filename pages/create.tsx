@@ -103,7 +103,7 @@ const Home: NextPage = () => {
   let [tabIdx, setTabIdx] = useState(0);
   const [progressActive, setProgressActive] = useState(-1);
 
-  let input = [
+  let problemInput = [
     {
       answer: "0",
       description: "문제 1 예시",
@@ -114,33 +114,36 @@ const Home: NextPage = () => {
       score: "0",
       timeLimit: "30",
       title: "",
-      options: [
-        {
-          description: "선지 1 예시",
-          index: 0,
-          picture: "",
-          problemId: 0,
-        },
-        {
-          description: "선지 2 예시",
-          index: 1,
-          picture: "",
-          problemId: 0,
-        },
-        {
-          description: "선지 3 예시",
-          index: 2,
-          picture: "",
-          problemId: 0,
-        },
-        {
-          description: "선지 4 예시",
-          index: 3,
-          picture: "",
-          problemId: 0,
-        },
-      ],
     },
+  ];
+
+  let optionInput = [
+    [
+      {
+        description: "선지 1 예시",
+        index: 0,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "선지 2 예시",
+        index: 1,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "선지 3 예시",
+        index: 2,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "선지 4 예시",
+        index: 3,
+        picture: "",
+        problemId: 0,
+      },
+    ],
   ];
   {
     /* *** main state *** */
@@ -151,8 +154,8 @@ const Home: NextPage = () => {
     hostId: "",
     title: "",
   });
-  let [quizSet, setQuizSet] = useState(input);
-  const [slideActive, setSlideActive] = useState(-1);
+  let [quizSet, setQuizSet] = useState(problemInput);
+  let [option, setOption] = useState(optionInput);
 
   {
     /* mantine statement */
@@ -291,6 +294,38 @@ const Home: NextPage = () => {
             onClick={() => {
               setModalOpened(false);
               setStep(step + 1);
+              {
+                /* POST - problemset */
+              }
+              axios
+                .post("https://prod.exquiz.net/api/problemset", problemSet)
+                .then((result) => {})
+                .catch((error) => {
+                  alert(error);
+                });
+
+              for (let i = 0; i < quizSet.length; i++) {
+                {
+                  /* POST - problem */
+                }
+
+                axios
+                  .post("https://prod.exquiz.net/api/problem", quizSet[i])
+                  .then((result) => {})
+                  .catch((error) => {
+                    alert(error);
+                  });
+
+                {
+                  /* POST - problem_option*/
+                }
+                axios
+                  .post("https://prod.exquiz.net/api/problem_option", option[i])
+                  .then((result) => {})
+                  .catch((error) => {
+                    alert(error);
+                  });
+              }
             }}
           >
             넵
@@ -627,15 +662,17 @@ const Home: NextPage = () => {
                                     className="rounded-full"
                                     variant="subtle"
                                     onClick={() => {
-                                      // if (quizSet.length() === 1) return;
-                                      if (i === 0) return;
+                                      setCurIdx((prevState) => i);
+                                      if (quizSet.length === 1) return;
                                       let copy = [...quizSet];
                                       copy.splice(i, 1);
                                       setQuizSet(copy);
-                                      if (curIdx === i) {
-                                        setCurIdx(i - 1);
-                                      }
-                                      // document.getElementById("acc").style.value = curIdx;
+
+                                      let copy2 = [...option];
+                                      copy2.splice(i, 1);
+                                      setOption(copy2);
+
+                                      setCurIdx((prevState) => curIdx - 1);
                                     }}
                                     size="lg"
                                   >
@@ -668,33 +705,37 @@ const Home: NextPage = () => {
                               score: "0",
                               timeLimit: "30",
                               title: "",
-                              options: [
-                                {
-                                  description: "",
-                                  index: 0,
-                                  picture: "",
-                                  problemId: 0,
-                                },
-                                {
-                                  description: "",
-                                  index: 1,
-                                  picture: "",
-                                  problemId: 0,
-                                },
-                                {
-                                  description: "",
-                                  index: 2,
-                                  picture: "",
-                                  problemId: 0,
-                                },
-                                {
-                                  description: "",
-                                  index: 3,
-                                  picture: "",
-                                  problemId: 0,
-                                },
-                              ],
                             },
+                          ]);
+
+                          setOption([
+                            ...option,
+                            [
+                              {
+                                description: "",
+                                index: 0,
+                                picture: "",
+                                problemId: 0,
+                              },
+                              {
+                                description: "",
+                                index: 1,
+                                picture: "",
+                                problemId: 0,
+                              },
+                              {
+                                description: "",
+                                index: 2,
+                                picture: "",
+                                problemId: 0,
+                              },
+                              {
+                                description: "",
+                                index: 3,
+                                picture: "",
+                                problemId: 0,
+                              },
+                            ],
                           ]);
                         }}
                       >
@@ -811,7 +852,7 @@ const Home: NextPage = () => {
                                 {/* 입력 - 선지 정보 */}
                                 {
                                   <Grid>
-                                    {quizSet[curIdx].options.map(
+                                    {option[curIdx].map(
                                       (
                                         {
                                           description,
@@ -851,12 +892,10 @@ const Home: NextPage = () => {
                                               />
                                               <Textarea
                                                 onChange={(event) => {
-                                                  let copy = [...quizSet];
-                                                  copy[curIdx].options[
-                                                    i
-                                                  ].description =
+                                                  let copy = [...option];
+                                                  copy[curIdx][i].description =
                                                     event.currentTarget.value;
-                                                  setQuizSet(copy);
+                                                  setOption(copy);
                                                 }}
                                                 value={description}
                                                 placeholder={`선지 ${i + 1}`}
@@ -1025,36 +1064,58 @@ const Home: NextPage = () => {
                             {/* 컨텐츠 - 퀴즈 정보 */}
                             <Group className="w-[60vw] p-10 bg-white shadow-lg sm:rounded-3xl backdrop-blur-xl bg-opacity-50">
                               {/* 이미지 - 봉투 */}
-                              <Group spacing={0}>
-                                <Group className="shadow-lg" spacing={0}>
-                                  <Group className="border-r-2 border-gray-300 shadow-lg h-32 w-4 bg-amber-200" />
-                                  <Group>
-                                    <Stack spacing={0}>
-                                      <Group className="border-b-2 border-gray-300 m-0 p-0 h-16 w-48 bg-amber-200" />
-                                      <Group
-                                        spacing="xs"
-                                        className=" m-0 p-0 h-16 w-48 bg-amber-200"
-                                      >
-                                        <Group
-                                          className={`mx-1 text-white cursor-pointer w-12 h-12 bg-gradient-to-r from-${subjectInfo[subjectIdx].startColor}-500 to-${subjectInfo[subjectIdx].endColor}-500 rounded-full`}
-                                        >
-                                          <p className="text-xs m-auto">
-                                            {subjectInfo[subjectIdx].name}
-                                          </p>
+                              <Tooltip
+                                position="top-start"
+                                transition="scale-y"
+                                transitionDuration={300}
+                                withArrow
+                                label={"아래 스위치로 공개 여부를 선택하세요."}
+                              >
+                                <Group spacing={0}>
+                                  <Group className="shadow-lg" spacing={0}>
+                                    <Group className="border-r-2 border-gray-300 shadow-lg h-32 w-4 bg-amber-200" />
+                                    <Group>
+                                      <Stack spacing={0}>
+                                        <Group className="border-b-2 border-gray-300 m-0 p-0 h-16 w-48 bg-amber-200">
+                                          <Switch
+                                            defaultChecked={true}
+                                            color={
+                                              subjectInfo[
+                                                subjectIdx +
+                                                  (subjectIdx === 0 ? 4 : 0)
+                                              ].endColor
+                                            }
+                                            onLabel="공개"
+                                            offLabel="비공개"
+                                            size="xl"
+                                            className="mx-1"
+                                          />
                                         </Group>
                                         <Group
-                                          className={`mx-0 text-white cursor-pointer w-12 h-12 bg-gradient-to-r from-${tabInfo[tabIdx].startColor} to-${tabInfo[tabIdx].endColor} rounded-full`}
+                                          spacing={2}
+                                          className=" m-0 p-0 h-16 w-48 bg-amber-200"
                                         >
-                                          <p className="text-xs m-auto">
-                                            {tabTooltip[tabIdx]}
-                                          </p>
+                                          <Group
+                                            className={`mx-1 text-white cursor-pointer w-12 h-12 bg-gradient-to-r from-${subjectInfo[subjectIdx].startColor}-500 to-${subjectInfo[subjectIdx].endColor}-500 rounded-full`}
+                                          >
+                                            <p className="text-xs m-auto">
+                                              {subjectInfo[subjectIdx].name}
+                                            </p>
+                                          </Group>
+                                          <Group
+                                            className={`mx-0 text-white cursor-pointer w-12 h-12 bg-gradient-to-r from-${tabInfo[tabIdx].startColor} to-${tabInfo[tabIdx].endColor} rounded-full`}
+                                          >
+                                            <p className="text-xs m-auto">
+                                              {tabTooltip[tabIdx]}
+                                            </p>
+                                          </Group>
                                         </Group>
-                                      </Group>
-                                    </Stack>
+                                      </Stack>
+                                    </Group>
                                   </Group>
+                                  <Group className="shadow-lg m-0 p-0 h-28 w-8 bg-white"></Group>
                                 </Group>
-                                <Group className="shadow-lg m-0 p-0 h-28 w-8 bg-white"></Group>
-                              </Group>
+                              </Tooltip>
                               {/* 입력 - 퀴즈 상세 정보 */}
                               <Stack className="w-[25vw]">
                                 {/* 스위치 - 퀴즈 시간 제한 일괄 적용 여부 */}
@@ -1158,17 +1219,6 @@ const Home: NextPage = () => {
                                 <p className="font-semibold">
                                   예상 소요 시간 : 몰루
                                 </p>
-                                <p className="font-semibold">퀴즈 공개 여부</p>
-                                <Switch
-                                  color={
-                                    subjectInfo[
-                                      subjectIdx + (subjectIdx === 0 ? 4 : 0)
-                                    ].endColor
-                                  }
-                                  onLabel="비공개"
-                                  offLabel="공개"
-                                  size="xl"
-                                />
                               </Stack>
                               <Button
                                 variant="outline"
@@ -1193,7 +1243,7 @@ const Home: NextPage = () => {
                     <ActionIcon variant="transparent">
                       <ArrowBarRight
                         onClick={() => {
-                          setStep((prevState) => prevState + 1);
+                          setModalOpened(true);
                         }}
                         size="xl"
                         color="white"
@@ -1216,14 +1266,16 @@ const Home: NextPage = () => {
                               setTabIdx((prevState) => i);
                             }}
                             key={i}
-                            className={`w-20 h-20 bg-white rounded-lg shadow-${
+                            className={`w-20 h-20 bg-white rounded-lg cursor-pointer shadow-${
                               i === tabIdx
-                                ? "-shadow[inset_0_-2px_4px_rgba(0,0,0,0.5)]"
+                                ? "[inset_0_-2px_4px_rgba(128,128,128,0.8)]"
                                 : "lg"
-                            }`}
+                            }
+                            hover:shadow-[inset_0_-2px_4px_rgba(128,128,128,0.8)]
+                            `}
                           >
                             <Group
-                              className={`m-auto bg-gradient-to-r from-${startColor} to-${endColor} text-white cursor-pointer w-16 h-16 rounded-lg`}
+                              className={`m-auto bg-gradient-to-r from-${startColor} to-${endColor} text-white w-16 h-16 rounded-lg`}
                             >
                               {tabIcon(i)}
                             </Group>
@@ -1238,7 +1290,7 @@ const Home: NextPage = () => {
                 <></>
               )}
               {/* caching tailwind css */}
-              <Group className=" bg-gradient-to-r border-gray-500 from-gray-500 to-gray-500 w-0 h-0" />
+              <Group className=" bg-gradient-to-r shadow-[inset_0_-2px_4px_rgba(128,128,128,0.8)] border-gray-500 from-gray-500 to-gray-500 w-0 h-0" />
               <Group className="bg-gradient-to-r border-orange-500 from-orange-500 to-red-500 w-0 h-0" />
               <Group className="bg-gradient-to-r border-blue-500 from-blue-500 to-green-500 w-0 h-0" />
               <Group className="bg-gradient-to-r border-violet-500 from-violet-500 to-orange-500 w-0 h-0" />
