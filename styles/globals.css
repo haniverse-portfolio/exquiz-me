@@ -43,3 +43,9 @@ section {
 h2 {
   font-weight: bold;
 }
+
+@media (max-width: 850px) {
+  #index-btns {
+    width: 400px;
+  }
+}

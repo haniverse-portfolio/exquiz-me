@@ -12,6 +12,7 @@ import {
   Center,
   Container,
   Image,
+  Group,
 } from "@mantine/core";
 import {
   Emphasis,
@@ -26,9 +27,9 @@ import {
 
 function NavIndex() {
   return (
-    <div
+    <Group
       style={{
-        height: "5vh",
+        height: "60px",
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
@@ -36,10 +37,11 @@ function NavIndex() {
       }}
     >
       <Button
+        className="h-[50px]"
         component="a"
         rel="noopener noreferrer"
         href="/"
-        leftIcon={<Emphasis size={32} />}
+        leftIcon={<Emphasis size={30} />}
         styles={(theme) => ({
           root: {
             fontWeight: "bold",
@@ -66,6 +68,7 @@ function NavIndex() {
       </Button>
       <span>
         <Button
+          className="h-[50px]"
           onClick={() => {
             alert("구독 연장까지 90일 남았습니다.");
           }}
@@ -99,16 +102,13 @@ function NavIndex() {
         </Button>
 
         <Button
-          className="bg-orange-500"
+          className="h-[50px] bg-orange-500"
           variant="gradient"
           gradient={{ from: "orange", to: "red" }}
           component="a"
           rel="noopener noreferrer"
-          href="/#"
+          href="/inbox"
           leftIcon={<Folders size={32} />}
-          onClick={() => {
-            alert("로그인 된 걸로 합시다");
-          }}
           styles={(theme) => ({
             root: {
               fontWeight: "bold",
@@ -131,7 +131,7 @@ function NavIndex() {
         </Button>
 
         <Button
-          className="bg-orange-500"
+          className="h-[50px] bg-orange-500"
           variant="gradient"
           gradient={{ from: "orange", to: "red" }}
           component="a"
@@ -163,7 +163,7 @@ function NavIndex() {
           로그인
         </Button>
       </span>
-    </div>
+    </Group>
   );
 }
 

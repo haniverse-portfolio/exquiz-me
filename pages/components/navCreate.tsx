@@ -17,6 +17,7 @@ import {
   Select,
   Container,
   ActionIcon,
+  Group,
 } from "@mantine/core";
 import {
   Emphasis,
@@ -36,7 +37,7 @@ function NavCreate() {
   const [opened, setOpened] = useState(true);
 
   return (
-    <div
+    <Group
       style={{
         display: "flex",
         alignItems: "center",
@@ -123,7 +124,7 @@ function NavCreate() {
           <Menu2></Menu2>
         </ActionIcon>
       </span>
-    </div>
+    </Group>
   );
 }
 

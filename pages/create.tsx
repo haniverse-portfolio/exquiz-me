@@ -452,7 +452,7 @@ const Home: NextPage = () => {
                                 ].endColor
                               }
                               component="a"
-                              href="/membership"
+                              href="/inbox"
                             >
                               <Folders />
                             </ActionIcon>
@@ -819,7 +819,7 @@ const Home: NextPage = () => {
                                 ].endColor
                               }
                               component="a"
-                              href="/membership"
+                              href="/inbox"
                             >
                               <Folders />
                             </ActionIcon>
@@ -1059,7 +1059,7 @@ const Home: NextPage = () => {
                                 ].endColor
                               }
                               component="a"
-                              href="/membership"
+                              href="/inbox"
                             >
                               <Folders />
                             </ActionIcon>

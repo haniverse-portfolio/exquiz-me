@@ -118,7 +118,10 @@ const Home: NextPage = () => {
 
           <Center>
             <Group className=" m-auto">
-              <Stack className="transition ease-in-out hover:scale-105 h-72 w-80 rounded-2xl shadow-lg">
+              <Stack
+                className="transition ease-in-out hover:scale-105 h-72 w-80 rounded-2xl shadow-lg"
+                id="index-btns"
+              >
                 <Center>
                   <ActionIcon className="transition ease-in-out hover:rotate-90">
                     <Plus />
@@ -240,7 +243,7 @@ const Home: NextPage = () => {
 
       <footer className={styles.footer}>
         <a
-          style={{ textDecoration: "none", color: "black" }}
+          className="no-underline text-white font-semibold"
           href="/apiTest"
           target="_blank"
           rel="noopener noreferrer"

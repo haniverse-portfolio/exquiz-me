@@ -1,5 +1,5 @@
 .main {
-  min-height: 100vh;
+  height: max-content-120px;
   padding: 4rem 0;
   flex: 1;
   display: flex;
@@ -9,13 +9,15 @@
 }
 
 .footer {
-  height: 5vh;
+  height: 60px;
   display: flex;
   flex: 1;
   padding: 2rem 0;
   border-top: 1px solid #eaeaea;
   justify-content: center;
   align-items: center;
+  background-color: rgb(66, 66, 66);
+  color: white;
 }
 
 .footer a {
@@ -29,5 +31,11 @@
   .grid {
     width: 100%;
     flex-direction: column;
+  }
+}
+
+@media (max-width: 850px) {
+  #index-btns {
+    width: 400px;
   }
 }
