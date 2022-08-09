@@ -30,13 +30,11 @@ a {
 }
 
 main {
-  overflow: auto;
   scroll-snap-type: "y mandatory";
 }
 
 section {
   height: 100vh;
-  width: 100vw;
   scroll-snap-align: start;
   text-align: center;
   position: relative;

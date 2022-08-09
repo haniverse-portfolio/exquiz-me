@@ -292,12 +292,13 @@ const Home: NextPage = () => {
               subjectInfo[subjectIdx + (subjectIdx === 0 ? 4 : 0)].endColor
             }
             onClick={() => {
-              let problemsetId = 0;
               setModalOpened(false);
               setStep(step + 1);
               {
                 /* POST - problemset */
               }
+
+              let problemsetId = 0;
               axios
                 .post("https://prod.exquiz.net/api/problemset", problemSet)
                 .then((result) => {
@@ -306,6 +307,9 @@ const Home: NextPage = () => {
                 .catch((error) => {
                   alert(error);
                 });
+              {
+                /* POST - problemset */
+              }
 
               let copyQuizSet = [...quizSet];
               let copyOption = [...option];
