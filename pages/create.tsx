@@ -154,7 +154,7 @@ const Home: NextPage = () => {
     hostId: 1,
     title: "",
   });
-  let [quizSet, setQuizSet] = useState(problemInput);
+  let [problem, setProblem] = useState(problemInput);
   let [option, setOption] = useState(optionInput);
 
   {
@@ -266,6 +266,31 @@ const Home: NextPage = () => {
       />
     );
   });
+
+  const getProblemsetId = async () => {
+    const { data: result } = await axios.post(
+      "https://prod.exquiz.net/api/problemset",
+      problemSet
+    );
+    return result.data.id;
+  };
+
+  const getProblemId = async (idx: number) => {
+    const { data: result } = await axios.post(
+      "https://prod.exquiz.net/api/problem",
+      problem[idx]
+    );
+    return result.data.id;
+  };
+
+  const postOption = async (idx: number) => {
+    const { data: result } = await axios.post(
+      "https://prod.exquiz.net/api/problem_option",
+      option[idx]
+    );
+    return;
+  };
+
   return (
     <div>
       <Head>
@@ -294,60 +319,28 @@ const Home: NextPage = () => {
             onClick={() => {
               setModalOpened(false);
               setStep(step + 1);
-              {
-                /* POST - problemset */
-              }
 
               let problemsetId = 0;
-              axios
-                .post("https://prod.exquiz.net/api/problemset", problemSet)
-                .then((result) => {
-                  problemsetId = result.data.id;
-                })
-                .catch((error) => {
-                  alert(error);
-                });
-              {
-                /* POST - problemset */
-              }
+              async () => (problemsetId = await getProblemsetId());
 
-              let copyQuizSet = [...quizSet];
+              let copyProblem = [...problem];
               let copyOption = [...option];
-              for (let i = 0; i < copyQuizSet.length; i++) {
-                copyQuizSet[i].idx = i;
-                copyQuizSet[i].problemsetId = problemsetId;
+              for (let i = 0; i < copyProblem.length; i++) {
+                copyProblem[i].idx = i;
+                copyProblem[i].problemsetId = problemsetId;
               }
+              setProblem((prevState) => copyProblem);
 
-              for (let i = 0; i < copyQuizSet.length; i++) {
-                {
-                  /* POST - problem */
-                }
+              for (let i = 0; i < copyProblem.length; i++) {
                 let problemId = 0;
-                axios
-                  .post("https://prod.exquiz.net/api/problem", copyQuizSet)
-                  .then((result) => {
-                    problemId = result.data.id;
-                  })
-                  .catch((error) => {
-                    alert(error);
-                  });
+                async () => (problemId = await getProblemId(i));
 
                 for (let j = 0; j < copyOption.length; j++) {
                   copyOption[i][j].idx = j;
                   copyOption[i][j].problemId = problemId;
                 }
-                {
-                  /* POST - problem_option*/
-                }
-                axios
-                  .post(
-                    "https://prod.exquiz.net/api/problem_option",
-                    copyOption[i]
-                  )
-                  .then((result) => {})
-                  .catch((error) => {
-                    alert(error);
-                  });
+                setOption((prevState) => copyOption);
+                async () => await postOption(i);
               }
               alert("완료!");
               // sleep(3000).then(() => location.replace("/myQuiz"));
@@ -647,7 +640,7 @@ const Home: NextPage = () => {
                         className="h-[40vh] w-[15vw]"
                         scrollbarSize={0}
                       >
-                        {quizSet.map(({ dtype, description }, i) => {
+                        {problem.map(({ dtype, description }, i) => {
                           return (
                             <Tooltip
                               offset={-10}
@@ -662,7 +655,7 @@ const Home: NextPage = () => {
                                     } else setCurIdx(i);
 
                                     setTabIdx((prevstate) =>
-                                      stringToIdx(quizSet[i].dtype)
+                                      stringToIdx(problem[i].dtype)
                                     );
                                   }}
                                   className={`w-[13vw] justify-between cursor-pointer my-4 shadow-lg rounded-md border-solid border-2 border-${
@@ -688,10 +681,10 @@ const Home: NextPage = () => {
                                     variant="subtle"
                                     onClick={() => {
                                       setCurIdx((prevState) => i);
-                                      if (quizSet.length === 1) return;
-                                      let copy = [...quizSet];
+                                      if (problem.length === 1) return;
+                                      let copy = [...problem];
                                       copy.splice(i, 1);
-                                      setQuizSet(copy);
+                                      setProblem(copy);
 
                                       let copy2 = [...option];
                                       copy2.splice(i, 1);
@@ -718,8 +711,8 @@ const Home: NextPage = () => {
                         }
                         leftIcon={<Plus size={32} />}
                         onClick={() => {
-                          setQuizSet([
-                            ...quizSet,
+                          setProblem([
+                            ...problem,
                             {
                               answer: "-1",
                               description: "",
@@ -848,14 +841,14 @@ const Home: NextPage = () => {
                               {/* 입력 - 문제 설명 */}
                               <TextInput
                                 onChange={(event) => {
-                                  let copy = [...quizSet];
+                                  let copy = [...problem];
                                   copy[curIdx].description =
                                     event.currentTarget.value;
-                                  setQuizSet(copy);
+                                  setProblem(copy);
                                 }}
-                                value={quizSet[curIdx].description}
-                                // [quizSet[curIdx].description] => event.currentTarget.value}
-                                // value={quizSet[curIdx].description}
+                                value={problem[curIdx].description}
+                                // [problem[curIdx].description] => event.currentTarget.value}
+                                // value={problem[curIdx].description}
                                 color="orange"
                                 placeholder="문제 설명"
                                 icon={<Plus size={14} />}
@@ -887,20 +880,20 @@ const Home: NextPage = () => {
                                         },
                                         i
                                       ) => {
-                                        const ans = quizSet[curIdx].answer;
+                                        const ans = problem[curIdx].answer;
                                         return (
                                           <Grid.Col key={i} span={5}>
                                             <Group>
                                               <Checkbox
                                                 onClick={(event) => {
-                                                  let copy = [...quizSet];
+                                                  let copy = [...problem];
                                                   // (this.checked === true)?:"":
                                                   copy[curIdx].answer =
                                                     i.toString();
-                                                  setQuizSet(copy);
+                                                  setProblem(copy);
                                                 }}
                                                 checked={
-                                                  quizSet[curIdx].answer ===
+                                                  problem[curIdx].answer ===
                                                   i.toString()
                                                     ? true
                                                     : false
@@ -958,11 +951,11 @@ const Home: NextPage = () => {
                       <p>배점 설정</p>
                       <Slider
                         // onChange={(event) => {
-                        //   let copy = [...quizSet];
+                        //   let copy = [...problem];
                         //   copy[curIdx].score = event.currentTarget.value.toString();
                         //   setProblemSet(copy);
                         // }}
-                        // value={quizSet[curIdx].score}
+                        // value={problem[curIdx].score}
                         color={
                           subjectInfo[subjectIdx + (subjectIdx === 0 ? 4 : 0)]
                             .endColor

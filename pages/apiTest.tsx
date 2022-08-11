@@ -95,14 +95,14 @@ const Home: NextPage = () => {
 
   function componentDidMount() {
     // Simple POST request with a JSON body using axios
-    const userData = { name: "kangsangjin", nickname: "brandonkang" };
+    let userData = { name: "이름이름1", nickname: "닉네임1" };
     axios
-      .post("https://exquiz.net/api/room/100000/signup", userData)
+      .post("https://dist.exquiz.me/api/room/100000/signup", userData)
       .then((result) => {
-        alert("성공!");
+        alert("됏나?");
       })
       .catch((error) => {
-        alert(error);
+        alert(userData.name);
       });
   }
 
@@ -204,6 +204,29 @@ const Home: NextPage = () => {
                   color="green"
                   onClick={() => {
                     componentDidMount();
+                  }}
+                >
+                  POST
+                </Button>
+              </Accordion.Panel>
+
+              <Accordion.Control icon={<CloudDownload />}>
+                POST /api/room/newRoom (퀴즈방 생성)
+              </Accordion.Control>
+
+              <Accordion.Panel>
+                <Button
+                  onClick={() => {
+                    let form = { maxParticipantCount: 0, problemsetId: 1 };
+                    axios
+                      .post("https://dist.exquiz.me/api/room/newRoom", form)
+                      .then((result) => {
+                        alert("전송되었습니다!");
+                        alert(result.data.pin);
+                      })
+                      .catch((error) => {
+                        alert(error);
+                      });
                   }}
                 >
                   POST
