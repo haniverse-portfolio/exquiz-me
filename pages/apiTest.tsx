@@ -319,7 +319,7 @@ const Home: NextPage = () => {
             textDecoration: "none",
             color: "black",
           }}
-          href="/apiTest"
+          href="/sockTest"
           target="_blank"
           rel="noopener noreferrer"
         >

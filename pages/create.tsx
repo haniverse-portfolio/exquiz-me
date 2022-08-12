@@ -36,6 +36,7 @@ import {
   Tabs,
   Modal,
   Text,
+  Notification,
 } from "@mantine/core";
 
 import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
@@ -70,11 +71,15 @@ import {
   ArrowBarRight,
   ArrowBarLeft,
   ToggleLeft,
+  CircleCheck,
 } from "tabler-icons-react";
 
 import { NotificationsProvider } from "@mantine/notifications";
 import { copyFileSync } from "fs";
 // 85vh 20vw
+
+const delay = (ms: number | undefined) =>
+  new Promise((res) => setTimeout(res, ms));
 
 function sideIconCode(idx: string) {
   if (idx == "empty") return <BrowserPlus size={20} color={"#babbbd"} />;
@@ -316,9 +321,9 @@ const Home: NextPage = () => {
             color={
               subjectInfo[subjectIdx + (subjectIdx === 0 ? 4 : 0)].endColor
             }
-            onClick={() => {
+            onClick={async () => {
               setModalOpened(false);
-              setStep(step + 1);
+              setStep((prevState) => step + 1);
 
               let problemsetId = 0;
               async () => (problemsetId = await getProblemsetId());
@@ -342,11 +347,14 @@ const Home: NextPage = () => {
                 setOption((prevState) => copyOption);
                 async () => await postOption(i);
               }
-              alert("완료!");
-              // sleep(3000).then(() => location.replace("/myQuiz"));
+              await delay(1500);
+              await setStep((prevState) => step + 1);
+              await delay(1500);
+              // sleep(3000);
+              location.replace("/inbox");
             }}
           >
-            넵
+            네
           </Button>
           <Button
             variant="outline"
@@ -1272,6 +1280,39 @@ const Home: NextPage = () => {
               ) : (
                 <></>
               )}
+
+              {step === 3 ? (
+                <Notification
+                  loading
+                  color={
+                    subjectInfo[subjectIdx + (subjectIdx === 0 ? 4 : 0)]
+                      .endColor
+                  }
+                  title="서버에 퀴즈 업로드 중..."
+                  disallowClose
+                >
+                  퀴즈 정보가 서버에 업로드 될 때까지 기다려주세요.
+                </Notification>
+              ) : (
+                <></>
+              )}
+
+              {step === 4 ? (
+                <Notification
+                  icon={<Check size={20} />}
+                  color={
+                    subjectInfo[subjectIdx + (subjectIdx === 0 ? 4 : 0)]
+                      .endColor
+                  }
+                  title="업로드 완료!"
+                  disallowClose
+                >
+                  퀴즈 정보가 서버에 안전하게 저장되었습니다.
+                </Notification>
+              ) : (
+                <></>
+              )}
+
               {/* tab */}
               {step === 1 ? (
                 <Center>
@@ -1328,6 +1369,3 @@ const Home: NextPage = () => {
 };
 
 export default Home;
-function sleep(arg0: number) {
-  throw new Error("Function not implemented.");
-}

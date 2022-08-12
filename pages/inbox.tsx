@@ -74,6 +74,8 @@ import {
 
 import { NotificationsProvider } from "@mantine/notifications";
 import { copyFileSync } from "fs";
+import { errorMonitor } from "events";
+import { resourceLimits } from "worker_threads";
 // 85vh 20vw
 
 function sideIconCode(idx: string) {
@@ -143,6 +145,44 @@ const Home: NextPage = () => {
 
   /* 2. modal */
   const [modalOpened, setModalOpened] = useState(false);
+  /* submit form */
+  let submitForm = {
+    answerText: "1",
+    problemIdx: 1,
+    uuid: "d7a23266-6fc7-421a-9ed8-aad169013e52",
+  };
+
+  const getLeaderboard = async () => {
+    const { data: result } = await axios.get(
+      "https://dist.exquiz.me/api/room/100310/mq/leaderboard"
+    );
+    return result.data;
+  };
+
+  const getProblemsets = () => {
+    axios
+      .get("https://prod.exquiz.net/api/problemsets/1")
+      .then((result) => {
+        setProblemsets(result.data);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+    return;
+  };
+
+  let [problemsets, setProblemsets] = useState([
+    { id: -1, title: "", description: "", closingMent: "" },
+  ]);
+  getProblemsets();
+
+  const submit = async () => {
+    const { data: result } = await axios.post(
+      "https://dist.exquiz.me/api/room/100310/mq/submit",
+      submitForm
+    );
+    return result.data;
+  };
 
   return (
     <div>
@@ -249,15 +289,90 @@ const Home: NextPage = () => {
                                   </Group>
                                 </Tooltip>
                                 {/* 입력 - 퀴즈 정보 */}
-                                <Stack>hellow</Stack>
+                                <Stack>
+                                  <p> 여기 어디</p>
+                                  <Button
+                                    className="bg-black"
+                                    onClick={() => {
+                                      let submitForm = {
+                                        answerText: "1",
+                                        problemIdx: 0,
+                                        uuid: "d7a23266-6fc7-421a-9ed8-aad169013e52",
+                                      };
+
+                                      axios
+                                        .post(
+                                          "https://dist.exquiz.me/api/room/100310/mq/submit",
+                                          submitForm
+                                        )
+                                        .then((result) => {
+                                          alert(result.data);
+                                        })
+                                        .catch((error) => {
+                                          alert(error.response.data);
+                                        });
+                                    }}
+                                  >
+                                    Press me!
+                                  </Button>
+                                  <Button
+                                    className="bg-black"
+                                    onClick={() => {
+                                      axios
+                                        .get(
+                                          "https://dist.exquiz.me/api/room/100310/mq/leaderboard"
+                                        )
+                                        .then((result) => {
+                                          alert(JSON.stringify(result.data));
+                                        })
+                                        .catch((error) => {
+                                          alert(error);
+                                        });
+                                    }}
+                                  >
+                                    리더보드 GET
+                                  </Button>
+                                </Stack>
                               </Group>
                             </Stack>
-                            <Stack>
-                              {/* 텍스트 - 과목 선택 */}
-                              <Group className="font-semibold">퀴즈 선택</Group>
-                              {/* 입력 - 과목 선택*/}
-                              <Group className="mx-2"></Group>
-                            </Stack>
+                            {/* 텍스트 - 과목 선택 */}
+                            <Group className="font-semibold">퀴즈 선택</Group>
+                            {problemsets.map(
+                              ({ id, title, description, closingMent }, i) => {
+                                return (
+                                  <Stack key={i}>
+                                    <Group spacing={0}>
+                                      <Group className="shadow-lg" spacing={0}>
+                                        <Group className="border-r-2 border-gray-300 shadow-lg h-32 w-4 bg-amber-200" />
+                                        <Group>
+                                          <Stack spacing={0}>
+                                            <Group className="border-b-2 border-gray-300 m-0 p-0 h-16 w-48 bg-amber-200" />
+                                            <Group className=" m-0 p-0 h-16 w-48 bg-amber-200">
+                                              <Group
+                                                className={`mx-1 text-white cursor-pointer w-12 h-12 bg-gradient-to-r from-black to-black rounded-full`}
+                                              >
+                                                <p className="text-xs m-auto">
+                                                  hello1
+                                                </p>
+                                              </Group>
+                                              <Group
+                                                className={`mx-1 text-white cursor-pointer w-12 h-12 bg-gradient-to-r from-black to-black rounded-full`}
+                                              >
+                                                <p className="text-xs m-auto">
+                                                  hello2
+                                                </p>
+                                              </Group>
+                                            </Group>
+                                          </Stack>
+                                        </Group>
+                                      </Group>
+                                      <Group className="shadow-lg m-0 p-0 h-28 w-8 bg-white"></Group>
+                                    </Group>
+                                    <p className="text-xs m-auto">{title}</p>
+                                  </Stack>
+                                );
+                              }
+                            )}
                           </Stack>
                         </ScrollArea>
                       </Group>
