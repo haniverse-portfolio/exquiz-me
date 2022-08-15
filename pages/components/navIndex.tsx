@@ -33,7 +33,7 @@ function NavIndex() {
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        boxShadow: "0 3px 4px -4px black",
+        boxShadow: "0 3px 4px -4px gray",
       }}
     >
       <Button
@@ -41,11 +41,10 @@ function NavIndex() {
         component="a"
         rel="noopener noreferrer"
         href="/"
-        leftIcon={<Emphasis size={30} />}
         styles={(theme) => ({
           root: {
             fontWeight: "bold",
-            fontSize: 16,
+            fontSize: 24,
             marginLeft: 10,
             paddingLeft: 0,
             color: "black",
@@ -64,7 +63,7 @@ function NavIndex() {
           },
         })}
       >
-        xquiz.me
+        exquiz.me
       </Button>
       <span>
         <Button
@@ -99,35 +98,6 @@ function NavIndex() {
           })}
         >
           멤버십
-        </Button>
-
-        <Button
-          className="h-[50px] bg-orange-500"
-          variant="gradient"
-          gradient={{ from: "orange", to: "red" }}
-          component="a"
-          rel="noopener noreferrer"
-          href="/inbox"
-          leftIcon={<Folders size={32} />}
-          styles={(theme) => ({
-            root: {
-              fontWeight: "bold",
-              fontSize: 16,
-              marginLeft: 5,
-              color: "white",
-              backgroundColor: "orange",
-              border: 0,
-              height: 42,
-
-              "&:hover": {},
-            },
-
-            leftIcon: {
-              marginRight: 5,
-            },
-          })}
-        >
-          퀴즈 관리
         </Button>
 
         <Button

@@ -72,6 +72,7 @@ import {
   ArrowBarLeft,
   ToggleLeft,
   CircleCheck,
+  MathAvg,
 } from "tabler-icons-react";
 
 import { NotificationsProvider } from "@mantine/notifications";
@@ -82,7 +83,7 @@ const delay = (ms: number | undefined) =>
   new Promise((res) => setTimeout(res, ms));
 
 function sideIconCode(idx: string) {
-  if (idx == "empty") return <BrowserPlus size={20} color={"#babbbd"} />;
+  if (idx == "empty") return <MathAvg size={20} color={"#babbbd"} />;
   if (idx == "MultipleChoiceProblem")
     return <SquareCheck size={20} color={"#fa584b"} />;
   if (idx == "subjective") return <Parentheses size={20} color={"#4A73F0"} />;
@@ -187,7 +188,7 @@ const Home: NextPage = () => {
     if (idx == 2) return <AB className="m-auto" size={"30px"} />;
     if (idx == 3) return <QuestionMark className="m-auto" size={"30px"} />;
     if (idx == 4) return <Apps className="m-auto" size={"30px"} />;
-    if (idx == 5) return <BrowserPlus className="m-auto" size={"30px"} />;
+    if (idx == 5) return <MathAvg className="m-auto" size={"30px"} />;
   }
 
   const tabTooltip = [
@@ -917,6 +918,7 @@ const Home: NextPage = () => {
                                                 size="xl"
                                               />
                                               <Textarea
+                                                variant="unstyled"
                                                 onChange={(event) => {
                                                   let copy = [...option];
                                                   copy[curIdx][i].description =
@@ -954,7 +956,7 @@ const Home: NextPage = () => {
                       />
                     </ActionIcon>
                   </Group>
-                  <Group className="h-[60vh] items-center m-2 p-10 bg-white shadow-lg sm:rounded-3xl backdrop-blur-xl bg-opacity-80">
+                  {/* <Group className="h-[60vh] items-center m-2 p-10 bg-white shadow-lg sm:rounded-3xl backdrop-blur-xl bg-opacity-80">
                     <Stack className="w-[15vw]">
                       <p>배점 설정</p>
                       <Slider
@@ -992,7 +994,7 @@ const Home: NextPage = () => {
                         styles={{ markLabel: { display: "none" } }}
                       />
                     </Stack>
-                  </Group>
+                  </Group> */}
                 </Group>
               ) : (
                 <></>

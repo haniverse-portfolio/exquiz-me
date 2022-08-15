@@ -243,8 +243,30 @@ const Home: NextPage = () => {
               }}
             >
               <Accordion.Control icon={<CloudDownload />}>
-                GET /api/problemsets/hostID (호스트가 가지고 있는 problemset
-                목록 조회){" "}
+                GET /api/problemsets/1 (호스트가 가지고 있는 problemset 목록
+                조회) 111
+              </Accordion.Control>
+
+              <Accordion.Panel>
+                {" "}
+                <Button
+                  onClick={() => {
+                    axios
+                      .get("https://prod.exquiz.me/api/problemsets/1")
+                      .then((result) => {
+                        alert(result.data[0].description);
+                      })
+                      .catch((error) => {
+                        alert(error);
+                      });
+                  }}
+                >
+                  GET
+                </Button>
+              </Accordion.Panel>
+
+              <Accordion.Control icon={<CloudDownload />}>
+                POST /api/problemset (makeProblemset){" "}
               </Accordion.Control>
 
               <Accordion.Panel>
@@ -253,6 +275,38 @@ const Home: NextPage = () => {
                   onClick={() => {
                     axios
                       .get("https://prod.exquiz.net/api/problemsets/1")
+                      .then((result) => {
+                        alert(result.data);
+                      })
+                      .catch((error) => {
+                        alert(error);
+                      });
+                  }}
+                >
+                  GET
+                </Button>
+              </Accordion.Panel>
+            </Accordion.Item>
+          </Accordion>
+          <p>민겸이형의 퀴즈 제작 파트</p>
+          <Accordion defaultValue="customization" variant="separated">
+            <Accordion.Item
+              value="customization"
+              style={{
+                boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.05)",
+              }}
+            >
+              <Accordion.Control icon={<CloudDownload />}>
+                GET /api/problemsets/hostID (호스트가 가지고 있는 problemset
+                목록 조회) 222
+              </Accordion.Control>
+
+              <Accordion.Panel>
+                {" "}
+                <Button
+                  onClick={() => {
+                    axios
+                      .get("https://prod.exquiz.me/api/problemsets/1")
                       .then((result) => {
                         setProblemset(result.data);
                       })

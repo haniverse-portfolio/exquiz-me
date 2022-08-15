@@ -54,7 +54,74 @@ import {
   Circle,
   Triangle,
   X,
+  Folders,
 } from "tabler-icons-react";
+
+const rightEnvelope = (subject: number) => {
+  const subjectInfo = [
+    { name: "미분류", startColor: "gray", endColor: "gray" },
+    { name: "언어", startColor: "orange", endColor: "red" },
+    { name: "수리과학", startColor: "blue", endColor: "green" },
+    { name: "인문사회", startColor: "violet", endColor: "pink" },
+    { name: "예체능", startColor: "yellow", endColor: "orange" },
+  ];
+
+  return (
+    <Group className="transition ease-in-out hover:scale-105" spacing={0}>
+      <Group className="shadow-lg" spacing={0}>
+        <Group
+          className={`bg-${subjectInfo[subject].startColor} border-r-2 border-gray-300 shadow-lg h-24 w-4 bg-amber-200`}
+        />
+        <Group>
+          <Stack spacing={0}>
+            <Group
+              className={`bg-gradient-to-r from-${subjectInfo[subject].startColor} to-${subjectInfo[subject].endColor} border-b-2 border-gray-300 m-0 p-0 h-12 w-32 bg-amber-200`}
+            />
+            <Group
+              className={`bg-gradient-to-r from-${subjectInfo[subject].startColor} to-${subjectInfo[subject].endColor} m-0 p-0 h-12 w-32 bg-amber-200`}
+            />
+          </Stack>
+        </Group>
+      </Group>
+      <Group
+        className={`bg-gradient-to-r from-${subjectInfo[subject].startColor} to-${subjectInfo[subject].endColor} shadow-lg m-0 p-0 h-20 w-6 bg-white`}
+      ></Group>
+    </Group>
+  );
+};
+
+const leftEnvelope = (subject: number) => {
+  const subjectInfo = [
+    { name: "미분류", startColor: "gray", endColor: "gray" },
+    { name: "언어", startColor: "orange", endColor: "red" },
+    { name: "수리과학", startColor: "blue", endColor: "green" },
+    { name: "인문사회", startColor: "violet", endColor: "pink" },
+    { name: "예체능", startColor: "yellow", endColor: "orange" },
+  ];
+
+  return (
+    <Group className="transition ease-in-out hover:scale-105" spacing={0}>
+      <Group
+        className={`bg-gradient-to-r shadow-lg m-0 p-0 h-20 w-6 bg-white`}
+      ></Group>
+      <Group className="shadow-lg" spacing={0}>
+        <Group>
+          <Stack spacing={0}>
+            <Group
+              className={`bg-gradient-to-r from-${subjectInfo[subject].startColor}-500 to-${subjectInfo[subject].endColor}-500 m-0 p-0 h-12 w-32 bg-amber-200`}
+            />
+            <Group
+              className={`bg-gradient-to-r from-${subjectInfo[subject].startColor}-500 to-${subjectInfo[subject].endColor}-500 m-0 p-0 h-12 w-32 bg-amber-200`}
+            />
+          </Stack>
+        </Group>
+        <Group
+          className={`bg-${subjectInfo[subject].endColor}-500 border-l-2 border-gray-300 shadow-lg h-24 w-4 bg-amber-200`}
+        />
+      </Group>
+    </Group>
+  );
+};
 
 const Home: NextPage = () => {
   const theme = useMantineTheme();
@@ -77,178 +144,140 @@ const Home: NextPage = () => {
         <section className="h-[86vh]">
           <Stack className="items-center flex contents-between">
             <Stack>
-              <Stack
-                style={{
-                  fontSize: 36,
-                  textDecoration: "underline orange 10px",
-                  fontWeight: "bold",
-                  textAlign: "center",
-                }}
-              >
-                <p className="mt-10">퀴즈의 새로운 경험을 제시하다</p>
-                <p className="mb-10">exquiz.me</p>
-              </Stack>
-              <Center>
-                <TextInput
-                  className="w-[14vw]"
-                  placeholder="핀 번호 입력하여 입장하기"
-                />
-              </Center>
-            </Stack>
-            {/* 아미지 - 봉투 */}
-            <Group
-              className="transition ease-in-out hover:scale-105"
-              spacing={0}
-            >
-              <Group className="shadow-lg" spacing={0}>
-                <Group className="border-r-2 border-gray-300 shadow-lg h-32 w-4 bg-amber-200" />
+              {/* 메인 배너 */}
+              <Group className="my-36" spacing={100}>
                 <Group>
-                  <Stack spacing={0}>
-                    <Group className="border-b-2 border-gray-300 m-0 p-0 h-16 w-48 bg-amber-200" />
-                    <Group className=" m-0 p-0 h-16 w-48 bg-amber-200" />
-                  </Stack>
+                  <Group>
+                    <Stack>
+                      <p className="underline decoration-amber-500 font-bold text-6xl text-left mt-10">
+                        퀴즈의 새로운 경험을 제시하다
+                      </p>
+                      <p className="font-bold text-6xl text-left mb-10">
+                        exquiz.me
+                      </p>
+                      <Group>
+                        <Button
+                          className="mx-4 h-[60px] w-[200px]"
+                          variant="outline"
+                          gradient={{ from: "orange", to: "red" }}
+                          component="a"
+                          rel="noopener noreferrer"
+                          href="/create_rf"
+                          leftIcon={<Pencil size={38} />}
+                          styles={(theme: {
+                            fn: { darken: (arg0: string, arg1: number) => any };
+                          }) => ({
+                            root: {
+                              textDecoration: "none",
+                              fontWeight: "bold",
+                              fontSize: 20,
+                              marginRight: 10,
+                              color: "orange",
+                              backgroundColor: "white",
+                              border: "2px solid orange",
+                              height: 42,
+
+                              "&:hover": {
+                                backgroundColor: theme.fn.darken(
+                                  "#FFFFFF",
+                                  0.05
+                                ),
+                              },
+                            },
+
+                            leftIcon: {
+                              marginRight: 5,
+                            },
+                          })}
+                        >
+                          문제 제작하기
+                        </Button>
+                        <Button
+                          className=" h-[60px] w-[200px] bg-orange-500"
+                          variant="gradient"
+                          gradient={{ from: "orange", to: "red" }}
+                          component="a"
+                          rel="noopener noreferrer"
+                          href="/inbox"
+                          leftIcon={<Folders size={38} />}
+                          styles={(theme) => ({
+                            root: {
+                              fontWeight: "bold",
+                              fontSize: 20,
+                              marginLeft: 5,
+                              color: "white",
+                              backgroundColor: "orange",
+                              border: 0,
+                              height: 42,
+
+                              "&:hover": {},
+                            },
+
+                            leftIcon: {
+                              marginRight: 5,
+                            },
+                          })}
+                        >
+                          퀴즈 관리하기
+                        </Button>
+                      </Group>
+                    </Stack>
+                  </Group>
                 </Group>
+                {/* 아미지 - 봉투 */}
+                <Stack>
+                  <Group>
+                    {rightEnvelope(0)}
+                    {rightEnvelope(1)}
+                    {rightEnvelope(2)}
+                    {rightEnvelope(3)}
+                  </Group>
+                  <iframe
+                    className="m-auto"
+                    width="560"
+                    height="315"
+                    src="https://www.youtube.com/embed/YvPYFCC1cL0"
+                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                  ></iframe>
+                  <Group>
+                    {leftEnvelope(1)}
+                    {leftEnvelope(2)}
+                    {leftEnvelope(3)}
+                    {leftEnvelope(4)}
+                  </Group>
+                </Stack>
               </Group>
-              <Group className="shadow-lg m-0 p-0 h-28 w-8 bg-white"></Group>
-            </Group>
+            </Stack>
           </Stack>
           <br />
           <br />
           <br />
-
-          <Center>
-            <Group className=" m-auto">
-              <Stack
-                className="transition ease-in-out hover:scale-105 h-72 w-80 rounded-2xl shadow-lg"
-                id="index-btns"
-              >
-                <Center>
-                  <ActionIcon className="transition ease-in-out hover:rotate-90">
-                    <Plus />
-                  </ActionIcon>
-                </Center>
-                <Button
-                  className="mx-4"
-                  variant="outline"
-                  gradient={{ from: "orange", to: "red" }}
-                  component="a"
-                  rel="noopener noreferrer"
-                  href="/create"
-                  leftIcon={<Pencil size={32} />}
-                  styles={(theme: {
-                    fn: { darken: (arg0: string, arg1: number) => any };
-                  }) => ({
-                    root: {
-                      fontWeight: "bold",
-                      fontSize: 16,
-                      marginRight: 10,
-                      color: "orange",
-                      backgroundColor: "white",
-                      border: "2px solid orange",
-                      height: 42,
-
-                      "&:hover": {
-                        backgroundColor: theme.fn.darken("#FFFFFF", 0.05),
-                      },
-                    },
-
-                    leftIcon: {
-                      marginRight: 5,
-                    },
-                  })}
-                >
-                  문제 제작하기
-                </Button>
-                <p className="mx-4 font-semibold">
-                  직관적인 출제. 자유로운 커스터마이징
-                </p>
-                <p className="mx-4">
-                  직관적이고 커스터마이징이 간편한 퀴즈 제작 툴을 만나보세요.
-                  배점부터 시간까지 설정은 여러분의 자유입니다.
-                </p>
-              </Stack>
-
-              <Stack className="transition ease-in-out hover:scale-105 h-72 w-80 rounded-2xl shadow-lg">
-                <Center>
-                  <ActionIcon className="transition ease-in-out hover:rotate-[120deg]">
-                    <Triangle />
-                  </ActionIcon>
-                </Center>
-                <Center className="mx-4 h-[4.5vh]">
-                  <Autocomplete
-                    className="w-full"
-                    placeholder="퀴즈 검색하기"
-                    data={["언어", "수리과학", "인문사회", "예체능"]}
-                  />
-                </Center>
-                <p className="mx-4 font-semibold">
-                  현직 교사들이 제작한 퀴즈 열람
-                </p>
-                <p className="mx-4">
-                  학교 인증을 통해 검증된 퀴즈들을 둘러보세요. exquiz.me의
-                  자동화된 태그 시스템이 원하시는 퀴즈의 편리한 이용을
-                  지원합니다.
-                </p>
-              </Stack>
-
-              <Stack className="transition ease-in-out hover:scale-105 h-72 w-80 rounded-2xl shadow-lg">
-                <Center>
-                  <ActionIcon className="transition ease-in-out hover:-translate-y-2">
-                    <Circle />
-                  </ActionIcon>
-                </Center>
-                <Button
-                  className="mx-4 bg-orange-500"
-                  onClick={() => {
-                    alert("아직 들어가지 마세요");
-                  }}
-                  variant="gradient"
-                  gradient={{ from: "orange", to: "red" }}
-                  component="a"
-                  rel="noopener noreferrer"
-                  href="/#"
-                  leftIcon={<Login size={32} />}
-                  styles={(theme: {
-                    fn: { darken: (arg0: string, arg1: number) => any };
-                  }) => ({
-                    root: {
-                      fontWeight: "bold",
-                      fontSize: 16,
-                      marginRight: 10,
-                      color: "white",
-                      backgroundColor: "white",
-                      border: 0,
-                      height: 42,
-
-                      "&:hover": {},
-                    },
-
-                    leftIcon: {
-                      marginRight: 5,
-                    },
-                  })}
-                >
-                  방 생성하기
-                </Button>
-                <p className="mx-4 font-semibold">즐거운 퀴즈 시간을 즐기기</p>
-                <p className="mx-4">
-                  방을 생성해서 학생들을 초대해보세요. 다양한 종류의 퀴즈와
-                  경쟁적인 리더보드, 그리고 통계가 제공됩니다.
-                </p>
-              </Stack>
-            </Group>
-          </Center>
         </section>
       </main>
 
       <footer className={styles.footer}>
+        <Group className=" bg-gradient-to-r shadow-[inset_0_-2px_4px_rgba(128,128,128,0.8)] border-gray-500 from-gray-500 to-gray-500 w-0 h-0" />
+        <Group className="bg-gradient-to-r border-orange-500 from-orange-500 to-red-500 w-0 h-0" />
+        <Group className="bg-gradient-to-r border-blue-500 from-blue-500 to-green-500 w-0 h-0" />
+        <Group className="bg-gradient-to-r border-violet-500 from-violet-500 to-orange-500 w-0 h-0" />
+        <Group className="bg-gradient-to-r border-yellow-500 from-yellow-500 to-orange-500 w-0 h-0" />
+        <Group className="bg-gradient-to-r border-gray-500 from-gray-400 to-gray-400 w-0 h-0" />
+        <Group className="bg-gradient-to-r border-red-500 from-red-500 to-orange-500 w-0 h-0" />
+        <Group className="bg-gradient-to-r border-blue-500 from-blue-700 to-blue-500 w-0 h-0" />
+        <Group className="bg-gradient-to-r border-green-500 from-green-500 to-lime-500 w-0 h-0" />
+        <Group className="bg-gradient-to-r border-amber-500 from-amber-500 to-yellow-400 w-0 h-0" />
+        <Group className="bg-gray-500 w-0 h-0" />
+        <Group className="bg-red-500 w-0 h-0" />
+        <Group className="bg-green-500 w-0 h-0" />
+        <Group className="bg-pink-500 w-0 h-0" />
+        <Group className="bg-orange-500 w-0 h-0" />
         <a
-          className="no-underline text-white font-semibold"
+          className="no-underline text-black text-sm font-semibold"
           href="/apiTest"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Copyright ⓒ 2022 exquiz.me All rights reserved. | Team MUMOMU.
+          Copyright ⓒ 2022 exquiz.me | Team MUMOMU
         </a>
       </footer>
     </div>

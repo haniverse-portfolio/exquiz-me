@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
@@ -70,6 +70,7 @@ import {
   ArrowBarRight,
   ArrowBarLeft,
   ToggleLeft,
+  Refresh,
 } from "tabler-icons-react";
 
 import { NotificationsProvider } from "@mantine/notifications";
@@ -140,6 +141,7 @@ const Home: NextPage = () => {
   {
     /* 1. 퀴즈 설정 - 사이드바 - #stepper */
   }
+
   const { scrollIntoView, targetRef, scrollableRef } = useScrollIntoView();
   const [step, setStep] = useState(0);
 
@@ -160,8 +162,9 @@ const Home: NextPage = () => {
   };
 
   const getProblemsets = () => {
+    let rt = [{ id: -1, title: "", description: "", closingMent: "" }];
     axios
-      .get("https://prod.exquiz.net/api/problemsets/1")
+      .get("https://prod.exquiz.me/api/problemsets/1")
       .then((result) => {
         setProblemsets(result.data);
       })
@@ -174,7 +177,6 @@ const Home: NextPage = () => {
   let [problemsets, setProblemsets] = useState([
     { id: -1, title: "", description: "", closingMent: "" },
   ]);
-  getProblemsets();
 
   const submit = async () => {
     const { data: result } = await axios.post(
@@ -288,8 +290,15 @@ const Home: NextPage = () => {
                                     <Group className="shadow-lg m-0 p-0 h-28 w-8 bg-white"></Group>
                                   </Group>
                                 </Tooltip>
+                                <ActionIcon>
+                                  <Refresh
+                                    onClick={() => {
+                                      getProblemsets();
+                                    }}
+                                  ></Refresh>
+                                </ActionIcon>
                                 {/* 입력 - 퀴즈 정보 */}
-                                <Stack>
+                                {/* <Stack>
                                   <p> 여기 어디</p>
                                   <Button
                                     className="bg-black"
@@ -332,7 +341,7 @@ const Home: NextPage = () => {
                                   >
                                     리더보드 GET
                                   </Button>
-                                </Stack>
+                                </Stack> */}
                               </Group>
                             </Stack>
                             {/* 텍스트 - 과목 선택 */}
