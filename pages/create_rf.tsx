@@ -698,12 +698,12 @@ const Home: NextPage = () => {
                 </Button>
               </Group>
             </Group>
-            <Group position="apart" className="h-[100vh-60px]">
-              <Group className="w-2/12">
+            <Group position="apart" className=" h-[100vh-60px]">
+              <Group className="p-10 bg-white shadow-lg sm:rounded-3xl backdrop-blur-xl bg-opacity-50 w-2/12">
                 <Stack>
                   <Stack>
                     {/* 슬라이드 문제 */}
-                    <ScrollArea className="h-[40vh] w-[20vw]" scrollbarSize={0}>
+                    <ScrollArea className="h-[40vh] w-[12vw]" scrollbarSize={0}>
                       {problem.map(({ dtype, description }, i) => {
                         return (
                           <Stack key={i} className="m-0 p-0">
@@ -868,7 +868,7 @@ const Home: NextPage = () => {
                       {/* 입력 - 문제 사진 및 동영상 */}
                       <Group className="justify-between">
                         <p className="text-amber-500 font-bold">문제 정보</p>
-                        <Group>
+                        <Group className="justify-between">
                           <ActionIcon variant="outline">
                             <FileUpload></FileUpload>
                           </ActionIcon>
