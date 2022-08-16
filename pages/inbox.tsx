@@ -78,33 +78,12 @@ import { copyFileSync } from "fs";
 import { errorMonitor } from "events";
 import { resourceLimits } from "worker_threads";
 // 85vh 20vw
-
-function sideIconCode(idx: string) {
-  if (idx == "empty") return <BrowserPlus size={20} color={"#babbbd"} />;
-  if (idx == "MultipleChoiceProblem")
-    return <SquareCheck size={20} color={"#fa584b"} />;
-  if (idx == "subjective") return <Parentheses size={20} color={"#4A73F0"} />;
-  if (idx == "ox") return <AB size={20} color={"#23B87F"} />;
-  if (idx == "nonsense") return <QuestionMark size={20} color={"#F4B404"} />;
-  if (idx == "dynamic") return <Apps size={20} color={"#946cee"} />;
-}
-
-function rtColor(idx: string) {
-  if (idx == "empty") return "#babbbd";
-  if (idx == "MultipleChoiceProblem") return "#fa584b";
-  if (idx == "subjective") return "#4A73F0";
-  if (idx == "ox") return "#23B87F";
-  if (idx == "nonsense") return "#F4B404";
-  if (idx == "dynamic") return "#946cee";
-}
-
 // 빈 슬라이드 객관식 주관식 O/X 넌센스 다이나믹
 const Home: NextPage = () => {
   /* slide */
   let [curIdx, setCurIdx] = useState(0);
   /* form */
   let [tabIdx, setTabIdx] = useState(0);
-  const [progressActive, setProgressActive] = useState(-1);
 
   {
     /* *** main state *** */
@@ -262,6 +241,7 @@ const Home: NextPage = () => {
                               {/* 컨텐츠 - 퀴즈 정보 */}
                               <Group className="p-10 bg-white shadow-lg sm:rounded-3xl backdrop-blur-xl bg-opacity-50">
                                 {/* 이미지 - 봉투 */}
+
                                 <Tooltip
                                   position="bottom-start"
                                   transition="scale-y"
@@ -290,13 +270,13 @@ const Home: NextPage = () => {
                                     <Group className="shadow-lg m-0 p-0 h-28 w-8 bg-white"></Group>
                                   </Group>
                                 </Tooltip>
-                                <ActionIcon>
-                                  <Refresh
-                                    onClick={() => {
-                                      getProblemsets();
-                                    }}
-                                  ></Refresh>
-                                </ActionIcon>
+
+                                <Stack>
+                                  <p className="text-amber-500 font-bold">
+                                    퀴즈 정보
+                                  </p>
+                                </Stack>
+
                                 {/* 입력 - 퀴즈 정보 */}
                                 {/* <Stack>
                                   <p> 여기 어디</p>
@@ -344,6 +324,13 @@ const Home: NextPage = () => {
                                 </Stack> */}
                               </Group>
                             </Stack>
+                            <ActionIcon>
+                              <Refresh
+                                onClick={() => {
+                                  getProblemsets();
+                                }}
+                              ></Refresh>
+                            </ActionIcon>
                             {/* 텍스트 - 과목 선택 */}
                             <Group className="font-semibold">퀴즈 선택</Group>
                             {problemsets.map(
@@ -358,14 +345,14 @@ const Home: NextPage = () => {
                                             <Group className="border-b-2 border-gray-300 m-0 p-0 h-16 w-48 bg-amber-200" />
                                             <Group className=" m-0 p-0 h-16 w-48 bg-amber-200">
                                               <Group
-                                                className={`mx-1 text-white cursor-pointer w-12 h-12 bg-gradient-to-r from-black to-black rounded-full`}
+                                                className={`mx-1 text-white w-12 h-12 bg-gradient-to-r from-black to-black rounded-full`}
                                               >
                                                 <p className="text-xs m-auto">
                                                   hello1
                                                 </p>
                                               </Group>
                                               <Group
-                                                className={`mx-1 text-white cursor-pointer w-12 h-12 bg-gradient-to-r from-black to-black rounded-full`}
+                                                className={`mx-1 text-white w-12 h-12 bg-gradient-to-r from-black to-black rounded-full`}
                                               >
                                                 <p className="text-xs m-auto">
                                                   hello2

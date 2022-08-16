@@ -77,6 +77,9 @@ import {
   ToggleLeft,
   CircleCheck,
   MathAvg,
+  Copy,
+  X,
+  FileUpload,
 } from "tabler-icons-react";
 
 import { NotificationsProvider } from "@mantine/notifications";
@@ -826,49 +829,61 @@ const Home: NextPage = () => {
               <Container className="w-8/12">
                 <Group>
                   <Stack>
-                    <Stack className="p-10 bg-white shadow-lg sm:rounded-3xl backdrop-blur-xl bg-opacity-50">
-                      <Center>
-                        <Group className="items-center p-4 bg-white shadow-lg sm:rounded-3xl backdrop-blur-xl bg-opacity-80">
-                          {tabInfo.map(({ name, startColor, endColor }, i) => {
-                            return (
-                              <Tooltip label={tabTooltip[i]}>
+                    <Center>
+                      <Group className="items-center p-4 bg-white shadow-lg sm:rounded-3xl backdrop-blur-xl bg-opacity-80">
+                        {tabInfo.map(({ name, startColor, endColor }, i) => {
+                          return (
+                            <Tooltip label={tabTooltip[i]}>
+                              <Group
+                                onClick={() => {
+                                  setTabIdx((prevState) => i);
+                                }}
+                                key={i}
+                                className="w-30 h-18 bg-white rounded-lg cursor-pointer"
+                              >
                                 <Group
-                                  onClick={() => {
-                                    setTabIdx((prevState) => i);
-                                  }}
-                                  key={i}
-                                  className="w-30 h-18 bg-white rounded-lg cursor-pointer"
-                                >
-                                  <Group
-                                    className={`shadow-${
-                                      i === tabIdx
-                                        ? "[inset_0_-2px_4px_rgba(128,128,128,0.8)]"
-                                        : ""
-                                    }
+                                  className={`shadow-${
+                                    i === tabIdx
+                                      ? "[inset_0_-2px_4px_rgba(128,128,128,0.8)]"
+                                      : ""
+                                  }
                               hover:shadow-[inset_0_-2px_4px_rgba(128,128,128,0.8)] m-auto bg-gradient-to-r from-${startColor} to-${endColor} text-white w-18 h-18 rounded-lg`}
+                                >
+                                  <Button
+                                    leftIcon={tabIcon(i)}
+                                    variant="gradient"
                                   >
-                                    <Button
-                                      leftIcon={tabIcon(i)}
-                                      variant="gradient"
-                                    >
-                                      {tabTooltip[i]}
-                                    </Button>
-                                  </Group>
+                                    {tabTooltip[i]}
+                                  </Button>
                                 </Group>
-                              </Tooltip>
-                            );
-                          })}
-                          {/* <Group ref={targetRef}>.</Group> */}
-                        </Group>
-                      </Center>
+                              </Group>
+                            </Tooltip>
+                          );
+                        })}
+                        {/* <Group ref={targetRef}>.</Group> */}
+                      </Group>
+                    </Center>
+                    <Stack className="p-10 bg-white shadow-lg sm:rounded-3xl backdrop-blur-xl bg-opacity-50">
                       {/* 입력 - 문제 설명 */}
                       {/* 입력 - 문제 사진 및 동영상 */}
-
-                      <p className="text-amber-500 font-bold">문제 정보</p>
+                      <Group className="justify-between">
+                        <p className="text-amber-500 font-bold">문제 정보</p>
+                        <Group>
+                          <ActionIcon variant="outline">
+                            <FileUpload></FileUpload>
+                          </ActionIcon>
+                          <ActionIcon variant="outline">
+                            <Copy></Copy>
+                          </ActionIcon>
+                          <ActionIcon variant="outline">
+                            <X></X>
+                          </ActionIcon>
+                        </Group>
+                      </Group>
                       <HoverCard width={280} shadow="md">
                         <HoverCard.Target>
                           <Dropzone accept={IMAGE_MIME_TYPE} onDrop={setFiles}>
-                            <Text align="center">
+                            <Text color="gray" align="center">
                               이미지나 동영상을 첨부하세요
                             </Text>
                           </Dropzone>
@@ -876,6 +891,7 @@ const Home: NextPage = () => {
                         <HoverCard.Dropdown>{previews}</HoverCard.Dropdown>
                       </HoverCard>
                       <TextInput
+                        size="xl"
                         onChange={(event) => {
                           let copy = [...problem];
                           copy[curIdx].description = event.currentTarget.value;
