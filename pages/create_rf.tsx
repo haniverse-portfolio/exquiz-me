@@ -80,23 +80,51 @@ import {
   Copy,
   X,
   FileUpload,
+  GridDots,
 } from "tabler-icons-react";
 
 import { NotificationsProvider } from "@mantine/notifications";
 import { copyFileSync } from "fs";
 // 85vh 20vw
 
+{
+  /* custom converter */
+}
+const idxToString = [
+  "MultipleChoiceProblem",
+  "subjective",
+  "ox",
+  "nonsense",
+  "dynamic",
+  "empty",
+];
+
+function stringToIdx(x: string) {
+  let rt = 0;
+  if (x === "MultipleChoiceProblem") rt = 0;
+  if (x === "subjective") rt = 1;
+  if (x === "ox") rt = 2;
+  if (x === "nonsense") rt = 3;
+  if (x === "dynamic") rt = 4;
+  if (x === "empty") rt = 5;
+  return rt;
+}
+
 const delay = (ms: number | undefined) =>
   new Promise((res) => setTimeout(res, ms));
 
-function sideIconCode(idx: string) {
-  if (idx == "empty") return <MathAvg size={20} color={"#babbbd"} />;
+function sideIconCode(idx: string, flag: boolean) {
+  let color = ["red", "blue", "green", "gold", "purple", "gray"];
+  let cur = color[stringToIdx(idx)];
+  if (!flag) cur = "#babbbd";
+
+  if (idx == "empty") return <MathAvg size={30} color={cur} />;
   if (idx == "MultipleChoiceProblem")
-    return <SquareCheck size={20} color={"#fa584b"} />;
-  if (idx == "subjective") return <Parentheses size={20} color={"#4A73F0"} />;
-  if (idx == "ox") return <AB size={20} color={"#23B87F"} />;
-  if (idx == "nonsense") return <QuestionMark size={20} color={"#F4B404"} />;
-  if (idx == "dynamic") return <Apps size={20} color={"#946cee"} />;
+    return <SquareCheck size={30} color={cur} />;
+  if (idx == "subjective") return <Parentheses size={30} color={cur} />;
+  if (idx == "ox") return <AB size={30} color={cur} />;
+  if (idx == "nonsense") return <QuestionMark size={30} color={cur} />;
+  if (idx == "dynamic") return <Apps size={30} color={cur} />;
 }
 
 function rtColor(idx: string) {
@@ -203,29 +231,6 @@ const Home: NextPage = () => {
     "다이나믹",
     "빈 슬라이드",
   ];
-
-  {
-    /* custom converter */
-  }
-  const idxToString = [
-    "MultipleChoiceProblem",
-    "subjective",
-    "ox",
-    "nonsense",
-    "dynamic",
-    "empty",
-  ];
-
-  function stringToIdx(x: string) {
-    let rt = 0;
-    if (x === "MultipleChoiceProblem") rt = 0;
-    if (x === "subjective") rt = 1;
-    if (x === "ox") rt = 2;
-    if (x === "nonsense") rt = 3;
-    if (x === "dynamic") rt = 4;
-    if (x === "empty") rt = 5;
-    return rt;
-  }
 
   const MARKSTIME = [
     { value: 0, label: "X" },
@@ -374,14 +379,14 @@ const Home: NextPage = () => {
         onClose={() => setDrawerOpened(false)}
         title="퀴즈 설정"
         padding="xl"
-        size="75%"
+        size="93.8%"
         overlayColor={
           theme.colorScheme === "dark"
             ? theme.colors.dark[9]
             : theme.colors.gray[2]
         }
         overlayOpacity={0.55}
-        overlayBlur={3}
+        // overlayBlur={3}
       >
         <Group>
           <Stack>
@@ -545,7 +550,7 @@ const Home: NextPage = () => {
               </Group>
 
               {/* 컨텐츠 - 퀴즈 정보 */}
-              <Group className="w-[60vw] p-10 bg-white shadow-lg sm:rounded-3xl backdrop-blur-xl bg-opacity-50">
+              <Group className="w-[40vw] p-10 bg-white shadow-lg sm:rounded-3xl backdrop-blur-xl bg-opacity-50">
                 {/* 이미지 - 봉투 */}
 
                 {/* 입력 - 퀴즈 상세 정보 */}
@@ -699,134 +704,45 @@ const Home: NextPage = () => {
               </Group>
             </Group>
             <Group position="apart" className=" h-[100vh-60px]">
-              <Group className="p-10 bg-white shadow-lg sm:rounded-3xl backdrop-blur-xl bg-opacity-50 w-2/12">
-                <Stack>
-                  <Stack>
-                    {/* 슬라이드 문제 */}
-                    <ScrollArea className="h-[40vh] w-[12vw]" scrollbarSize={0}>
-                      {problem.map(({ dtype, description }, i) => {
-                        return (
-                          <Stack key={i} className="m-0 p-0">
-                            <Group
-                              onClick={() => {
-                                if (curIdx === i) {
-                                } else setCurIdx((prevState) => i);
+              <Group className="bg-white">
+                <Center>
+                  {/* 슬라이드 문제 */}
+                  <ScrollArea className="h-[90vh] w-[18vw]" scrollbarSize={0}>
+                    {problem.map(({ dtype, description }, i) => {
+                      return (
+                        <Group
+                          onClick={() => {
+                            if (curIdx === i) {
+                            } else setCurIdx((prevState) => i);
 
-                                setTabIdx((prevstate) =>
-                                  stringToIdx(problem[i].dtype)
-                                );
-                              }}
-                              className={` justify-between cursor-pointer my-4 shadow-lg rounded-md border-solid border-2 border-${
-                                curIdx === i
-                                  ? subjectInfo[
-                                      subjectIdx + (subjectIdx === 0 ? 4 : 0)
-                                    ].startColor
-                                  : "white"
-                              }-500`}
-                            >
-                              {/* 슬라이드 정보 */}
-                              <Group>
-                                <ActionIcon variant="transparent">
-                                  {sideIconCode(dtype)}
-                                </ActionIcon>
-                                {description}
-                              </Group>
-                              <ActionIcon
-                                className="rounded-full"
-                                variant="subtle"
-                                onClick={async () => {
-                                  setCurIdx((prevState) => i);
-                                  if (problem.length === 1) return;
-                                  if (problem.length - 1 === curIdx)
-                                    await setCurIdx((prevState) => curIdx - 1);
-                                  let copy1 = [...problem];
-                                  copy1.splice(i, 1);
-                                  setProblem(copy1);
-
-                                  let copy2 = [...option];
-                                  copy2.splice(i, 1);
-                                  setOption(copy2);
-                                }}
-                                size="lg"
-                              >
-                                <Trash size={16} />
-                              </ActionIcon>
-                            </Group>
-                          </Stack>
-                        );
-                      })}
-                    </ScrollArea>
-                    {/* 슬라이드 추가 */}
-                    <Button
-                      variant="outline"
-                      color={
-                        subjectInfo[subjectIdx + (subjectIdx === 0 ? 4 : 0)]
-                          .startColor
-                      }
-                      leftIcon={<Plus size={32} />}
-                      onClick={() => {
-                        setProblem([
-                          ...problem,
-                          {
-                            answer: "-1",
-                            description: "",
-                            dtype: idxToString[tabIdx],
-                            idx: 0,
-                            picture: "",
-                            problemsetId: 0,
-                            score: 0,
-                            timelimit: 30,
-                            title: "",
-                          },
-                        ]);
-
-                        setOption([
-                          ...option,
-                          [
-                            {
-                              description: "",
-                              idx: 0,
-                              picture: "",
-                              problemId: 0,
-                            },
-                            {
-                              description: "",
-                              idx: 1,
-                              picture: "",
-                              problemId: 0,
-                            },
-                            {
-                              description: "",
-                              idx: 2,
-                              picture: "",
-                              problemId: 0,
-                            },
-                            {
-                              description: "",
-                              idx: 3,
-                              picture: "",
-                              problemId: 0,
-                            },
-                          ],
-                        ]);
-                      }}
-                    >
-                      추가하기
-                    </Button>
-                  </Stack>
-
-                  <Stack>
-                    <ActionIcon>
-                      <Settings></Settings>
-                    </ActionIcon>
-                    <Avatar
-                      radius="xl"
-                      src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=250&q=80"
-                    />
-                  </Stack>
-                </Stack>
+                            setTabIdx((prevstate) =>
+                              stringToIdx(problem[i].dtype)
+                            );
+                          }}
+                          key={i}
+                          className={` cursor-pointer border-2 ${
+                            curIdx === i ? "amber" : "gray"
+                          } py-3`}
+                        >
+                          {/* 슬라이드 정보 */}
+                          <ActionIcon variant="transparent">
+                            {sideIconCode(dtype, curIdx === i)}
+                          </ActionIcon>
+                          <span
+                            className={`py-0 text-${
+                              curIdx === i ? "amber" : "gray"
+                            }-500 py-3`}
+                          >
+                            {description}
+                          </span>
+                        </Group>
+                      );
+                    })}
+                  </ScrollArea>
+                  {/* 슬라이드 추가 */}
+                </Center>
               </Group>
-              <Container className="w-8/12">
+              <Group className="w-7/12">
                 <Group>
                   <Stack>
                     <Center>
@@ -875,12 +791,27 @@ const Home: NextPage = () => {
                           <ActionIcon variant="outline">
                             <Copy></Copy>
                           </ActionIcon>
-                          <ActionIcon variant="outline">
+                          <ActionIcon
+                            onClick={async () => {
+                              if (problem.length === 1) return;
+                              if (problem.length - 1 === curIdx)
+                                await setCurIdx((prevState) => curIdx - 1);
+                              let copy1 = [...problem];
+                              copy1.splice(curIdx, 1);
+                              setProblem(copy1);
+
+                              let copy2 = [...option];
+                              copy2.splice(curIdx, 1);
+                              setOption(copy2);
+                            }}
+                            className="hover:bg-red-200"
+                            variant="outline"
+                          >
                             <X></X>
                           </ActionIcon>
                         </Group>
                       </Group>
-                      <HoverCard width={280} shadow="md">
+                      <HoverCard position="right" width={280} shadow="md">
                         <HoverCard.Target>
                           <Dropzone accept={IMAGE_MIME_TYPE} onDrop={setFiles}>
                             <Text color="gray" align="center">
@@ -1009,7 +940,126 @@ const Home: NextPage = () => {
                     </Group>
                   </Stack>
                 </Group>
-              </Container>
+                <Stack className=" flex flex-col justify-between">
+                  <ActionIcon variant="transparent">
+                    <Plus
+                      onClick={() => {
+                        setProblem([
+                          ...problem,
+                          {
+                            answer: "-1",
+                            description: "",
+                            dtype: idxToString[tabIdx],
+                            idx: 0,
+                            picture: "",
+                            problemsetId: 0,
+                            score: 0,
+                            timelimit: 30,
+                            title: "",
+                          },
+                        ]);
+
+                        setOption([
+                          ...option,
+                          [
+                            {
+                              description: "",
+                              idx: 0,
+                              picture: "",
+                              problemId: 0,
+                            },
+                            {
+                              description: "",
+                              idx: 1,
+                              picture: "",
+                              problemId: 0,
+                            },
+                            {
+                              description: "",
+                              idx: 2,
+                              picture: "",
+                              problemId: 0,
+                            },
+                            {
+                              description: "",
+                              idx: 3,
+                              picture: "",
+                              problemId: 0,
+                            },
+                          ],
+                        ]);
+                      }}
+                      size="xl"
+                      color="gray"
+                    />
+                  </ActionIcon>
+                  <ActionIcon variant="transparent">
+                    <GridDots size="xl" color="gray" />
+                  </ActionIcon>
+                  <ActionIcon variant="transparent">
+                    <Plus
+                      onClick={() => {
+                        setProblem([
+                          ...problem,
+                          {
+                            answer: "-1",
+                            description: "",
+                            dtype: idxToString[tabIdx],
+                            idx: 0,
+                            picture: "",
+                            problemsetId: 0,
+                            score: 0,
+                            timelimit: 30,
+                            title: "",
+                          },
+                        ]);
+
+                        setOption([
+                          ...option,
+                          [
+                            {
+                              description: "",
+                              idx: 0,
+                              picture: "",
+                              problemId: 0,
+                            },
+                            {
+                              description: "",
+                              idx: 1,
+                              picture: "",
+                              problemId: 0,
+                            },
+                            {
+                              description: "",
+                              idx: 2,
+                              picture: "",
+                              problemId: 0,
+                            },
+                            {
+                              description: "",
+                              idx: 3,
+                              picture: "",
+                              problemId: 0,
+                            },
+                          ],
+                        ]);
+                      }}
+                      size="xl"
+                      color="gray"
+                    />
+                  </ActionIcon>
+                </Stack>
+              </Group>
+              <Group className="bg-white">
+                <Center>
+                  {/* 슬라이드 문제 */}
+                  <ScrollArea
+                    className="h-[90vh] w-[18vw]"
+                    scrollbarSize={0}
+                  ></ScrollArea>
+                  {/* 슬라이드 추가 */}
+                </Center>
+              </Group>
               <Group className="w-[20vw] h-10/12 border-l-2 border-gray-300"></Group>
             </Group>
           </Stack>
@@ -1058,6 +1108,7 @@ const Home: NextPage = () => {
         ) : (
           <></>
         )}
+        <Group className="h-0 w-0 border-2 border-gray-100"></Group>
       </main>
     </>
   );

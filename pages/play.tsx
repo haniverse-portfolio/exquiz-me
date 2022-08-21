@@ -36,6 +36,7 @@ import {
   Tabs,
   Modal,
   Text,
+  ColorSwatch,
 } from "@mantine/core";
 
 import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
@@ -80,6 +81,51 @@ import { resourceLimits } from "worker_threads";
 // 85vh 20vw
 // 빈 슬라이드 객관식 주관식 O/X 넌센스 다이나믹
 const Home: NextPage = () => {
+  const [swatchChecked, setSwatchChecked] = useState(true);
+  let swatch = () => {
+    const theme = useMantineTheme();
+    const swatches = Object.keys(theme.colors).map((color) => (
+      <ColorSwatch size={20} key={color} color={theme.colors[color][6]} />
+    ));
+
+    return (
+      <Group className="px-8" position="center" spacing="xs">
+        {swatches}
+      </Group>
+    );
+
+    // const theme = useMantineTheme();
+    // let color = [
+    //   "theme.colors.grape[6]",
+    //   "red[6]",
+    //   "orange[6]",
+    //   "yellow[6]",
+    //   "green[6]",
+    //   "blue[6]",
+    //   "grape[6]",
+    //   "pink[6]",
+    //   "black[6]",
+    // ];
+    // return (
+    //   <Group position="center" spacing="xs">
+    //     {color.map((cur, i) => {
+    //       return (
+    //         <ColorSwatch
+    //           key={i}
+    //           component="button"
+    //           color={cur[0]}
+    //           onClick={() => setSwatchChecked((c) => !c)}
+    //           sx={{ color: "#fff", cursor: "pointer" }}
+    //         >
+    //           {swatchChecked && <Check width={10} />}
+    //         </ColorSwatch>
+    //       );
+    //     })}
+    //     ;
+    // </Group>
+    // );
+  };
+
   /* slide */
   let [curIdx, setCurIdx] = useState(0);
   /* form */
@@ -190,72 +236,79 @@ const Home: NextPage = () => {
                     <Stack>
                       <Center>
                         <Stack>
+                          <Group className="justify-between">
+                            <Group spacing={0}>
+                              <Group className="shadow-lg" spacing={0}>
+                                <Group className="border-r-2 border-gray-300 shadow-lg h-8 w-2 bg-amber-200" />
+                                <Group>
+                                  <Stack spacing={0}>
+                                    <Group className="m-0 p-0 h-8 w-10 bg-amber-200">
+                                      <p className="pl-1 font-sm">3/8</p>
+                                    </Group>
+                                  </Stack>
+                                </Group>
+                              </Group>
+                              <Group className="shadow-lg m-0 p-0 h-6 w-3 bg-white"></Group>
+                            </Group>
+                            <Stack>
+                              <p className="text-red-500">00:05</p>
+                            </Stack>
+                          </Group>
                           {/* Navigation Bar */}
-                          <p className="underline decoration-amber-500 font-bold text-2xl text-left mt-10">
-                            퀴즈의 새로운 경험을
-                          </p>
                           <p className="underline decoration-amber-500 font-bold text-2xl text-left">
-                            제시하다
+                            우리나라에서 가장 높은 산은?
                           </p>
-                          <p className="font-bold text-2xl text-left">
-                            exquiz.me
-                          </p>
+                          <br></br>
+                          <br></br>
+                          <br></br>
+                          <br></br>
+                          <br></br>
                         </Stack>
                       </Center>
                       <Stack>
                         <Center>
-                          <Group spacing={0}>
-                            <Group className="shadow-lg" spacing={0}>
-                              <Group className="border-r-2 border-gray-300 shadow-lg h-28 w-4 bg-amber-200" />
-                              <Group>
-                                <Stack spacing={0}>
-                                  <Group className="border-b-2 border-gray-300 m-0 p-0 h-14 w-40 bg-amber-200"></Group>
-                                  <Group
-                                    spacing={2}
-                                    className=" m-0 p-0 h-14 w-40 bg-amber-200"
-                                  >
-                                    <Group
-                                      className={`mx-1 text-white cursor-pointer w-12 h-12 bg-gradient-to-r from-blue-500 to-green-500 rounded-full`}
-                                    >
-                                      <p className="text-xs m-auto">학생용</p>
-                                    </Group>
-                                    <Group
-                                      className={`mx-0 text-white cursor-pointer w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full`}
-                                    >
-                                      <p className="text-xs m-auto">모바일</p>
-                                    </Group>
-                                  </Group>
-                                </Stack>
-                              </Group>
-                            </Group>
-                            <Group className="shadow-lg m-0 p-0 h-24 w-6 bg-white"></Group>
-                          </Group>
-                        </Center>
-                        <Center>
                           <Stack>
                             <Group>
-                              <TextInput className="w-[12px]"></TextInput>
-                              <TextInput className="w-[12px]"></TextInput>
-                              <TextInput className="w-[12px]"></TextInput>
-                              <TextInput className="w-[12px]"></TextInput>
-                              <TextInput className="w-[12px]"></TextInput>
-                              <TextInput className="w-[12px]"></TextInput>
+                              <Button
+                                color="orange"
+                                className="h-28 w-32"
+                                variant="outline"
+                              >
+                                지리산
+                              </Button>
+                              <Button
+                                className="h-28 w-32"
+                                color="orange"
+                                variant="outline"
+                              >
+                                설악산
+                              </Button>
                             </Group>
-                            <Button color="orange" variant="outline">
-                              입장하기
-                            </Button>
+                            <Group>
+                              <Button
+                                className="h-28 w-32"
+                                color="orange"
+                                variant="outline"
+                              >
+                                한라산
+                              </Button>
+                              <Button
+                                className="h-28 w-32"
+                                color="orange"
+                                variant="filled"
+                              >
+                                백두산
+                              </Button>
+                            </Group>
                           </Stack>
                         </Center>
 
                         <footer className={styles.footer}>
                           <a
                             className="text-gray-700 no-underline text-black text-sm font-semibold"
-                            href="/apiTest"
                             target="_blank"
                             rel="noopener noreferrer"
-                          >
-                            Team MUMOMU
-                          </a>
+                          ></a>
                         </footer>
                       </Stack>
                     </Stack>
@@ -265,71 +318,73 @@ const Home: NextPage = () => {
                 <></>
               )}
 
+              {/* main */}
               {step === 1 ? (
                 <Group>
-                  <Group>
-                    <ActionIcon variant="transparent">
-                      <ArrowBarLeft
-                        className="cursor-default opacity-0"
-                        color="white"
-                        size="xl"
-                      />
-                    </ActionIcon>
-                  </Group>
-                  <Group className="items-center m-2 p-10 bg-white shadow-lg sm:rounded-3xl backdrop-blur-xl bg-opacity-80">
+                  <Center>
                     <Stack>
-                      {/* Navigation Bar */}
-                      <Group className="justify-between">
-                        <Tooltip label="홈">
-                          <ActionIcon color="orange" component="a" href="/">
-                            <Home2 />
-                          </ActionIcon>
-                        </Tooltip>
-                        <Group>
-                          <Tooltip label="멤버십">
-                            <ActionIcon
-                              color="orange"
-                              component="a"
-                              href="/membership"
+                      <Center>
+                        <Stack>
+                          {/* Navigation Bar */}
+                          <p className="font-bold text-md text-left">
+                            닉네임 설정
+                          </p>
+                          <TextInput placeholder="똑똑한 소크라테스"></TextInput>
+                          <Button
+                            color="orange"
+                            variant="outline"
+                            leftIcon={<Refresh />}
+                          >
+                            랜덤 닉네임 생성
+                          </Button>
+                        </Stack>
+                      </Center>
+                      <Stack>
+                        <Center>
+                          <Stack>
+                            <Center>
+                              <p className="font-bold text-md text-left">
+                                아바타 선택
+                              </p>
+                            </Center>
+                            {swatch()}
+                            <Stack className="w-[90vw] ">
+                              <ScrollArea style={{ width: 300 }}>
+                                <Group>
+                                  {/* <Image
+                                    className="rounded-full"
+                                    src="../public/rat.png"
+                                    width={"100px"}
+                                    height={"100px"}
+                                  ></Image> */}
+                                </Group>
+                              </ScrollArea>
+                            </Stack>
+
+                            <Center>
+                              <Stack>
+                                <Button color="orange" variant="outline">
+                                  준비 완료
+                                </Button>
+                              </Stack>
+                            </Center>
+                          </Stack>
+                        </Center>
+                        <Center>
+                          <footer className={styles.footer}>
+                            <a
+                              className="text-gray-700 no-underline text-black text-sm font-semibold"
+                              href="/apiTest"
+                              target="_blank"
+                              rel="noopener noreferrer"
                             >
-                              <ReportMoney />
-                            </ActionIcon>
-                          </Tooltip>
-                          <Tooltip label="퀴즈 관리">
-                            <ActionIcon
-                              color="orange"
-                              component="a"
-                              href="/membership"
-                            >
-                              <Folders />
-                            </ActionIcon>
-                          </Tooltip>
-                          <Tooltip label="계정 관리">
-                            <ActionIcon
-                              color="orange"
-                              component="a"
-                              href="#"
-                              // variant="transparent"
-                            >
-                              <UserCircle />
-                            </ActionIcon>
-                          </Tooltip>
-                        </Group>
-                      </Group>
-                      <p className="text-left font-bold text-amber-500">
-                        닉네임 설정
-                      </p>
-                      <TextInput></TextInput>
-                      <Group>
-                        <Button color="orange" variant="outline">
-                          핀 번호로 입장하기
-                        </Button>
-                        <Button color="orange" variant="outline">
-                          QR 코드로 입장하기
-                        </Button>
-                      </Group>
+                              Team MUMOMU
+                            </a>
+                          </footer>
+                        </Center>
+                      </Stack>
                     </Stack>
-                  </Group>
+                  </Center>
                 </Group>
               ) : (
                 <></>

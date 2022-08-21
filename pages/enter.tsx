@@ -36,6 +36,7 @@ import {
   Tabs,
   Modal,
   Text,
+  ColorSwatch,
 } from "@mantine/core";
 
 import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
@@ -80,6 +81,51 @@ import { resourceLimits } from "worker_threads";
 // 85vh 20vw
 // 빈 슬라이드 객관식 주관식 O/X 넌센스 다이나믹
 const Home: NextPage = () => {
+  const [swatchChecked, setSwatchChecked] = useState(true);
+  let swatch = () => {
+    const theme = useMantineTheme();
+    const swatches = Object.keys(theme.colors).map((color) => (
+      <ColorSwatch size={20} key={color} color={theme.colors[color][6]} />
+    ));
+
+    return (
+      <Group className="px-8" position="center" spacing="xs">
+        {swatches}
+      </Group>
+    );
+
+    // const theme = useMantineTheme();
+    // let color = [
+    //   "theme.colors.grape[6]",
+    //   "red[6]",
+    //   "orange[6]",
+    //   "yellow[6]",
+    //   "green[6]",
+    //   "blue[6]",
+    //   "grape[6]",
+    //   "pink[6]",
+    //   "black[6]",
+    // ];
+    // return (
+    //   <Group position="center" spacing="xs">
+    //     {color.map((cur, i) => {
+    //       return (
+    //         <ColorSwatch
+    //           key={i}
+    //           component="button"
+    //           color={cur[0]}
+    //           onClick={() => setSwatchChecked((c) => !c)}
+    //           sx={{ color: "#fff", cursor: "pointer" }}
+    //         >
+    //           {swatchChecked && <Check width={10} />}
+    //         </ColorSwatch>
+    //       );
+    //     })}
+    //     ;
+    // </Group>
+    // );
+  };
+
   /* slide */
   let [curIdx, setCurIdx] = useState(0);
   /* form */
@@ -192,10 +238,7 @@ const Home: NextPage = () => {
                         <Stack>
                           {/* Navigation Bar */}
                           <p className="underline decoration-amber-500 font-bold text-2xl text-left mt-10">
-                            퀴즈의 새로운 경험을
-                          </p>
-                          <p className="underline decoration-amber-500 font-bold text-2xl text-left">
-                            제시하다
+                            실시간 퀴즈 플랫폼
                           </p>
                           <p className="font-bold text-2xl text-left">
                             exquiz.me
@@ -233,15 +276,27 @@ const Home: NextPage = () => {
                         </Center>
                         <Center>
                           <Stack>
-                            <Group>
+                            <Group spacing={1}>
+                              <Group className="h-8 w-8 rounded-md border-2" />
+                              <Group className="h-8 w-8 rounded-md border-2" />
+                              <Group className="h-8 w-8 rounded-md border-2" />
+                              <Group className="h-8 w-8 rounded-md border-2" />
+                              <Group className="h-8 w-8 rounded-md border-2" />
+                              <Group className="h-8 w-8 rounded-md border-2" />
+                              {/* <TextInput className="h-10 w-10"></TextInput>
                               <TextInput className="w-[12px]"></TextInput>
                               <TextInput className="w-[12px]"></TextInput>
                               <TextInput className="w-[12px]"></TextInput>
                               <TextInput className="w-[12px]"></TextInput>
-                              <TextInput className="w-[12px]"></TextInput>
-                              <TextInput className="w-[12px]"></TextInput>
+                              <TextInput className="w-[12px]"></TextInput> */}
                             </Group>
-                            <Button color="orange" variant="outline">
+                            <Button
+                              onClick={() => {
+                                setStep((prevState) => step + 1);
+                              }}
+                              color="orange"
+                              variant="outline"
+                            >
                               입장하기
                             </Button>
                           </Stack>
@@ -265,71 +320,73 @@ const Home: NextPage = () => {
                 <></>
               )}
 
+              {/* main */}
               {step === 1 ? (
                 <Group>
-                  <Group>
-                    <ActionIcon variant="transparent">
-                      <ArrowBarLeft
-                        className="cursor-default opacity-0"
-                        color="white"
-                        size="xl"
-                      />
-                    </ActionIcon>
-                  </Group>
-                  <Group className="items-center m-2 p-10 bg-white shadow-lg sm:rounded-3xl backdrop-blur-xl bg-opacity-80">
+                  <Center>
                     <Stack>
-                      {/* Navigation Bar */}
-                      <Group className="justify-between">
-                        <Tooltip label="홈">
-                          <ActionIcon color="orange" component="a" href="/">
-                            <Home2 />
-                          </ActionIcon>
-                        </Tooltip>
-                        <Group>
-                          <Tooltip label="멤버십">
-                            <ActionIcon
-                              color="orange"
-                              component="a"
-                              href="/membership"
+                      <Center>
+                        <Stack>
+                          {/* Navigation Bar */}
+                          <p className="font-bold text-md text-left">
+                            닉네임 설정
+                          </p>
+                          <TextInput placeholder="똑똑한 소크라테스"></TextInput>
+                          <Button
+                            color="orange"
+                            variant="outline"
+                            leftIcon={<Refresh />}
+                          >
+                            랜덤 닉네임 생성
+                          </Button>
+                        </Stack>
+                      </Center>
+                      <Stack>
+                        <Center>
+                          <Stack>
+                            <p className="px-14 font-bold text-md text-left">
+                              아바타 선택
+                            </p>
+                            {swatch()}
+                            <Stack className="w-[90vw] ">
+                              <ScrollArea style={{ width: 300 }}>
+                                <Group>
+                                  <Image
+                                    className="rounded-full"
+                                    src="public/rat.png"
+                                    width={"100px"}
+                                    height={"100px"}
+                                  ></Image>
+                                </Group>
+                              </ScrollArea>
+                            </Stack>
+
+                            <Center>
+                              <Stack>
+                                <Link href="/play">
+                                  <Button color="orange" variant="outline">
+                                    준비 완료
+                                  </Button>
+                                </Link>
+                              </Stack>
+                            </Center>
+                          </Stack>
+                        </Center>
+                        <Center>
+                          <footer className={styles.footer}>
+                            <a
+                              className="text-gray-700 no-underline text-black text-sm font-semibold"
+                              href="/apiTest"
+                              target="_blank"
+                              rel="noopener noreferrer"
                             >
-                              <ReportMoney />
-                            </ActionIcon>
-                          </Tooltip>
-                          <Tooltip label="퀴즈 관리">
-                            <ActionIcon
-                              color="orange"
-                              component="a"
-                              href="/membership"
-                            >
-                              <Folders />
-                            </ActionIcon>
-                          </Tooltip>
-                          <Tooltip label="계정 관리">
-                            <ActionIcon
-                              color="orange"
-                              component="a"
-                              href="#"
-                              // variant="transparent"
-                            >
-                              <UserCircle />
-                            </ActionIcon>
-                          </Tooltip>
-                        </Group>
-                      </Group>
-                      <p className="text-left font-bold text-amber-500">
-                        닉네임 설정
-                      </p>
-                      <TextInput></TextInput>
-                      <Group>
-                        <Button color="orange" variant="outline">
-                          핀 번호로 입장하기
-                        </Button>
-                        <Button color="orange" variant="outline">
-                          QR 코드로 입장하기
-                        </Button>
-                      </Group>
+                              Team MUMOMU
+                            </a>
+                          </footer>
+                        </Center>
+                      </Stack>
                     </Stack>
-                  </Group>
+                  </Center>
                 </Group>
               ) : (
                 <></>

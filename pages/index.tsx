@@ -149,6 +149,7 @@ const Home: NextPage = () => {
                 <Group>
                   <Group>
                     <Stack>
+                      {/* ../public/globe_banner.png */}
                       <p className="underline decoration-amber-500 font-bold text-6xl text-left mt-10">
                         퀴즈의 새로운 경험을 제시하다
                       </p>
@@ -198,7 +199,7 @@ const Home: NextPage = () => {
                           gradient={{ from: "orange", to: "red" }}
                           component="a"
                           rel="noopener noreferrer"
-                          href="/inbox"
+                          href="/inbox_rf"
                           leftIcon={<Folders size={38} />}
                           styles={(theme) => ({
                             root: {
@@ -280,6 +281,12 @@ const Home: NextPage = () => {
           Copyright ⓒ 2022 exquiz.me | Team MUMOMU
         </a>
       </footer>
+      <Stack className="fixed bottom-[50vh] right-[2vw]">
+        <Group className="h-4 w-4 bg-gray-500 rounded-full"></Group>
+        <Group className="h-4 w-4 bg-gray-500 rounded-full"></Group>
+        <Group className="h-4 w-4 bg-gray-500 rounded-full"></Group>
+        <Group className="h-4 w-4 bg-gray-500 rounded-full"></Group>
+      </Stack>
     </div>
   );
 };
