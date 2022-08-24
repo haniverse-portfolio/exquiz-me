@@ -1,114 +1,42 @@
-import { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
-import Link from "next/link";
-import NavCreate from "./components/navCreate";
-import Slide from "./components/slide";
+import NavIndex from "./components/navIndex";
+import { useState } from "react";
 import axios from "axios";
-import { useRef } from "react";
+import React, { useEffect } from "react";
 
 import {
   Button,
-  SimpleGrid,
-  Tooltip,
-  Textarea,
-  ScrollArea,
-  Center,
-  Container,
-  ThemeIcon,
-  Checkbox,
-  Group,
-  Accordion,
-  useMantineTheme,
-  Box,
-  ActionIcon,
-  Slider,
-  BackgroundImage,
-  Switch,
-  Stack,
-  MantineProvider,
   Grid,
-  Stepper,
-  TextInput,
-  Image,
-  Paper,
-  Tabs,
-  Modal,
+  SimpleGrid,
+  Input,
+  Card,
   Text,
+  Badge,
+  Group,
+  useMantineTheme,
+  Center,
+  Tabs,
+  ThemeIcon,
+  Container,
+  Textarea,
+  Tooltip,
+  Stack,
+  Stepper,
+  ActionIcon,
+  Autocomplete,
+  TextInput,
+  Drawer,
+  Modal,
+  Slider,
+  Select,
+  Pagination,
+  ScrollArea,
 } from "@mantine/core";
+import { Login, Pencil, Plus } from "tabler-icons-react";
 
-import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
-
-import { useScrollIntoView } from "@mantine/hooks";
-
-import {
-  AdjustmentsHorizontal,
-  Notes,
-  Plus,
-  Trash,
-  Check,
-  Home2,
-  Emphasis,
-  FileX,
-  Login,
-  ReportMoney,
-  UserCircle,
-  Pencil,
-  Archive,
-  BrowserPlus,
-  SquareCheck,
-  AB,
-  QuestionMark,
-  Apps,
-  Parentheses,
-  Folders,
-  FileSettings,
-  FilePlus,
-  FileCheck,
-  Settings,
-  ArrowBarRight,
-  ArrowBarLeft,
-  ToggleLeft,
-  Refresh,
-} from "tabler-icons-react";
-
-import { NotificationsProvider } from "@mantine/notifications";
-import { copyFileSync } from "fs";
-import { errorMonitor } from "events";
-import { resourceLimits } from "worker_threads";
-// 85vh 20vw
-// 빈 슬라이드 객관식 주관식 O/X 넌센스 다이나믹
-const Home: NextPage = () => {
-  /* slide */
-  let [curIdx, setCurIdx] = useState(0);
-  /* form */
-  let [tabIdx, setTabIdx] = useState(0);
-
-  {
-    /* *** main state *** */
-  }
-  let [problemSet, setProblemSet] = useState({
-    closingMent: "",
-    description: "",
-    hostId: 1,
-    title: "",
-  });
-
-  {
-    /* mantine statement */
-  }
-  const theme = useMantineTheme();
-  const getColor = (color: string) =>
-    theme.colors[color][theme.colorScheme === "dark" ? 5 : 7];
-
-  {
-    /* 2. 문제 추가 - subNav - tab */
-  }
-
-  {
-    /* 1. 퀴즈 설정 - 메인 #과목 선택 */
-  }
+const rightEnvelope = (subject: number) => {
   const subjectInfo = [
     { name: "미분류", startColor: "gray", endColor: "gray" },
     { name: "언어", startColor: "orange", endColor: "red" },
@@ -117,31 +45,83 @@ const Home: NextPage = () => {
     { name: "예체능", startColor: "yellow", endColor: "orange" },
   ];
 
-  {
-    /* 1. 퀴즈 설정 - 사이드바 - #stepper */
-  }
+  return (
+    <Group className="transition ease-in-out hover:scale-105" spacing={0}>
+      <Group className="shadow-lg" spacing={0}>
+        <Group
+          className={`bg-${subjectInfo[subject].startColor} border-r-2 border-gray-300 shadow-lg h-24 w-4 bg-amber-200`}
+        />
+        <Group>
+          <Stack spacing={0}>
+            <Group
+              className={`bg-gradient-to-r from-${subjectInfo[subject].startColor} to-${subjectInfo[subject].endColor} border-b-2 border-gray-300 m-0 p-0 h-12 w-32 bg-amber-200`}
+            />
+            <Group
+              className={`bg-gradient-to-r from-${subjectInfo[subject].startColor} to-${subjectInfo[subject].endColor} m-0 p-0 h-12 w-32 bg-amber-200`}
+            />
+          </Stack>
+        </Group>
+      </Group>
+      <Group
+        className={`bg-gradient-to-r from-${subjectInfo[subject].startColor} to-${subjectInfo[subject].endColor} shadow-lg m-0 p-0 h-20 w-6 bg-white`}
+      ></Group>
+    </Group>
+  );
+};
 
-  const { scrollIntoView, targetRef, scrollableRef } = useScrollIntoView();
-  const [step, setStep] = useState(0);
+const leftEnvelope = (subject: number) => {
+  const subjectInfo = [
+    { name: "미분류", startColor: "gray", endColor: "gray" },
+    { name: "언어", startColor: "orange", endColor: "red" },
+    { name: "수리과학", startColor: "blue", endColor: "green" },
+    { name: "인문사회", startColor: "violet", endColor: "pink" },
+    { name: "예체능", startColor: "yellow", endColor: "orange" },
+  ];
 
-  /* 2. modal */
+  return (
+    <Group className="transition ease-in-out hover:scale-105" spacing={0}>
+      <Group
+        className={`bg-gradient-to-r shadow-lg m-0 p-0 h-20 w-6 bg-white`}
+      ></Group>
+      <Group className="shadow-lg" spacing={0}>
+        <Group>
+          <Stack spacing={0}>
+            <Group
+              className={`bg-gradient-to-r from-${subjectInfo[subject].startColor}-500 to-${subjectInfo[subject].endColor}-500 m-0 p-0 h-12 w-32 bg-amber-200`}
+            />
+            <Group
+              className={`bg-gradient-to-r from-${subjectInfo[subject].startColor}-500 to-${subjectInfo[subject].endColor}-500 m-0 p-0 h-12 w-32 bg-amber-200`}
+            />
+          </Stack>
+        </Group>
+        <Group
+          className={`bg-${subjectInfo[subject].endColor}-500 border-l-2 border-gray-300 shadow-lg h-24 w-4 bg-amber-200`}
+        />
+      </Group>
+    </Group>
+  );
+};
+
+const Home: NextPage = () => {
+  const MARKS = [
+    { value: 0, label: "10명" },
+    { value: 25, label: "20명" },
+    { value: 50, label: "30명" },
+    { value: 75, label: "50명" },
+    { value: 100, label: "100명" },
+  ];
+
+  const theme = useMantineTheme();
+
+  const secondaryColor =
+    theme.colorScheme === "dark" ? theme.colors.dark[1] : theme.colors.gray[7];
+
+  const [active, setActive] = useState(0);
+
+  const [drawerOpened, setDrawerOpened] = useState(false);
   const [modalOpened, setModalOpened] = useState(false);
-  /* submit form */
-  let submitForm = {
-    answerText: "1",
-    problemIdx: 1,
-    uuid: "d7a23266-6fc7-421a-9ed8-aad169013e52",
-  };
-
-  const getLeaderboard = async () => {
-    const { data: result } = await axios.get(
-      "https://dist.exquiz.me/api/room/100310/mq/leaderboard"
-    );
-    return result.data;
-  };
 
   const getProblemsets = () => {
-    let rt = [{ id: -1, title: "", description: "", closingMent: "" }];
     axios
       .get("https://prod.exquiz.me/api/problemsets/1")
       .then((result) => {
@@ -153,16 +133,85 @@ const Home: NextPage = () => {
     return;
   };
 
+  const getProblem = (idx: number) => {
+    axios
+      .get(`https://prod.exquiz.me/api/problems/` + idx)
+      .then((result) => {
+        setProblem(result.data);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+    return;
+  };
+
+  const postRoom = async () => {
+    let rt = Infinity;
+    await axios
+      .post("https://dist.exquiz.me/api/room/newRoom", {
+        maxParticipantCount: maxpart,
+        problemsetId: problemsets[curIdx].id,
+      })
+      .then((result) => {
+        rt = result.data;
+        setRoom(result.data);
+      })
+      .catch((error) => {
+        alert("newRoom_error");
+      });
+    return rt;
+  };
+
   let [problemsets, setProblemsets] = useState([
     { id: -1, title: "", description: "", closingMent: "" },
   ]);
 
-  const submit = async () => {
-    const { data: result } = await axios.post(
-      "https://dist.exquiz.me/api/room/100310/mq/submit",
-      submitForm
-    );
-    return result.data;
+  let [problem, setProblem] = useState([
+    {
+      answer: "0",
+      description: "",
+      dtype: "MultipleChoiceProblem",
+      idx: 0,
+      picture: "",
+      problemsetId: 0,
+      score: 125,
+      timelimit: 30,
+      title: "",
+    },
+  ]);
+
+  let [problemOption, setProblemOption] = useState([
+    { problemId: -1, idx: 0, description: "", picture: "" },
+  ]);
+
+  let [curIdx, setCurIdx] = useState(0);
+  let [maxpart, setMaxpart] = useState(30);
+  let [room, setRoom] = useState({
+    id: -1,
+    pin: "-1",
+    maxParticipantCount: -1,
+    startDate: "-1",
+    endDate: null,
+    problemsetDto: {
+      id: -1,
+      title: "-1",
+      description: "-1",
+      closingMent: "-1",
+    },
+    currentState: "NOT READY",
+    currentProblemNum: -1,
+  });
+
+  useEffect(() => {
+    getProblemsets();
+  }, []);
+
+  const [activePage, setPage] = useState(1);
+
+  const totalTime = () => {
+    let sum = 0;
+    for (let i = 0; i < problem.length; i++) sum += problem[i].timelimit;
+    return sum;
   };
 
   return (
@@ -173,235 +222,331 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <section
-        className={`w-full h-full bg-gradient-to-r from-orange-500 to-yellow-500`}
+      <Drawer
+        position="bottom"
+        opened={drawerOpened}
+        onClose={() => setDrawerOpened(false)}
+        title="퀴즈 설정"
+        padding="xl"
+        size="93.8%"
+        overlayColor={
+          theme.colorScheme === "dark"
+            ? theme.colors.dark[9]
+            : theme.colors.gray[2]
+        }
+        overlayOpacity={0.55}
+        // overlayBlur={3}
       >
-        <Center>
-          <Center className=" my-2 h-[98.3vh]">
+        {rightEnvelope(0)}
+      </Drawer>
+
+      <Modal
+        centered
+        opened={modalOpened}
+        onClose={() => setModalOpened(false)}
+        title="방 생성하기"
+      >
+        <p className="font-bold">기관 정보</p>
+        <Select
+          searchable
+          placeholder="기관 이름"
+          data={[
+            { value: "1", label: "이천고등학교" },
+            { value: "2", label: "인덕원고등학교" },
+            { value: "3", label: "이화여자고등학교" },
+          ]}
+        />
+        <br></br>
+        <p className="font-bold">추가 정보</p>
+
+        <TextInput placeholder="a학년 b반"></TextInput>
+        <br></br>
+        <p className="font-bold">참가 인원</p>
+        <Slider
+          onChangeEnd={setMaxpart}
+          labelAlwaysOn
+          color="orange"
+          label={(val) => MARKS.find((mark) => mark.value === val)?.label}
+          defaultValue={50}
+          step={25}
+          marks={MARKS}
+          styles={{ markLabel: { display: "none" } }}
+        />
+        <br></br>
+        <Button
+          onClick={async () => {
+            setModalOpened(false);
+            await postRoom();
+            if (room.currentState === "READY") {
+              alert(room.pin);
+            } else {
+              alert("방이 준비되지 않았습니다. 다시 시도해보세요.");
+            }
+            // {
+            //   "id": 5,
+            //   "pin": "100494",
+            //   "maxParticipantCount": 5,
+            //   "startDate": "2022-08-23T08:22:20.896+00:00",
+            //   "endDate": null,
+            //   "problemsetDto": {
+            //     "id": 1,
+            //     "title": "tempTitle",
+            //     "description": "tempDescription",
+            //     "closingMent": "Goodbye Command"
+            //   },
+            //   "currentState": "READY",
+            //   "currentProblemNum": -1
+            // }
+             location.replace("/lobby_display");
+          }}
+          className="mx-4 h-[60px] w-[370px]"
+          variant="outline"
+          gradient={{ from: "orange", to: "red" }}
+          component="a"
+          rel="noopener noreferrer"
+          leftIcon={<Plus size={38} />}
+          styles={(theme: {
+            fn: {
+              darken: (arg0: string, arg1: number) => any;
+            };
+          }) => ({
+            root: {
+              textDecoration: "none",
+              fontWeight: "bold",
+              fontSize: 20,
+              marginRight: 10,
+              color: "orange",
+              backgroundColor: "white",
+              border: "2px solid orange",
+              height: 42,
+
+              "&:hover": {
+                backgroundColor: theme.fn.darken("#FFFFFF", 0.05),
+              },
+            },
+
+            leftIcon: {
+              marginRight: 5,
+            },
+          })}
+        >
+          방 만들기
+        </Button>
+      </Modal>
+
+      <header>{NavIndex()}</header>
+
+      <main style={{ margin: "0px 10px" }}>
+        <section className="h-[86vh]">
+          <Stack className="items-center flex contents-between">
             <Stack>
-              {/* main */}
-              {step === 0 ? (
+              {/* 메인 배너 */}
+              <Group spacing={100}>
                 <Group>
                   <Group>
-                    <ActionIcon variant="transparent">
-                      <ArrowBarLeft
-                        className="cursor-default opacity-0"
-                        color="white"
-                        size="xl"
-                      />
-                    </ActionIcon>
-                  </Group>
-                  <Group className="items-center m-2 p-10 bg-white shadow-lg sm:rounded-3xl backdrop-blur-xl bg-opacity-80">
                     <Stack>
-                      {/* Navigation Bar */}
+                      <p className="underline decoration-amber-500 font-bold text-4xl text-left mt-10">
+                        퀴즈 정보
+                      </p>
                       <Group className="justify-between">
-                        <Tooltip label="홈">
-                          <ActionIcon color="orange" component="a" href="/">
-                            <Home2 />
-                          </ActionIcon>
-                        </Tooltip>
                         <Group>
-                          <Tooltip label="멤버십">
-                            <ActionIcon
-                              color="orange"
-                              component="a"
-                              href="/membership"
-                            >
-                              <ReportMoney />
-                            </ActionIcon>
-                          </Tooltip>
-                          <Tooltip label="퀴즈 관리">
-                            <ActionIcon
-                              color="orange"
-                              component="a"
-                              href="/membership"
-                            >
-                              <Folders />
-                            </ActionIcon>
-                          </Tooltip>
-                          <Tooltip label="계정 관리">
-                            <ActionIcon
-                              color="orange"
-                              component="a"
-                              href="#"
-                              // variant="transparent"
-                            >
-                              <UserCircle />
-                            </ActionIcon>
-                          </Tooltip>
-                        </Group>
-                      </Group>
-
-                      <Group>
-                        <Stack>
-                          <Stack>
-                            {/* 텍스트 - 퀴즈 정보 */}
-                            <h2 className="font-semibold">퀴즈 정보</h2>
-                            {/* 컨텐츠 - 퀴즈 정보 */}
-                            <Group className="p-10 bg-white shadow-lg sm:rounded-3xl backdrop-blur-xl bg-opacity-50">
-                              {/* 이미지 - 봉투 */}
-
-                              <Tooltip
-                                position="bottom-start"
-                                transition="scale-y"
-                                transitionDuration={300}
-                                withArrow
-                                label={"몰루"}
+                          <Group>
+                            <Stack>
+                              <Group
+                                className="h-52 w-52 rounded-xl border-2 bg-gray-200
+                            "
                               >
-                                <Group spacing={0}>
-                                  <Group className="shadow-lg" spacing={0}>
-                                    <Group className="border-r-2 border-gray-300 shadow-lg h-32 w-4 bg-amber-200" />
-                                    <Group>
-                                      <Stack spacing={0}>
-                                        <Group className="border-b-2 border-gray-300 m-0 p-0 h-16 w-48 bg-amber-200" />
-                                        <Group className=" m-0 p-0 h-16 w-48 bg-amber-200">
-                                          <Group
-                                            className={`mx-1 text-white cursor-pointer w-12 h-12 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-full`}
-                                          >
-                                            <p className="text-xs m-auto">
-                                              태그
-                                            </p>
-                                          </Group>
-                                        </Group>
-                                      </Stack>
-                                    </Group>
-                                  </Group>
-                                  <Group className="shadow-lg m-0 p-0 h-28 w-8 bg-white"></Group>
-                                </Group>
-                              </Tooltip>
+                                {rightEnvelope(0)}
+                              </Group>
+                            </Stack>
+                          </Group>
+                          <Stack>
+                            <p className="font-bold text-2xl">
+                              {problemsets[curIdx].title === ""
+                                ? "아래에서 퀴즈를 선택하세요"
+                                : problemsets[curIdx].title}
+                            </p>
+                            <p className=" text-2xl">
+                              <strong className="text-2xl text-amber-500 font-bold">
+                                문제 수
+                              </strong>{" "}
+                              : {problem.length}개{" "}
+                              <strong className="text-2xl text-amber-500 font-bold">
+                                예상 소요 시간
+                              </strong>{" "}
+                              : {Math.trunc(totalTime() / 60)}분
+                            </p>
+                            <Group>
+                              <Button
+                                onClick={() => {
+                                  setModalOpened(true);
+                                }}
+                                className="mx-4 h-[60px] w-[200px]"
+                                variant="outline"
+                                gradient={{ from: "orange", to: "red" }}
+                                component="a"
+                                rel="noopener noreferrer"
+                                leftIcon={<Login size={38} />}
+                                styles={(theme: {
+                                  fn: {
+                                    darken: (arg0: string, arg1: number) => any;
+                                  };
+                                }) => ({
+                                  root: {
+                                    textDecoration: "none",
+                                    fontWeight: "bold",
+                                    fontSize: 20,
+                                    marginRight: 10,
+                                    color: "orange",
+                                    backgroundColor: "white",
+                                    border: "2px solid orange",
+                                    height: 42,
 
-                              <Stack>
-                                <p className="text-amber-500 font-bold">
-                                  퀴즈 정보
-                                </p>
-                              </Stack>
+                                    "&:hover": {
+                                      backgroundColor: theme.fn.darken(
+                                        "#FFFFFF",
+                                        0.05
+                                      ),
+                                    },
+                                  },
 
-                              {/* 입력 - 퀴즈 정보 */}
-                              {/* <Stack>
-                                  <p> 여기 어디</p>
-                                  <Button
-                                    className="bg-black"
-                                    onClick={() => {
-                                      let submitForm = {
-                                        answerText: "1",
-                                        problemIdx: 0,
-                                        uuid: "d7a23266-6fc7-421a-9ed8-aad169013e52",
-                                      };
+                                  leftIcon: {
+                                    marginRight: 5,
+                                  },
+                                })}
+                              >
+                                방 만들기
+                              </Button>
+                              <Button
+                                className=" h-[60px] w-[200px] bg-orange-500"
+                                variant="gradient"
+                                gradient={{ from: "orange", to: "red" }}
+                                component="a"
+                                rel="noopener noreferrer"
+                                href="/create_rf"
+                                leftIcon={<Pencil size={38} />}
+                                styles={(theme) => ({
+                                  root: {
+                                    fontWeight: "bold",
+                                    fontSize: 20,
+                                    marginLeft: 5,
+                                    color: "white",
+                                    backgroundColor: "orange",
+                                    border: 0,
+                                    height: 42,
 
-                                      axios
-                                        .post(
-                                          "https://dist.exquiz.me/api/room/100310/mq/submit",
-                                          submitForm
-                                        )
-                                        .then((result) => {
-                                          alert(result.data);
-                                        })
-                                        .catch((error) => {
-                                          alert(error.response.data);
-                                        });
-                                    }}
-                                  >
-                                    Press me!
-                                  </Button>
-                                  <Button
-                                    className="bg-black"
-                                    onClick={() => {
-                                      axios
-                                        .get(
-                                          "https://dist.exquiz.me/api/room/100310/mq/leaderboard"
-                                        )
-                                        .then((result) => {
-                                          alert(JSON.stringify(result.data));
-                                        })
-                                        .catch((error) => {
-                                          alert(error);
-                                        });
-                                    }}
-                                  >
-                                    리더보드 GET
-                                  </Button>
-                                </Stack> */}
+                                    "&:hover": {},
+                                  },
+
+                                  leftIcon: {
+                                    marginRight: 5,
+                                  },
+                                })}
+                              >
+                                수정하기
+                              </Button>
                             </Group>
                           </Stack>
-                          <ActionIcon>
-                            <Refresh
-                              onClick={() => {
-                                getProblemsets();
-                              }}
-                            ></Refresh>
-                          </ActionIcon>
-                          {/* 텍스트 - 과목 선택 */}
-                          <Group className="font-semibold">퀴즈 선택</Group>
-                          {problemsets.map(
-                            ({ id, title, description, closingMent }, i) => {
-                              return (
-                                <Stack
-                                  key={i}
-                                  className="border-solid border-2 border-amber-500
-                                "
-                                >
-                                  <Group spacing={0}>
-                                    <Group className="shadow-lg" spacing={0}>
-                                      <Group className="border-r-2 border-gray-300 shadow-lg h-32 w-4 bg-amber-200" />
-                                      <Group>
-                                        <Stack spacing={0}>
-                                          <Group className="border-b-2 border-gray-300 m-0 p-0 h-16 w-48 bg-amber-200" />
-                                          <Group className=" m-0 p-0 h-16 w-48 bg-amber-200">
-                                            <Group
-                                              className={`mx-1 text-white w-12 h-12 bg-gradient-to-r from-black to-black rounded-full`}
-                                            >
-                                              <p className="text-xs m-auto">
-                                                hello1
-                                              </p>
-                                            </Group>
-                                            <Group
-                                              className={`mx-1 text-white w-12 h-12 bg-gradient-to-r from-black to-black rounded-full`}
-                                            >
-                                              <p className="text-xs m-auto">
-                                                hello2
-                                              </p>
-                                            </Group>
-                                          </Group>
-                                        </Stack>
-                                      </Group>
-                                    </Group>
-                                    <Group className="shadow-lg m-0 p-0 h-28 w-8 bg-white"></Group>
-                                  </Group>
-                                  <p className="text-xs m-auto">{title}</p>
-                                </Stack>
-                              );
-                            }
-                          )}
-                        </Stack>
+                        </Group>
+                        <ScrollArea>
+                          {problem.map(({ title }, i) => {
+                            return (
+                              <p className="text-2xl font-bold">
+                                {i + 1}.&nbsp;
+                                {title}
+                              </p>
+                            );
+                          })}
+                        </ScrollArea>
                       </Group>
+
+                      {/* ../public/globe_banner.png */}
                     </Stack>
                   </Group>
                 </Group>
-              ) : (
-                <></>
-              )}
-
-              {/* caching tailwind css */}
-              <Group className=" bg-gradient-to-r shadow-[inset_0_-2px_4px_rgba(128,128,128,0.8)] border-gray-500 from-gray-500 to-gray-500 w-0 h-0" />
-              <Group className="bg-gradient-to-r border-orange-500 from-orange-500 to-red-500 w-0 h-0" />
-              <Group className="bg-gradient-to-r border-blue-500 from-blue-500 to-green-500 w-0 h-0" />
-              <Group className="bg-gradient-to-r border-violet-500 from-violet-500 to-orange-500 w-0 h-0" />
-              <Group className="bg-gradient-to-r border-yellow-500 from-yellow-500 to-orange-500 w-0 h-0" />
-              <Group className="bg-gradient-to-r border-gray-500 from-gray-400 to-gray-400 w-0 h-0" />
-              <Group className="bg-gradient-to-r border-red-500 from-red-500 to-orange-500 w-0 h-0" />
-              <Group className="bg-gradient-to-r border-blue-500 from-blue-700 to-blue-500 w-0 h-0" />
-              <Group className="bg-gradient-to-r border-green-500 from-green-500 to-lime-500 w-0 h-0" />
-              <Group className="bg-gradient-to-r border-amber-500 from-amber-500 to-yellow-400 w-0 h-0" />
-              <Group className="bg-gradient-to-r border-violet-500 from-violet-700 to-fuchsia-600 w-0 h-0" />
+                {/* 아미지 - 봉투 */}
+              </Group>
+              <h2 className="text-xl text-amber-500 font-bold">문제 관리</h2>
+              <Grid>
+                {" "}
+                {problemsets.map(
+                  ({ id, title, description, closingMent }, i) => {
+                    return Math.trunc(i / 8) !== activePage - 1 ? (
+                      <></>
+                    ) : (
+                      <Grid.Col className="border-2" span={3} key={i}>
+                        <Stack
+                          className={`cursor-pointer ${
+                            curIdx === i
+                              ? "border-2 border-amber-500 radius-lg"
+                              : ""
+                          }`}
+                          onClick={async () => {
+                            await getProblem(i + 1);
+                            await setCurIdx((prevState) => i);
+                          }}
+                          align="center"
+                          // className="border-solid border-2 border-amber-500"
+                        >
+                          <Group key={i} spacing={0}>
+                            <Group className="shadow-lg" spacing={0}>
+                              <Group className="border-r-2 border-gray-300 shadow-lg h-32 w-4 bg-amber-200" />
+                              <Group>
+                                <Stack spacing={0}>
+                                  <Group className="border-b-2 border-gray-300 m-0 p-0 h-16 w-48 bg-amber-200" />
+                                  <Group className=" m-0 p-0 h-16 w-48 bg-amber-200"></Group>
+                                </Stack>
+                              </Group>
+                            </Group>
+                            <Group className="shadow-lg m-0 p-0 h-28 w-8 bg-white"></Group>
+                          </Group>
+                          <p className="text-xl font-bold m-auto">{title}</p>
+                        </Stack>
+                      </Grid.Col>
+                    );
+                  }
+                )}
+              </Grid>
+              <Center>
+                <Pagination
+                  color="orange"
+                  page={activePage}
+                  onChange={setPage}
+                  total={problemsets.length / 8}
+                />
+              </Center>
             </Stack>
-          </Center>
-        </Center>
-      </section>
+          </Stack>
+        </section>
+      </main>
+
+      <footer className={styles.footer}>
+        <Group className=" bg-gradient-to-r shadow-[inset_0_-2px_4px_rgba(128,128,128,0.8)] border-gray-500 from-gray-500 to-gray-500 w-0 h-0" />
+        <Group className="bg-gradient-to-r border-orange-500 from-orange-500 to-red-500 w-0 h-0" />
+        <Group className="bg-gradient-to-r border-blue-500 from-blue-500 to-green-500 w-0 h-0" />
+        <Group className="bg-gradient-to-r border-violet-500 from-violet-500 to-orange-500 w-0 h-0" />
+        <Group className="bg-gradient-to-r border-yellow-500 from-yellow-500 to-orange-500 w-0 h-0" />
+        <Group className="bg-gradient-to-r border-gray-500 from-gray-400 to-gray-400 w-0 h-0" />
+        <Group className="bg-gradient-to-r border-red-500 from-red-500 to-orange-500 w-0 h-0" />
+        <Group className="bg-gradient-to-r border-blue-500 from-blue-700 to-blue-500 w-0 h-0" />
+        <Group className="bg-gradient-to-r border-green-500 from-green-500 to-lime-500 w-0 h-0" />
+        <Group className="bg-gradient-to-r border-amber-500 from-amber-500 to-yellow-400 w-0 h-0" />
+        <Group className="bg-gray-500 w-0 h-0" />
+        <Group className="bg-red-500 w-0 h-0" />
+        <Group className="bg-green-500 w-0 h-0" />
+        <Group className="bg-pink-500 w-0 h-0" />
+        <Group className="bg-orange-500 w-0 h-0" />
+        <a
+          className="no-underline text-black text-sm font-semibold"
+          href="/apiTest"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Copyright ⓒ 2022 exquiz.me | Team MUMOMU
+        </a>
+      </footer>
     </div>
   );
 };
 
 export default Home;
-function sleep(arg0: number) {
-  throw new Error("Function not implemented.");
-}

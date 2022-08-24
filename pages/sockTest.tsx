@@ -72,7 +72,6 @@ import {
   ToggleLeft,
 } from "tabler-icons-react";
 
-import { NotificationsProvider } from "@mantine/notifications";
 import { copyFileSync } from "fs";
 // 85vh 20vw
 

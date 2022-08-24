@@ -7,6 +7,8 @@ import NavIndex from "./components/navIndex";
 import SchoolList from "./components/schoolList";
 import { useState } from "react";
 import { useRef } from "react";
+import React, { useEffect } from "react";
+import axios from "axios";
 
 import {
   Button,
@@ -137,167 +139,50 @@ const Home: NextPage = () => {
   const [status, setStatus] = useState([
     {
       nickname: "성찰하는 소크라테스",
-      animal: "Panda",
-      color: "orange",
-      answer: false,
-    },
-    {
-      nickname: "고뇌하는 니체",
-      animal: "Panda",
-      color: "orange",
-      answer: true,
-    },
-    {
-      nickname: "엉뚱한 튜링",
-      animal: "Panda",
-      color: "orange",
-      answer: false,
-    },
-    {
-      nickname: "활기찬 뉴턴",
-      animal: "Panda",
-      color: "orange",
-      answer: false,
-    },
-    {
-      nickname: "명랑한 브라헤",
-      animal: "Panda",
-      color: "orange",
-      answer: true,
-    },
-    {
-      nickname: "정의로운 보어",
-      animal: "Panda",
-      color: "orange",
-      answer: false,
-    },
-    {
-      nickname: "창의적인 레오나르도",
-      animal: "Panda",
-      color: "orange",
-      answer: false,
-    },
-    {
-      nickname: "사색하는 공자",
-      animal: "Panda",
-      color: "orange",
-      answer: true,
-    },
-    {
-      nickname: "부유한 스미스",
-      animal: "Panda",
-      color: "orange",
-      answer: false,
-    },
-    {
-      nickname: "정직한 데카르트",
-      animal: "Panda",
-      color: "orange",
-      answer: true,
-    },
-    {
-      nickname: "슬기로운 세종",
-      animal: "Panda",
-      color: "orange",
-      answer: false,
-    },
-    {
-      nickname: "유능한 한신",
-      animal: "Panda",
-      color: "orange",
-      answer: false,
-    },
-    {
-      nickname: "전설적인 칸",
-      animal: "Panda",
-      color: "orange",
-      answer: false,
-    },
-    {
-      nickname: "전략적인 제갈공명",
-      animal: "Panda",
-      color: "orange",
-      answer: true,
-    },
-    {
-      nickname: "신박한 유레카",
-      animal: "Panda",
-      color: "orange",
-      answer: false,
-    },
-    {
-      nickname: "듬직한 테슬라",
-      animal: "Panda",
-      color: "orange",
-      answer: true,
-    },
-    {
-      nickname: "명석한 칼세이건",
-      animal: "Panda",
-      color: "orange",
-      answer: true,
-    },
-    {
-      nickname: "건강한 클레오파트라",
-      animal: "Panda",
-      color: "orange",
-      answer: false,
-    },
-    {
-      nickname: "용감한 이순신",
-      animal: "Panda",
-      color: "orange",
-      answer: false,
-    },
-    {
-      nickname: "공평한 링컨",
-      animal: "Panda",
-      color: "orange",
-      answer: false,
-    },
-    {
-      nickname: "신속한 나폴레옹",
-      animal: "Panda",
-      color: "orange",
-      answer: false,
-    },
-    {
-      nickname: "뛰어난 워렌버핏",
-      animal: "Panda",
-      color: "orange",
-      answer: true,
-    },
-    {
-      nickname: "비장한 스티브잡스",
-      animal: "Panda",
-      color: "orange",
-      answer: false,
-    },
-    {
-      nickname: "신들린 모차르트",
-      animal: "Panda",
-      color: "orange",
-      answer: false,
-    },
-    {
-      nickname: "감각적인 고흐",
-      animal: "Panda",
-      color: "orange",
-      answer: false,
-    },
-    {
-      nickname: "독보적인 내쉬",
-      animal: "Panda",
-      color: "orange",
-      answer: true,
-    },
-    {
-      nickname: "헌신적인 테레사",
-      animal: "Panda",
+      avatar: "panda",
       color: "orange",
       answer: false,
     },
   ]);
+
+  // useEffect(() => {
+  //   getPartlist();
+  // }, []);
+
+  let [partlist, setPartlist] = useState({
+    currentScore: 0,
+    entryDate: "2022-08-23T08:34:54.994Z",
+    id: 0,
+    name: "string",
+    nickname: "string",
+    roomDto: {
+      currentProblemNum: 0,
+      currentState: "FINISH",
+      endDate: "2022-08-23T08:34:54.994Z",
+      id: 0,
+      maxParticipantCount: 0,
+      pin: "string",
+      problemsetDto: {
+        closingMent: "string",
+        description: "string",
+        id: 0,
+        title: "string",
+      },
+      startDate: "2022-08-23T08:34:54.994Z",
+    },
+    uuid: "string",
+  });
+  const getPartlist = () => {
+    axios
+      .get("https://dist.exquiz.me//api/room/100494/participants")
+      .then((result) => {
+        setPartlist(result.data);
+      })
+      .catch((error) => {
+        alert("getParticipants_error");
+      });
+    return;
+  };
   return (
     <div>
       <Head>
@@ -387,8 +272,10 @@ const Home: NextPage = () => {
                       QR코드 화면
                     </Button>
                     <p className="font-bold text-4xl">
-                      입장 인원 :{" "}
-                      <strong className="text-amber-500">10명</strong>
+                      입장 인원 : &nbsp;
+                      <strong className="text-amber-500">
+                        {status.length}명
+                      </strong>
                     </p>
                     <Button
                       className="mx-4 h-[60px] w-[200px]"
@@ -396,7 +283,7 @@ const Home: NextPage = () => {
                       gradient={{ from: "orange", to: "red" }}
                       component="a"
                       rel="noopener noreferrer"
-                      href="/create_rf"
+                      href="/play"
                       rightIcon={<ArrowBigRightLines size={38} />}
                       styles={(theme: {
                         fn: { darken: (arg0: string, arg1: number) => any };

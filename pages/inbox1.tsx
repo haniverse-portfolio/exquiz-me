@@ -172,99 +172,14 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Modal
-        opened={modalOpened}
-        onClose={() => setModalOpened(false)}
-        title="핀 번호를 입력해주세요"
-      ></Modal>
-
-      <section className={`w-full h-full`}>
+      <section
+        className={`w-full h-full bg-gradient-to-r from-orange-500 to-yellow-500`}
+      >
         <Center>
           <Center className=" my-2 h-[98.3vh]">
             <Stack>
               {/* main */}
               {step === 0 ? (
-                <Group>
-                  <Center>
-                    <Stack>
-                      <Center>
-                        <Stack>
-                          {/* Navigation Bar */}
-                          <p className="underline decoration-amber-500 font-bold text-2xl text-left mt-10">
-                            퀴즈의 새로운 경험을
-                          </p>
-                          <p className="underline decoration-amber-500 font-bold text-2xl text-left">
-                            제시하다
-                          </p>
-                          <p className="font-bold text-2xl text-left">
-                            exquiz.me
-                          </p>
-                        </Stack>
-                      </Center>
-                      <Stack>
-                        <Center>
-                          <Group spacing={0}>
-                            <Group className="shadow-lg" spacing={0}>
-                              <Group className="border-r-2 border-gray-300 shadow-lg h-28 w-4 bg-amber-200" />
-                              <Group>
-                                <Stack spacing={0}>
-                                  <Group className="border-b-2 border-gray-300 m-0 p-0 h-14 w-40 bg-amber-200"></Group>
-                                  <Group
-                                    spacing={2}
-                                    className=" m-0 p-0 h-14 w-40 bg-amber-200"
-                                  >
-                                    <Group
-                                      className={`mx-1 text-white cursor-pointer w-12 h-12 bg-gradient-to-r from-blue-500 to-green-500 rounded-full`}
-                                    >
-                                      <p className="text-xs m-auto">학생용</p>
-                                    </Group>
-                                    <Group
-                                      className={`mx-0 text-white cursor-pointer w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full`}
-                                    >
-                                      <p className="text-xs m-auto">모바일</p>
-                                    </Group>
-                                  </Group>
-                                </Stack>
-                              </Group>
-                            </Group>
-                            <Group className="shadow-lg m-0 p-0 h-24 w-6 bg-white"></Group>
-                          </Group>
-                        </Center>
-                        <Center>
-                          <Stack>
-                            <Group>
-                              <TextInput className="w-[12px]"></TextInput>
-                              <TextInput className="w-[12px]"></TextInput>
-                              <TextInput className="w-[12px]"></TextInput>
-                              <TextInput className="w-[12px]"></TextInput>
-                              <TextInput className="w-[12px]"></TextInput>
-                              <TextInput className="w-[12px]"></TextInput>
-                            </Group>
-                            <Button color="orange" variant="outline">
-                              입장하기
-                            </Button>
-                          </Stack>
-                        </Center>
-
-                        <footer className={styles.footer}>
-                          <a
-                            className="text-gray-700 no-underline text-black text-sm font-semibold"
-                            href="/apiTest"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            Team MUMOMU
-                          </a>
-                        </footer>
-                      </Stack>
-                    </Stack>
-                  </Center>
-                </Group>
-              ) : (
-                <></>
-              )}
-
-              {step === 1 ? (
                 <Group>
                   <Group>
                     <ActionIcon variant="transparent">
@@ -315,17 +230,108 @@ const Home: NextPage = () => {
                           </Tooltip>
                         </Group>
                       </Group>
-                      <p className="text-left font-bold text-amber-500">
-                        닉네임 설정
-                      </p>
-                      <TextInput></TextInput>
+
                       <Group>
-                        <Button color="orange" variant="outline">
-                          핀 번호로 입장하기
-                        </Button>
-                        <Button color="orange" variant="outline">
-                          QR 코드로 입장하기
-                        </Button>
+                        <Stack>
+                          <Stack>
+                            {/* 텍스트 - 퀴즈 정보 */}
+                            <h2 className="font-semibold">퀴즈 정보</h2>
+                            {/* 컨텐츠 - 퀴즈 정보 */}
+                            <Group className="p-10 bg-white shadow-lg sm:rounded-3xl backdrop-blur-xl bg-opacity-50">
+                              {/* 이미지 - 봉투 */}
+
+                              <Tooltip
+                                position="bottom-start"
+                                transition="scale-y"
+                                transitionDuration={300}
+                                withArrow
+                                label={"몰루"}
+                              >
+                                <Group spacing={0}>
+                                  <Group className="shadow-lg" spacing={0}>
+                                    <Group className="border-r-2 border-gray-300 shadow-lg h-32 w-4 bg-amber-200" />
+                                    <Group>
+                                      <Stack spacing={0}>
+                                        <Group className="border-b-2 border-gray-300 m-0 p-0 h-16 w-48 bg-amber-200" />
+                                        <Group className=" m-0 p-0 h-16 w-48 bg-amber-200">
+                                          <Group
+                                            className={`mx-1 text-white cursor-pointer w-12 h-12 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-full`}
+                                          >
+                                            <p className="text-xs m-auto">
+                                              태그
+                                            </p>
+                                          </Group>
+                                        </Group>
+                                      </Stack>
+                                    </Group>
+                                  </Group>
+                                  <Group className="shadow-lg m-0 p-0 h-28 w-8 bg-white"></Group>
+                                </Group>
+                              </Tooltip>
+
+                              <Stack>
+                                <p className="text-amber-500 font-bold">
+                                  퀴즈 정보
+                                </p>
+                              </Stack>
+
+                              {/* 입력 - 퀴즈 정보 */}
+                              {/* <Stack>
+                                  <p> 여기 어디</p>
+                                  <Button
+                                    className="bg-black"
+                                    onClick={() => {
+                                      let submitForm = {
+                                        answerText: "1",
+                                        problemIdx: 0,
+                                        uuid: "d7a23266-6fc7-421a-9ed8-aad169013e52",
+                                      };
+
+                                      axios
+                                        .post(
+                                          "https://dist.exquiz.me/api/room/100310/mq/submit",
+                                          submitForm
+                                        )
+                                        .then((result) => {
+                                          alert(result.data);
+                                        })
+                                        .catch((error) => {
+                                          alert(error.response.data);
+                                        });
+                                    }}
+                                  >
+                                    Press me!
+                                  </Button>
+                                  <Button
+                                    className="bg-black"
+                                    onClick={() => {
+                                      axios
+                                        .get(
+                                          "https://dist.exquiz.me/api/room/100310/mq/leaderboard"
+                                        )
+                                        .then((result) => {
+                                          alert(JSON.stringify(result.data));
+                                        })
+                                        .catch((error) => {
+                                          alert(error);
+                                        });
+                                    }}
+                                  >
+                                    리더보드 GET
+                                  </Button>
+                                </Stack> */}
+                            </Group>
+                          </Stack>
+                          <ActionIcon>
+                            <Refresh
+                              onClick={() => {
+                                getProblemsets();
+                              }}
+                            ></Refresh>
+                          </ActionIcon>
+                          {/* 텍스트 - 과목 선택 */}
+                          <Group className="font-semibold">퀴즈 선택</Group>
+                        </Stack>
                       </Group>
                     </Stack>
                   </Group>

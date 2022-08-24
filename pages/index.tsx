@@ -2,60 +2,11 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
-import Link from "next/link";
 import NavIndex from "./components/navIndex";
-import SchoolList from "./components/schoolList";
 import { useState } from "react";
-import { useRef } from "react";
 
-import {
-  Button,
-  Grid,
-  SimpleGrid,
-  Input,
-  Card,
-  Text,
-  Badge,
-  Group,
-  useMantineTheme,
-  Center,
-  Tabs,
-  ThemeIcon,
-  Container,
-  Textarea,
-  Tooltip,
-  Stack,
-  Stepper,
-  ActionIcon,
-  Autocomplete,
-  TextInput,
-} from "@mantine/core";
-import {
-  Emphasis,
-  FileX,
-  Login,
-  ReportMoney,
-  UserCircle,
-  Pencil,
-  Archive,
-  BrowserPlus,
-  SquareCheck,
-  AB,
-  QuestionMark,
-  Apps,
-  Checkbox,
-  Parentheses,
-  Settings,
-  Plus,
-  Check,
-  Number1,
-  Number2,
-  Number3,
-  Circle,
-  Triangle,
-  X,
-  Folders,
-} from "tabler-icons-react";
+import { Button, Group, useMantineTheme, Stack } from "@mantine/core";
+import { Pencil, Folders } from "tabler-icons-react";
 
 const rightEnvelope = (subject: number) => {
   const subjectInfo = [
@@ -145,17 +96,23 @@ const Home: NextPage = () => {
           <Stack className="items-center flex contents-between">
             <Stack>
               {/* 메인 배너 */}
-              <Group className="my-36" spacing={100}>
+              <Group className="my-24" spacing={100}>
                 <Group>
                   <Group>
                     <Stack>
-                      {/* ../public/globe_banner.png */}
-                      <p className="underline decoration-amber-500 font-bold text-6xl text-left mt-10">
-                        퀴즈의 새로운 경험을 제시하다
-                      </p>
-                      <p className="font-bold text-6xl text-left mb-10">
-                        exquiz.me
-                      </p>
+                      {/* <Image
+                        src="/../public/globe_banner.png"
+                        width={500}
+                        height={300}
+                      >
+                        </Image> */}
+                        {/* ../public/globe_banner.png */}
+                        <p className="underline decoration-amber-500 font-bold text-6xl text-left mt-10">
+                          퀴즈의 새로운 경험을 제시하다
+                        </p>
+                        <p className="font-bold text-6xl text-left mb-10">
+                          exquiz.me
+                        </p>
                       <Group>
                         <Button
                           className="mx-4 h-[60px] w-[200px]"
@@ -163,7 +120,7 @@ const Home: NextPage = () => {
                           gradient={{ from: "orange", to: "red" }}
                           component="a"
                           rel="noopener noreferrer"
-                          href="/create_rf"
+                          href="/create"
                           leftIcon={<Pencil size={38} />}
                           styles={(theme: {
                             fn: { darken: (arg0: string, arg1: number) => any };
@@ -233,13 +190,14 @@ const Home: NextPage = () => {
                     {rightEnvelope(2)}
                     {rightEnvelope(3)}
                   </Group>
-                  <iframe
-                    className="m-auto"
-                    width="560"
-                    height="315"
-                    src="https://www.youtube.com/embed/YvPYFCC1cL0"
-                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                  ></iframe>
+
+                  <Image
+                    className="border-2 border-amber-500"
+                    src="/../public/index_preview.png"
+                    alt="Picture of the author"
+                    width={500}
+                    height={400}
+                  />
                   <Group>
                     {leftEnvelope(1)}
                     {leftEnvelope(2)}

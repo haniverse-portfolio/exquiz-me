@@ -9,7 +9,9 @@ import axios from "axios";
 import { useRef } from "react";
 import SockJS from "sockjs-client";
 import StompJs from "@stomp/stompjs";
-const Stomp = require("stompjs");
+const Stomp = require("@stomp/stompjs");
+
+Object.assign(global, { WebSocket: require("websocket").w3cwebsocket });
 
 import {
   Button,
@@ -72,6 +74,7 @@ import {
   ArrowBarLeft,
   ToggleLeft,
   Refresh,
+  ArrowTopCircle,
 } from "tabler-icons-react";
 
 import { copyFileSync } from "fs";
@@ -97,7 +100,7 @@ const Home: NextPage = () => {
 
   function connection() {
     let socket = new SockJS("https://dist.exquiz.me/stomp");
-    let stompClient = Stomp.over(socket);
+    let stompClient = Stomp.over(socket); // client
 
     //stompClient.debug = null;
 
@@ -113,7 +116,7 @@ const Home: NextPage = () => {
     stompClient.send("/pub/test", {}, body);
     // stompClient.disconnect();
   }
-
+  // subscribe : topic/room
   return (
     <div>
       <Head>
@@ -121,6 +124,8 @@ const Home: NextPage = () => {
         <meta name="description" content="exquiz.me" />
         <link rel="icon" href="/favicon.ico" />
         <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+        <script src="/webjars/sockjs-client/1.1.2/sockjs.min.js"></script>
+        <script src="/webjars/stomp-websocket/2.3.3-1/stomp.min.js"></script>
       </Head>
 
       <section className={`w-full h-full`}>

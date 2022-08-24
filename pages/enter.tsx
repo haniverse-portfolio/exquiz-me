@@ -1,80 +1,27 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import Link from "next/link";
-import NavCreate from "./components/navCreate";
-import Slide from "./components/slide";
 import axios from "axios";
-import { useRef } from "react";
 
 import {
   Button,
-  SimpleGrid,
-  Tooltip,
-  Textarea,
   ScrollArea,
   Center,
-  Container,
-  ThemeIcon,
-  Checkbox,
   Group,
-  Accordion,
   useMantineTheme,
-  Box,
-  ActionIcon,
-  Slider,
-  BackgroundImage,
-  Switch,
   Stack,
-  MantineProvider,
-  Grid,
-  Stepper,
   TextInput,
   Image,
-  Paper,
-  Tabs,
   Modal,
-  Text,
   ColorSwatch,
 } from "@mantine/core";
 
-import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
-
 import { useScrollIntoView } from "@mantine/hooks";
 
-import {
-  AdjustmentsHorizontal,
-  Notes,
-  Plus,
-  Trash,
-  Check,
-  Home2,
-  Emphasis,
-  FileX,
-  Login,
-  ReportMoney,
-  UserCircle,
-  Pencil,
-  Archive,
-  BrowserPlus,
-  SquareCheck,
-  AB,
-  QuestionMark,
-  Apps,
-  Parentheses,
-  Folders,
-  FileSettings,
-  FilePlus,
-  FileCheck,
-  Settings,
-  ArrowBarRight,
-  ArrowBarLeft,
-  ToggleLeft,
-  Refresh,
-} from "tabler-icons-react";
+import { Refresh } from "tabler-icons-react";
 
-import { NotificationsProvider } from "@mantine/notifications";
 import { copyFileSync } from "fs";
 import { errorMonitor } from "events";
 import { resourceLimits } from "worker_threads";
