@@ -5,8 +5,24 @@ import styles from "../styles/Home.module.css";
 import NavIndex from "./components/navIndex";
 import { useState } from "react";
 
-import { Button, Group, useMantineTheme, Stack } from "@mantine/core";
-import { Pencil, Folders } from "tabler-icons-react";
+import {
+  Button,
+  Group,
+  useMantineTheme,
+  Stack,
+  ActionIcon,
+  ThemeIcon,
+} from "@mantine/core";
+import {
+  Pencil,
+  Folders,
+  ChevronLeft,
+  ChevronRight,
+  Triangle,
+  Circle,
+  X,
+  Square,
+} from "tabler-icons-react";
 
 const rightEnvelope = (subject: number) => {
   const subjectInfo = [
@@ -96,7 +112,7 @@ const Home: NextPage = () => {
           <Stack className="items-center flex contents-between">
             <Stack>
               {/* 메인 배너 */}
-              <Group className="my-24" spacing={100}>
+              <Group spacing={400}>
                 <Group>
                   <Group>
                     <Stack>
@@ -106,14 +122,131 @@ const Home: NextPage = () => {
                         height={300}
                       >
                         </Image> */}
-                        {/* ../public/globe_banner.png */}
-                        <p className="underline decoration-amber-500 font-bold text-6xl text-left mt-10">
-                          퀴즈의 새로운 경험을 제시하다
-                        </p>
-                        <p className="font-bold text-6xl text-left mb-10">
-                          exquiz.me
-                        </p>
+                      {/* ../public/globe_banner.png */}
+                      <Group className="mt-10">
+                        <Image
+                          className="border-2 border-amber-500"
+                          src="/../public/triangle.png"
+                          alt="Picture of the author"
+                          width={75}
+                          height={75}
+                        />
+                        <Image
+                          className="border-2 border-amber-500"
+                          src="/../public/circle.png"
+                          alt="Picture of the author"
+                          width={75}
+                          height={75}
+                        />
+                        <Image
+                          className="border-2 border-amber-500"
+                          src="/../public/triangle.png"
+                          alt="Picture of the author"
+                          width={75}
+                          height={75}
+                        />
+                        <Image
+                          className="border-2 border-amber-500"
+                          src="/../public/circle.png"
+                          alt="Picture of the author"
+                          width={75}
+                          height={75}
+                        />
+                        <Image
+                          className="border-2 border-amber-500"
+                          src="/../public/triangle.png"
+                          alt="Picture of the author"
+                          width={75}
+                          height={75}
+                        />
+                        <Image
+                          className="border-2 border-amber-500"
+                          src="/../public/circle.png"
+                          alt="Picture of the author"
+                          width={75}
+                          height={75}
+                        />
+                        <Image
+                          className="border-2 border-amber-500"
+                          src="/../public/triangle.png"
+                          alt="Picture of the author"
+                          width={75}
+                          height={75}
+                        />
+                        <Image
+                          className="border-2 border-amber-500"
+                          src="/../public/circle.png"
+                          alt="Picture of the author"
+                          width={75}
+                          height={75}
+                        />
+                      </Group>
                       <Group>
+                        <Image
+                          className="border-2 border-amber-500"
+                          src="/../public/X.png"
+                          alt="Picture of the author"
+                          width={75}
+                          height={75}
+                        />
+                        <Image
+                          className="border-2 border-amber-500"
+                          src="/../public/square.png"
+                          alt="Picture of the author"
+                          width={75}
+                          height={75}
+                        />
+                        <Image
+                          className="border-2 border-amber-500"
+                          src="/../public/X.png"
+                          alt="Picture of the author"
+                          width={75}
+                          height={75}
+                        />
+                        <Image
+                          className="border-2 border-amber-500"
+                          src="/../public/square.png"
+                          alt="Picture of the author"
+                          width={75}
+                          height={75}
+                        />
+                        <Image
+                          className="border-2 border-amber-500"
+                          src="/../public/X.png"
+                          alt="Picture of the author"
+                          width={75}
+                          height={75}
+                        />
+                        <Image
+                          className="border-2 border-amber-500"
+                          src="/../public/square.png"
+                          alt="Picture of the author"
+                          width={75}
+                          height={75}
+                        />
+                        <Image
+                          className="border-2 border-amber-500"
+                          src="/../public/X.png"
+                          alt="Picture of the author"
+                          width={75}
+                          height={75}
+                        />
+                        <Image
+                          className="border-2 border-amber-500"
+                          src="/../public/square.png"
+                          alt="Picture of the author"
+                          width={75}
+                          height={75}
+                        />
+                      </Group>
+                      <p className="underline decoration-amber-500 font-bold text-6xl text-left mt-10">
+                        퀴즈의 새로운 경험을 제시하다
+                      </p>
+                      <p className="font-bold text-6xl text-left mb-10">
+                        exquiz.me
+                      </p>
+
+                      <Group className="mb-10">
                         <Button
                           className="mx-4 h-[60px] w-[200px]"
                           variant="outline"
@@ -179,30 +312,182 @@ const Home: NextPage = () => {
                           퀴즈 관리하기
                         </Button>
                       </Group>
+                      <Group>
+                        <Image
+                          className="border-2 border-amber-500"
+                          src="/../public/triangle.png"
+                          alt="Picture of the author"
+                          width={75}
+                          height={75}
+                        />
+                        <Image
+                          className="border-2 border-amber-500"
+                          src="/../public/circle.png"
+                          alt="Picture of the author"
+                          width={75}
+                          height={75}
+                        />
+                        <Image
+                          className="border-2 border-amber-500"
+                          src="/../public/triangle.png"
+                          alt="Picture of the author"
+                          width={75}
+                          height={75}
+                        />
+                        <Image
+                          className="border-2 border-amber-500"
+                          src="/../public/circle.png"
+                          alt="Picture of the author"
+                          width={75}
+                          height={75}
+                        />
+                        <Image
+                          className="border-2 border-amber-500"
+                          src="/../public/triangle.png"
+                          alt="Picture of the author"
+                          width={75}
+                          height={75}
+                        />
+                        <Image
+                          className="border-2 border-amber-500"
+                          src="/../public/circle.png"
+                          alt="Picture of the author"
+                          width={75}
+                          height={75}
+                        />
+                        <Image
+                          className="border-2 border-amber-500"
+                          src="/../public/triangle.png"
+                          alt="Picture of the author"
+                          width={75}
+                          height={75}
+                        />
+                        <Image
+                          className="border-2 border-amber-500"
+                          src="/../public/circle.png"
+                          alt="Picture of the author"
+                          width={75}
+                          height={75}
+                        />
+                      </Group>
+                      <Group>
+                        <Image
+                          className="border-2 border-amber-500"
+                          src="/../public/X.png"
+                          alt="Picture of the author"
+                          width={75}
+                          height={75}
+                        />
+                        <Image
+                          className="border-2 border-amber-500"
+                          src="/../public/square.png"
+                          alt="Picture of the author"
+                          width={75}
+                          height={75}
+                        />
+                        <Image
+                          className="border-2 border-amber-500"
+                          src="/../public/X.png"
+                          alt="Picture of the author"
+                          width={75}
+                          height={75}
+                        />
+                        <Image
+                          className="border-2 border-amber-500"
+                          src="/../public/square.png"
+                          alt="Picture of the author"
+                          width={75}
+                          height={75}
+                        />
+                        <Image
+                          className="border-2 border-amber-500"
+                          src="/../public/X.png"
+                          alt="Picture of the author"
+                          width={75}
+                          height={75}
+                        />
+                        <Image
+                          className="border-2 border-amber-500"
+                          src="/../public/square.png"
+                          alt="Picture of the author"
+                          width={75}
+                          height={75}
+                        />
+                        <Image
+                          className="border-2 border-amber-500"
+                          src="/../public/X.png"
+                          alt="Picture of the author"
+                          width={75}
+                          height={75}
+                        />
+                        <Image
+                          className="border-2 border-amber-500"
+                          src="/../public/square.png"
+                          alt="Picture of the author"
+                          width={75}
+                          height={75}
+                        />
+                      </Group>
                     </Stack>
                   </Group>
                 </Group>
                 {/* 아미지 - 봉투 */}
-                <Stack>
-                  <Group>
-                    {rightEnvelope(0)}
-                    {rightEnvelope(1)}
-                    {rightEnvelope(2)}
-                    {rightEnvelope(3)}
+                <Stack className="mt-32">
+                  <Group className="justify-between">
+                    <Image
+                      className="border-2 border-amber-500"
+                      src="/../public/index_circle.jpeg"
+                      alt="Picture of the author"
+                      width={120}
+                      height={100}
+                    />
+                    <Image
+                      className="border-2 border-amber-500"
+                      src="/../public/leftChevron.jpeg"
+                      alt="Picture of the author"
+                      width={200}
+                      height={50}
+                    />
                   </Group>
-
                   <Image
                     className="border-2 border-amber-500"
                     src="/../public/index_preview.png"
                     alt="Picture of the author"
-                    width={500}
-                    height={400}
+                    width={700}
+                    height={350}
                   />
-                  <Group>
-                    {leftEnvelope(1)}
-                    {leftEnvelope(2)}
-                    {leftEnvelope(3)}
-                    {leftEnvelope(4)}
+                  {/* <Group className="cursor-pointer" spacing={0}>
+                    <Group className="shadow-lg" spacing={0}>
+                      <Group className="border-r-2 border-gray-300 shadow-lg h-72 w-16 bg-amber-200" />
+                      <Group>
+                        <Stack spacing={0}>
+                          <Group className="border-b-2 border-gray-300 m-0 p-0 h-36 w-96 bg-amber-200"></Group>
+                          <Group
+                            spacing={2}
+                            className=" m-0 p-0 h-36 w-96 bg-amber-200"
+                          ></Group>
+                        </Stack>
+                      </Group>
+                    </Group>
+                    <Group className="shadow-lg m-0 p-0 h-64 w-16 bg-white"></Group>
+                  </Group> */}
+
+                  <Group className="justify-between">
+                    <Image
+                      className="border-2 border-amber-500"
+                      src="/../public/rightChevron.jpeg"
+                      alt="Picture of the author"
+                      width={200}
+                      height={50}
+                    />
+
+                    <Image
+                      className="border-2 border-amber-500"
+                      src="/../public/index_triangle.jpeg"
+                      alt="Picture of the author"
+                      width={130}
+                      height={100}
+                    />
                   </Group>
                 </Stack>
               </Group>

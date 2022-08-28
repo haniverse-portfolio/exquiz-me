@@ -1,87 +1,14 @@
-import { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
-import Link from "next/link";
-import NavCreate from "./components/navCreate";
-import Slide from "./components/slide";
 import axios from "axios";
-import { useRef } from "react";
+import React, { useEffect } from "react";
 import SockJS from "sockjs-client";
-import StompJs from "@stomp/stompjs";
-const Stomp = require("@stomp/stompjs");
+import Stomp from "stompjs";
 
-Object.assign(global, { WebSocket: require("websocket").w3cwebsocket });
+import { Button, Center, Group, Stack } from "@mantine/core";
 
-import {
-  Button,
-  SimpleGrid,
-  Tooltip,
-  Textarea,
-  ScrollArea,
-  Center,
-  Container,
-  ThemeIcon,
-  Checkbox,
-  Group,
-  Accordion,
-  useMantineTheme,
-  Box,
-  ActionIcon,
-  Slider,
-  BackgroundImage,
-  Switch,
-  Stack,
-  MantineProvider,
-  Grid,
-  Stepper,
-  TextInput,
-  Image,
-  Paper,
-  Tabs,
-  Modal,
-  Text,
-  ColorSwatch,
-} from "@mantine/core";
-import { useScrollIntoView } from "@mantine/hooks";
-
-import {
-  AdjustmentsHorizontal,
-  Notes,
-  Plus,
-  Trash,
-  Check,
-  Home2,
-  Emphasis,
-  FileX,
-  Login,
-  ReportMoney,
-  UserCircle,
-  Pencil,
-  Archive,
-  BrowserPlus,
-  SquareCheck,
-  AB,
-  QuestionMark,
-  Apps,
-  Parentheses,
-  Folders,
-  FileSettings,
-  FilePlus,
-  FileCheck,
-  Settings,
-  ArrowBarRight,
-  ArrowBarLeft,
-  ToggleLeft,
-  Refresh,
-  ArrowTopCircle,
-} from "tabler-icons-react";
-
-import { copyFileSync } from "fs";
-import { errorMonitor } from "events";
-import { resourceLimits } from "worker_threads";
-// 85vh 20vw
-// 빈 슬라이드 객관식 주관식 O/X 넌센스 다이나믹
+import {} from "tabler-icons-react";
 const Home: NextPage = () => {
   /* submit form */
   let submitForm = {
@@ -98,24 +25,98 @@ const Home: NextPage = () => {
     return result.data;
   };
 
-  function connection() {
-    let socket = new SockJS("https://dist.exquiz.me/stomp");
-    let stompClient = Stomp.over(socket); // client
+  useEffect(() => {
+    console.log("페이지 진입");
+    connect();
+    connect();
+  }, []);
 
-    //stompClient.debug = null;
+  let stompClient: Stomp.Client;
 
-    let body = JSON.stringify({
-      uuid: "1",
-      problemIdx: "1",
-      answerText: "1",
-    });
+  let connect = () => {
+    // stompClient.debug = null;
+    const headers = {
+      // connect, subscribe에 쓰이는 headers
+    };
+    var socket = new SockJS(`https://dist.exquiz.me/stomp`);
+    stompClient = Stomp.over(socket);
 
-    stompClient.connect({}, () => {});
-    // stompClient.subscribe(`sub/test`, () => {},{})
-    // stompClient.subscribe(`sub/test`, () => {},{}).unsubscribe()
-    stompClient.send("/pub/test", {}, body);
-    // stompClient.disconnect();
-  }
+    stompClient.connect(
+      headers,
+      (frame) => {
+        console.log("연결됨");
+      },
+      () => {
+        console.log("연결안됨");
+      }
+    );
+  };
+
+  let send = (data: Object) => {
+    const headers = {
+      // connect, subscribe에 쓰이는 headers
+    };
+
+    stompClient.send("/pub/test", {}, JSON.stringify(data));
+  };
+
+  let subscribe = () => {
+    const headers = {
+      // connect, subscribe에 쓰이는 headers
+    };
+
+    stompClient.subscribe(
+      "/topic/room",
+      (frame) => {
+        // subscribe 후 실행하는 곳
+      },
+      headers
+    );
+  };
+
+  let unsubscribe = () => {
+    const headers = {
+      // connect, subscribe에 쓰이는 headers
+    };
+
+    stompClient.subscribe(
+      "/topic/room",
+      (frame) => {
+        // subscribe 후 실행하는 곳
+      },
+      headers
+    ).unsubscribe;
+  };
+
+  let disConnect = () => {
+    if (stompClient !== null) {
+      const headers = {
+        // disconnect에 쓰이는 headers
+      };
+      stompClient.disconnect(function () {
+        // disconnect 후 실행하는 곳
+      }, headers);
+    }
+  };
+
+  // function connection() {
+  //   let socket = new SockJS("https://dist.exquiz.me/stomp");
+  //   // let stompClient = Stomp.over(socket);
+
+  //   //stompClient.debug = null;
+
+  //   let body = JSON.stringify({
+  //     uuid: "1",
+  //     problemIdx: "1",
+  //     answerText: "1",
+  //   });
+
+  //   stompClient.connect({}, () => {});
+  //   // stompClient.subscribe(`sub/test`, () => {},{})
+  //   // stompClient.subscribe(`sub/test`, () => {},{}).unsubscribe()
+  //   stompClient.send("/pub/test", {}, body);
+  //   // stompClient.disconnect();
+  // }
   // subscribe : topic/room
   return (
     <div>
@@ -123,7 +124,7 @@ const Home: NextPage = () => {
         <title>exquiz.me - 실시간 퀴즈 플랫폼</title>
         <meta name="description" content="exquiz.me" />
         <link rel="icon" href="/favicon.ico" />
-        <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+        {/* <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script> */}
         <script src="/webjars/sockjs-client/1.1.2/sockjs.min.js"></script>
         <script src="/webjars/stomp-websocket/2.3.3-1/stomp.min.js"></script>
       </Head>
@@ -173,7 +174,7 @@ const Home: NextPage = () => {
                           <Group>
                             <Button
                               onClick={() => {
-                                connection();
+                                send(submitForm);
                               }}
                               color="orange"
                               className="h-28 w-32"

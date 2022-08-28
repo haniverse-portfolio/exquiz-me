@@ -166,13 +166,13 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     let copy = [...problem];
-    copy[curIdx].score = Math.trunc(50 + (scoreValue * 75) / 50);
+    copy[curIdx].score = Math.trunc(100 + (scoreValue / 25) * 100);
     setProblem((prevstate) => copy);
   }, [scoreValue]);
 
   useEffect(() => {
     let copy = [...problem];
-    copy[curIdx].timelimit = Math.trunc(15 + (timelimit / 50) * 15);
+    copy[curIdx].timelimit = Math.trunc(10 + (timelimit / 25) * 10);
     setProblem((prevstate) => copy);
   }, [timelimit]);
 
@@ -184,12 +184,12 @@ const Home: NextPage = () => {
     /* 2. 문제 추가 - subNav - tab */
   }
   const tabInfo = [
-    { name: "객관식", startColor: "red-500", endColor: "orange-500" },
-    { name: "주관식", startColor: "blue-700", endColor: "blue-500" },
-    { name: "O/X", startColor: "green-500", endColor: "lime-500" },
-    { name: "넌센스", startColor: "amber-500", endColor: "yellow-400" },
-    { name: "다이나믹", startColor: "violet-700", endColor: "fuchsia-600" },
-    { name: "빈 슬라이드", startColor: "gray-400", endColor: "gray-400" },
+    { name: "객관식", color: "red-400" },
+    { name: "주관식", color: "blue-400" },
+    { name: "O/X", color: "green-400" },
+    { name: "넌센스", color: "amber-400" },
+    { name: "다이나믹", color: "violet-400" },
+    { name: "빈 슬라이드", color: "gray-400" },
   ];
 
   function tabIcon(idx: number) {
@@ -202,24 +202,37 @@ const Home: NextPage = () => {
   }
 
   const tabTooltip = [
+    "여러개의 선지로 이루어진 단일 답안형 문제 유형입니다",
+    "여러개의 선지로 이루어진 복수 답안형 문제 유형입니다",
+    "두개의 선지로 이루어진 단일 답안형 문제 유형입니다",
+    "exquiz.me가 제공하는 랜덤 넌센스 문제 유형입니다",
+    "exquiz.me가 제공하는 엔터테인먼트형 다이나믹 문제 유형입니다",
+    "텍스트나 이미지를 통해 설명할 수 있는 설명 유형입니다",
+  ];
+
+  const dtypeName = [
     "객관식",
     "주관식",
     "O/X",
     "넌센스",
     "다이나믹",
-    "빈 슬라이드",
+    "지문설명",
   ];
 
   const MARKSTIME = [
-    { value: 0, label: "15" },
+    { value: 0, label: "10" },
+    { value: 25, label: "20" },
     { value: 50, label: "30" },
-    { value: 100, label: "45" },
+    { value: 75, label: "40" },
+    { value: 100, label: "50" },
   ];
 
   const MARKSCORE = [
-    { value: 0, label: "절반" },
-    { value: 50, label: "기본" },
-    { value: 100, label: "두배" },
+    { value: 0, label: "100" },
+    { value: 25, label: "200" },
+    { value: 50, label: "300" },
+    { value: 75, label: "400" },
+    { value: 100, label: "500" },
   ];
   {
     /* 1. 퀴즈 설정 - 메인 #과목 선택 */
@@ -248,7 +261,7 @@ const Home: NextPage = () => {
   const previews = files.map((file, index) => {
     const imageUrl = URL.createObjectURL(file);
     return (
-      <></>
+      <div className="h-[500px] w-[300px]"></div>
       // <Image
       //   key={index}
       //   src={imageUrl}
@@ -309,7 +322,7 @@ const Home: NextPage = () => {
         idx: 0,
         picture: "",
         problemsetId: 0,
-        score: 125,
+        score: 300,
         timelimit: 30,
         title: "",
       },
@@ -459,7 +472,7 @@ const Home: NextPage = () => {
                 >
                   <Tabs.List>
                     {subjectInfo.map(({ name, startColor, endColor }, i) => {
-                      let current = `transition ease-in-out hover:scale-105 bg-gradient-to-r from-${startColor}-500 to-${endColor}-500 shadow-lg text-white cursor-pointer w-32 h-32 rounded-full`;
+                      let current = `transition ease-in-out hover:scale-105 bg-${startColor}-500 shadow-lg text-white cursor-pointer w-32 h-32 rounded-full`;
                       return i === 0 ? (
                         <></>
                       ) : (
@@ -517,7 +530,7 @@ const Home: NextPage = () => {
                 <Group className="w-[60px] border-r-2 border-gray-300">
                   <Group className="cursor-pointer m-auto w-[50px] h-[50px]">
                     <Image
-                      src="/../public/globe_banner.png"
+                      src="/../public/globe_banner_2.png"
                       alt="Picture of the author"
                       width={50}
                       height={50}
@@ -545,7 +558,7 @@ const Home: NextPage = () => {
                             className={`mx-1 text-white w-5 h-5 bg-gradient-to-r from-${subjectInfo[subjectIdx].startColor}-500 to-${subjectInfo[subjectIdx].endColor}-500 rounded-full`}
                           ></Group>
                           <Group
-                            className={`mx-0 text-white w-5 h-5 bg-gradient-to-r from-${tabInfo[tabIdx].startColor} to-${tabInfo[tabIdx].endColor} rounded-full`}
+                            className={`mx-0 text-white w-5 h-5 bg-gradient-to-r from-${tabInfo[tabIdx].color} to-${tabInfo[tabIdx].color} rounded-full`}
                           ></Group>
                         </Group>
                       </Stack>
@@ -630,195 +643,216 @@ const Home: NextPage = () => {
                       }}
                       className="shadow-lg cursor-pointer hover:bg-gradient-to-b hover:from-amber-500 hover:via-white hover:to-white h-16 bg-white"
                     ></Stack>
-                    <Stack className="bg-white items-center shadow-lg">
-                      <Center>
-                        <Group className="items-center p-4 bg-white">
-                          {tabInfo.map(({ name, startColor, endColor }, i) => {
-                            return (
-                              <Tooltip label={tabTooltip[i]}>
-                                <Group
-                                  onClick={() => {
-                                    setTabIdx((prevState) => i);
-                                  }}
-                                  key={i}
-                                  className="w-30 h-18 bg-white rounded-lg cursor-pointer"
-                                >
-                                  <Group
-                                    className={`shadow-${
-                                      i === tabIdx
-                                        ? "[inset_0_-2px_4px_rgba(128,128,128,0.8)]"
-                                        : ""
-                                    }
-                              hover:shadow-[inset_0_-2px_4px_rgba(128,128,128,0.8)] m-auto bg-gradient-to-r from-${startColor} to-${endColor} text-white w-18 h-18 rounded-lg`}
-                                  >
-                                    <Button
-                                      leftIcon={tabIcon(i)}
-                                      variant="gradient"
-                                    >
-                                      {tabTooltip[i]}
-                                    </Button>
-                                  </Group>
-                                </Group>
-                              </Tooltip>
-                            );
-                          })}
-                          {/* <Group ref={targetRef}>.</Group> */}
-                        </Group>
-                      </Center>
-                      <Stack className="p-10">
-                        {/* 입력 - 문제 설명 */}
-                        {/* 입력 - 문제 사진 및 동영상 */}
-                        <Group className="justify-between">
-                          <p className="text-amber-500 font-bold">문제 정보</p>
-                          <Group className="justify-between">
-                            <ActionIcon variant="outline">
-                              <FileUpload></FileUpload>
-                            </ActionIcon>
-                            <ActionIcon variant="outline">
-                              <Copy></Copy>
-                            </ActionIcon>
-                            <ActionIcon
-                              onClick={async () => {
-                                if (problem.length === 1) return;
-                                if (problem.length - 1 === curIdx)
-                                  await setCurIdx((prevState) => curIdx - 1);
-                                let copy1 = [...problem];
-                                copy1.splice(curIdx, 1);
-                                setProblem(copy1);
-
-                                let copy2 = [...option];
-                                copy2.splice(curIdx, 1);
-                                setOption(copy2);
-                              }}
-                              className="hover:bg-red-200"
-                              variant="outline"
+                    <Stack className="py-10" spacing={0}>
+                      <Group
+                        align="left"
+                        spacing={0}
+                        className="ml-4 items-center"
+                      >
+                        {tabInfo.map(({ name, color }, i) => {
+                          return (
+                            <Tooltip
+                              color="orange"
+                              offset={10}
+                              openDelay={500}
+                              closeDelay={100}
+                              position="top-start"
+                              key={i}
+                              label={tabTooltip[i]}
                             >
-                              <X></X>
-                            </ActionIcon>
-                          </Group>
-                        </Group>
-                        <Dropzone accept={IMAGE_MIME_TYPE} onDrop={setFiles}>
-                          <Text color="gray" align="center">
-                            이미지나 동영상을 첨부하세요
-                          </Text>
-                        </Dropzone>
-                        <TextInput
-                          size="xl"
-                          onChange={(event) => {
-                            console.log("hello", problem);
-                            let copy = [...problem];
-                            console.log("hello" + copy);
-                            copy[curIdx].description =
-                              event.currentTarget.value;
-                            setProblem(copy);
-                          }}
-                          value={problem[curIdx].description}
-                          // [problem[curIdx].description] => event.currentTarget.value}
-                          // value={problem[curIdx].description}
-                          color="orange"
-                          placeholder="문제 설명"
-                          icon={<Plus size={14} />}
-                        ></TextInput>
-                        <p className="text-amber-500 font-bold">선지 정보</p>
-                        {/* 입력 - 선지 정보 */}
-                        {
-                          <Grid>
-                            {option[curIdx].map(
-                              ({ description, idx, picture, problemId }, i) => {
-                                const ans = problem[curIdx].answer;
-                                return (
-                                  <Grid.Col key={i} span={5}>
-                                    <Group
-                                      className={`bg-amber-100 rounded-lg border-solid border-2 border-amber-500`}
-                                    >
-                                      <Checkbox
-                                        defaultChecked={false}
-                                        onClick={(event) => {
-                                          let copy = [...problem];
-                                          // (this.checked === true)?:"":
-                                          copy[curIdx].answer = i.toString();
-                                          setProblem(copy);
-                                        }}
-                                        checked={
-                                          problem[curIdx].answer ===
-                                          i.toString()
-                                            ? true
-                                            : false
-                                        }
-                                        // checked={true}
+                              <Group
+                                onClick={() => {
+                                  setTabIdx((prevState) => i);
+                                }}
+                                className="w-18 h-18 cursor-pointer"
+                              >
+                                <Group
+                                  className={`${
+                                    i !== tabIdx
+                                      ? "shadow-[inset_0_-2px_4px_rgba(128,128,128,0.8)] text-black bg-white"
+                                      : "bg-amber-500 text-white"
+                                  }
+                              hover:shadow-none m-auto w-18 h-18`}
+                                >
+                                  <Button
+                                    className={`w-24 ${
+                                      i === tabIdx
+                                        ? "text-white"
+                                        : "text-gray-400"
+                                    } `}
+                                    variant="gradient"
+                                  >
+                                    {dtypeName[i]}
+                                  </Button>
+                                </Group>
+                              </Group>
+                            </Tooltip>
+                          );
+                        })}
+                        {/* <Group ref={targetRef}>.</Group> */}
+                      </Group>
+                      <Stack
+                        className={`border-2 border-amber-500 bg-white items-center shadow-lg`}
+                      >
+                        <Stack className="p-10">
+                          {/* 입력 - 문제 설명 */}
+                          {/* 입력 - 문제 사진 및 동영상 */}
+                          <Group className="justify-between">
+                            <p className="text-amber-500 font-bold">
+                              문제 정보
+                            </p>
+                            <Group className="justify-between">
+                              <ActionIcon variant="outline">
+                                <FileUpload></FileUpload>
+                              </ActionIcon>
+                              <ActionIcon variant="outline">
+                                <Copy></Copy>
+                              </ActionIcon>
+                              <ActionIcon
+                                onClick={async () => {
+                                  if (problem.length === 1) return;
+                                  if (problem.length - 1 === curIdx)
+                                    await setCurIdx((prevState) => curIdx - 1);
+                                  let copy1 = [...problem];
+                                  copy1.splice(curIdx, 1);
+                                  setProblem(copy1);
 
-                                        color="orange"
-                                        size="xl"
-                                      />
-                                      <Textarea
-                                        className=""
-                                        variant="unstyled"
-                                        onChange={(event) => {
-                                          let copy = [...option];
-                                          copy[curIdx][i].description =
-                                            event.currentTarget.value;
-                                          setOption(copy);
-                                        }}
-                                        value={description}
-                                        placeholder={`선지 ${i + 1}`}
-                                        autosize
-                                        minRows={4}
-                                        maxRows={4}
-                                      />
-                                    </Group>
-                                  </Grid.Col>
-                                );
-                              }
-                            )}
-                          </Grid>
-                        }
-                        <Group position="left">
-                          <Stack>
-                            <p>
-                              <strong className="text-amber-500">배점</strong>
-                              &nbsp;
-                              {problem[curIdx].score}점
-                            </p>
-                            <Slider
-                              className="w-[5vw]"
-                              onChangeEnd={setScoreValue}
-                              color="orange"
-                              label={(val) =>
-                                MARKSCORE.find((mark) => mark.value === val)
-                                  ?.label
-                              }
-                              defaultValue={50}
-                              value={Math.trunc(
-                                ((problem[curIdx].score - 50) / 75) * 50
+                                  let copy2 = [...option];
+                                  copy2.splice(curIdx, 1);
+                                  setOption(copy2);
+                                }}
+                                className="bg-red-200 hover:bg-red-200"
+                                variant="outline"
+                              >
+                                <X></X>
+                              </ActionIcon>
+                            </Group>
+                          </Group>
+                          <TextInput
+                            size="xl"
+                            onChange={(event) => {
+                              console.log("hello", problem);
+                              let copy = [...problem];
+                              console.log("hello" + copy);
+                              copy[curIdx].description =
+                                event.currentTarget.value;
+                              setProblem(copy);
+                            }}
+                            value={problem[curIdx].description}
+                            // [problem[curIdx].description] => event.currentTarget.value}
+                            // value={problem[curIdx].description}
+                            color="orange"
+                            placeholder="문제 설명"
+                            icon={<Plus size={14} />}
+                          ></TextInput>
+                          <p className="text-amber-500 font-bold">선지 정보</p>
+                          {/* 입력 - 선지 정보 */}
+                          {
+                            <Grid>
+                              {option[curIdx].map(
+                                (
+                                  { description, idx, picture, problemId },
+                                  i
+                                ) => {
+                                  const ans = problem[curIdx].answer;
+                                  return (
+                                    <Grid.Col key={i} span={5}>
+                                      <Group
+                                        className={`bg-amber-100 rounded-lg border-solid border-2 border-amber-500`}
+                                      >
+                                        <Checkbox
+                                          defaultChecked={false}
+                                          onClick={(event) => {
+                                            let copy = [...problem];
+                                            // (this.checked === true)?:"":
+                                            copy[curIdx].answer = i.toString();
+                                            setProblem(copy);
+                                          }}
+                                          checked={
+                                            problem[curIdx].answer ===
+                                            i.toString()
+                                              ? true
+                                              : false
+                                          }
+                                          // checked={true}
+
+                                          color="orange"
+                                          size="xl"
+                                        />
+                                        <Textarea
+                                          className=""
+                                          variant="unstyled"
+                                          onChange={(event) => {
+                                            let copy = [...option];
+                                            copy[curIdx][i].description =
+                                              event.currentTarget.value;
+                                            setOption(copy);
+                                          }}
+                                          value={description}
+                                          placeholder={`선지 ${i + 1}`}
+                                          autosize
+                                          minRows={4}
+                                          maxRows={4}
+                                        />
+                                      </Group>
+                                    </Grid.Col>
+                                  );
+                                }
                               )}
-                              step={50}
-                              marks={MARKSCORE}
-                              styles={{ markLabel: { display: "none" } }}
-                            />
-                          </Stack>
-                          <Stack>
-                            <p>
-                              <strong className="text-amber-500">시간</strong>
-                              &nbsp;
-                              {problem[curIdx].timelimit}초
-                            </p>
-                            <Slider
-                              className="w-[5vw]"
-                              onChangeEnd={setTimelimit}
-                              color="orange"
-                              label={(val) =>
-                                MARKSTIME.find((mark) => mark.value === val)
-                                  ?.label
-                              }
-                              value={Math.trunc(
-                                ((problem[curIdx].timelimit - 15) / 15) * 50
-                              )}
-                              step={50}
-                              marks={MARKSTIME}
-                              styles={{ markLabel: { display: "none" } }}
-                            />
-                          </Stack>
-                        </Group>
+                            </Grid>
+                          }
+                          <Group position="left">
+                            <Stack>
+                              <p>
+                                <strong className="text-amber-500">배점</strong>
+                                &nbsp;
+                                <span className="text-gray-500">
+                                  {problem[curIdx].score}점
+                                </span>
+                              </p>
+                              <Slider
+                                className="w-[5vw]"
+                                onChangeEnd={setScoreValue}
+                                color="orange"
+                                label={(val) =>
+                                  MARKSCORE.find((mark) => mark.value === val)
+                                    ?.label
+                                }
+                                defaultValue={25}
+                                value={Math.trunc(
+                                  ((problem[curIdx].score - 100) / 100) * 25
+                                )}
+                                step={25}
+                                marks={MARKSCORE}
+                                styles={{ markLabel: { display: "none" } }}
+                              />
+                            </Stack>
+                            <Stack>
+                              <p>
+                                <strong className="text-amber-500">시간</strong>
+                                &nbsp;
+                                <span className="text-gray-500">
+                                  {problem[curIdx].timelimit}초
+                                </span>
+                              </p>
+                              <Slider
+                                className="w-[5vw]"
+                                onChangeEnd={setTimelimit}
+                                color="orange"
+                                label={(val) =>
+                                  MARKSTIME.find((mark) => mark.value === val)
+                                    ?.label
+                                }
+                                value={Math.trunc(
+                                  ((problem[curIdx].timelimit - 10) / 10) * 25
+                                )}
+                                step={25}
+                                marks={MARKSTIME}
+                                styles={{ markLabel: { display: "none" } }}
+                              />
+                            </Stack>
+                          </Group>
+                        </Stack>
                       </Stack>
                     </Stack>
                     <Stack
@@ -880,13 +914,11 @@ const Home: NextPage = () => {
                 <p className="border-b-2 border-gray-300 text-amber-500 font-bold">
                   미리보기
                 </p>
-                <Image
-                  className="border-2 border-amber-500"
-                  src="/../public/halla.png"
-                  alt="Picture of the author"
-                  width={300}
-                  height={220}
-                />
+                <Dropzone accept={IMAGE_MIME_TYPE} onDrop={setFiles}>
+                  <Text color="gray" align="center">
+                    이미지나 동영상을 첨부하세요
+                  </Text>
+                </Dropzone>
 
                 <Image
                   className="border-2 border-amber-500"
@@ -903,6 +935,12 @@ const Home: NextPage = () => {
                   width={300}
                   height={220}
                 />
+                <Group className="bg-amber-500 text-white w-0 h-0"></Group>
+                <Group className="border-blue-400 text-black bg-blue-400 w-0 h-0"></Group>
+                <Group className="border-green-400 bg-green-400 w-0 h-0"></Group>
+                <Group className="border-amber-400 bg-amber-400 w-0 h-0"></Group>
+                <Group className="border-violet-400 bg-violet-400 w-0 h-0"></Group>
+                <Group className="border-gray-400 bg-gray-400 w-0 h-0"></Group>
 
                 {/* <div className="border-2 border-gray-300 h-60 w-96">
                   {previews}
