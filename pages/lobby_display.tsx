@@ -3,8 +3,6 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import Link from "next/link";
-import NavIndex from "./components/navIndex";
-import SchoolList from "./components/schoolList";
 import { useState } from "react";
 import { useRef } from "react";
 import React, { useEffect } from "react";

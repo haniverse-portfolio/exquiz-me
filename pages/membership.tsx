@@ -4,8 +4,6 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import Link from "next/link";
-import NavCreate from "./components/navCreate";
-import Slide from "./components/slide";
 import axios from "axios";
 import { useRef } from "react";
 
