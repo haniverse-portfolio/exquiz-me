@@ -1,10 +1,10 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
-import NavIndex from "./components/navIndex";
 import { useState } from "react";
 import axios from "axios";
 import React, { useEffect } from "react";
+import NavIndex from "../components/navIndex";
 
 import {
   Button,
