@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
-import NavIndex from "./components/navIndex";
+import NavIndex from "../components/navIndex";
 import { useState } from "react";
 
 import {
@@ -203,20 +203,10 @@ const Home: NextPage = () => {
                 {/* 아미지 - 봉투 */}
                 <Stack className="mt-32">
                   <Group className="justify-between">
-                    <Image
-                      className="border-2 border-amber-500"
-                      src="/../public/index_circle.jpeg"
-                      alt="Picture of the author"
-                      width={120}
-                      height={100}
-                    />
-                    <Image
-                      className="border-2 border-amber-500"
-                      src="/../public/leftChevron.jpeg"
-                      alt="Picture of the author"
-                      width={200}
-                      height={50}
-                    />
+                    {rightEnvelope(0)}
+                    {rightEnvelope(0)}
+                    {rightEnvelope(0)}
+                    {rightEnvelope(0)}
                   </Group>
                   <Stack className="h-4 bg-amber-500"></Stack>
                   <Image
@@ -244,21 +234,10 @@ const Home: NextPage = () => {
                   </Group> */}
 
                   <Group className="justify-between">
-                    <Image
-                      className="border-2 border-amber-500"
-                      src="/../public/rightChevron.jpeg"
-                      alt="Picture of the author"
-                      width={200}
-                      height={50}
-                    />
-
-                    <Image
-                      className="border-2 border-amber-500"
-                      src="/../public/index_triangle.jpeg"
-                      alt="Picture of the author"
-                      width={130}
-                      height={100}
-                    />
+                    {leftEnvelope(1)}
+                    {leftEnvelope(2)}
+                    {leftEnvelope(3)}
+                    {leftEnvelope(4)}
                   </Group>
                 </Stack>
               </Group>

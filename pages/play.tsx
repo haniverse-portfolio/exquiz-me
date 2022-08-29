@@ -3,8 +3,6 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import Link from "next/link";
-import NavCreate from "./components/navCreate";
-import Slide from "./components/slide";
 import axios from "axios";
 import { useRef } from "react";
 
@@ -232,37 +230,6 @@ const Home: NextPage = () => {
                 <Group>
                   <Center>
                     <Stack>
-                      <Center>
-                        <Stack>
-                          <Group className="justify-between">
-                            <Group spacing={0}>
-                              <Group className="shadow-lg" spacing={0}>
-                                <Group className="border-r-2 border-gray-300 shadow-lg h-8 w-2 bg-amber-200" />
-                                <Group>
-                                  <Stack spacing={0}>
-                                    <Group className="m-0 p-0 h-8 w-10 bg-amber-200">
-                                      <p className="pl-1 font-sm">3/8</p>
-                                    </Group>
-                                  </Stack>
-                                </Group>
-                              </Group>
-                              <Group className="shadow-lg m-0 p-0 h-6 w-3 bg-white"></Group>
-                            </Group>
-                            <Stack>
-                              <p className="text-red-500">00:05</p>
-                            </Stack>
-                          </Group>
-                          {/* Navigation Bar */}
-                          <p className="underline decoration-amber-500 font-bold text-2xl text-left">
-                            우리나라에서 가장 높은 산은?
-                          </p>
-                          <br></br>
-                          <br></br>
-                          <br></br>
-                          <br></br>
-                          <br></br>
-                        </Stack>
-                      </Center>
                       <Stack>
                         <Center>
                           <Stack>
@@ -293,7 +260,7 @@ const Home: NextPage = () => {
                               <Button
                                 className="h-28 w-32"
                                 color="orange"
-                                variant="filled"
+                                variant="outline"
                               >
                                 백두산
                               </Button>
