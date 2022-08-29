@@ -30,7 +30,6 @@ import { resourceLimits } from "worker_threads";
 const Home: NextPage = () => {
   const [swatchChecked, setSwatchChecked] = useState(true);
   let swatch = () => {
-    const theme = useMantineTheme();
     const swatches = Object.keys(theme.colors).map((color) => (
       <ColorSwatch size={20} key={color} color={theme.colors[color][6]} />
     ));

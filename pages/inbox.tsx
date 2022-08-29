@@ -297,7 +297,7 @@ const Home: NextPage = () => {
             //   "currentState": "READY",
             //   "currentProblemNum": -1
             // }
-             location.replace("/lobby_display");
+            location.replace("/lobby_display");
           }}
           className="mx-4 h-[60px] w-[370px]"
           variant="outline"
@@ -451,7 +451,7 @@ const Home: NextPage = () => {
                         <ScrollArea>
                           {problem.map(({ title }, i) => {
                             return (
-                              <p className="text-2xl font-bold">
+                              <p key={i} className="text-2xl font-bold">
                                 {i + 1}.&nbsp;
                                 {title}
                               </p>

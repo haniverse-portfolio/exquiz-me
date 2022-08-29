@@ -220,7 +220,7 @@ const Home: NextPage = () => {
                     {status.map((cur, i) => {
                       let color;
                       return (
-                        <Stack>
+                        <Stack key={i}>
                           <Group
                             className={`h-32 w-32 rounded-xl border-2 ${
                               cur.answer === false ? "bg-gray-200" : ""

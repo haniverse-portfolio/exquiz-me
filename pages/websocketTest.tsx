@@ -125,8 +125,11 @@ const Home: NextPage = () => {
         <meta name="description" content="exquiz.me" />
         <link rel="icon" href="/favicon.ico" />
         {/* <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script> */}
-        <script src="/webjars/sockjs-client/1.1.2/sockjs.min.js"></script>
-        <script src="/webjars/stomp-websocket/2.3.3-1/stomp.min.js"></script>
+        <script src="/webjars/sockjs-client/1.1.2/sockjs.min.js" async></script>
+        <script
+          src="/webjars/stomp-websocket/2.3.3-1/stomp.min.js"
+          async
+        ></script>
       </Head>
 
       <section className={`w-full h-full`}>
