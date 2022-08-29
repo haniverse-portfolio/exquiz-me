@@ -74,7 +74,6 @@ import {
   Refresh,
 } from "tabler-icons-react";
 
-import { NotificationsProvider } from "@mantine/notifications";
 import { copyFileSync } from "fs";
 import { errorMonitor } from "events";
 import { resourceLimits } from "worker_threads";
