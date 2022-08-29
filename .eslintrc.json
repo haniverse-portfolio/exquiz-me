@@ -1,5 +1,4 @@
 {
-  "extends": "next",
-  "plugins": ["prettier/recommended"]
+  "extends": "next"
 }
 //"plugin:prettier/recommended"
