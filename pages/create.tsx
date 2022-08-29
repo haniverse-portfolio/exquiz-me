@@ -261,7 +261,7 @@ const Home: NextPage = () => {
   const previews = files.map((file, index) => {
     const imageUrl = URL.createObjectURL(file);
     return (
-      <div className="h-[500px] w-[300px]"></div>
+      <></>
       // <Image
       //   key={index}
       //   src={imageUrl}
