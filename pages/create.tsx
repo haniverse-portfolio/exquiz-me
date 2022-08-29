@@ -463,52 +463,7 @@ const Home: NextPage = () => {
                 size="xl"
               ></Textarea>
               <h2 className="text-amber-500 font-semibold">과목 선택</h2>
-              <Group className="mx-2">
-                <Tabs
-                  id="subjectTab"
-                  allowTabDeactivation={true}
-                  defaultValue="0"
-                  variant="outline"
-                >
-                  <Tabs.List>
-                    {subjectInfo.map(({ name, startColor, endColor }, i) => {
-                      let current = `transition ease-in-out hover:scale-105 bg-${startColor}-500 shadow-lg text-white cursor-pointer w-32 h-32 rounded-full`;
-                      return i === 0 ? (
-                        <></>
-                      ) : (
-                        <Tabs.Tab
-                          className="w-36 h-36 rounded-full bg-opacity-0 "
-                          value={i.toString()}
-                          key={i}
-                        >
-                          <Group
-                            onClick={() => {
-                              setSubjectIdx((prevState) =>
-                                prevState === i ? prevState : i
-                              );
-                            }}
-                            className={current}
-                          >
-                            <p className="m-auto">{name}</p>
-                          </Group>
-                        </Tabs.Tab>
-                      );
-                    })}
-                    <Tabs.Panel value="1">
-                      세분화된 카테고리 제공 예정
-                    </Tabs.Panel>
-                    <Tabs.Panel value="2">
-                      세분화된 카테고리 제공 예정
-                    </Tabs.Panel>
-                    <Tabs.Panel value="3">
-                      세분화된 카테고리 제공 예정
-                    </Tabs.Panel>
-                    <Tabs.Panel value="4">
-                      세분화된 카테고리 제공 예정
-                    </Tabs.Panel>
-                  </Tabs.List>
-                </Tabs>
-              </Group>
+
               <Button color="orange" variant="outline">
                 완료
               </Button>
