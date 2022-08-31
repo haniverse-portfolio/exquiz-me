@@ -4,4 +4,8 @@ const nextConfig = {
   swcMinify: true,
 };
 
-module.exports = nextConfig;
+module.exports = {
+  images: {
+    domains: ["exquiz-image.s3.ap-northeast-2.amazonaws.com"],
+  },
+};

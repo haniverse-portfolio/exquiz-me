@@ -9,23 +9,10 @@ import NavIndex from "../components/navIndex";
 import {
   Button,
   Grid,
-  SimpleGrid,
-  Input,
-  Card,
-  Text,
-  Badge,
   Group,
   useMantineTheme,
   Center,
-  Tabs,
-  ThemeIcon,
-  Container,
-  Textarea,
-  Tooltip,
   Stack,
-  Stepper,
-  ActionIcon,
-  Autocomplete,
   TextInput,
   Drawer,
   Modal,
@@ -155,6 +142,8 @@ const Home: NextPage = () => {
       .then((result) => {
         rt = result.data;
         setRoom(result.data);
+        localStorage.setItem("room", JSON.stringify(result.data));
+        alert("success" + JSON.parse(localStorage.getItem("room") ?? "0").pin);
       })
       .catch((error) => {
         alert("newRoom_error");
@@ -204,6 +193,10 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     getProblemsets();
+    // localStorage.setItem("pin", "333333");
+    problemsets.sort((a, b) => {
+      return b.id - a.id;
+    });
   }, []);
 
   const [activePage, setPage] = useState(1);
@@ -278,9 +271,13 @@ const Home: NextPage = () => {
             setModalOpened(false);
             await postRoom();
             if (room.currentState === "READY") {
-              alert(room.pin);
+              alert("before success" + room.pin);
+              location.replace("/lobby_display");
             } else {
-              alert("방이 준비되지 않았습니다. 다시 시도해보세요.");
+              alert(
+                "before fail : " +
+                  "방이 준비되지 않았습니다. 다시 시도해보세요."
+              );
             }
             // {
             //   "id": 5,
@@ -297,7 +294,6 @@ const Home: NextPage = () => {
             //   "currentState": "READY",
             //   "currentProblemNum": -1
             // }
-            location.replace("/lobby_display");
           }}
           className="mx-4 h-[60px] w-[370px]"
           variant="outline"

@@ -5,6 +5,7 @@ import Link from "next/link";
 import axios from "axios";
 import Image from "next/image";
 import React, { useEffect } from "react";
+import { throttle } from "throttle-typescript";
 
 import {
   Button,
@@ -27,6 +28,7 @@ import {
   Notification,
   Drawer,
   ScrollArea,
+  Select,
 } from "@mantine/core";
 
 import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
@@ -164,6 +166,9 @@ const Home: NextPage = () => {
   let [scoreValue, setScoreValue] = useState(50);
   let [timelimit, setTimelimit] = useState(50);
 
+  let [imageWord, setImageWord] = useState("");
+  let [image, setImage] = useState([]);
+
   useEffect(() => {
     let copy = [...problem];
     copy[curIdx].score = Math.trunc(100 + (scoreValue / 25) * 100);
@@ -287,6 +292,19 @@ const Home: NextPage = () => {
     return rt;
   };
 
+  const getImage = async (word: string) => {
+    let rt = []!;
+    await axios
+      .get("https://prod.exquiz.net/api/problem")
+      .then((result) => {
+        rt = result.data;
+      })
+      .catch((error) => {
+        alert("image_error");
+      });
+    return rt;
+  };
+
   const getProblemId = async (idx: number) => {
     let rt = Infinity;
     await axios
@@ -358,6 +376,11 @@ const Home: NextPage = () => {
       ],
     ]);
   };
+
+  const [data, setData] = useState([
+    { value: "korean", label: "국어" },
+    { value: "math", label: "수학" },
+  ]);
 
   return (
     <>
@@ -452,18 +475,43 @@ const Home: NextPage = () => {
             <Stack className="bg-white w-[46vw] h-12 shadow-lg"></Stack>
             <Stack className="bg-amber-200 w-[50vw] h-[80vh] shadow-lg">
               <TextInput
+                onChange={(event) => {
+                  let copy = problemSet;
+                  copy.title = event.currentTarget.value;
+                  setProblemSet(copy);
+                }}
+                value={problemSet.title}
                 variant="unstyled"
                 placeholder="제목을 입력해주세요"
                 size="xl"
               ></TextInput>
 
               <Textarea
+                onChange={(event) => {
+                  let copy = problemSet;
+                  copy.title = event.currentTarget.value;
+                  setProblemSet(copy);
+                }}
+                value={problemSet.description}
                 variant="unstyled"
                 placeholder="설명을 입력해주세요"
                 size="xl"
               ></Textarea>
               <h2 className="text-amber-500 font-semibold">과목 선택</h2>
 
+              <Select
+                data={data}
+                placeholder="분야를 입력해주세요"
+                nothingFound="새로운 입력값 만들기"
+                searchable
+                creatable
+                getCreateLabel={(query) => `+ Create ${query}`}
+                onCreate={(query) => {
+                  const item = { value: query, label: query };
+                  setData((current) => [...current, item]);
+                  return item;
+                }}
+              />
               <Button color="orange" variant="outline">
                 완료
               </Button>
@@ -685,17 +733,26 @@ const Home: NextPage = () => {
                           </Group>
                           <TextInput
                             size="xl"
+                            // onKeyUp={
+                            //   throttle(() => {
+                            //     alert("hello");
+                            //   }, 500);
+                            // }
+                            onMouseDown={(event) => {
+                              setImageWord(
+                                (prevState) => problem[curIdx].description
+                              );
+                            }}
                             onChange={(event) => {
-                              console.log("hello", problem);
                               let copy = [...problem];
-                              console.log("hello" + copy);
                               copy[curIdx].description =
                                 event.currentTarget.value;
                               setProblem(copy);
+                              setImageWord(
+                                (prevState) => copy[curIdx].description
+                              );
                             }}
                             value={problem[curIdx].description}
-                            // [problem[curIdx].description] => event.currentTarget.value}
-                            // value={problem[curIdx].description}
                             color="orange"
                             placeholder="문제 설명"
                             icon={<Plus size={14} />}
@@ -737,11 +794,21 @@ const Home: NextPage = () => {
                                         <Textarea
                                           className=""
                                           variant="unstyled"
+                                          onMouseDown={(event) => {
+                                            setImageWord(
+                                              (prevState) =>
+                                                option[curIdx][i].description
+                                            );
+                                          }}
                                           onChange={(event) => {
                                             let copy = [...option];
                                             copy[curIdx][i].description =
                                               event.currentTarget.value;
                                             setOption(copy);
+                                            setImageWord(
+                                              (prevState) =>
+                                                copy[curIdx][i].description
+                                            );
                                           }}
                                           value={description}
                                           placeholder={`선지 ${i + 1}`}
@@ -853,6 +920,14 @@ const Home: NextPage = () => {
               </Group>
               <Stack className="w-[20vw]">
                 <p className="border-b-2 border-gray-300 text-amber-500 font-bold">
+                  미리보기
+                </p>
+                <Dropzone accept={IMAGE_MIME_TYPE} onDrop={setFiles}>
+                  <Text color="gray" align="center">
+                    이미지나 동영상을 첨부하세요
+                  </Text>
+                </Dropzone>
+                <p className="border-b-2 border-gray-300 text-amber-500 font-bold">
                   이미지 검색
                 </p>
                 <TextInput
@@ -864,32 +939,13 @@ const Home: NextPage = () => {
                       <AdjustmentsHorizontal size="md" />
                     </ActionIcon>
                   }
-                  value="한라산"
-                />
-                <p className="border-b-2 border-gray-300 text-amber-500 font-bold">
-                  미리보기
-                </p>
-                <Dropzone accept={IMAGE_MIME_TYPE} onDrop={setFiles}>
-                  <Text color="gray" align="center">
-                    이미지나 동영상을 첨부하세요
-                  </Text>
-                </Dropzone>
-
-                <Image
-                  className="border-2 border-amber-500"
-                  src="/../public/halla1.jpeg"
-                  alt="Picture of the author"
-                  width={300}
-                  height={220}
+                  onChange={(event) => {
+                    let copy = event.currentTarget.value;
+                    setImageWord((prevState) => copy);
+                  }}
+                  value={imageWord}
                 />
 
-                <Image
-                  className="border-2 border-amber-500"
-                  src="/../public/halla2.jpeg"
-                  alt="Picture of the author"
-                  width={300}
-                  height={220}
-                />
                 <Group className="bg-amber-500 text-white w-0 h-0"></Group>
                 <Group className="border-blue-400 text-black bg-blue-400 w-0 h-0"></Group>
                 <Group className="border-green-400 bg-green-400 w-0 h-0"></Group>

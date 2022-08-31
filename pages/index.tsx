@@ -130,6 +130,12 @@ const Home: NextPage = () => {
                       <p className="font-bold text-6xl text-left mb-10">
                         exquiz.me
                       </p>
+                      {/* <Image
+                        src="https://exquiz-image.s3.ap-northeast-2.amazonaws.com/static/KakaoTalk_Photo_2022-08-25-00-59-41.png"
+                        alt="Picture of the author"
+                        width={500}
+                        height={500}
+                      /> */}
 
                       <Group className="mb-10">
                         <Button

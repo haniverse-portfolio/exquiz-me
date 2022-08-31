@@ -137,6 +137,47 @@ const Home: NextPage = () => {
     title: "",
   });
 
+  let [problem, setProblem] = useState([
+    {
+      answer: "3",
+      description: "우리나라에서 가장 높은 산은?",
+      dtype: "MultipleChoiceProblem",
+      idx: 0,
+      picture: "string",
+      problemsetId: 0,
+      score: 0,
+      timelimit: 0,
+      title: "string",
+    },
+  ]);
+
+  let [option, setOption] = useState([
+    {
+      description: "지리산",
+      idx: 0,
+      picture: "string",
+      problemId: 0,
+    },
+    {
+      description: "설악산",
+      idx: 1,
+      picture: "string",
+      problemId: 0,
+    },
+    {
+      description: "한라산",
+      idx: 2,
+      picture: "string",
+      problemId: 0,
+    },
+    {
+      description: "백두산",
+      idx: 3,
+      picture: "string",
+      problemId: 0,
+    },
+  ]);
+
   {
     /* mantine statement */
   }
@@ -165,6 +206,7 @@ const Home: NextPage = () => {
 
   const { scrollIntoView, targetRef, scrollableRef } = useScrollIntoView();
   const [step, setStep] = useState(0);
+  const [answer, setAnswer] = useState(-1);
 
   /* 2. modal */
   const [modalOpened, setModalOpened] = useState(false);
@@ -232,40 +274,28 @@ const Home: NextPage = () => {
                     <Stack>
                       <Stack>
                         <Center>
-                          <Stack>
-                            <Group>
-                              <Button
-                                color="orange"
-                                className="h-28 w-32"
-                                variant="outline"
-                              >
-                                지리산
-                              </Button>
-                              <Button
-                                className="h-28 w-32"
-                                color="orange"
-                                variant="outline"
-                              >
-                                설악산
-                              </Button>
-                            </Group>
-                            <Group>
-                              <Button
-                                className="h-28 w-32"
-                                color="orange"
-                                variant="outline"
-                              >
-                                한라산
-                              </Button>
-                              <Button
-                                className="h-28 w-32"
-                                color="orange"
-                                variant="outline"
-                              >
-                                백두산
-                              </Button>
-                            </Group>
-                          </Stack>
+                          <Grid justify="center" gutter="md">
+                            {option.map((something, i) => {
+                              let color = ["red", "blue", "green", "orange"];
+                              let bgColor = "bg-" + color[i] + "-500";
+                              return (
+                                <Grid.Col key={i} span={5}>
+                                  <Button
+                                    onClick={() => {
+                                      setAnswer(answer === i ? -1 : i);
+                                    }}
+                                    color={color[i]}
+                                    className={`shadow-lg h-28 w-32 ${
+                                      answer === i ? "shadow-inner" : ""
+                                    } ${answer === i ? bgColor : ""}}`}
+                                    variant="outline"
+                                  >
+                                    {option[i].description}
+                                  </Button>
+                                </Grid.Col>
+                              );
+                            })}
+                          </Grid>
                         </Center>
 
                         <footer className={styles.footer}>
@@ -356,8 +386,8 @@ const Home: NextPage = () => {
               )}
 
               {/* caching tailwind css */}
-              <Group className=" bg-gradient-to-r shadow-[inset_0_-2px_4px_rgba(128,128,128,0.8)] border-gray-500 from-gray-500 to-gray-500 w-0 h-0" />
-              <Group className="bg-gradient-to-r border-orange-500 from-orange-500 to-red-500 w-0 h-0" />
+              <Group className="bg-red-500 w-0 h-0" />
+              <Group className="bg-gradient-to-r border-orange-500 from-orange-500 to-red-500 bg-red-500 w-0 h-0" />
               <Group className="bg-gradient-to-r border-blue-500 from-blue-500 to-green-500 w-0 h-0" />
               <Group className="bg-gradient-to-r border-violet-500 from-violet-500 to-orange-500 w-0 h-0" />
               <Group className="bg-gradient-to-r border-yellow-500 from-yellow-500 to-orange-500 w-0 h-0" />

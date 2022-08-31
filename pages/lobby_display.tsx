@@ -10,55 +10,12 @@ import axios from "axios";
 
 import {
   Button,
-  Grid,
-  SimpleGrid,
-  Input,
-  Card,
-  Text,
-  Badge,
   Group,
   useMantineTheme,
-  Center,
-  Tabs,
-  ThemeIcon,
-  Container,
-  Textarea,
-  Tooltip,
   Stack,
-  Stepper,
-  ActionIcon,
-  Autocomplete,
-  TextInput,
+  CopyButton,
 } from "@mantine/core";
-import {
-  Emphasis,
-  FileX,
-  Login,
-  ReportMoney,
-  UserCircle,
-  Pencil,
-  Archive,
-  BrowserPlus,
-  SquareCheck,
-  AB,
-  QuestionMark,
-  Apps,
-  Checkbox,
-  Parentheses,
-  Settings,
-  Plus,
-  Check,
-  Number1,
-  Number2,
-  Number3,
-  Circle,
-  Triangle,
-  X,
-  Folders,
-  ArrowBigRightLines,
-  Qrcode,
-  Copy,
-} from "tabler-icons-react";
+import { ArrowBigRightLines, Qrcode, Copy } from "tabler-icons-react";
 
 const rightEnvelope = (subject: number) => {
   const subjectInfo = [
@@ -170,6 +127,7 @@ const Home: NextPage = () => {
     },
     uuid: "string",
   });
+
   const getPartlist = () => {
     axios
       .get("https://dist.exquiz.me//api/room/100494/participants")
@@ -181,6 +139,14 @@ const Home: NextPage = () => {
       });
     return;
   };
+
+  let [pin, setPin] = useState("0");
+
+  useEffect(() => {
+    pin = JSON.parse(localStorage.getItem("room") ?? "0").pin;
+    setPin(pin);
+  }, []);
+
   return (
     <div>
       <Head>
@@ -202,15 +168,20 @@ const Home: NextPage = () => {
                   </p>
                   <Group>
                     <p className="font-bold text-9xl text-left mb-10">
-                      # 354673
+                      # {pin}
                     </p>{" "}
-                    <Button
-                      color="orange"
-                      variant="outline"
-                      leftIcon={<Copy></Copy>}
-                    >
-                      복사하기
-                    </Button>
+                    <CopyButton value={pin}>
+                      {({ copied, copy }) => (
+                        <Button
+                          variant="outline"
+                          leftIcon={<Copy></Copy>}
+                          color={copied ? "teal" : "blue"}
+                          onClick={copy}
+                        >
+                          {copied ? "복사됨!" : "복사하기"}
+                        </Button>
+                      )}
+                    </CopyButton>
                   </Group>
                 </Stack>
                 <Stack>

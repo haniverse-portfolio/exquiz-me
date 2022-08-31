@@ -38,6 +38,7 @@
     "react-switch-case": "^1.5.1",
     "sockjs": "^0.3.24",
     "tabler-icons-react": "^1.52.0",
+    "throttle-typescript": "^1.1.0",
     "websocket": "^1.0.34"
   },
   "devDependencies": {
