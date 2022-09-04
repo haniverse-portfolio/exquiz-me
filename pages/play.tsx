@@ -265,50 +265,37 @@ const Home: NextPage = () => {
 
       <section className={`w-full h-full`}>
         <Center>
-          <Center className=" my-2 h-[98.3vh]">
+          <Center className="h-[100vh]">
             <Stack>
               {/* main */}
               {step === 0 ? (
-                <Group>
-                  <Center>
-                    <Stack>
-                      <Stack>
-                        <Center>
-                          <Grid justify="center" gutter="md">
-                            {option.map((something, i) => {
-                              let color = ["red", "blue", "green", "orange"];
-                              let bgColor = "bg-" + color[i] + "-500";
-                              return (
-                                <Grid.Col key={i} span={5}>
-                                  <Button
-                                    onClick={() => {
-                                      setAnswer(answer === i ? -1 : i);
-                                    }}
-                                    color={color[i]}
-                                    className={`shadow-lg h-28 w-32 ${
-                                      answer === i ? "shadow-inner" : ""
-                                    } ${answer === i ? bgColor : ""}}`}
-                                    variant="outline"
-                                  >
-                                    {option[i].description}
-                                  </Button>
-                                </Grid.Col>
-                              );
-                            })}
-                          </Grid>
-                        </Center>
-
-                        <footer className={styles.footer}>
-                          <a
-                            className="text-gray-700 no-underline text-black text-sm font-semibold"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          ></a>
-                        </footer>
-                      </Stack>
-                    </Stack>
-                  </Center>
-                </Group>
+                <Stack>
+                  <Grid justify="center" gutter="sm">
+                    {option.map((description, i) => {
+                      let color = ["red", "blue", "green", "orange"];
+                      let bgColor = "bg-" + color[i] + "-500";
+                      let hoverColor = "hover:" + bgColor;
+                      return (
+                        <Grid.Col key={i} span={5}>
+                          <Button
+                            onClick={() => {
+                              setAnswer(answer === i ? -1 : i);
+                            }}
+                            color={color[i]}
+                            className={`${
+                              answer === i ? "shadow-inner text-white" : ""
+                            } shadow-lg h-28 ${
+                              answer === i ? hoverColor : ""
+                            } w-full  ${answer === i ? bgColor : ""}`}
+                            variant="outline"
+                          >
+                            {option[i].description}
+                          </Button>
+                        </Grid.Col>
+                      );
+                    })}
+                  </Grid>
+                </Stack>
               ) : (
                 <></>
               )}
@@ -386,7 +373,10 @@ const Home: NextPage = () => {
               )}
 
               {/* caching tailwind css */}
-              <Group className="bg-red-500 w-0 h-0" />
+              <Group className="hover:bg-red-500 bg-red-500 w-0 h-0" />
+              <Group className="hover:bg-blue-500 bg-blue-500 w-0 h-0" />
+              <Group className="hover:bg-green-500 bg-green-500 w-0 h-0" />
+              <Group className="hover:bg-orange-500 bg-orange-500 w-0 h-0" />
               <Group className="bg-gradient-to-r border-orange-500 from-orange-500 to-red-500 bg-red-500 w-0 h-0" />
               <Group className="bg-gradient-to-r border-blue-500 from-blue-500 to-green-500 w-0 h-0" />
               <Group className="bg-gradient-to-r border-violet-500 from-violet-500 to-orange-500 w-0 h-0" />

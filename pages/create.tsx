@@ -5,6 +5,7 @@ import Link from "next/link";
 import axios from "axios";
 import Image from "next/image";
 import React, { useEffect } from "react";
+import { useDebouncedState } from "@mantine/hooks";
 import { throttle } from "throttle-typescript";
 
 import {
@@ -29,6 +30,7 @@ import {
   Drawer,
   ScrollArea,
   Select,
+  Skeleton,
 } from "@mantine/core";
 
 import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
@@ -166,8 +168,13 @@ const Home: NextPage = () => {
   let [scoreValue, setScoreValue] = useState(50);
   let [timelimit, setTimelimit] = useState(50);
 
-  let [imageWord, setImageWord] = useState("");
+  let [imageWord, setImageWord] = useDebouncedState("", 500);
   let [image, setImage] = useState([]);
+  let [imageLoading, setImageLoading] = useState(false);
+
+  useEffect(() => {
+    setImageLoading(false);
+  }, [imageWord]);
 
   useEffect(() => {
     let copy = [...problem];
@@ -330,7 +337,7 @@ const Home: NextPage = () => {
 
   const theme = useMantineTheme();
 
-  let plus = async () => {
+  let nextPlus = async () => {
     await setProblem((prevstate) => [
       ...prevstate,
       {
@@ -377,6 +384,53 @@ const Home: NextPage = () => {
     ]);
   };
 
+  let prevPlus = async () => {
+    await setProblem((prevstate) => [
+      {
+        answer: "-1",
+        description: "",
+        dtype: idxToString[tabIdx],
+        idx: 0,
+        picture: "",
+        problemsetId: 0,
+        score: 300,
+        timelimit: 30,
+        title: "",
+      },
+      ...prevstate,
+    ]);
+
+    await setOption((prevstate) => [
+      [
+        {
+          description: "",
+          idx: 0,
+          picture: "",
+          problemId: 0,
+        },
+        {
+          description: "",
+          idx: 1,
+          picture: "",
+          problemId: 0,
+        },
+        {
+          description: "",
+          idx: 2,
+          picture: "",
+          problemId: 0,
+        },
+        {
+          description: "",
+          idx: 3,
+          picture: "",
+          problemId: 0,
+        },
+      ],
+      ...prevstate,
+    ]);
+  };
+
   const [data, setData] = useState([
     { value: "korean", label: "국어" },
     { value: "math", label: "수학" },
@@ -396,10 +450,74 @@ const Home: NextPage = () => {
       </Head>
       {/* modal */}
       <Modal
+        centered
+        size="80%"
         opened={modalOpened}
         onClose={() => setModalOpened(false)}
-        title="퀴즈를 완성하시겠습니까?"
       >
+        {" "}
+        <Stack className="mx-2">
+          <Stack>
+            <p className="border-b-2 border-gray-300 text-amber-500 font-bold">
+              미리보기
+            </p>
+            {/* ../public/globe_banner.png */}
+            <p className="underline decoration-amber-500 font-bold text-3xl text-center mt-10">
+              🌋우리나라에서 가장 높은 산은?🏔
+            </p>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+            <br></br>
+
+            <br></br>
+            <br></br>
+            <Stack>
+              <Group>
+                <Button
+                  color="red"
+                  className="h-[15vh] w-[35vw]"
+                  variant="outline"
+                >
+                  <p className="text-2xl">지리산</p>
+                </Button>
+                <Button
+                  className="h-[15vh] w-[35vw]"
+                  color="blue"
+                  variant="outline"
+                >
+                  <p className="text-2xl">설악산</p>
+                </Button>
+              </Group>
+              <Group>
+                <Button
+                  className="h-[15vh] w-[35vw]"
+                  color="green"
+                  variant="outline"
+                >
+                  <p className="text-2xl">한라산</p>
+                </Button>
+                <Button
+                  className="h-[15vh] w-[35vw]"
+                  color="yellow"
+                  variant="outline"
+                >
+                  <p className="text-2xl">백두산</p>
+                </Button>
+              </Group>
+            </Stack>
+          </Stack>
+
+          <br></br>
+          <Stack>
+            <Group className="justify-between">
+              <p className="font-bold text-4xl text-red-500">00:05</p>
+            </Group>
+          </Stack>
+        </Stack>
         <Button
           variant="outline"
           color="orange"
@@ -443,16 +561,7 @@ const Home: NextPage = () => {
             location.replace("/inbox");
           }}
         >
-          네
-        </Button>
-        <Button
-          variant="outline"
-          color="orange"
-          onClick={() => {
-            setModalOpened(false);
-          }}
-        >
-          좀 더 검토해볼래요
+          배포하기
         </Button>
       </Modal>
 
@@ -739,18 +848,16 @@ const Home: NextPage = () => {
                             //   }, 500);
                             // }
                             onMouseDown={(event) => {
-                              setImageWord(
-                                (prevState) => problem[curIdx].description
-                              );
+                              setImageLoading(true);
+                              setImageWord(problem[curIdx].description);
                             }}
                             onChange={(event) => {
                               let copy = [...problem];
                               copy[curIdx].description =
                                 event.currentTarget.value;
                               setProblem(copy);
-                              setImageWord(
-                                (prevState) => copy[curIdx].description
-                              );
+                              setImageLoading(true);
+                              setImageWord(copy[curIdx].description);
                             }}
                             value={problem[curIdx].description}
                             color="orange"
@@ -759,7 +866,7 @@ const Home: NextPage = () => {
                           ></TextInput>
                           <p className="text-amber-500 font-bold">선지 정보</p>
                           {/* 입력 - 선지 정보 */}
-                          {
+                          {tabIdx === 0 ? (
                             <Grid>
                               {option[curIdx].map(
                                 (
@@ -769,6 +876,138 @@ const Home: NextPage = () => {
                                   const ans = problem[curIdx].answer;
                                   return (
                                     <Grid.Col key={i} span={5}>
+                                      <Group
+                                        className={`bg-amber-100 rounded-lg border-solid border-2 border-amber-500`}
+                                      >
+                                        <Checkbox
+                                          className="pl-2"
+                                          defaultChecked={false}
+                                          onClick={(event) => {
+                                            let copy = [...problem];
+                                            // (this.checked === true)?:"":
+                                            copy[curIdx].answer = i.toString();
+                                            setProblem(copy);
+                                          }}
+                                          checked={
+                                            problem[curIdx].answer ===
+                                            i.toString()
+                                              ? true
+                                              : false
+                                          }
+                                          // checked={true}
+
+                                          color="orange"
+                                          size="xl"
+                                        />
+                                        <Textarea
+                                          className=""
+                                          variant="unstyled"
+                                          onMouseDown={(event) => {
+                                            setImageLoading(true);
+                                            setImageWord(
+                                              option[curIdx][i].description
+                                            );
+                                          }}
+                                          onChange={(event) => {
+                                            let copy = [...option];
+                                            copy[curIdx][i].description =
+                                              event.currentTarget.value;
+                                            setOption(copy);
+                                            setImageLoading(true);
+                                            setImageWord(
+                                              copy[curIdx][i].description
+                                            );
+                                          }}
+                                          value={description}
+                                          placeholder={`선지 ${i + 1}`}
+                                          autosize
+                                          minRows={4}
+                                          maxRows={4}
+                                        />
+                                      </Group>
+                                    </Grid.Col>
+                                  );
+                                }
+                              )}
+                            </Grid>
+                          ) : (
+                            <></>
+                          )}
+
+                          {tabIdx === 1 ? (
+                            <Grid>
+                              {option[curIdx].map(
+                                (
+                                  { description, idx, picture, problemId },
+                                  i
+                                ) => {
+                                  const ans = problem[curIdx].answer;
+                                  return (
+                                    <Grid.Col key={i} span={2}>
+                                      <Group
+                                        className={`bg-amber-100 rounded-lg border-solid border-2 border-amber-500`}
+                                      >
+                                        <Checkbox
+                                          defaultChecked={false}
+                                          onClick={(event) => {
+                                            let copy = [...problem];
+                                            // (this.checked === true)?:"":
+                                            copy[curIdx].answer = i.toString();
+                                            setProblem(copy);
+                                          }}
+                                          checked={
+                                            problem[curIdx].answer ===
+                                            i.toString()
+                                              ? true
+                                              : false
+                                          }
+                                          // checked={true}
+
+                                          color="orange"
+                                          size="xl"
+                                        />
+                                        <TextInput
+                                          className=""
+                                          variant="unstyled"
+                                          onMouseDown={(event) => {
+                                            setImageLoading(true);
+                                            setImageWord(
+                                              option[curIdx][i].description
+                                            );
+                                          }}
+                                          onChange={(event) => {
+                                            let copy = [...option];
+                                            copy[curIdx][i].description =
+                                              event.currentTarget.value;
+                                            setOption(copy);
+                                            setImageLoading(true);
+                                            setImageWord(
+                                              copy[curIdx][i].description
+                                            );
+                                          }}
+                                          value={description}
+                                          placeholder={`선지 ${i + 1}`}
+                                        />
+                                      </Group>
+                                    </Grid.Col>
+                                  );
+                                }
+                              )}
+                            </Grid>
+                          ) : (
+                            <></>
+                          )}
+
+                          {tabIdx === 2 ? (
+                            <Grid>
+                              {option[curIdx].map(
+                                (
+                                  { description, idx, picture, problemId },
+                                  i
+                                ) => {
+                                  const ans = problem[curIdx].answer;
+                                  return (
+                                    <Grid.Col key={i} span={2}>
                                       <Group
                                         className={`bg-amber-100 rounded-lg border-solid border-2 border-amber-500`}
                                       >
@@ -795,9 +1034,9 @@ const Home: NextPage = () => {
                                           className=""
                                           variant="unstyled"
                                           onMouseDown={(event) => {
+                                            setImageLoading(true);
                                             setImageWord(
-                                              (prevState) =>
-                                                option[curIdx][i].description
+                                              option[curIdx][i].description
                                             );
                                           }}
                                           onChange={(event) => {
@@ -805,9 +1044,9 @@ const Home: NextPage = () => {
                                             copy[curIdx][i].description =
                                               event.currentTarget.value;
                                             setOption(copy);
+                                            setImageLoading(true);
                                             setImageWord(
-                                              (prevState) =>
-                                                copy[curIdx][i].description
+                                              copy[curIdx][i].description
                                             );
                                           }}
                                           value={description}
@@ -822,7 +1061,9 @@ const Home: NextPage = () => {
                                 }
                               )}
                             </Grid>
-                          }
+                          ) : (
+                            <></>
+                          )}
                           <Group position="left">
                             <Stack>
                               <p>
@@ -880,7 +1121,7 @@ const Home: NextPage = () => {
                     <Stack
                       onClick={() => {
                         console.log(curIdx);
-                        if (curIdx === problem.length - 1) plus();
+                        if (curIdx === problem.length - 1) nextPlus();
                         else setCurIdx((prevState) => curIdx + 1);
                         console.log(curIdx);
                       }}
@@ -888,14 +1129,14 @@ const Home: NextPage = () => {
                     ></Stack>
                   </Stack>
                   <Stack
-                    spacing={300}
+                    spacing={200}
                     className=" flex flex-col justify-between"
                   >
                     {/* 추가 */}
                     <ActionIcon variant="transparent">
                       <Plus
                         onClick={() => {
-                          plus();
+                          prevPlus();
                         }}
                         size="xl"
                         color="gray"
@@ -909,7 +1150,7 @@ const Home: NextPage = () => {
                     <ActionIcon variant="transparent">
                       <Plus
                         onClick={() => {
-                          plus();
+                          nextPlus();
                         }}
                         size="xl"
                         color="gray"
@@ -941,10 +1182,48 @@ const Home: NextPage = () => {
                   }
                   onChange={(event) => {
                     let copy = event.currentTarget.value;
-                    setImageWord((prevState) => copy);
+                    setImageLoading(true);
+                    setImageWord(copy);
                   }}
                   value={imageWord}
                 />
+                {imageLoading === true ? (
+                  <Stack>
+                    <Stack className="mx-2">
+                      <Group>
+                        <Skeleton height={100} width="30%" radius="sm" />
+                        <Skeleton height={100} width="30%" radius="sm" />
+                        <Skeleton height={100} width="30%" radius="sm" />
+                      </Group>
+                      <Group>
+                        <Skeleton height={100} width="45%" radius="sm" />
+                        <Skeleton height={100} width="45%" radius="sm" />
+                      </Group>
+                    </Stack>
+                    <Center>
+                      <p className="text-gray-500"> 이미지 검색 중...</p>
+                    </Center>
+                    <Stack className="mx-2">
+                      <Group>
+                        <Skeleton height={100} width="30%" radius="sm" />
+                        <Skeleton height={100} width="30%" radius="sm" />
+                        <Skeleton height={100} width="30%" radius="sm" />
+                      </Group>
+                      <Group>
+                        <Skeleton height={100} width="45%" radius="sm" />
+                        <Skeleton height={100} width="45%" radius="sm" />
+                      </Group>
+                    </Stack>
+                  </Stack>
+                ) : (
+                  <ScrollArea className="h-[50vh]">
+                    <Stack className="h-[500vh]">
+                      <Center>
+                        <p className="text-gray-500">검색결과 없음.</p>
+                      </Center>
+                    </Stack>
+                  </ScrollArea>
+                )}
 
                 <Group className="bg-amber-500 text-white w-0 h-0"></Group>
                 <Group className="border-blue-400 text-black bg-blue-400 w-0 h-0"></Group>
@@ -1151,7 +1430,7 @@ export default Home;
                     </Group>
                   </Stack>
                 </Stack>
-              </Stack>
+              </ㅌStack>
 
               <Stack className="w-[20vw] p-10 bg-white shadow-lg sm:rounded-3xl backdrop-blur-xl bg-opacity-50">
                 <h2 className="text-amber-500 font-semibold">

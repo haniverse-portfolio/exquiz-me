@@ -180,7 +180,7 @@ const Home: NextPage = () => {
                           gradient={{ from: "orange", to: "red" }}
                           component="a"
                           rel="noopener noreferrer"
-                          href="/inbox_rf"
+                          href="/inbox"
                           leftIcon={<Folders size={38} />}
                           styles={(theme) => ({
                             root: {

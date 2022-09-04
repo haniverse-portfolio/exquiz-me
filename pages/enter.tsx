@@ -3,6 +3,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import Link from "next/link";
+import Image from "next/image";
 import axios from "axios";
 
 import {
@@ -13,7 +14,6 @@ import {
   useMantineTheme,
   Stack,
   TextInput,
-  Image,
   Modal,
   ColorSwatch,
 } from "@mantine/core";
@@ -35,7 +35,7 @@ const Home: NextPage = () => {
     ));
 
     return (
-      <Group className="px-8" position="center" spacing="xs">
+      <Group className="px-8 w-64" position="center" spacing="xs">
         {swatches}
       </Group>
     );
@@ -156,6 +156,8 @@ const Home: NextPage = () => {
     );
     return result.data;
   };
+  let [nickname, setNickname] = useState("");
+  let createRand = () => {};
 
   return (
     <div>
@@ -222,20 +224,7 @@ const Home: NextPage = () => {
                         </Center>
                         <Center>
                           <Stack>
-                            <Group spacing={1}>
-                              <Group className="h-8 w-8 rounded-md border-2" />
-                              <Group className="h-8 w-8 rounded-md border-2" />
-                              <Group className="h-8 w-8 rounded-md border-2" />
-                              <Group className="h-8 w-8 rounded-md border-2" />
-                              <Group className="h-8 w-8 rounded-md border-2" />
-                              <Group className="h-8 w-8 rounded-md border-2" />
-                              {/* <TextInput className="h-10 w-10"></TextInput>
-                              <TextInput className="w-[12px]"></TextInput>
-                              <TextInput className="w-[12px]"></TextInput>
-                              <TextInput className="w-[12px]"></TextInput>
-                              <TextInput className="w-[12px]"></TextInput>
-                              <TextInput className="w-[12px]"></TextInput> */}
-                            </Group>
+                            <TextInput placeholder="핀 번호를 입력하세요"></TextInput>
                             <Button
                               onClick={() => {
                                 setStep((prevState) => step + 1);
@@ -277,8 +266,58 @@ const Home: NextPage = () => {
                           <p className="font-bold text-md text-left">
                             닉네임 설정
                           </p>
-                          <TextInput placeholder="똑똑한 소크라테스"></TextInput>
+                          {
+                            <TextInput
+                              value={nickname}
+                              onChange={(event) => {
+                                setNickname(
+                                  (prevState) => event.currentTarget.value
+                                );
+                              }}
+                              placeholder="똑똑한 소크라테스"
+                            ></TextInput>
+                          }
                           <Button
+                            onClick={() => {
+                              let arr = [
+                                "성찰하는 소크라테스",
+                                "고뇌하는 니체",
+                                "엉뚱한 튜링",
+                                "활기찬 뉴턴",
+                                "명랑한 브라헤",
+                                "정의로운 보어",
+                                "창의적인 레오나르도",
+                                "사색하는 공자",
+                                "부유한 스미스",
+                                "정직한 데카르트",
+                                "슬기로운 세종",
+                                "유능한 한신",
+                                "전설적인 칸",
+                                "전략적인 제갈공명",
+                                "신박한 유레카",
+                                "듬직한 테슬라",
+                                "명석한 칼세이건",
+                                "건강한 클레오파트라",
+                                "용감한 이순신",
+                                "공평한 링컨",
+                                "신속한 나폴레옹",
+                                "뛰어난 워렌버핏",
+                                "비장한 스티브잡스",
+                                "신들린 모차르트",
+                                "감각적인 고흐",
+                                "독보적인 내쉬",
+                                "헌신적인 테레사",
+                                "위대한 스티븐호킹",
+                                "입체적인 피카소",
+                                "성스러운 잔다르크",
+                              ];
+                              setNickname(
+                                arr[
+                                  Math.floor(Math.random() * (arr.length - 1)) +
+                                    1
+                                ]
+                              );
+                            }}
                             color="orange"
                             variant="outline"
                             leftIcon={<Refresh />}
@@ -294,18 +333,53 @@ const Home: NextPage = () => {
                               아바타 선택
                             </p>
                             {swatch()}
-                            <Stack className="w-[90vw] ">
-                              <ScrollArea style={{ width: 300 }}>
-                                <Group>
-                                  <Image
-                                    className="rounded-full"
-                                    src="public/rat.png"
-                                    width={"100px"}
-                                    height={"100px"}
-                                  ></Image>
-                                </Group>
-                              </ScrollArea>
-                            </Stack>
+                            <Center>
+                              <Stack>
+                                <ScrollArea
+                                  scrollbarSize={0}
+                                  style={{ width: 180 }}
+                                >
+                                  <Group style={{ width: 700 }}>
+                                    <Image
+                                      className="rounded-full"
+                                      src="/../public/rat.png"
+                                      width={"50px"}
+                                      height={"50px"}
+                                    ></Image>
+                                    <Image
+                                      className="rounded-full"
+                                      src="/../public/fox.png"
+                                      width={"50px"}
+                                      height={"50px"}
+                                    ></Image>
+                                    <Image
+                                      className="rounded-full"
+                                      src="/../public/dog.png"
+                                      width={"50px"}
+                                      height={"50px"}
+                                    ></Image>
+                                    <Image
+                                      className="rounded-full"
+                                      src="/../public/dog2.png"
+                                      width={"50px"}
+                                      height={"50px"}
+                                    ></Image>
+                                    <Image
+                                      className="rounded-full"
+                                      src="/../public/koala.png"
+                                      width={"50px"}
+                                      height={"50px"}
+                                    ></Image>
+                                    <Image
+                                      className="rounded-full"
+                                      src="/../public/monkey.png"
+                                      width={"50px"}
+                                      height={"50px"}
+                                    ></Image>
+                                  </Group>
+                                </ScrollArea>
+                              </Stack>
+                            </Center>
 
                             <Center>
                               <Stack>

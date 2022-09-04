@@ -5,6 +5,7 @@ import styles from "../styles/Home.module.css";
 import Link from "next/link";
 import { useState } from "react";
 import { useRef } from "react";
+import React, { useEffect } from "react";
 
 import {
   Button,
@@ -132,6 +133,7 @@ const Home: NextPage = () => {
     theme.colorScheme === "dark" ? theme.colors.dark[1] : theme.colors.gray[7];
 
   const [active, setActive] = useState(0);
+  let [image, setImage] = useState("/../public/panda.png");
 
   const [status, setStatus] = useState([
     {
@@ -315,6 +317,11 @@ const Home: NextPage = () => {
       answer: false,
     },
   ]);
+
+  useEffect(() => {
+    setImage("/../public/dino_env.png");
+  }, []);
+
   return (
     <div>
       <Head>
@@ -332,33 +339,38 @@ const Home: NextPage = () => {
                 <Stack>
                   {/* ../public/globe_banner.png */}
                   <p className="underline decoration-amber-500 font-bold text-7xl text-center mt-10">
-                    🌋우리나라에서 가장 높은 산은?🏔
+                    🌋이 중 가장 무시무시한 공룡은?🏔
                   </p>
-                  <br></br>
-                  <br></br>
-                  <br></br>
-                  <br></br>
-                  <br></br>
-                  <br></br>
-                  <br></br>
-
-                  <br></br>
-                  <br></br>
+                  <Image src={image} width={600} height={400}></Image>
                   <Stack>
                     <Group>
                       <Button
                         color="red"
                         className="h-[20vh] w-[40vw]"
                         variant="outline"
+                        onMouseOver={() => {
+                          setImage(
+                            (prevstate) => "/../public/tiranosaurus.png"
+                          );
+                        }}
+                        onMouseLeave={() => {
+                          setImage((prevstate) => "/../public/dino_env.png");
+                        }}
                       >
-                        <p className="text-6xl">지리산</p>
+                        <p className="text-6xl">티라노사우루스</p>
                       </Button>
                       <Button
                         className="h-[20vh] w-[40vw]"
                         color="blue"
                         variant="outline"
+                        onMouseOver={() => {
+                          setImage((prevstate) => "/../public/tri.jpeg");
+                        }}
+                        onMouseLeave={() => {
+                          setImage((prevstate) => "/../public/dino_env.png");
+                        }}
                       >
-                        <p className="text-6xl">설악산</p>
+                        <p className="text-6xl">트리케라톱스</p>
                       </Button>
                     </Group>
                     <Group>
