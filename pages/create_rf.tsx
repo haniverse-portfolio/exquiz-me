@@ -6,7 +6,6 @@ import axios from "axios";
 import Image from "next/image";
 import React, { useEffect } from "react";
 import { useDebouncedState } from "@mantine/hooks";
-import { throttle } from "throttle-typescript";
 
 import {
   Button,
@@ -28,7 +27,9 @@ import {
   ScrollArea,
   Select,
   Skeleton,
+  Accordion,
   ThemeIcon,
+  Avatar,
 } from "@mantine/core";
 
 import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
@@ -47,10 +48,13 @@ import {
   X,
   FileUpload,
   GridDots,
-  AlertCircle,
+  AlertTriangle,
+  ChevronDown,
+  Rotate,
+  CircleCheck,
+  CornerDownRight,
+  ArrowNarrowLeft,
 } from "tabler-icons-react";
-
-// 85vh 20vw
 
 {
   /* custom converter */
@@ -83,6 +87,7 @@ const delay = (ms: number | undefined) =>
 // 빈 슬라이드 객관식 주관식 O/X 넌센스 다이나믹
 const Home: NextPage = () => {
   /* slide */
+  let [cur, setCur] = useState(0);
   let [curIdx, setCurIdx] = useState(0);
   /* form */
   let [tabIdx, setTabIdx] = useState(0);
@@ -147,6 +152,7 @@ const Home: NextPage = () => {
   let [scoreValue, setScoreValue] = useState(50);
   let [timelimit, setTimelimit] = useState(50);
 
+  let [imageURL, setImageURL] = useState("");
   let [imageWord, setImageWord] = useDebouncedState("", 500);
   let [imageList, setImageList] = useState([]);
   let [imageLoading, setImageLoading] = useState(false);
@@ -262,6 +268,17 @@ const Home: NextPage = () => {
       // />
     );
   });
+
+  const postImage = async () => {
+    let rt = Infinity;
+    await axios
+      .post(connectServerApiAddress + "api/image/upload", imageURL)
+      .then((result) => {})
+      .catch((error) => {
+        alert("imagePost_error");
+      });
+    return rt;
+  };
 
   const getImageList = async (name: string) => {
     let rt = Infinity;
@@ -464,7 +481,7 @@ const Home: NextPage = () => {
       <Modal
         title={
           <ActionIcon color="red">
-            <AlertCircle></AlertCircle>
+            <AlertTriangle></AlertTriangle>
           </ActionIcon>
         }
         transition="fade"
@@ -661,12 +678,12 @@ const Home: NextPage = () => {
         onClose={() => setDrawerOpened(false)}
         padding="xl"
         size="93.8%"
-        overlayColor={
-          theme.colorScheme === "dark"
-            ? theme.colors.dark[9]
-            : theme.colors.gray[2]
-        }
-        overlayOpacity={0.55}
+        // overlayColor={
+        //   theme.colorScheme === "dark"
+        //     ? theme.colors.dark[9]
+        //     : theme.colors.gray[2]
+        // }
+        // overlayOpacity={0.55}
         // overlayBlur={3}
       >
         <Center>
@@ -724,21 +741,25 @@ const Home: NextPage = () => {
 
   let navCreate = () => {
     return (
-      <Group position="left" className="h-[60px] border-b-2 border-gray-300">
-        {/* 홈 */}
-        <Link href="/">
-          <Group className="w-[60px] border-r-2 border-gray-300">
-            <Group className="cursor-pointer m-auto w-[50px] h-[50px]">
-              <Image
-                src="/../public/globe_banner_2.png"
-                alt="Picture of the author"
-                width={50}
-                height={50}
-              />
-            </Group>
+      <Grid className="h-[60px] border-b-2 border-gray-300" columns={24}>
+        <Grid.Col span={5}>
+          <Group>
+            <Link href="/">
+              <ActionIcon>
+                <ArrowNarrowLeft size="xl"></ArrowNarrowLeft>
+              </ActionIcon>
+            </Link>
+            <Avatar
+              radius="xl"
+              src={"h".concat(
+                "ttps://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=250&q=80"
+              )}
+            />
+            <Text>반가워요! 임준현님.</Text>
           </Group>
-        </Link>
-        <Group className="justify-between flex" position="apart">
+        </Grid.Col>
+        <Grid.Col span={14}>
+          {" "}
           <Group
             onClick={() => {
               setDrawerOpened(true);
@@ -774,7 +795,12 @@ const Home: NextPage = () => {
               <p className="text-2xl font-bold">{problemSet.title}</p>
             )}
           </Group>
+        </Grid.Col>
+        <Grid.Col span={5}>
           <Group className="border-l-2 border-gray-300">
+            <Button variant="outline" color="orange" onClick={() => {}}>
+              미리보기
+            </Button>
             <Button
               variant="outline"
               color="orange"
@@ -785,10 +811,13 @@ const Home: NextPage = () => {
               완성하기
             </Button>
           </Group>
-        </Group>
-      </Group>
+        </Grid.Col>
+      </Grid>
     );
   };
+
+  const getColor = (color: string) =>
+    theme.colors[color][theme.colorScheme === "dark" ? 5 : 7];
 
   return (
     <>
@@ -815,49 +844,51 @@ const Home: NextPage = () => {
             {/* navigation bar */}
             {navCreate()}
             {/* slide + create + image */}
-            <Grid columns={24} className="h-[100vh-60px]">
+            <Grid columns={24} className="h-[80vh]">
               <Grid.Col span={5}>
-                <Stack justify="flex-start" className="w-[20vw]">
-                  <p className="border-b-2 border-gray-300 text-amber-500 font-bold">
-                    문제 관리
-                  </p>
-                  <Stack spacing={0}>
+                <Stack justify="space-between">
+                  <Accordion defaultValue="0" variant="contained">
                     {problem.map(({ dtype, description }, i) => {
                       return (
-                        <Stack
-                          className={`cursor-pointer border-b-2 border-${
-                            curIdx === i ? "amber" : "gray"
-                          }-300`}
-                          spacing={0}
+                        <Accordion.Item
+                          value={i.toString()}
+                          // className={`cursor-pointer border-2 border-${
+                          //   curIdx === i ? "amber" : "gray"
+                          // }-300`}
                           onClick={() => {
                             setCurIdx((prevstate) => i);
                           }}
                           key={i}
                         >
-                          <Group
-                            className="justify-between flex border-amber-500"
-                            color="red"
+                          <Accordion.Control
+                            icon={<AlertTriangle color={getColor("red")} />}
                           >
-                            {/* 슬라이드 정보 */}
-                            <Text
-                              align="left"
-                              className={`text-xl ${
-                                i === curIdx
-                                  ? "text-black font-semibold"
-                                  : "text-gray-500"
-                              } py-2 px-1`}
-                            >
-                              {i + 1}.&nbsp;{problem[i].description}
-                            </Text>
-                            <Tooltip label="문제가 아직 완성되지 않았어요!">
-                              <ActionIcon color="red">
-                                <AlertCircle></AlertCircle>
+                            {i + 1}
+                            &nbsp;{problem[i].description}
+                          </Accordion.Control>
+                          <Accordion.Panel>
+                            <Group>
+                              <ActionIcon variant="transparent">
+                                <CornerDownRight />
                               </ActionIcon>
-                            </Tooltip>
-                          </Group>
-                        </Stack>
+                              <Text>해설</Text>
+                            </Group>
+                          </Accordion.Panel>
+                        </Accordion.Item>
                       );
                     })}
+                  </Accordion>
+                  <Stack>
+                    <Group position="apart">
+                      <Stack>
+                        <p> 예상 소요 시간</p>
+                        <p> 36:00 </p>
+                      </Stack>
+                      <Stack>
+                        <p> 문제 수</p>
+                        <p> {problem.length + "개"} </p>
+                      </Stack>
+                    </Group>
                   </Stack>
                 </Stack>
               </Grid.Col>
@@ -881,7 +912,7 @@ const Home: NextPage = () => {
                       ></Stack>
                       <Stack className="py-10" spacing={0}>
                         <Group
-                          align="left"
+                          align="center"
                           spacing={0}
                           className="ml-4 items-center"
                         >
@@ -972,6 +1003,9 @@ const Home: NextPage = () => {
                               //     alert("hello");
                               //   }, 500);
                               // }
+                              onClick={() => {
+                                setCur(0);
+                              }}
                               onMouseDown={(event) => {
                                 setImageLoading(true);
                                 setImageWord(problem[curIdx].description);
@@ -1002,7 +1036,13 @@ const Home: NextPage = () => {
                                   ) => {
                                     const ans = problem[curIdx].answer;
                                     return (
-                                      <Grid.Col key={i} span={5}>
+                                      <Grid.Col
+                                        onClick={() => {
+                                          setCur(i);
+                                        }}
+                                        key={i}
+                                        span={5}
+                                      >
                                         <Group
                                           className={`bg-amber-100 rounded-lg border-solid border-2 border-amber-500`}
                                         >
@@ -1268,9 +1308,6 @@ const Home: NextPage = () => {
               </Grid.Col>
               <Grid.Col span={5}>
                 <Stack className="w-[20vw]">
-                  <p className="border-b-2 border-gray-300 text-amber-500 font-bold">
-                    미리보기
-                  </p>
                   <Dropzone accept={IMAGE_MIME_TYPE} onDrop={setFiles}>
                     <Text color="gray" align="center">
                       이미지나 동영상을 첨부하세요
@@ -1333,6 +1370,14 @@ const Home: NextPage = () => {
                             {imageList.map((link, i) => {
                               return (
                                 <Image
+                                  className="cursor-pointer"
+                                  onClick={() => {
+                                    if (cur == 0)
+                                      problem[curIdx].picture = link;
+                                    else option[curIdx][cur].picture = link;
+                                    setImageURL(link);
+                                    postImage();
+                                  }}
                                   key={i}
                                   src={link}
                                   alt="alt"
@@ -1351,7 +1396,7 @@ const Home: NextPage = () => {
                   <Group className="border-blue-400 text-black bg-blue-400 w-0 h-0"></Group>
                   <Group className="border-green-400 bg-green-400 w-0 h-0"></Group>
                   <Group className="border-amber-400 bg-amber-400 w-0 h-0"></Group>
-                  <Group className="border-violet-400 bg-violet-400 w-0 h-0"></Group>
+                  <Group className="border-b-2 border-amber-300 w-0 h-0"></Group>
                   <Group className="border-gray-400 bg-gray-400 w-0 h-0"></Group>
 
                   {/* <div className="border-2 border-gray-300 h-60 w-96">

@@ -7,6 +7,8 @@ import { useState } from "react";
 import { useRef } from "react";
 import React, { useEffect } from "react";
 import axios from "axios";
+import SockJS from "sockjs-client";
+import Stomp from "stompjs";
 
 import {
   Button,
@@ -84,6 +86,7 @@ const leftEnvelope = (subject: number) => {
 };
 
 const Home: NextPage = () => {
+  const connectServerApiAddress = "https://prod.exquiz.me/";
   const theme = useMantineTheme();
 
   const secondaryColor =
@@ -100,9 +103,9 @@ const Home: NextPage = () => {
     },
   ]);
 
-  // useEffect(() => {
-  //   getPartlist();
-  // }, []);
+  useEffect(() => {
+    getPartlist();
+  }, []);
 
   let [partlist, setPartlist] = useState({
     currentScore: 0,
@@ -130,8 +133,9 @@ const Home: NextPage = () => {
 
   const getPartlist = () => {
     axios
-      .get("https://dist.exquiz.me//api/room/100494/participants")
+      .get(connectServerApiAddress + "api/room/" + pin + "/participants")
       .then((result) => {
+        alert("success");
         setPartlist(result.data);
       })
       .catch((error) => {
@@ -146,6 +150,115 @@ const Home: NextPage = () => {
     pin = JSON.parse(localStorage.getItem("room") ?? "0").pin;
     setPin(pin);
   }, []);
+
+  useEffect(() => {
+    connect();
+  }, []);
+
+  {
+    /* webSocket */
+  }
+  let stompClient: Stomp.Client;
+
+  let connect = () => {
+    // stompClient.debug = null;
+    const headers = {
+      // connect, subscribe에 쓰이는 headers
+    };
+    var socket = new SockJS(`https://api.exquiz.me/stomp`);
+    stompClient = Stomp.over(socket);
+
+    // jwt
+    //var headers = {
+    // Authorization : 'Bearer ' + token.access_token,
+    //};
+    var reconnect = 0;
+    stompClient.connect(
+      {},
+      function (frame) {
+        stompClient.subscribe("/topic/room" + pin, function (message) {
+          var recv = JSON.parse(message.body);
+        });
+        stompClient.send(
+          "/pub/room/" + pin + "/start",
+          {},
+          JSON.stringify({ uuid: 123 })
+        );
+      },
+      function (error) {
+        console.log(error);
+        // if (reconnect++ <= 5) {
+        //   setTimeout(function () {
+        //     console.log("connection reconnect");
+        //     socket = new SockJS(`https://dist.exquiz.me/stomp`);
+        //     stompClient = Stomp.over(socket);
+        //     connect();
+        //   }, 10 * 1000);
+        // }
+      }
+    );
+
+    // stompClient.connect(
+    //   headers,
+    //   (frame) => {
+    //     console.log("연결됨");
+    //     stompClient.subscribe("/topic/room" + pin, function (message) {
+    //       console.log("성공 ㅎㅎ" + JSON.parse(message.body).content);
+    //     });
+    //   },
+    //   () => {
+    //     console.log("연결안됨");
+    //   }
+    // );
+  };
+
+  let send = (data: Object) => {
+    const headers = {
+      // connect, subscribe에 쓰이는 headers
+    };
+
+    stompClient.send("/pub/test", {}, JSON.stringify(data));
+  };
+
+  let subscribe = () => {
+    const headers = {
+      // connect, subscribe에 쓰이는 headers
+    };
+
+    stompClient.subscribe(
+      "/topic/room" + pin,
+      (frame) => {
+        alert(frame.body);
+        // subscribe 후 실행하는 곳
+      },
+      headers
+    );
+  };
+
+  let unsubscribe = () => {
+    const headers = {
+      // connect, subscribe에 쓰이는 headers
+    };
+
+    stompClient.subscribe(
+      "/topic/room",
+      (frame) => {
+        // subscribe 후 실행하는 곳
+      },
+      headers
+    ).unsubscribe;
+  };
+
+  let disConnect = () => {
+    if (stompClient !== null) {
+      const headers = {
+        // disconnect에 쓰이는 headers
+      };
+      stompClient.disconnect(function () {
+        // disconnect 후 실행하는 곳
+      }, headers);
+    }
+  };
 
   return (
     <div>
@@ -239,6 +352,13 @@ const Home: NextPage = () => {
                       })}
                     >
                       QR코드 화면
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        subscribe();
+                      }}
+                    >
+                      press me
                     </Button>
                     <p className="font-bold text-4xl">
                       입장 인원 : &nbsp;

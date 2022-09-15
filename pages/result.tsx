@@ -335,47 +335,50 @@ const Home: NextPage = () => {
                   </p>
                 </Stack>
                 <Stack className="items-center">
-                  <Group className="my-0 py-0" spacing={10}>
-                    <Stack>
-                      <p className="font-bold text-6xl text-center">🥈</p>
-                      <Group className="rounded-xl h-52 w-36"></Group>
-                    </Stack>
-                    <Stack>
-                      <p className="font-bold text-6xl text-center">🥇</p>
+                  <Stack className="h-32 bg-gradient-to-r from-amber-500 to-red-500">
+                    <Group className="ml-8 my-auto">
+                      <Image
+                        alt="hello"
+                        className="shadow-lg cursor-pointer rounded-full"
+                        src="/../public/dog.png"
+                        width={"50px"}
+                        height={"50px"}
+                      ></Image>
+                      <p className="mr-12 text-3xl font-semibold text-white">
+                        1위 플레이어
+                      </p>
+                    </Group>
+                  </Stack>
 
-                      <Group className="rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 h-52 w-36"></Group>
-                    </Stack>
+                  <Stack className="h-32 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+                    <Group className="ml-8 my-auto">
+                      <Image
+                        alt="hello"
+                        className="shadow-lg cursor-pointer rounded-full"
+                        src="/../public/wolf.png"
+                        width={"50px"}
+                        height={"50px"}
+                      ></Image>
+                      <p className="mr-12 text-3xl font-semibold text-white">
+                        2위 플레이어
+                      </p>
+                    </Group>
+                  </Stack>
 
-                    <Stack>
-                      <p className="font-bold text-6xl text-center">🥉</p>
-
-                      <Group className="rounded-xl h-52 w-36"></Group>
-                    </Stack>
-                  </Group>
-                  <Group className="my-0 py-0" spacing={10}>
-                    <Stack>
-                      <Group className="rounded-xl bg-gradient-to-r from-stone-400 to-stone-300 h-52 w-36"></Group>
-                    </Stack>
-                    <Stack>
-                      <Group className="rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 h-52 w-36"></Group>
-                    </Stack>
-
-                    <Stack>
-                      <Group className="rounded-xl  h-52 w-36"></Group>
-                    </Stack>
-                  </Group>
-                  <Group className="my-0 py-0" spacing={10}>
-                    <Stack>
-                      <Group className="rounded-xl bg-gradient-to-r from-stone-400 to-stone-300 h-52 w-36"></Group>
-                    </Stack>
-                    <Stack>
-                      <Group className="rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 h-52 w-36"></Group>
-                    </Stack>
-
-                    <Stack>
-                      <Group className="rounded-xl bg-gradient-to-r from-amber-700 to-amber-800 h-52 w-36"></Group>
-                    </Stack>
-                  </Group>
+                  <Stack className="h-32 bg-gradient-to-r from-cyan-500 to-blue-500">
+                    <Group className="ml-8 my-auto">
+                      <Image
+                        alt="hello"
+                        className="shadow-lg cursor-pointer rounded-full"
+                        src="/../public/rabbit.png"
+                        width={"50px"}
+                        height={"50px"}
+                      ></Image>
+                      <p className="mr-12 text-3xl font-semibold text-white">
+                        3위 플레이어
+                      </p>
+                    </Group>
+                  </Stack>
                 </Stack>
                 <br></br>
                 <Stack>

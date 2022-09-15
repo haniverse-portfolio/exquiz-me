@@ -5,6 +5,7 @@ import { useState } from "react";
 import axios from "axios";
 import React, { useEffect } from "react";
 import NavIndex from "../components/navIndex";
+import Image from "next/image";
 
 import {
   Button,
@@ -20,10 +21,11 @@ import {
   Select,
   Pagination,
   ScrollArea,
+  Text,
+  ActionIcon,
+  Avatar,
 } from "@mantine/core";
-import { Login, Pencil, Plus } from "tabler-icons-react";
-
-
+import { ArrowNarrowLeft, Link, Login, Pencil, Plus } from "tabler-icons-react";
 
 const rightEnvelope = (subject: number) => {
   const subjectInfo = [
@@ -35,7 +37,10 @@ const rightEnvelope = (subject: number) => {
   ];
 
   return (
-    <Group className="transition ease-in-out hover:scale-105" spacing={0}>
+    <Group
+      className="m-auto transition ease-in-out hover:scale-105"
+      spacing={0}
+    >
       <Group className="shadow-lg" spacing={0}>
         <Group
           className={`bg-${subjectInfo[subject].startColor} border-r-2 border-gray-300 shadow-lg h-24 w-4 bg-amber-200`}
@@ -273,15 +278,13 @@ const Home: NextPage = () => {
           onClick={async () => {
             setModalOpened(false);
             await postRoom();
-            if (room.currentState === "READY") {
-              alert("before success" + room.pin);
-              location.replace("/lobby_display");
-            } else {
-              alert(
-                "before fail : " +
-                  "방이 준비되지 않았습니다. 다시 시도해보세요."
-              );
-            }
+            // if (room.currentState !== "READY") {
+            //   alert("something wrong");
+            //   return;
+            // }
+
+            alert("before success" + room.pin);
+            location.replace("/lobby_display");
             // {
             //   "id": 5,
             //   "pin": "100494",
@@ -335,188 +338,238 @@ const Home: NextPage = () => {
 
       <header>{NavIndex()}</header>
 
-      <main style={{ margin: "0px 10px" }}>
+      <main style={{ margin: "" }}>
         <section className="h-[86vh]">
-          <Stack className="items-center flex contents-between">
-            <Stack>
-              {/* 메인 배너 */}
-              <Group spacing={100}>
-                <Group>
+          <Stack className="flex contents-between">
+            <Grid gutter={0} columns={24}>
+              <Grid.Col
+                className="h-[86vh] border-r-2 border-gray-500"
+                span={3}
+              >
+                <Stack>
                   <Group>
-                    <Stack>
-                      <p className="underline decoration-amber-500 font-bold text-4xl text-left mt-10">
-                        퀴즈 정보
-                      </p>
-                      <Group className="justify-between">
-                        <Group>
-                          <Group>
-                            <Stack>
-                              <Group
-                                className="h-52 w-52 rounded-xl border-2 bg-gray-200
-                            "
-                              >
-                                {rightEnvelope(0)}
-                              </Group>
-                            </Stack>
-                          </Group>
-                          <Stack>
-                            <p className="font-bold text-2xl">
-                              {problemsets[curIdx].title === ""
-                                ? "아래에서 퀴즈를 선택하세요"
-                                : problemsets[curIdx].title}
-                            </p>
-                            <p className=" text-2xl">
-                              <strong className="text-2xl text-amber-500 font-bold">
-                                문제 수
-                              </strong>{" "}
-                              : {problem.length}개{" "}
-                              <strong className="text-2xl text-amber-500 font-bold">
-                                예상 소요 시간
-                              </strong>{" "}
-                              : {Math.trunc(totalTime() / 60)}분
-                            </p>
-                            <Group>
-                              <Button
-                                onClick={() => {
-                                  setModalOpened(true);
-                                }}
-                                className="mx-4 h-[60px] w-[200px]"
-                                variant="outline"
-                                gradient={{ from: "orange", to: "red" }}
-                                component="a"
-                                rel="noopener noreferrer"
-                                leftIcon={<Login size={38} />}
-                                styles={(theme: {
-                                  fn: {
-                                    darken: (arg0: string, arg1: number) => any;
-                                  };
-                                }) => ({
-                                  root: {
-                                    textDecoration: "none",
-                                    fontWeight: "bold",
-                                    fontSize: 20,
-                                    marginRight: 10,
-                                    color: "orange",
-                                    backgroundColor: "white",
-                                    border: "2px solid orange",
-                                    height: 42,
-
-                                    "&:hover": {
-                                      backgroundColor: theme.fn.darken(
-                                        "#FFFFFF",
-                                        0.05
-                                      ),
-                                    },
-                                  },
-
-                                  leftIcon: {
-                                    marginRight: 5,
-                                  },
-                                })}
-                              >
-                                방 만들기
-                              </Button>
-                              <Button
-                                className=" h-[60px] w-[200px] bg-orange-500"
-                                variant="gradient"
-                                gradient={{ from: "orange", to: "red" }}
-                                component="a"
-                                rel="noopener noreferrer"
-                                href="/create_rf"
-                                leftIcon={<Pencil size={38} />}
-                                styles={(theme) => ({
-                                  root: {
-                                    fontWeight: "bold",
-                                    fontSize: 20,
-                                    marginLeft: 5,
-                                    color: "white",
-                                    backgroundColor: "orange",
-                                    border: 0,
-                                    height: 42,
-
-                                    "&:hover": {},
-                                  },
-
-                                  leftIcon: {
-                                    marginRight: 5,
-                                  },
-                                })}
-                              >
-                                수정하기
-                              </Button>
-                            </Group>
-                          </Stack>
-                        </Group>
-                        <ScrollArea>
-                          {problem.map(({ title }, i) => {
-                            return (
-                              <p key={i} className="text-2xl font-bold">
-                                {i + 1}.&nbsp;
-                                {title}
-                              </p>
-                            );
-                          })}
-                        </ScrollArea>
-                      </Group>
-
-                      {/* ../public/globe_banner.png */}
-                    </Stack>
+                    <Avatar
+                      radius="xl"
+                      src={"h".concat(
+                        "ttps://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=250&q=80"
+                      )}
+                    />
+                    <Text>반가워요! 임준현님.</Text>
                   </Group>
-                </Group>
-                {/* 아미지 - 봉투 */}
-              </Group>
-              <h2 className="text-xl text-amber-500 font-bold">문제 관리</h2>
-              <Grid>
-                {" "}
-                {problemsets.map(
-                  ({ id, title, description, closingMent }, i) => {
-                    return Math.trunc(i / 8) !== activePage - 1 ? (
-                      <></>
-                    ) : (
-                      <Grid.Col className="border-2" span={3} key={i}>
-                        <Stack
-                          className={`cursor-pointer ${
-                            curIdx === i
-                              ? "border-2 border-amber-500 radius-lg"
-                              : ""
-                          }`}
-                          onClick={async () => {
-                            await getProblem(i + 1);
-                            await setCurIdx((prevState) => i);
-                          }}
-                          align="center"
-                          // className="border-solid border-2 border-amber-500"
-                        >
-                          <Group key={i} spacing={0}>
-                            <Group className="shadow-lg" spacing={0}>
-                              <Group className="border-r-2 border-gray-300 shadow-lg h-32 w-4 bg-amber-200" />
-                              <Group>
-                                <Stack spacing={0}>
-                                  <Group className="border-b-2 border-gray-300 m-0 p-0 h-16 w-48 bg-amber-200" />
-                                  <Group className=" m-0 p-0 h-16 w-48 bg-amber-200"></Group>
-                                </Stack>
-                              </Group>
-                            </Group>
-                            <Group className="shadow-lg m-0 p-0 h-28 w-8 bg-white"></Group>
+                  <Button leftIcon={<Plus></Plus>} color="orange">
+                    퀴즈 생성
+                  </Button>
+                  <TextInput placeholder="퀴즈를 탐색해보세요"></TextInput>
+                </Stack>
+              </Grid.Col>
+              <Grid.Col span={21}>
+                <Stack>
+                  <Stack className="h-[20vh] bg-gradient-to-r from-amber-500 via-amber-500 to-orange-500"></Stack>
+                  <Stack className="h-[20vh]"></Stack>
+                  <Stack>
+                    <Grid columns={48}>
+                      <Grid.Col span={16}></Grid.Col>
+                      <Grid.Col span={29}>
+                        <Stack className="h-[40vh]">
+                          <TextInput placeholder="찾으시는 퀴즈를 검색해보세요"></TextInput>
+                          <Group>
+                            <Text weight={500} size="xl">
+                              최근 생성
+                            </Text>
+                            <Text weight={0} size="xl">
+                              과목별
+                            </Text>
                           </Group>
-                          <p className="text-xl font-bold m-auto">{title}</p>
+                          <Grid className="h-[30vh]">
+                            {" "}
+                            {problemsets.map(
+                              ({ id, title, description, closingMent }, i) => {
+                                return Math.trunc(i / 8) !== activePage - 1 ? (
+                                  <></>
+                                ) : (
+                                  <Grid.Col span={3} key={i}>
+                                    <Stack
+                                      className={`py-4 cursor-pointer ${
+                                        curIdx === i
+                                          ? "border-2 border-amber-500 radius-lg"
+                                          : ""
+                                      }`}
+                                      onClick={async () => {
+                                        await getProblem(i + 1);
+                                        await setCurIdx((prevState) => i);
+                                      }}
+                                      align="center"
+                                      // className="border-solid border-2 border-amber-500"
+                                    >
+                                      <Group key={i} spacing={0}>
+                                        <Group
+                                          className="shadow-lg"
+                                          spacing={0}
+                                        >
+                                          <Group className="border-r-2 border-gray-300 shadow-lg h-24 w-4 bg-amber-200" />
+                                          <Group>
+                                            <Stack spacing={0}>
+                                              <Group className="border-b-2 border-gray-300 m-0 p-0 h-12 w-32 bg-amber-200" />
+                                              <Group className=" m-0 p-0 h-12 w-32 bg-amber-200"></Group>
+                                            </Stack>
+                                          </Group>
+                                        </Group>
+                                        <Group className="shadow-lg m-0 p-0 h-20 w-4 bg-white"></Group>
+                                      </Group>
+                                      <p className="text-xl font-bold m-auto">
+                                        {title}
+                                      </p>
+                                    </Stack>
+                                  </Grid.Col>
+                                );
+                              }
+                            )}
+                          </Grid>
+                          <Center>
+                            <Pagination
+                              color="orange"
+                              page={activePage}
+                              onChange={setPage}
+                              total={problemsets.length / 8}
+                            />
+                          </Center>
                         </Stack>
                       </Grid.Col>
-                    );
-                  }
-                )}
-              </Grid>
-              <Center>
-                <Pagination
-                  color="orange"
-                  page={activePage}
-                  onChange={setPage}
-                  total={problemsets.length / 8}
-                />
-              </Center>
-            </Stack>
+                      <Grid.Col span={3}></Grid.Col>
+                    </Grid>
+                  </Stack>
+                </Stack>
+              </Grid.Col>
+            </Grid>
           </Stack>
         </section>
+        <div className="fixed left-[20vw] top-[20vh]">
+          <Stack>
+            <Image
+              alt="hello"
+              className="shadow-lg cursor-pointer rounded-full"
+              src="/../public/dog.png"
+              width={"150px"}
+              height={"150px"}
+            ></Image>
+            <Text weight={500} size="xl">
+              임준현
+            </Text>
+            <Text weight={500} size="md">
+              @AimHigher77
+            </Text>
+            <Button>팔로우</Button>
+          </Stack>
+        </div>
+        <div className="fixed left-[40vw] top-[20vh]">
+          <Stack className="h-[25vh] h-52 w-[55vw] rounded-xl shadow-lg bg-white">
+            <Group className="justify-between">
+              <Group>
+                <Group>
+                  <Stack>
+                    <Group className="h-52 w-52 rounded-xl">
+                      {rightEnvelope(0)}
+                    </Group>
+                  </Stack>
+                </Group>
+                <Stack>
+                  <p className="font-bold text-2xl">
+                    {problemsets[curIdx].title === ""
+                      ? "아래에서 퀴즈를 선택하세요"
+                      : problemsets[curIdx].title}
+                  </p>
+                  <p className=" text-2xl">
+                    <strong className="text-2xl text-amber-500 font-bold">
+                      문제 수
+                    </strong>{" "}
+                    : {problem.length}개{" "}
+                    <strong className="text-2xl text-amber-500 font-bold">
+                      예상 소요 시간
+                    </strong>{" "}
+                    : {Math.trunc(totalTime() / 60)}분
+                  </p>
+                  <Group>
+                    <Button
+                      onClick={() => {
+                        setModalOpened(true);
+                      }}
+                      className="mx-4 h-[60px] w-[200px]"
+                      variant="outline"
+                      gradient={{ from: "orange", to: "red" }}
+                      component="a"
+                      rel="noopener noreferrer"
+                      leftIcon={<Login size={38} />}
+                      styles={(theme: {
+                        fn: {
+                          darken: (arg0: string, arg1: number) => any;
+                        };
+                      }) => ({
+                        root: {
+                          textDecoration: "none",
+                          fontWeight: "bold",
+                          fontSize: 20,
+                          marginRight: 10,
+                          color: "orange",
+                          backgroundColor: "white",
+                          border: "2px solid orange",
+                          height: 42,
+
+                          "&:hover": {
+                            backgroundColor: theme.fn.darken("#FFFFFF", 0.05),
+                          },
+                        },
+
+                        leftIcon: {
+                          marginRight: 5,
+                        },
+                      })}
+                    >
+                      방 만들기
+                    </Button>
+                    <Button
+                      className=" h-[60px] w-[200px] bg-orange-500"
+                      variant="gradient"
+                      gradient={{ from: "orange", to: "red" }}
+                      component="a"
+                      rel="noopener noreferrer"
+                      href="/create_rf"
+                      leftIcon={<Pencil size={38} />}
+                      styles={(theme) => ({
+                        root: {
+                          fontWeight: "bold",
+                          fontSize: 20,
+                          marginLeft: 5,
+                          color: "white",
+                          backgroundColor: "orange",
+                          border: 0,
+                          height: 42,
+
+                          "&:hover": {},
+                        },
+
+                        leftIcon: {
+                          marginRight: 5,
+                        },
+                      })}
+                    >
+                      수정하기
+                    </Button>
+                  </Group>
+                </Stack>
+              </Group>
+              <ScrollArea>
+                {problem.map(({ title }, i) => {
+                  return (
+                    <p key={i} className="text-2xl font-bold">
+                      {i + 1}.&nbsp;
+                      {title}
+                    </p>
+                  );
+                })}
+              </ScrollArea>
+            </Group>
+          </Stack>
+        </div>
       </main>
 
       <footer className={styles.footer}>

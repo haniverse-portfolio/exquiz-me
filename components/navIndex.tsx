@@ -2,6 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import Link from "next/link";
+import Image from "next/image";
 
 import {
   Button,
@@ -11,7 +12,6 @@ import {
   TextInput,
   Center,
   Container,
-  Image,
   Group,
 } from "@mantine/core";
 import {
@@ -36,102 +36,24 @@ function NavIndex() {
         boxShadow: "0 3px 4px -4px gray",
       }}
     >
-      <Button
-        className="h-[50px]"
-        component="a"
-        rel="noopener noreferrer"
-        href="/"
-        styles={(theme) => ({
-          root: {
-            fontWeight: "bold",
-            fontSize: 24,
-            marginLeft: 10,
-            paddingLeft: 0,
-            color: "black",
-            backgroundColor: "white",
-            border: 0,
-            height: 42,
-
-            "&:hover": {
-              backgroundColor: "white",
-              //backgroundColor: theme.fn.darken("#ffffff", 0.05),
-            },
-          },
-
-          leftIcon: {
-            marginRight: 0,
-          },
-        })}
-      >
-        exquiz.me
-      </Button>
+      <Link href="/index_rf">
+        <Image
+          className="cursor-pointer pl-8"
+          src="/../public/favicon.ico"
+          alt="Picture of the author"
+          width={50}
+          height={50}
+        />
+      </Link>
       <span>
-        <Button
-          className="h-[50px]"
-          onClick={() => {
-            alert("구독 연장까지 90일 남았습니다.");
-          }}
-          variant="outline"
-          gradient={{ from: "yellow", to: "orange" }}
-          component="a"
-          rel="noopener noreferrer"
-          href="#"
-          leftIcon={<ReportMoney size={32} />}
-          styles={(theme) => ({
-            root: {
-              fontWeight: "bold",
-              fontSize: 16,
-              paddingLeft: 15,
-              color: "orange",
-              border: "2px solid orange",
-              backgroundColor: "white",
-              height: 42,
-
-              "&:hover": {
-                backgroundColor: theme.fn.darken("#ffffff", 0.05),
-              },
-            },
-
-            leftIcon: {
-              marginRight: 5,
-            },
-          })}
-        >
+        <span className="p-4 text-lg font-bold cursor-pointer transition ease-in-out">
           멤버십
-        </Button>
-
-        <Button
-          className="h-[50px] bg-orange-500"
-          variant="gradient"
-          gradient={{ from: "orange", to: "red" }}
-          component="a"
-          rel="noopener noreferrer"
-          href="/#"
-          leftIcon={<UserCircle size={32} />}
-          onClick={() => {
-            alert("로그인 된 걸로 합시다");
-          }}
-          styles={(theme) => ({
-            root: {
-              fontWeight: "bold",
-              fontSize: 16,
-              marginLeft: 5,
-              marginRight: 10,
-              color: "white",
-              backgroundColor: "orange",
-              border: 0,
-              height: 42,
-
-              "&:hover": {},
-            },
-
-            leftIcon: {
-              marginRight: 5,
-            },
-          })}
-        >
-          로그인
-        </Button>
+        </span>
+        <Link href="/inbox_rf">
+          <span className="p-4 text-lg font-bold cursor-pointer transition ease-in-out">
+            로그인
+          </span>
+        </Link>
       </span>
     </Group>
   );

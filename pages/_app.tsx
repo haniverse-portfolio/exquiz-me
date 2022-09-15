@@ -1,8 +1,12 @@
 import { AppProps } from "next/app";
 import Head from "next/head";
-import { MantineProvider } from "@mantine/core";
+import { MantineProvider, createEmotionCache } from "@mantine/core";
 import "../styles/globals.css";
-import "tailwindcss/tailwind.css";
+
+const myCache = createEmotionCache({
+  key: "mantine",
+  prepend: false,
+});
 
 /*
 //Link
@@ -32,6 +36,7 @@ export default function App(props: AppProps) {
       </Head>
 
       <MantineProvider
+        emotionCache={myCache}
         withGlobalStyles
         withNormalizeCSS
         theme={{

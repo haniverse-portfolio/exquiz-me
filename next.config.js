@@ -6,6 +6,12 @@ const nextConfig = {
 
 module.exports = {
   images: {
-    domains: ["exquiz-image.s3.ap-northeast-2.amazonaws.com"],
+    domains: [
+      "exquiz-image.s3.ap-northeast-2.amazonaws.com",
+      "encrypted-tbn0.gstatic.com",
+      "exquiz.me",
+      "www.exquiz.me",
+    ],
+    // formats: ['image/avif', 'image/webp'],
   },
 };

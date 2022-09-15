@@ -6,59 +6,14 @@ import Link from "next/link";
 import { useState } from "react";
 import { useRef } from "react";
 import React, { useEffect } from "react";
-
+import { Button, Group, useMantineTheme, Stack, Grid } from "@mantine/core";
 import {
-  Button,
-  Grid,
-  SimpleGrid,
-  Input,
-  Card,
-  Text,
-  Badge,
-  Group,
-  useMantineTheme,
-  Center,
-  Tabs,
-  ThemeIcon,
-  Container,
-  Textarea,
-  Tooltip,
-  Stack,
-  Stepper,
-  ActionIcon,
-  Autocomplete,
-  TextInput,
-} from "@mantine/core";
-import {
-  Emphasis,
-  FileX,
-  Login,
-  ReportMoney,
-  UserCircle,
-  Pencil,
-  Archive,
-  BrowserPlus,
-  SquareCheck,
-  AB,
-  QuestionMark,
-  Apps,
-  Checkbox,
-  Parentheses,
-  Settings,
-  Plus,
-  Check,
-  Number1,
-  Number2,
-  Number3,
-  Circle,
-  Triangle,
-  X,
-  Folders,
-  ArrowBigRightLines,
-  Clock,
   Alarm,
   BellRinging,
+  Pencil,
+  ArrowBigRightLines,
 } from "tabler-icons-react";
+import { useDebouncedState } from "@mantine/hooks";
 
 const rightEnvelope = (subject: number) => {
   const subjectInfo = [
@@ -298,25 +253,178 @@ const Home: NextPage = () => {
       color: "orange",
       answer: false,
     },
+  ]);
+  let [problem, setProblem] = useState([
     {
-      nickname: "위대한 스티븐호킹",
-      animal: "Panda",
-      color: "orange",
-      answer: false,
+      answer: "0",
+      description: "🌋이 중 가장 무시무시한 공룡은?🏔",
+      dtype: "MultipleChoiceProblem",
+      idx: 0,
+      picture: "",
+      problemsetId: 0,
+      score: 125,
+      timelimit: 30,
+      title: "",
     },
     {
-      nickname: "입체적인 피카소",
-      animal: "Panda",
-      color: "orange",
-      answer: true,
+      answer: "0",
+      description: "우리나라에서 가장 높은 산은?",
+      dtype: "MultipleChoiceProblem",
+      idx: 0,
+      picture: "",
+      problemsetId: 0,
+      score: 125,
+      timelimit: 30,
+      title: "",
     },
     {
-      nickname: "성스러운 잔다르크",
-      animal: "Panda",
-      color: "orange",
-      answer: false,
+      answer: "0",
+      description: "아이스크림을 영어로 하면?",
+      dtype: "MultipleChoiceProblem",
+      idx: 0,
+      picture: "",
+      problemsetId: 0,
+      score: 125,
+      timelimit: 30,
+      title: "",
+    },
+    {
+      answer: "0",
+      description: "소프트웨어 마에스트로가 있는 빌딩은?",
+      dtype: "MultipleChoiceProblem",
+      idx: 0,
+      picture: "",
+      problemsetId: 0,
+      score: 125,
+      timelimit: 30,
+      title: "",
     },
   ]);
+  let [option, setOption] = useState([
+    [
+      {
+        description: "티라노사우루스",
+        idx: 0,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "트리케라톱스",
+        idx: 1,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "랩터",
+        idx: 2,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "스피노사우루스",
+        idx: 3,
+        picture: "",
+        problemId: 0,
+      },
+    ],
+    [
+      {
+        description: "설악산",
+        idx: 0,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "지리산",
+        idx: 1,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "한라산",
+        idx: 2,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "백두산",
+        idx: 3,
+        picture: "",
+        problemId: 0,
+      },
+    ],
+    [
+      {
+        description: "icecoffee",
+        idx: 0,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "icekekki",
+        idx: 1,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "icecream",
+        idx: 2,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "iceball",
+        idx: 3,
+        picture: "",
+        problemId: 0,
+      },
+    ],
+    [
+      {
+        description: "황해주택",
+        idx: 0,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "인하주택",
+        idx: 1,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "아남타워",
+        idx: 2,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "코엑스",
+        idx: 3,
+        picture: "",
+        problemId: 0,
+      },
+    ],
+  ]);
+  let [step, setStep] = useState(0);
+  let [time, setTime] = useDebouncedState(15, 1000);
+  let [curIdx, setCurIdx] = useState(0);
+  let [answer, setAnswer] = useState(-1);
+
+  useEffect(() => {
+    setTime(time - 1);
+  }, []);
+
+  useEffect(() => {
+    if (time <= 0) {
+      if (curIdx === problem.length) {
+        location.replace("/leaderboard_display_podium");
+      } else {
+        setStep((prevstate) => step + 1);
+        setCurIdx((prevState) => curIdx + 1);
+      }
+    } else setTime(time - 1);
+  }, [time]);
 
   useEffect(() => {
     setImage("/../public/dino_env.png");
@@ -330,65 +438,49 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main style={{ margin: "0px 10px" }}>
-        <section className="h-[86vh]">
+      <main>
+        <section className="h-[100vh]">
           <Stack className="items-center flex contents-between">
-            <Stack>
-              {/* 메인 배너 */}
-              <Stack className="mx-2">
+            {/* 메인 배너 */}
+            {step === 0 ? (
+              <Stack>
                 <Stack>
                   {/* ../public/globe_banner.png */}
                   <p className="underline decoration-amber-500 font-bold text-7xl text-center mt-10">
-                    🌋이 중 가장 무시무시한 공룡은?🏔
+                    {problem[curIdx].description}
                   </p>
-                  <Image src={image} width={600} height={400}></Image>
+                  <Image
+                    alt="hello"
+                    src={image}
+                    width={600}
+                    height={400}
+                  ></Image>
                   <Stack>
-                    <Group>
-                      <Button
-                        color="red"
-                        className="h-[20vh] w-[40vw]"
-                        variant="outline"
-                        onMouseOver={() => {
-                          setImage(
-                            (prevstate) => "/../public/tiranosaurus.png"
-                          );
-                        }}
-                        onMouseLeave={() => {
-                          setImage((prevstate) => "/../public/dino_env.png");
-                        }}
-                      >
-                        <p className="text-6xl">티라노사우루스</p>
-                      </Button>
-                      <Button
-                        className="h-[20vh] w-[40vw]"
-                        color="blue"
-                        variant="outline"
-                        onMouseOver={() => {
-                          setImage((prevstate) => "/../public/tri.jpeg");
-                        }}
-                        onMouseLeave={() => {
-                          setImage((prevstate) => "/../public/dino_env.png");
-                        }}
-                      >
-                        <p className="text-6xl">트리케라톱스</p>
-                      </Button>
-                    </Group>
-                    <Group>
-                      <Button
-                        className="h-[20vh] w-[40vw]"
-                        color="green"
-                        variant="outline"
-                      >
-                        <p className="text-6xl">한라산</p>
-                      </Button>
-                      <Button
-                        className="h-[20vh] w-[40vw]"
-                        color="yellow"
-                        variant="outline"
-                      >
-                        <p className="text-6xl">백두산</p>
-                      </Button>
-                    </Group>
+                    <Grid columns={24} justify="center" gutter="sm">
+                      {option.map((description, i) => {
+                        let color = ["red", "blue", "green", "orange"];
+                        let bgColor = "bg-" + color[i] + "-500";
+                        let hoverColor = "hover:" + bgColor;
+                        return (
+                          <Grid.Col key={i} span={12}>
+                            <Button
+                              onClick={() => {
+                                setAnswer(answer === i ? -1 : i);
+                              }}
+                              color={color[i]}
+                              className={`${
+                                answer === i ? "shadow-inner text-white" : ""
+                              } shadow-lg h-28 ${
+                                answer === i ? hoverColor : ""
+                              } w-full  ${answer === i ? bgColor : ""}`}
+                              variant="outline"
+                            >
+                              {option[curIdx][i].description}
+                            </Button>
+                          </Grid.Col>
+                        );
+                      })}
+                    </Grid>
                   </Stack>
                 </Stack>
 
@@ -396,6 +488,9 @@ const Home: NextPage = () => {
                 <Stack>
                   <Group className="justify-between">
                     <Button
+                      onClick={() => {
+                        if (time <= 50) setTime(time + 10);
+                      }}
                       className="mx-4 h-[60px] w-[200px]"
                       variant="outline"
                       gradient={{ from: "orange", to: "red" }}
@@ -427,9 +522,12 @@ const Home: NextPage = () => {
                     >
                       시간 연장 +10
                     </Button>
-                    <p className="font-bold text-4xl text-red-500">00:05</p>
+                    <p className="font-bold text-4xl text-red-500">{time}</p>
 
                     <Button
+                      onClick={() => {
+                        setTime(0);
+                      }}
                       className=" h-[60px] w-[200px] bg-orange-500"
                       variant="gradient"
                       gradient={{ from: "orange", to: "red" }}
@@ -459,7 +557,242 @@ const Home: NextPage = () => {
                   </Group>
                 </Stack>
               </Stack>
-            </Stack>
+            ) : (
+              <></>
+            )}
+            {step === 1 ? (
+              <Stack>
+                <Stack>
+                  {/* ../public/globe_banner.png */}
+                  <p className="underline decoration-amber-500 font-bold text-7xl text-center mt-10">
+                    {problem[curIdx].description}
+                  </p>
+                  <Image
+                    alt="hello"
+                    src={image}
+                    width={600}
+                    height={400}
+                  ></Image>
+                  <Stack>
+                    <Grid columns={24} justify="center" gutter="sm">
+                      {option.map((description, i) => {
+                        let color = ["red", "blue", "green", "orange"];
+                        let bgColor = "bg-" + color[i] + "-500";
+                        let hoverColor = "hover:" + bgColor;
+                        return (
+                          <Grid.Col key={i} span={12}>
+                            <Button
+                              onClick={() => {
+                                setAnswer(answer === i ? -1 : i);
+                              }}
+                              color={color[i]}
+                              className={`${
+                                answer === i ? "shadow-inner text-white" : ""
+                              } shadow-lg h-28 ${
+                                answer === i ? hoverColor : ""
+                              } w-full  ${answer === i ? bgColor : ""}`}
+                              variant="outline"
+                            >
+                              {option[curIdx][i].description}
+                            </Button>
+                          </Grid.Col>
+                        );
+                      })}
+                    </Grid>
+                  </Stack>
+                </Stack>
+
+                <br></br>
+                <Stack>
+                  <Group className="justify-between">
+                    <Button
+                      onClick={() => {
+                        setStep(step + 1);
+                      }}
+                      className="mx-4 h-[60px] w-[200px]"
+                      variant="outline"
+                      gradient={{ from: "orange", to: "red" }}
+                      component="a"
+                      rel="noopener noreferrer"
+                      rightIcon={<Alarm size={38} />}
+                      styles={(theme: {
+                        fn: { darken: (arg0: string, arg1: number) => any };
+                      }) => ({
+                        root: {
+                          textDecoration: "none",
+                          fontWeight: "bold",
+                          fontSize: 20,
+                          marginRight: 10,
+                          color: "orange",
+                          backgroundColor: "white",
+                          border: "2px solid orange",
+                          height: 42,
+
+                          "&:hover": {
+                            backgroundColor: theme.fn.darken("#FFFFFF", 0.05),
+                          },
+                        },
+
+                        leftIcon: {
+                          marginRight: 5,
+                        },
+                      })}
+                    >
+                      순위 변동
+                    </Button>
+
+                    <Button
+                      onClick={() => {
+                        setStep(step - 1);
+                      }}
+                      className=" h-[60px] w-[200px] bg-orange-500"
+                      variant="gradient"
+                      gradient={{ from: "orange", to: "red" }}
+                      component="a"
+                      rel="noopener noreferrer"
+                      leftIcon={<BellRinging size={38} />}
+                      styles={(theme) => ({
+                        root: {
+                          fontWeight: "bold",
+                          fontSize: 20,
+                          marginLeft: 5,
+                          color: "white",
+                          backgroundColor: "orange",
+                          border: 0,
+                          height: 42,
+
+                          "&:hover": {},
+                        },
+
+                        leftIcon: {
+                          marginRight: 5,
+                        },
+                      })}
+                    >
+                      다음으로
+                    </Button>
+                  </Group>
+                </Stack>
+              </Stack>
+            ) : (
+              <></>
+            )}
+
+            {step === 2 ? (
+              <Stack>
+                {/* 메인 배너 */}
+                <Stack className="mx-40">
+                  <Stack>
+                    {/* ../public/globe_banner.png */}
+                    <p className="underline decoration-amber-500 font-bold text-6xl text-left mt-10">
+                      정답자 수는?
+                    </p>
+                    <p className="font-bold text-6xl text-left mb-10">
+                      27명 중 <strong className="text-amber-500">9명</strong>
+                    </p>
+                  </Stack>
+                  <Stack>
+                    <Group>
+                      {status.map((cur, i) => {
+                        let color;
+                        return (
+                          <Stack key={i}>
+                            <Group
+                              className={`h-32 w-32 rounded-xl border-2 ${
+                                cur.answer === false ? "bg-gray-200" : ""
+                              }`}
+                            >
+                              <Group></Group>
+                            </Group>
+                            <p
+                              className={`text-center ${
+                                cur.answer === false ? "text-gray-400" : ""
+                              }`}
+                            >
+                              {cur.nickname}
+                            </p>
+                          </Stack>
+                        );
+                      })}
+                    </Group>
+                  </Stack>
+                  <br></br>
+                  <Stack>
+                    <Group className="justify-between">
+                      <Button
+                        onClick={() => {
+                          setStep(1);
+                        }}
+                        className=" h-[60px] w-[200px] bg-orange-500"
+                        variant="gradient"
+                        gradient={{ from: "orange", to: "red" }}
+                        component="a"
+                        rel="noopener noreferrer"
+                        href="/inbox"
+                        leftIcon={<Pencil size={38} />}
+                        styles={(theme) => ({
+                          root: {
+                            fontWeight: "bold",
+                            fontSize: 20,
+                            marginLeft: 5,
+                            color: "white",
+                            backgroundColor: "orange",
+                            border: 0,
+                            height: 42,
+
+                            "&:hover": {},
+                          },
+
+                          leftIcon: {
+                            marginRight: 5,
+                          },
+                        })}
+                      >
+                        해설하기
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          setStep(0);
+                        }}
+                        className="mx-4 h-[60px] w-[200px]"
+                        variant="outline"
+                        gradient={{ from: "orange", to: "red" }}
+                        component="a"
+                        rel="noopener noreferrer"
+                        href="/create_rf"
+                        rightIcon={<ArrowBigRightLines size={38} />}
+                        styles={(theme: {
+                          fn: { darken: (arg0: string, arg1: number) => any };
+                        }) => ({
+                          root: {
+                            textDecoration: "none",
+                            fontWeight: "bold",
+                            fontSize: 20,
+                            marginRight: 10,
+                            color: "orange",
+                            backgroundColor: "white",
+                            border: "2px solid orange",
+                            height: 42,
+
+                            "&:hover": {
+                              backgroundColor: theme.fn.darken("#FFFFFF", 0.05),
+                            },
+                          },
+
+                          leftIcon: {
+                            marginRight: 5,
+                          },
+                        })}
+                      >
+                        다음 문제
+                      </Button>
+                    </Group>
+                  </Stack>
+                </Stack>
+              </Stack>
+            ) : (
+              <></>
+            )}
           </Stack>
           <br />
           <br />

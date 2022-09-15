@@ -16,11 +16,12 @@ import {
   TextInput,
   Modal,
   ColorSwatch,
+  ActionIcon,
 } from "@mantine/core";
 
 import { useScrollIntoView } from "@mantine/hooks";
 
-import { Refresh } from "tabler-icons-react";
+import { Refresh, ArrowNarrowLeft } from "tabler-icons-react";
 
 import { copyFileSync } from "fs";
 import { errorMonitor } from "events";
@@ -173,261 +174,250 @@ const Home: NextPage = () => {
         title="핀 번호를 입력해주세요"
       ></Modal>
 
-      <section className={`w-full h-full`}>
+      <Stack>
         <Center>
-          <Center className=" my-2 h-[98.3vh]">
-            <Stack>
-              {/* main */}
-              {step === 0 ? (
-                <Group>
-                  <Center>
-                    <Stack>
-                      <Center>
-                        <Stack>
-                          {/* Navigation Bar */}
-                          <p className="underline decoration-amber-500 font-bold text-2xl text-left mt-10">
-                            실시간 퀴즈 플랫폼
-                          </p>
-                          <p className="font-bold text-2xl text-left">
-                            exquiz.me
-                          </p>
-                        </Stack>
-                      </Center>
+          <Stack>
+            {/* main */}
+            {step === 0 ? (
+              <Group>
+                <Center>
+                  <Stack>
+                    <Center>
                       <Stack>
-                        <Center>
-                          <Group spacing={0}>
-                            <Group className="shadow-lg" spacing={0}>
-                              <Group className="border-r-2 border-gray-300 shadow-lg h-28 w-4 bg-amber-200" />
-                              <Group>
-                                <Stack spacing={0}>
-                                  <Group className="border-b-2 border-gray-300 m-0 p-0 h-14 w-40 bg-amber-200"></Group>
-                                  <Group
-                                    spacing={2}
-                                    className=" m-0 p-0 h-14 w-40 bg-amber-200"
-                                  >
-                                    <Group
-                                      className={`mx-1 text-white cursor-pointer w-12 h-12 bg-gradient-to-r from-blue-500 to-green-500 rounded-full`}
-                                    >
-                                      <p className="text-xs m-auto">학생용</p>
-                                    </Group>
-                                    <Group
-                                      className={`mx-0 text-white cursor-pointer w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full`}
-                                    >
-                                      <p className="text-xs m-auto">모바일</p>
-                                    </Group>
-                                  </Group>
-                                </Stack>
-                              </Group>
-                            </Group>
-                            <Group className="shadow-lg m-0 p-0 h-24 w-6 bg-white"></Group>
-                          </Group>
-                        </Center>
-                        <Center>
-                          <Stack>
-                            <TextInput placeholder="핀 번호를 입력하세요"></TextInput>
-                            <Button
-                              onClick={() => {
-                                setStep((prevState) => step + 1);
-                              }}
-                              color="orange"
-                              variant="outline"
-                            >
-                              입장하기
-                            </Button>
-                          </Stack>
-                        </Center>
-
-                        <footer className={styles.footer}>
-                          <a
-                            className="text-gray-700 no-underline text-black text-sm font-semibold"
-                            href="/apiTest"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            Team MUMOMU
-                          </a>
-                        </footer>
+                        {/* Navigation Bar */}
+                        <p className="underline decoration-amber-500 font-bold text-2xl text-left mt-10">
+                          실시간 퀴즈 플랫폼
+                        </p>
+                        <p className="font-bold text-2xl text-left">
+                          exquiz.me
+                        </p>
                       </Stack>
-                    </Stack>
-                  </Center>
-                </Group>
-              ) : (
-                <></>
-              )}
-
-              {/* main */}
-              {step === 1 ? (
-                <Group>
-                  <Center>
+                    </Center>
                     <Stack>
                       <Center>
+                        <Group spacing={0}>
+                          <Group className="shadow-lg" spacing={0}>
+                            <Group className="border-r-2 border-gray-300 shadow-lg h-28 w-4 bg-amber-200" />
+                            <Group>
+                              <Stack spacing={0}>
+                                <Group className="border-b-2 border-gray-300 m-0 p-0 h-14 w-40 bg-amber-200"></Group>
+                                <Group
+                                  spacing={2}
+                                  className=" m-0 p-0 h-14 w-40 bg-amber-200"
+                                >
+                                  <Group
+                                    className={`mx-1 text-white cursor-pointer w-12 h-12 bg-gradient-to-r from-blue-500 to-green-500 rounded-full`}
+                                  >
+                                    <p className="text-xs m-auto">학생용</p>
+                                  </Group>
+                                  <Group
+                                    className={`mx-0 text-white cursor-pointer w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full`}
+                                  >
+                                    <p className="text-xs m-auto">모바일</p>
+                                  </Group>
+                                </Group>
+                              </Stack>
+                            </Group>
+                          </Group>
+                          <Group className="shadow-lg m-0 p-0 h-24 w-6 bg-white"></Group>
+                        </Group>
+                      </Center>
+                      <Center>
                         <Stack>
-                          {/* Navigation Bar */}
-                          <p className="font-bold text-md text-left">
-                            닉네임 설정
-                          </p>
-                          {
-                            <TextInput
-                              value={nickname}
-                              onChange={(event) => {
-                                setNickname(
-                                  (prevState) => event.currentTarget.value
-                                );
-                              }}
-                              placeholder="똑똑한 소크라테스"
-                            ></TextInput>
-                          }
+                          <TextInput placeholder="핀 번호를 입력하세요"></TextInput>
                           <Button
                             onClick={() => {
-                              let arr = [
-                                "성찰하는 소크라테스",
-                                "고뇌하는 니체",
-                                "엉뚱한 튜링",
-                                "활기찬 뉴턴",
-                                "명랑한 브라헤",
-                                "정의로운 보어",
-                                "창의적인 레오나르도",
-                                "사색하는 공자",
-                                "부유한 스미스",
-                                "정직한 데카르트",
-                                "슬기로운 세종",
-                                "유능한 한신",
-                                "전설적인 칸",
-                                "전략적인 제갈공명",
-                                "신박한 유레카",
-                                "듬직한 테슬라",
-                                "명석한 칼세이건",
-                                "건강한 클레오파트라",
-                                "용감한 이순신",
-                                "공평한 링컨",
-                                "신속한 나폴레옹",
-                                "뛰어난 워렌버핏",
-                                "비장한 스티브잡스",
-                                "신들린 모차르트",
-                                "감각적인 고흐",
-                                "독보적인 내쉬",
-                                "헌신적인 테레사",
-                                "위대한 스티븐호킹",
-                                "입체적인 피카소",
-                                "성스러운 잔다르크",
-                              ];
-                              setNickname(
-                                arr[
-                                  Math.floor(Math.random() * (arr.length - 1)) +
-                                    1
-                                ]
-                              );
+                              setStep((prevState) => step + 1);
                             }}
                             color="orange"
                             variant="outline"
-                            leftIcon={<Refresh />}
                           >
-                            랜덤 닉네임 생성
+                            입장하기
                           </Button>
                         </Stack>
                       </Center>
-                      <Stack>
-                        <Center>
-                          <Stack>
-                            <p className="px-14 font-bold text-md text-left">
-                              아바타 선택
-                            </p>
-                            {swatch()}
-                            <Center>
-                              <Stack>
-                                <ScrollArea
-                                  scrollbarSize={0}
-                                  style={{ width: 180 }}
-                                >
-                                  <Group style={{ width: 700 }}>
-                                    <Image
-                                      className="rounded-full"
-                                      src="/../public/rat.png"
-                                      width={"50px"}
-                                      height={"50px"}
-                                    ></Image>
-                                    <Image
-                                      className="rounded-full"
-                                      src="/../public/fox.png"
-                                      width={"50px"}
-                                      height={"50px"}
-                                    ></Image>
-                                    <Image
-                                      className="rounded-full"
-                                      src="/../public/dog.png"
-                                      width={"50px"}
-                                      height={"50px"}
-                                    ></Image>
-                                    <Image
-                                      className="rounded-full"
-                                      src="/../public/dog2.png"
-                                      width={"50px"}
-                                      height={"50px"}
-                                    ></Image>
-                                    <Image
-                                      className="rounded-full"
-                                      src="/../public/koala.png"
-                                      width={"50px"}
-                                      height={"50px"}
-                                    ></Image>
-                                    <Image
-                                      className="rounded-full"
-                                      src="/../public/monkey.png"
-                                      width={"50px"}
-                                      height={"50px"}
-                                    ></Image>
-                                  </Group>
-                                </ScrollArea>
-                              </Stack>
-                            </Center>
 
-                            <Center>
-                              <Stack>
-                                <Link href="/play">
-                                  <Button color="orange" variant="outline">
-                                    준비 완료
-                                  </Button>
-                                </Link>
-                              </Stack>
-                            </Center>
-                          </Stack>
-                        </Center>
-                        <Center>
-                          <footer className={styles.footer}>
-                            <a
-                              className="text-gray-700 no-underline text-black text-sm font-semibold"
-                              href="/apiTest"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              Team MUMOMU
-                            </a>
-                          </footer>
-                        </Center>
+                      <footer className={styles.footer}>
+                        <a
+                          className="text-gray-700 no-underline text-black text-sm font-semibold"
+                          href="/apiTest"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Team MUMOMU
+                        </a>
+                      </footer>
+                    </Stack>
+                  </Stack>
+                </Center>
+              </Group>
+            ) : (
+              <></>
+            )}
+
+            {/* main */}
+            {step === 1 ? (
+              <Group>
+                <Stack>
+                  <Stack>
+                    <ActionIcon
+                      onClick={() => {
+                        setStep((prevState) => 0);
+                      }}
+                    >
+                      <ArrowNarrowLeft></ArrowNarrowLeft>
+                    </ActionIcon>
+                    {/* Navigation Bar */}
+                    <p className="font-bold text-md text-left">닉네임 설정</p>
+                    {
+                      <TextInput
+                        value={nickname}
+                        onChange={(event) => {
+                          setNickname((prevState) => event.currentTarget.value);
+                        }}
+                        placeholder="똑똑한 소크라테스"
+                      ></TextInput>
+                    }
+                    <Button
+                      onClick={() => {
+                        let arr = [
+                          "성찰하는소크라테스",
+                          "고뇌하는니체",
+                          "엉뚱한튜링",
+                          "활기찬뉴턴",
+                          "명랑한브라헤",
+                          "정의로운보어",
+                          "창의적인레오나르도",
+                          "사색하는공자",
+                          "부유한스미스",
+                          "정직한데카르트",
+                          "슬기로운세종",
+                          "유능한한신",
+                          "전설적인칸",
+                          "전략적인제갈공명",
+                          "신박한유레카",
+                          "듬직한테슬라",
+                          "명석한칼세이건",
+                          "건강한클레오파트라",
+                          "용감한이순신",
+                          "공평한링컨",
+                          "신속한나폴레옹",
+                          "뛰어난워렌버핏",
+                          "비장한스티브잡스",
+                          "신들린모차르트",
+                          "감각적인고흐",
+                          "독보적인내쉬",
+                          "헌신적인테레사",
+                          "위대한스티븐호킹",
+                          "입체적인피카소",
+                          "성스러운잔다르크",
+                        ];
+                        setNickname(
+                          arr[Math.floor(Math.random() * (arr.length - 1)) + 1]
+                        );
+                      }}
+                      color="orange"
+                      variant="outline"
+                      leftIcon={<Refresh />}
+                    >
+                      랜덤 닉네임 생성
+                    </Button>
+                  </Stack>
+                  <Stack>
+                    <Stack>
+                      <p className="px-14 font-bold text-md text-left">
+                        아바타 선택
+                      </p>
+                      {swatch()}
+                      <Stack>
+                        <ScrollArea scrollbarSize={0} style={{ width: 180 }}>
+                          <Group style={{ width: 700 }}>
+                            <Image
+                              alt="hello"
+                              className="cursor-pointer rounded-full"
+                              src="/../public/rat.png"
+                              width={"50px"}
+                              height={"50px"}
+                            ></Image>
+                            <Image
+                              alt="hello"
+                              className="cursor-pointer rounded-full"
+                              src="/../public/fox.png"
+                              width={"50px"}
+                              height={"50px"}
+                            ></Image>
+                            <Image
+                              alt="hello"
+                              className="cursor-pointer rounded-full"
+                              src="/../public/dog.png"
+                              width={"50px"}
+                              height={"50px"}
+                            ></Image>
+                            <Image
+                              alt="hello"
+                              className="cursor-pointer rounded-full"
+                              src="/../public/dog2.png"
+                              width={"50px"}
+                              height={"50px"}
+                            ></Image>
+                            <Image
+                              alt="hello"
+                              className="cursor-pointer rounded-full"
+                              src="/../public/koala.png"
+                              width={"50px"}
+                              height={"50px"}
+                            ></Image>
+                            <Image
+                              alt="hello"
+                              className="cursor-pointer rounded-full"
+                              src="/../public/monkey.png"
+                              width={"50px"}
+                              height={"50px"}
+                            ></Image>
+                          </Group>
+                        </ScrollArea>
+                      </Stack>
+
+                      <Stack>
+                        <Link href="/play">
+                          <Button color="orange" variant="filled">
+                            준비 완료
+                          </Button>
+                        </Link>
                       </Stack>
                     </Stack>
-                  </Center>
-                </Group>
-              ) : (
-                <></>
-              )}
+                    <footer className={styles.footer}>
+                      <a
+                        className="text-gray-700 no-underline text-black text-sm font-semibold"
+                        href="/apiTest"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        Team MUMOMU
+                      </a>
+                    </footer>
+                  </Stack>
+                </Stack>
+              </Group>
+            ) : (
+              <></>
+            )}
 
-              {/* caching tailwind css */}
-              <Group className=" bg-gradient-to-r shadow-[inset_0_-2px_4px_rgba(128,128,128,0.8)] border-gray-500 from-gray-500 to-gray-500 w-0 h-0" />
-              <Group className="bg-gradient-to-r border-orange-500 from-orange-500 to-red-500 w-0 h-0" />
-              <Group className="bg-gradient-to-r border-blue-500 from-blue-500 to-green-500 w-0 h-0" />
-              <Group className="bg-gradient-to-r border-violet-500 from-violet-500 to-orange-500 w-0 h-0" />
-              <Group className="bg-gradient-to-r border-yellow-500 from-yellow-500 to-orange-500 w-0 h-0" />
-              <Group className="bg-gradient-to-r border-gray-500 from-gray-400 to-gray-400 w-0 h-0" />
-              <Group className="bg-gradient-to-r border-red-500 from-red-500 to-orange-500 w-0 h-0" />
-              <Group className="bg-gradient-to-r border-blue-500 from-blue-700 to-blue-500 w-0 h-0" />
-              <Group className="bg-gradient-to-r border-green-500 from-green-500 to-lime-500 w-0 h-0" />
-              <Group className="bg-gradient-to-r border-amber-500 from-amber-500 to-yellow-400 w-0 h-0" />
-              <Group className="bg-gradient-to-r border-violet-500 from-violet-700 to-fuchsia-600 w-0 h-0" />
-            </Stack>
-          </Center>
+            {/* caching tailwind css */}
+            <Group className=" bg-gradient-to-r shadow-[inset_0_-2px_4px_rgba(128,128,128,0.8)] border-gray-500 from-gray-500 to-gray-500 w-0 h-0" />
+            <Group className="bg-gradient-to-r border-orange-500 from-orange-500 to-red-500 w-0 h-0" />
+            <Group className="bg-gradient-to-r border-blue-500 from-blue-500 to-green-500 w-0 h-0" />
+            <Group className="bg-gradient-to-r border-violet-500 from-violet-500 to-orange-500 w-0 h-0" />
+            <Group className="bg-gradient-to-r border-yellow-500 from-yellow-500 to-orange-500 w-0 h-0" />
+            <Group className="bg-gradient-to-r border-gray-500 from-gray-400 to-gray-400 w-0 h-0" />
+            <Group className="bg-gradient-to-r border-red-500 from-red-500 to-orange-500 w-0 h-0" />
+            <Group className="bg-gradient-to-r border-blue-500 from-blue-700 to-blue-500 w-0 h-0" />
+            <Group className="bg-gradient-to-r border-green-500 from-green-500 to-lime-500 w-0 h-0" />
+            <Group className="bg-gradient-to-r border-amber-500 from-amber-500 to-yellow-400 w-0 h-0" />
+            <Group className="bg-gradient-to-r border-violet-500 from-violet-700 to-fuchsia-600 w-0 h-0" />
+          </Stack>
         </Center>
-      </section>
+      </Stack>
     </div>
   );
 };

@@ -5,24 +5,8 @@ import styles from "../styles/Home.module.css";
 import NavIndex from "../components/navIndex";
 import { useState } from "react";
 
-import {
-  Button,
-  Group,
-  useMantineTheme,
-  Stack,
-  ActionIcon,
-  ThemeIcon,
-} from "@mantine/core";
-import {
-  Pencil,
-  Folders,
-  ChevronLeft,
-  ChevronRight,
-  Triangle,
-  Circle,
-  X,
-  Square,
-} from "tabler-icons-react";
+import { Button, Group, useMantineTheme, Stack } from "@mantine/core";
+import { Pencil, Folders } from "tabler-icons-react";
 
 const rightEnvelope = (subject: number) => {
   const subjectInfo = [
