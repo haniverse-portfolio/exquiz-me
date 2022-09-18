@@ -2,10 +2,10 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
-import NavIndex from "../components/navIndex";
+import NavIndex from "../components/NavIndex";
 import { useState } from "react";
 
-import { Button, Group, useMantineTheme, Stack } from "@mantine/core";
+import { Button, Group, useMantineTheme, Stack, Text } from "@mantine/core";
 import { Pencil, Folders } from "tabler-icons-react";
 
 const rightEnvelope = (subject: number) => {
@@ -91,147 +91,23 @@ const Home: NextPage = () => {
 
       <header>{NavIndex()}</header>
 
-      <main style={{ margin: "0px 10px" }}>
+      <main style={{ margin: "0px" }}>
         <section className="h-[86vh]">
           <Stack className="items-center flex contents-between">
-            <Stack>
-              {/* 메인 배너 */}
-              <Group spacing={200}>
-                <Group>
-                  <Group>
-                    <Stack>
-                      {/* <Image
-                        src="/../public/globe_banner.png"
-                        width={500}
-                        height={300}
-                      >
-                        </Image> */}
-                      {/* ../public/globe_banner.png */}
-
-                      <p className="underline decoration-amber-500 font-bold text-6xl text-left mt-10">
-                        퀴즈의 새로운 경험을 제시하다
-                      </p>
-                      <p className="font-bold text-6xl text-left mb-10">
-                        exquiz.me
-                      </p>
-                      {/* <Image
+            <Stack className="items-center h-[40vh] w-[100vw] bg-gradient-to-r from-amber-500 via-amber-500 to-orange-500">
+              <p className="mx-auto text-white drop-shadow-lg font-bold text-6xl mt-10">
+                퀴즈의 새로운 경험을 제시하다
+              </p>
+            </Stack>
+            <p className="mx-auto font-bold drop-shadow-md underline decoration-amber-500 text-6xl mb-10">
+              exquiz.me
+            </p>
+            {/* <Image
                         src="https://exquiz-image.s3.ap-northeast-2.amazonaws.com/static/KakaoTalk_Photo_2022-08-25-00-59-41.png"
                         alt="Picture of the author"
                         width={500}
                         height={500}
                       /> */}
-
-                      <Group className="mb-10">
-                        <Button
-                          className="mx-4 h-[60px] w-[200px]"
-                          variant="outline"
-                          gradient={{ from: "orange", to: "red" }}
-                          component="a"
-                          rel="noopener noreferrer"
-                          href="/create"
-                          leftIcon={<Pencil size={38} />}
-                          styles={(theme: {
-                            fn: { darken: (arg0: string, arg1: number) => any };
-                          }) => ({
-                            root: {
-                              textDecoration: "none",
-                              fontWeight: "bold",
-                              fontSize: 20,
-                              marginRight: 10,
-                              color: "orange",
-                              backgroundColor: "white",
-                              border: "2px solid orange",
-                              height: 42,
-
-                              "&:hover": {
-                                backgroundColor: theme.fn.darken(
-                                  "#FFFFFF",
-                                  0.05
-                                ),
-                              },
-                            },
-
-                            leftIcon: {
-                              marginRight: 5,
-                            },
-                          })}
-                        >
-                          문제 제작하기
-                        </Button>
-                        <Button
-                          className=" h-[60px] w-[200px] bg-orange-500"
-                          variant="gradient"
-                          gradient={{ from: "orange", to: "red" }}
-                          component="a"
-                          rel="noopener noreferrer"
-                          href="/inbox"
-                          leftIcon={<Folders size={38} />}
-                          styles={(theme) => ({
-                            root: {
-                              fontWeight: "bold",
-                              fontSize: 20,
-                              marginLeft: 5,
-                              color: "white",
-                              backgroundColor: "orange",
-                              border: 0,
-                              height: 42,
-
-                              "&:hover": {},
-                            },
-
-                            leftIcon: {
-                              marginRight: 5,
-                            },
-                          })}
-                        >
-                          퀴즈 관리하기
-                        </Button>
-                      </Group>
-                    </Stack>
-                  </Group>
-                </Group>
-                {/* 아미지 - 봉투 */}
-                <Stack className="mt-32">
-                  <Group className="justify-between">
-                    {rightEnvelope(0)}
-                    {rightEnvelope(0)}
-                    {rightEnvelope(0)}
-                    {rightEnvelope(0)}
-                  </Group>
-                  <Stack className="h-4 bg-amber-500"></Stack>
-                  <Image
-                    className="border-2 border-amber-500"
-                    src="/../public/index_preview.png"
-                    alt="Picture of the author"
-                    width={700}
-                    height={350}
-                  />
-                  <Stack className="h-4 bg-amber-500"></Stack>
-                  {/* <Group className="cursor-pointer" spacing={0}>
-                    <Group className="shadow-lg" spacing={0}>
-                      <Group className="border-r-2 border-gray-300 shadow-lg h-72 w-16 bg-amber-200" />
-                      <Group>
-                        <Stack spacing={0}>
-                          <Group className="border-b-2 border-gray-300 m-0 p-0 h-36 w-96 bg-amber-200"></Group>
-                          <Group
-                            spacing={2}
-                            className=" m-0 p-0 h-36 w-96 bg-amber-200"
-                          ></Group>
-                        </Stack>
-                      </Group>
-                    </Group>
-                    <Group className="shadow-lg m-0 p-0 h-64 w-16 bg-white"></Group>
-                  </Group> */}
-
-                  <Group className="justify-between">
-                    {leftEnvelope(1)}
-                    {leftEnvelope(2)}
-                    {leftEnvelope(3)}
-                    {leftEnvelope(4)}
-                  </Group>
-                </Stack>
-              </Group>
-            </Stack>
           </Stack>
           <br />
           <br />
@@ -264,12 +140,6 @@ const Home: NextPage = () => {
           Copyright ⓒ 2022 exquiz.me | Team MUMOMU
         </a>
       </footer>
-      <Stack className="fixed bottom-[50vh] right-[2vw]">
-        <Group className="h-4 w-4 bg-gray-500 rounded-full"></Group>
-        <Group className="h-4 w-4 bg-gray-500 rounded-full"></Group>
-        <Group className="h-4 w-4 bg-gray-500 rounded-full"></Group>
-        <Group className="h-4 w-4 bg-gray-500 rounded-full"></Group>
-      </Stack>
     </div>
   );
 };

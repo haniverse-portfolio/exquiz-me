@@ -154,13 +154,6 @@ const Home: NextPage = () => {
         <Center className="h-[100vh]">
           {/* main */}
           <Stack>
-            <Alert
-              icon={<AlertCircle size={16} />}
-              title="정답을 선택해주세요"
-              color="red"
-            >
-              1개 중 0개 선택됨
-            </Alert>
             <Grid justify="center" gutter="sm">
               {option.map((description, i) => {
                 let color = ["red", "blue", "green", "orange"];

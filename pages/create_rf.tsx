@@ -1,12 +1,32 @@
-import { useState } from "react";
+import axios from "axios";
+import React, { useState, useEffect } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import axios from "axios";
-import Image from "next/image";
-import React, { useEffect } from "react";
+import { useRecoilState } from "recoil";
+import {
+  createImageList,
+  createImageURL,
+  createIsImageLoading,
+  createOption,
+  createProblem,
+  createProblemIdx,
+  createProblemset,
+  createScore,
+  createStep,
+  createTabCurrentIdx,
+  createTabNextIdx,
+  createTargetIdx,
+  createTimelimit,
+} from "../components/States";
+import {
+  dtypeName,
+  connectServerApiAddress,
+  tabTooltip,
+  MARKSCORE,
+  MARKSTIME,
+} from "../components/ConstValues";
 import { useDebouncedState } from "@mantine/hooks";
-
 import {
   Button,
   Tooltip,
@@ -49,146 +69,71 @@ import {
   FileUpload,
   GridDots,
   AlertTriangle,
-  ChevronDown,
-  Rotate,
-  CircleCheck,
   CornerDownRight,
   ArrowNarrowLeft,
 } from "tabler-icons-react";
 
-{
-  /* custom converter */
-}
-const idxToString = [
-  "MultipleChoiceProblem",
-  "subjective",
-  "ox",
-  "nonsense",
-  "dynamic",
-  "empty",
-];
-
-const connectServerApiAddress = "https://prod.exquiz.me/";
-
-function stringToIdx(x: string) {
-  let rt = 0;
-  if (x === "MultipleChoiceProblem") rt = 0;
-  if (x === "subjective") rt = 1;
-  if (x === "ox") rt = 2;
-  if (x === "nonsense") rt = 3;
-  if (x === "dynamic") rt = 4;
-  if (x === "empty") rt = 5;
-  return rt;
-}
-// MathAvg, SquareCheck, Parentheses, AB, QuestionMark, Apps,
-const delay = (ms: number | undefined) =>
-  new Promise((res) => setTimeout(res, ms));
-
-// 빈 슬라이드 객관식 주관식 O/X 넌센스 다이나믹
 const Home: NextPage = () => {
-  /* slide */
-  let [cur, setCur] = useState(0);
-  let [curIdx, setCurIdx] = useState(0);
-  /* form */
-  let [tabIdx, setTabIdx] = useState(0);
-  let [tabChangeIdx, setTabChangeIdx] = useState(0);
+  /* ****** routes ****** */
+  const [step, setStep] = useRecoilState(createStep);
 
-  let problemInput = [
-    {
-      answer: "0",
-      description: "",
-      dtype: "MultipleChoiceProblem",
-      idx: 0,
-      picture: "",
-      problemsetId: 0,
-      score: 125,
-      timelimit: 30,
-      title: "",
-    },
-  ];
+  /* ****** pop-over ****** */
+  /* modal */
+  const [createModalOpened, setCreateModalOpened] = useState(false);
+  const [tabChangeModalOpened, setTabChangeModalOpened] = useState(false);
+  /* drawer */
+  const [drawerOpened, setDrawerOpened] = useState(true);
 
-  let optionInput = [
-    [
-      {
-        description: "",
-        idx: 0,
-        picture: "",
-        problemId: 0,
-      },
-      {
-        description: "",
-        idx: 1,
-        picture: "",
-        problemId: 0,
-      },
-      {
-        description: "",
-        idx: 2,
-        picture: "",
-        problemId: 0,
-      },
-      {
-        description: "",
-        idx: 3,
-        picture: "",
-        problemId: 0,
-      },
-    ],
-  ];
-  {
-    /* *** main state *** */
-  }
+  /* ****** mantine ****** */
+  const [files, setFiles] = useState<File[]>([]);
 
-  let [problemSet, setProblemSet] = useState({
-    closingMent: "",
-    description: "",
-    hostId: 1,
-    title: "",
-  });
+  /* ****** state-start ****** */
 
-  let [problem, setProblem] = useState(problemInput);
-  let [option, setOption] = useState(optionInput);
+  /* *** slide *** */
+  const [cur, setCur] = useRecoilState(createTargetIdx);
+  const [curIdx, setCurIdx] = useRecoilState(createProblemIdx);
+  /* *** form *** */
+  const [tabIdx, setTabIdx] = useRecoilState(createTabCurrentIdx);
+  const [tabChangeIdx, setTabChangeIdx] = useRecoilState(createTabNextIdx);
 
-  let [scoreValue, setScoreValue] = useState(50);
-  let [timelimit, setTimelimit] = useState(50);
+  /* *** common *** */
+  const [problemSet, setProblemSet] = useRecoilState(createProblemset);
+  const [problem, setProblem] = useRecoilState(createProblem);
+  const [option, setOption] = useRecoilState(createOption);
+  /* score, time */
+  const [scoreValue, setScoreValue] = useRecoilState(createScore);
+  const [timelimit, setTimelimit] = useRecoilState(createTimelimit);
+  /* image */
+  const [imageURL, setImageURL] = useRecoilState(createImageURL);
+  const [imageList, setImageList] = useRecoilState(createImageList);
+  const [imageLoading, setImageLoading] = useRecoilState(createIsImageLoading);
+  const [imageWord, setImageWord] = useDebouncedState("", 500);
 
-  let [imageURL, setImageURL] = useState("");
-  let [imageWord, setImageWord] = useDebouncedState("", 500);
-  let [imageList, setImageList] = useState([]);
-  let [imageLoading, setImageLoading] = useState(false);
+  /* ****** state-end ****** */
 
+  /* ****** effect-start ****** */
+
+  /* image */
   useEffect(() => {
     getImageList(imageWord);
     setImageLoading(false);
   }, [imageWord]);
 
+  /* score */
   useEffect(() => {
-    let copy = [...problem];
+    let copy = JSON.parse(JSON.stringify(problem));
     copy[curIdx].score = Math.trunc(100 + (scoreValue / 25) * 100);
     setProblem((prevstate) => copy);
   }, [scoreValue]);
 
+  /* time */
   useEffect(() => {
-    let copy = [...problem];
+    let copy = JSON.parse(JSON.stringify(problem));
     copy[curIdx].timelimit = Math.trunc(10 + (timelimit / 25) * 10);
     setProblem((prevstate) => copy);
   }, [timelimit]);
 
-  {
-    /* mantine statement */
-  }
-
-  {
-    /* 2. 문제 추가 - subNav - tab */
-  }
-  const tabInfo = [
-    { name: "객관식", color: "red-400" },
-    { name: "주관식", color: "blue-400" },
-    { name: "O/X", color: "green-400" },
-    { name: "넌센스", color: "amber-400" },
-    { name: "다이나믹", color: "violet-400" },
-    { name: "빈 슬라이드", color: "gray-400" },
-  ];
+  /* ****** effect-end****** */
 
   function tabIcon(idx: number) {
     if (idx == 0) return <SquareCheck className="m-auto" size={"30px"} />;
@@ -199,82 +144,14 @@ const Home: NextPage = () => {
     if (idx == 5) return <MathAvg className="m-auto" size={"30px"} />;
   }
 
-  const tabTooltip = [
-    "여러개의 선지로 이루어진 단일 답안형 문제 유형입니다",
-    "여러개의 선지로 이루어진 복수 답안형 문제 유형입니다",
-    "두개의 선지로 이루어진 단일 답안형 문제 유형입니다",
-    "exquiz.me가 제공하는 랜덤 넌센스 문제 유형입니다",
-    "exquiz.me가 제공하는 엔터테인먼트형 다이나믹 문제 유형입니다",
-    "텍스트나 이미지를 통해 설명할 수 있는 설명 유형입니다",
-  ];
-
-  const dtypeName = [
-    "객관식",
-    "주관식",
-    "O/X",
-    "넌센스",
-    "다이나믹",
-    "지문설명",
-  ];
-
-  const MARKSTIME = [
-    { value: 0, label: "10" },
-    { value: 25, label: "20" },
-    { value: 50, label: "30" },
-    { value: 75, label: "40" },
-    { value: 100, label: "50" },
-  ];
-
-  const MARKSCORE = [
-    { value: 0, label: "100" },
-    { value: 25, label: "200" },
-    { value: 50, label: "300" },
-    { value: 75, label: "400" },
-    { value: 100, label: "500" },
-  ];
-  {
-    /* 1. 퀴즈 설정 - 메인 #과목 선택 */
-  }
-  let [subjectIdx, setSubjectIdx] = useState(0);
-  const subjectInfo = [
-    { name: "미분류", startColor: "gray", endColor: "gray" },
-    { name: "언어", startColor: "orange", endColor: "red" },
-    { name: "수리과학", startColor: "blue", endColor: "green" },
-    { name: "인문사회", startColor: "violet", endColor: "pink" },
-    { name: "예체능", startColor: "yellow", endColor: "orange" },
-  ];
-
-  {
-    /* 1. 퀴즈 설정 - 사이드바 - #stepper */
-  }
-  const [step, setStep] = useState(0);
-
-  /* 2. modal */
-  const [createModalOpened, setCreateModalOpened] = useState(false);
-  const [tabChangeModalOpened, setTabChangeModalOpened] = useState(false);
-  const [drawerOpened, setDrawerOpened] = useState(true);
-
-  /* 2. drop zone */
-  const [files, setFiles] = useState<File[]>([]);
-
-  const previews = files.map((file, index) => {
-    const imageUrl = URL.createObjectURL(file);
-    return (
-      <></>
-      // <Image
-      //   key={index}
-      //   src={imageUrl}
-      //   imageProps={{ onLoad: () => URL.revokeObjectURL(imageUrl) }}
-      // />
-    );
-  });
-
   const postImage = async () => {
+    console.log(imageURL);
     let rt = Infinity;
     await axios
       .post(connectServerApiAddress + "api/image/upload", imageURL)
       .then((result) => {})
       .catch((error) => {
+        // alert(error.response.messages);
         alert("imagePost_error");
       });
     return rt;
@@ -283,9 +160,10 @@ const Home: NextPage = () => {
   const getImageList = async (name: string) => {
     let rt = Infinity;
     await axios
-      .get("/api/crawl/" + name)
+      .get(connectServerApiAddress + "api/crawl/" + name)
       .then((result) => {
         setImageList(result.data);
+        console.log(result.data);
       })
       .catch((error) => {});
     return rt;
@@ -352,7 +230,7 @@ const Home: NextPage = () => {
       {
         answer: "-1",
         description: "",
-        dtype: idxToString[tabIdx],
+        dtype: dtypeName[tabIdx],
         idx: 0,
         picture: "",
         problemsetId: 0,
@@ -398,7 +276,7 @@ const Home: NextPage = () => {
       {
         answer: "-1",
         description: "",
-        dtype: idxToString[tabIdx],
+        dtype: dtypeName[tabIdx],
         idx: 0,
         picture: "",
         problemsetId: 0,
@@ -528,7 +406,7 @@ const Home: NextPage = () => {
                   },
                 ];
                 if (tabIdx !== nxt) setTabIdx((prevState) => nxt);
-                problem[curIdx].dtype = idxToString[nxt];
+                problem[curIdx].dtype = dtypeName[nxt];
                 setTabChangeModalOpened(false);
                 setImageWord("");
                 setImageList([]);
@@ -630,8 +508,8 @@ const Home: NextPage = () => {
 
             let problemsetId = await getProblemsetId();
             // await delay(1500);
-            let copyProblem = [...problem];
-            let copyOption = [...option];
+            let copyProblem = JSON.parse(JSON.stringify(problem));
+            let copyOption = JSON.parse(JSON.stringify(option));
             {
               /* problemset */
             }
@@ -660,7 +538,6 @@ const Home: NextPage = () => {
               }
             }
             await setStep((prevState) => step + 1);
-            await delay(2000);
             location.replace("/inbox");
           }}
         >
@@ -678,13 +555,13 @@ const Home: NextPage = () => {
         onClose={() => setDrawerOpened(false)}
         padding="xl"
         size="93.8%"
-        // overlayColor={
-        //   theme.colorScheme === "dark"
-        //     ? theme.colors.dark[9]
-        //     : theme.colors.gray[2]
-        // }
-        // overlayOpacity={0.55}
-        // overlayBlur={3}
+        overlayColor={
+          theme.colorScheme === "dark"
+            ? theme.colors.dark[9]
+            : theme.colors.gray[2]
+        }
+        overlayOpacity={0.55}
+        overlayBlur={3}
       >
         <Center>
           <Stack align="center" spacing={0}>
@@ -692,10 +569,11 @@ const Home: NextPage = () => {
             <Stack className="bg-amber-200 w-[50vw] h-[80vh] shadow-lg">
               <TextInput
                 onChange={(event) => {
-                  let copy = problemSet;
+                  let copy = JSON.parse(JSON.stringify(problemSet));
                   copy.title = event.currentTarget.value;
                   setProblemSet(copy);
                 }}
+                value={problemSet.title}
                 variant="unstyled"
                 placeholder="제목을 입력해주세요"
                 size="xl"
@@ -703,8 +581,8 @@ const Home: NextPage = () => {
 
               <Textarea
                 onChange={(event) => {
-                  let copy = problemSet;
-                  copy.title = event.currentTarget.value;
+                  let copy = JSON.parse(JSON.stringify(problemSet));
+                  copy.description = event.currentTarget.value;
                   setProblemSet(copy);
                 }}
                 variant="unstyled"
@@ -776,10 +654,10 @@ const Home: NextPage = () => {
                       className=" m-0 p-0 h-6 w-16 bg-amber-200"
                     >
                       <Group
-                        className={`mx-1 text-white w-5 h-5 bg-gradient-to-r from-${subjectInfo[subjectIdx].startColor}-500 to-${subjectInfo[subjectIdx].endColor}-500 rounded-full`}
+                        className={`mx-1 text-white w-5 h-5 rounded-full`}
                       ></Group>
                       <Group
-                        className={`mx-0 text-white w-5 h-5 bg-gradient-to-r from-${tabInfo[tabIdx].color} to-${tabInfo[tabIdx].color} rounded-full`}
+                        className={`mx-0 text-white w-5 h-5 rounded-full`}
                       ></Group>
                     </Group>
                   </Stack>
@@ -916,7 +794,7 @@ const Home: NextPage = () => {
                           spacing={0}
                           className="ml-4 items-center"
                         >
-                          {tabInfo.map(({ name, color }, i) => {
+                          {dtypeName.map((name, i) => {
                             return (
                               <Tooltip
                                 color="orange"
@@ -943,12 +821,13 @@ const Home: NextPage = () => {
                               hover:shadow-none m-auto w-18 h-18`}
                                   >
                                     <Button
+                                      color="orange"
                                       className={`w-24 ${
                                         i === tabIdx
                                           ? "text-white"
                                           : "text-gray-400"
                                       } `}
-                                      variant="gradient"
+                                      variant="filled"
                                     >
                                       {dtypeName[i]}
                                     </Button>
@@ -1011,7 +890,7 @@ const Home: NextPage = () => {
                                 setImageWord(problem[curIdx].description);
                               }}
                               onChange={(event) => {
-                                let copy = [...problem];
+                                let copy = JSON.parse(JSON.stringify(problem));
                                 copy[curIdx].description =
                                   event.currentTarget.value;
                                 setProblem(copy);
@@ -1077,7 +956,9 @@ const Home: NextPage = () => {
                                               );
                                             }}
                                             onChange={(event) => {
-                                              let copy = [...option];
+                                              let copy = JSON.parse(
+                                                JSON.stringify(option)
+                                              );
                                               copy[curIdx][i].description =
                                                 event.currentTarget.value;
                                               setOption(copy);
@@ -1368,22 +1249,26 @@ const Home: NextPage = () => {
                         <ScrollArea className="h-[50vh]">
                           <Stack className="h-[1500vh]">
                             {imageList.map((link, i) => {
-                              return (
-                                <Image
+                              return i < 20 ? (
+                                <></>
+                              ) : (
+                                <img
                                   className="cursor-pointer"
-                                  onClick={() => {
+                                  onClick={async () => {
                                     if (cur == 0)
                                       problem[curIdx].picture = link;
                                     else option[curIdx][cur].picture = link;
-                                    setImageURL(link);
-                                    postImage();
+                                    let copy = imageURL;
+                                    copy.url = link;
+                                    setImageURL((prevstate) => copy);
+                                    await postImage();
                                   }}
                                   key={i}
                                   src={link}
                                   alt="alt"
                                   width={350}
                                   height={800}
-                                ></Image>
+                                ></img>
                               );
                             })}
                           </Stack>
@@ -1417,9 +1302,7 @@ const Home: NextPage = () => {
             <Center className="m-auto">
               <Notification
                 loading
-                color={
-                  subjectInfo[subjectIdx + (subjectIdx === 0 ? 4 : 0)].endColor
-                }
+                color="orange"
                 title="서버에 퀴즈 업로드 중..."
                 disallowClose
               >
@@ -1438,9 +1321,7 @@ const Home: NextPage = () => {
             <Center className="m-auto">
               <Notification
                 icon={<Check size={20} />}
-                color={
-                  subjectInfo[subjectIdx + (subjectIdx === 0 ? 4 : 0)].endColor
-                }
+                color="orange"
                 title="업로드 완료!"
                 disallowClose
               >
