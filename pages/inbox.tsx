@@ -4,9 +4,8 @@ import styles from "../styles/Home.module.css";
 import { useState } from "react";
 import axios from "axios";
 import React, { useEffect } from "react";
-import NavIndex from "../components/NavIndex";
+import NavIndex from "../components/indexNavigation";
 import Image from "next/image";
-
 
 import {
   Button,
@@ -27,6 +26,7 @@ import {
   Avatar,
 } from "@mantine/core";
 import { ArrowNarrowLeft, Link, Login, Pencil, Plus } from "tabler-icons-react";
+import indexNavigation from "../components/indexNavigation";
 
 const rightEnvelope = (subject: number) => {
   const subjectInfo = [
@@ -337,7 +337,7 @@ const Home: NextPage = () => {
         </Button>
       </Modal>
 
-      <header>{NavIndex()}</header>
+      <header>{indexNavigation()}</header>
 
       <main style={{ margin: "" }}>
         <section className="h-[86vh]">

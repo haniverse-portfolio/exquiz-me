@@ -21,7 +21,7 @@ import {
 } from "../components/States";
 import {
   dtypeName,
-  connectServerApiAddress,
+  connectTestServerApiAddress,
   tabTooltip,
   MARKSCORE,
   MARKSTIME,
@@ -148,7 +148,7 @@ const Home: NextPage = () => {
     console.log(imageURL);
     let rt = Infinity;
     await axios
-      .post(connectServerApiAddress + "api/image/upload", imageURL)
+      .post(connectTestServerApiAddress + "api/image/upload", imageURL)
       .then((result) => {})
       .catch((error) => {
         // alert(error.response.messages);
@@ -160,7 +160,7 @@ const Home: NextPage = () => {
   const getImageList = async (name: string) => {
     let rt = Infinity;
     await axios
-      .get(connectServerApiAddress + "api/crawl/" + name)
+      .get(connectTestServerApiAddress + "api/crawl/" + name)
       .then((result) => {
         setImageList(result.data);
         console.log(result.data);
@@ -174,7 +174,7 @@ const Home: NextPage = () => {
     await axios
       .post(
         //const { data: result } =
-        connectServerApiAddress + "api/problemset",
+        connectTestServerApiAddress + "api/problemset",
         problemSet
       )
       .then((result) => {
@@ -189,7 +189,7 @@ const Home: NextPage = () => {
   const getImage = async (word: string) => {
     let rt = []!;
     await axios
-      .get(connectServerApiAddress + "api/problem")
+      .get(connectTestServerApiAddress + "api/problem")
       .then((result) => {
         rt = result.data;
       })
@@ -202,7 +202,7 @@ const Home: NextPage = () => {
   const getProblemId = async (idx: number) => {
     let rt = Infinity;
     await axios
-      .post(connectServerApiAddress + "api/problem", problem[idx])
+      .post(connectTestServerApiAddress + "api/problem", problem[idx])
       .then((result) => {
         rt = result.data.id;
       })
@@ -214,7 +214,10 @@ const Home: NextPage = () => {
 
   const postOption = async (idx1: number, idx2: number) => {
     await axios
-      .post(connectServerApiAddress + "api/problem_option", option[idx1][idx2])
+      .post(
+        connectTestServerApiAddress + "api/problem_option",
+        option[idx1][idx2]
+      )
       .then((result) => {})
       .catch((error) => {
         // alert(error);
@@ -929,7 +932,9 @@ const Home: NextPage = () => {
                                             className="pl-2"
                                             defaultChecked={false}
                                             onClick={(event) => {
-                                              let copy = [...problem];
+                                              let copy = JSON.parse(
+                                                JSON.stringify(problem)
+                                              );
                                               // (this.checked === true)?:"":
                                               copy[curIdx].answer =
                                                 i.toString();
@@ -1253,7 +1258,7 @@ const Home: NextPage = () => {
                                 <></>
                               ) : (
                                 <img
-                                  className="cursor-pointer"
+                                  className="max-w-full h-auto cursor-pointer"
                                   onClick={async () => {
                                     if (cur == 0)
                                       problem[curIdx].picture = link;
@@ -1266,8 +1271,6 @@ const Home: NextPage = () => {
                                   key={i}
                                   src={link}
                                   alt="alt"
-                                  width={350}
-                                  height={800}
                                 ></img>
                               );
                             })}

@@ -1,6 +1,7 @@
 import { atom } from "recoil";
 import {
-  connectServerApiAddress,
+  connectTestServerApiAddress,
+  connectMainServerApiAddress,
   dtypeName,
   problemInput,
   optionInput,
@@ -63,11 +64,16 @@ export const createImageList = atom({
 });
 
 export const createIsImageLoading = atom({
-  key : "createIsImageLoading",
+  key: "createIsImageLoading",
   default: false,
-})
+});
 
 export const createStep = atom({
-  key : "createStep",
-  default: 0
-})
+  key: "createStep",
+  default: 0,
+});
+
+export const partPin = atom({
+  key: "partPin",
+  default: "0",
+});

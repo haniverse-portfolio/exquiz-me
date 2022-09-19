@@ -8,6 +8,14 @@ import Stomp from "stompjs";
 
 import { Button, Center, Group, Stack } from "@mantine/core";
 
+import {
+  dtypeName,
+  connectMainServerApiAddress,
+  tabTooltip,
+  MARKSCORE,
+  MARKSTIME,
+} from "../components/ConstValues";
+
 import {} from "tabler-icons-react";
 const Home: NextPage = () => {
   /* submit form */
@@ -15,14 +23,6 @@ const Home: NextPage = () => {
     answerText: "1",
     problemIdx: 1,
     uuid: "d7a23266-6fc7-421a-9ed8-aad169013e52",
-  };
-
-  const submit = async () => {
-    const { data: result } = await axios.post(
-      "https://dist.exquiz.me/api/room/100310/mq/submit",
-      submitForm
-    );
-    return result.data;
   };
 
   useEffect(() => {

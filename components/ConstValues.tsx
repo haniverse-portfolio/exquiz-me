@@ -1,5 +1,6 @@
 /* common */
-export const connectServerApiAddress = "https://prod.exquiz.me/";
+export const connectTestServerApiAddress = "https://prod.exquiz.me/";
+export const connectMainServerApiAddress = "https://api.exquiz.me/";
 /* create */
 
 export const dtypeName = [
@@ -55,11 +56,14 @@ export const optionInput = [
 ];
 
 export const problemsetInput = {
+  scoreSetting: 0,
+  timeSetting: 0,
+  backgroundMusic: 0,
   closingMent: "",
   description: "",
   hostId: 1,
   title: "",
-}
+};
 
 export const tabTooltip = [
   "여러개의 선지로 이루어진 단일 답안형 문제 유형입니다",

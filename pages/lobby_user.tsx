@@ -9,23 +9,6 @@ import React, { useEffect } from "react";
 import axios from "axios";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
-import { useRecoilState } from "recoil";
-import {
-  createImageList,
-  createImageURL,
-  createIsImageLoading,
-  createOption,
-  createProblem,
-  createProblemIdx,
-  createProblemset,
-  createScore,
-  createStep,
-  createTabCurrentIdx,
-  createTabNextIdx,
-  createTargetIdx,
-  createTimelimit,
-  partPin,
-} from "../components/States";
 
 import {
   dtypeName,
@@ -44,6 +27,7 @@ import {
   CopyButton,
 } from "@mantine/core";
 import { ArrowBigRightLines, Qrcode, Copy } from "tabler-icons-react";
+import { randomInt } from "crypto";
 
 const rightEnvelope = (subject: number) => {
   const subjectInfo = [
@@ -119,31 +103,42 @@ const Home: NextPage = () => {
 
   const [active, setActive] = useState(0);
 
-  let [partlist, setPartlist] = useState([
+  const [status, setStatus] = useState([
     {
-      currentScore: 0,
-      entryDate: "2022-08-23T08:34:54.994Z",
-      id: 0,
-      name: "string",
-      nickname: "string",
-      roomDto: {
-        currentProblemNum: 0,
-        currentState: "FINISH",
-        endDate: "2022-08-23T08:34:54.994Z",
-        id: 0,
-        maxParticipantCount: 0,
-        pin: "string",
-        problemsetDto: {
-          closingMent: "string",
-          description: "string",
-          id: 0,
-          title: "string",
-        },
-        startDate: "2022-08-23T08:34:54.994Z",
-      },
-      uuid: "string",
+      nickname: "성찰하는 소크라테스",
+      avatar: "panda",
+      color: "orange",
+      answer: false,
     },
   ]);
+
+  useEffect(() => {
+    // getPartlist();
+  }, []);
+
+  let [partlist, setPartlist] = useState({
+    currentScore: 0,
+    entryDate: "2022-08-23T08:34:54.994Z",
+    id: 0,
+    name: "string",
+    nickname: "string",
+    roomDto: {
+      currentProblemNum: 0,
+      currentState: "FINISH",
+      endDate: "2022-08-23T08:34:54.994Z",
+      id: 0,
+      maxParticipantCount: 0,
+      pin: "string",
+      problemsetDto: {
+        closingMent: "string",
+        description: "string",
+        id: 0,
+        title: "string",
+      },
+      startDate: "2022-08-23T08:34:54.994Z",
+    },
+    uuid: "string",
+  });
 
   const getPartlist = () => {
     axios
@@ -163,8 +158,12 @@ const Home: NextPage = () => {
   useEffect(() => {
     pin = JSON.parse(localStorage.getItem("room") ?? "0").pin;
     setPin(pin);
+  }, []);
+
+  useEffect(() => {
     connect();
   }, []);
+
   {
     /* webSocket */
   }
@@ -189,16 +188,19 @@ const Home: NextPage = () => {
       function (frame) {
         stompClient.subscribe("/topic/room" + pin, function (message) {
           var recv = JSON.parse(message.body);
-          console.log("hellooooooo" + message.body);
+          console.log("room" + pin);
         });
-        // stompClient.send(
-        //   "/pub/room/" + pin + "/start",
-        //   {},
-        //   JSON.stringify({ uuid: 123 })
-        // );
+        stompClient.send(
+          "/pub/room/" + pin + "/signup",
+          {},
+          JSON.stringify({
+            name: "sex2",
+            nickname: "mumomu2",
+          })
+        );
       },
       function (error) {
-        console.log("fucking" + error);
+        console.log("sipal" + error);
         //connect();
         // if (reconnect++ <= 5) {
         //   setTimeout(function () {
@@ -312,9 +314,26 @@ const Home: NextPage = () => {
                 </Stack>
                 <Stack>
                   <Group>
-                    {partlist.map((cur, i) => {
+                    {status.map((cur, i) => {
                       let color;
-                      return <Stack key={i}>{partlist[i].nickname}</Stack>;
+                      return (
+                        <Stack key={i}>
+                          <Group
+                            className={`h-32 w-32 rounded-xl border-2 ${
+                              cur.answer === false ? "bg-gray-200" : ""
+                            }`}
+                          >
+                            <Group></Group>
+                          </Group>
+                          <p
+                            className={`text-center ${
+                              cur.answer === false ? "text-gray-400" : ""
+                            }`}
+                          >
+                            {cur.nickname}
+                          </p>
+                        </Stack>
+                      );
                     })}
                   </Group>
                 </Stack>
@@ -351,7 +370,9 @@ const Home: NextPage = () => {
                     </Button>
                     <p className="font-bold text-4xl">
                       입장 인원 : &nbsp;
-                      <strong className="text-amber-500"></strong>
+                      <strong className="text-amber-500">
+                        {status.length}명
+                      </strong>
                     </p>
                     <Button
                       className="mx-4 h-[60px] w-[200px]"

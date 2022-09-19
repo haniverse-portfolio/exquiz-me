@@ -25,7 +25,7 @@ import {
   Folders,
 } from "tabler-icons-react";
 
-function NavIndex() {
+function indexNavigation() {
   return (
     <Group
       style={{
@@ -36,7 +36,7 @@ function NavIndex() {
         boxShadow: "0 3px 4px -4px gray",
       }}
     >
-      <Link href="/index">
+      <Link href="/">
         <Image
           className="cursor-pointer pl-8"
           src="/../public/favicon.ico"
@@ -59,4 +59,4 @@ function NavIndex() {
   );
 }
 
-export default NavIndex;
+export default indexNavigation;
