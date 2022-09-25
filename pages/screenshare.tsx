@@ -13,10 +13,73 @@ import {
   Pencil,
   ArrowBigRightLines,
 } from "tabler-icons-react";
-
-import { useRecoilState } from "recoil";
-import { playProblem, playOption, playProblemset } from "../components/States";
 import { useDebouncedState } from "@mantine/hooks";
+
+const rightEnvelope = (subject: number) => {
+  const subjectInfo = [
+    { name: "미분류", startColor: "gray", endColor: "gray" },
+    { name: "언어", startColor: "orange", endColor: "red" },
+    { name: "수리과학", startColor: "blue", endColor: "green" },
+    { name: "인문사회", startColor: "violet", endColor: "pink" },
+    { name: "예체능", startColor: "yellow", endColor: "orange" },
+  ];
+
+  return (
+    <Group className="transition ease-in-out hover:scale-105" spacing={0}>
+      <Group className="shadow-lg" spacing={0}>
+        <Group
+          className={`bg-${subjectInfo[subject].startColor} border-r-2 border-gray-300 shadow-lg h-24 w-4 bg-amber-200`}
+        />
+        <Group>
+          <Stack spacing={0}>
+            <Group
+              className={`bg-gradient-to-r from-${subjectInfo[subject].startColor} to-${subjectInfo[subject].endColor} border-b-2 border-gray-300 m-0 p-0 h-12 w-32 bg-amber-200`}
+            />
+            <Group
+              className={`bg-gradient-to-r from-${subjectInfo[subject].startColor} to-${subjectInfo[subject].endColor} m-0 p-0 h-12 w-32 bg-amber-200`}
+            />
+          </Stack>
+        </Group>
+      </Group>
+      <Group
+        className={`bg-gradient-to-r from-${subjectInfo[subject].startColor} to-${subjectInfo[subject].endColor} shadow-lg m-0 p-0 h-20 w-6 bg-white`}
+      ></Group>
+    </Group>
+  );
+};
+
+const leftEnvelope = (subject: number) => {
+  const subjectInfo = [
+    { name: "미분류", startColor: "gray", endColor: "gray" },
+    { name: "언어", startColor: "orange", endColor: "red" },
+    { name: "수리과학", startColor: "blue", endColor: "green" },
+    { name: "인문사회", startColor: "violet", endColor: "pink" },
+    { name: "예체능", startColor: "yellow", endColor: "orange" },
+  ];
+
+  return (
+    <Group className="transition ease-in-out hover:scale-105" spacing={0}>
+      <Group
+        className={`bg-gradient-to-r shadow-lg m-0 p-0 h-20 w-6 bg-white`}
+      ></Group>
+      <Group className="shadow-lg" spacing={0}>
+        <Group>
+          <Stack spacing={0}>
+            <Group
+              className={`bg-gradient-to-r from-${subjectInfo[subject].startColor}-500 to-${subjectInfo[subject].endColor}-500 m-0 p-0 h-12 w-32 bg-amber-200`}
+            />
+            <Group
+              className={`bg-gradient-to-r from-${subjectInfo[subject].startColor}-500 to-${subjectInfo[subject].endColor}-500 m-0 p-0 h-12 w-32 bg-amber-200`}
+            />
+          </Stack>
+        </Group>
+        <Group
+          className={`bg-${subjectInfo[subject].endColor}-500 border-l-2 border-gray-300 shadow-lg h-24 w-4 bg-amber-200`}
+        />
+      </Group>
+    </Group>
+  );
+};
 
 const Home: NextPage = () => {
   const theme = useMantineTheme();
@@ -27,14 +90,162 @@ const Home: NextPage = () => {
   const [active, setActive] = useState(0);
   let [image, setImage] = useState("/../public/panda.png");
 
+  let [problem, setProblem] = useState([
+    {
+      answer: "0",
+      description: "우리나라에서 가장 높은 산은?",
+      dtype: "MultipleChoiceProblem",
+      idx: 0,
+      picture: "",
+      problemsetId: 0,
+      score: 125,
+      timelimit: 30,
+      title: "",
+    },
+    {
+      answer: "0",
+      description: "아이스크림을 영어로 하면?",
+      dtype: "MultipleChoiceProblem",
+      idx: 0,
+      picture: "",
+      problemsetId: 0,
+      score: 125,
+      timelimit: 30,
+      title: "",
+    },
+    {
+      answer: "0",
+      description: "소프트웨어 마에스트로가 있는 빌딩은?",
+      dtype: "MultipleChoiceProblem",
+      idx: 0,
+      picture: "",
+      problemsetId: 0,
+      score: 125,
+      timelimit: 30,
+      title: "",
+    },
+    {
+      answer: "0",
+      description: "🌋이 중 가장 무시무시한 공룡은?🏔",
+      dtype: "MultipleChoiceProblem",
+      idx: 0,
+      picture: "",
+      problemsetId: 0,
+      score: 125,
+      timelimit: 30,
+      title: "",
+    },
+  ]);
+  let [option, setOption] = useState([
+    [
+      {
+        description: "설악산",
+        idx: 0,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "지리산",
+        idx: 1,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "한라산",
+        idx: 2,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "백두산",
+        idx: 3,
+        picture: "",
+        problemId: 0,
+      },
+    ],
+    [
+      {
+        description: "icecoffee",
+        idx: 0,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "icekekki",
+        idx: 1,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "icecream",
+        idx: 2,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "iceball",
+        idx: 3,
+        picture: "",
+        problemId: 0,
+      },
+    ],
+    [
+      {
+        description: "황해주택",
+        idx: 0,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "인하주택",
+        idx: 1,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "아남타워",
+        idx: 2,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "코엑스",
+        idx: 3,
+        picture: "",
+        problemId: 0,
+      },
+    ],
+    [
+      {
+        description: "티라노사우루스",
+        idx: 0,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "트리케라톱스",
+        idx: 1,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "랩터",
+        idx: 2,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "스피노사우루스",
+        idx: 3,
+        picture: "",
+        problemId: 0,
+      },
+    ],
+  ]);
   let [step, setStep] = useState(0);
   let [time, setTime] = useDebouncedState(15, 1000);
   let [curIdx, setCurIdx] = useState(0);
   let [answer, setAnswer] = useState(-1);
-
-  let [problem, setProblem] = useRecoilState(playProblem);
-  let [option, setOption] = useRecoilState(playOption);
-  let [problemset, setProblemset] = useRecoilState(playProblemset);
 
   useEffect(() => {
     setTime(time - 1);
@@ -191,9 +402,6 @@ const Home: NextPage = () => {
                 <Stack>
                   {/* ../public/globe_banner.png */}
                   <p className="underline decoration-amber-500 font-bold text-7xl text-center mt-10">
-                    정답은 3번입니다.
-                  </p>
-                  <p className="underline decoration-amber-500 font-bold text-7xl text-center mt-10">
                     {problem[curIdx].description}
                   </p>
                   <Image
@@ -223,7 +431,6 @@ const Home: NextPage = () => {
                               variant="outline"
                             >
                               {option[curIdx][i].description}
-                              30%
                             </Button>
                           </Grid.Col>
                         );
@@ -232,33 +439,77 @@ const Home: NextPage = () => {
                   </Stack>
                 </Stack>
 
-                <Group className="justify-between">
-                  <Button
-                    color="orange"
-                    onClick={() => {
-                      setStep(step + 1);
-                    }}
-                    className="mx-4 h-[60px] w-[200px]"
-                    variant="outline"
-                    component="a"
-                    rel="noopener noreferrer"
-                    rightIcon={<Alarm size={38} />}
-                  >
-                    순위 변동
-                  </Button>
+                <br></br>
+                <Stack>
+                  <Group className="justify-between">
+                    <Button
+                      onClick={() => {
+                        setStep(step + 1);
+                      }}
+                      className="mx-4 h-[60px] w-[200px]"
+                      variant="outline"
+                      gradient={{ from: "orange", to: "red" }}
+                      component="a"
+                      rel="noopener noreferrer"
+                      rightIcon={<Alarm size={38} />}
+                      styles={(theme: {
+                        fn: { darken: (arg0: string, arg1: number) => any };
+                      }) => ({
+                        root: {
+                          textDecoration: "none",
+                          fontWeight: "bold",
+                          fontSize: 20,
+                          marginRight: 10,
+                          color: "orange",
+                          backgroundColor: "white",
+                          border: "2px solid orange",
+                          height: 42,
 
-                  <Button
-                    color="orange"
-                    onClick={() => {
-                      setStep(step - 1);
-                    }}
-                    component="a"
-                    rel="noopener noreferrer"
-                    leftIcon={<BellRinging size={38} />}
-                  >
-                    다음으로
-                  </Button>
-                </Group>
+                          "&:hover": {
+                            backgroundColor: theme.fn.darken("#FFFFFF", 0.05),
+                          },
+                        },
+
+                        leftIcon: {
+                          marginRight: 5,
+                        },
+                      })}
+                    >
+                      순위 변동
+                    </Button>
+
+                    <Button
+                      onClick={() => {
+                        setStep(step - 1);
+                      }}
+                      className=" h-[60px] w-[200px] bg-orange-500"
+                      variant="gradient"
+                      gradient={{ from: "orange", to: "red" }}
+                      component="a"
+                      rel="noopener noreferrer"
+                      leftIcon={<BellRinging size={38} />}
+                      styles={(theme) => ({
+                        root: {
+                          fontWeight: "bold",
+                          fontSize: 20,
+                          marginLeft: 5,
+                          color: "white",
+                          backgroundColor: "orange",
+                          border: 0,
+                          height: 42,
+
+                          "&:hover": {},
+                        },
+
+                        leftIcon: {
+                          marginRight: 5,
+                        },
+                      })}
+                    >
+                      다음으로
+                    </Button>
+                  </Group>
+                </Stack>
               </Stack>
             ) : (
               <></>
@@ -365,156 +616,3 @@ const Home: NextPage = () => {
 };
 
 export default Home;
-
-// [
-//   [
-//     {
-//       description: "설악산",
-//       idx: 0,
-//       picture: "",
-//       problemId: 0,
-//     },
-//     {
-//       description: "지리산",
-//       idx: 1,
-//       picture: "",
-//       problemId: 0,
-//     },
-//     {
-//       description: "한라산",
-//       idx: 2,
-//       picture: "",
-//       problemId: 0,
-//     },
-//     {
-//       description: "백두산",
-//       idx: 3,
-//       picture: "",
-//       problemId: 0,
-//     },
-//   ],
-//   [
-//     {
-//       description: "icecoffee",
-//       idx: 0,
-//       picture: "",
-//       problemId: 0,
-//     },
-//     {
-//       description: "icekekki",
-//       idx: 1,
-//       picture: "",
-//       problemId: 0,
-//     },
-//     {
-//       description: "icecream",
-//       idx: 2,
-//       picture: "",
-//       problemId: 0,
-//     },
-//     {
-//       description: "iceball",
-//       idx: 3,
-//       picture: "",
-//       problemId: 0,
-//     },
-//   ],
-//   [
-//     {
-//       description: "황해주택",
-//       idx: 0,
-//       picture: "",
-//       problemId: 0,
-//     },
-//     {
-//       description: "인하주택",
-//       idx: 1,
-//       picture: "",
-//       problemId: 0,
-//     },
-//     {
-//       description: "아남타워",
-//       idx: 2,
-//       picture: "",
-//       problemId: 0,
-//     },
-//     {
-//       description: "코엑스",
-//       idx: 3,
-//       picture: "",
-//       problemId: 0,
-//     },
-//   ],
-//   [
-//     {
-//       description: "티라노사우루스",
-//       idx: 0,
-//       picture: "",
-//       problemId: 0,
-//     },
-//     {
-//       description: "트리케라톱스",
-//       idx: 1,
-//       picture: "",
-//       problemId: 0,
-//     },
-//     {
-//       description: "랩터",
-//       idx: 2,
-//       picture: "",
-//       problemId: 0,
-//     },
-//     {
-//       description: "스피노사우루스",
-//       idx: 3,
-//       picture: "",
-//       problemId: 0,
-//     },
-//   ],]
-
-// [
-//   {
-//     answer: "0",
-//     description: "우리나라에서 가장 높은 산은?",
-//     dtype: "MultipleChoiceProblem",
-//     idx: 0,
-//     picture: "",
-//     problemsetId: 0,
-//     score: 125,
-//     timelimit: 30,
-//     title: "",
-//   },
-//   {
-//     answer: "0",
-//     description: "아이스크림을 영어로 하면?",
-//     dtype: "MultipleChoiceProblem",
-//     idx: 0,
-//     picture: "",
-//     problemsetId: 0,
-//     score: 125,
-//     timelimit: 30,
-//     title: "",
-//   },
-//   {
-//     answer: "0",
-//     description: "소프트웨어 마에스트로가 있는 빌딩은?",
-//     dtype: "MultipleChoiceProblem",
-//     idx: 0,
-//     picture: "",
-//     problemsetId: 0,
-//     score: 125,
-//     timelimit: 30,
-//     title: "",
-//   },
-//   {
-//     answer: "0",
-//     description: "🌋이 중 가장 무시무시한 공룡은?🏔",
-//     dtype: "MultipleChoiceProblem",
-//     idx: 0,
-//     picture: "",
-//     problemsetId: 0,
-//     score: 125,
-//     timelimit: 30,
-//     title: "",
-//   },
-// ]

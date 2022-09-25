@@ -4,8 +4,8 @@ import styles from "../styles/Home.module.css";
 import { useState } from "react";
 import axios from "axios";
 import React, { useEffect } from "react";
-import NavIndex from "../components/indexNavigation";
 import Image from "next/image";
+import IndexNavigation from "../components/IndexNavigation";
 
 import {
   Button,
@@ -18,15 +18,14 @@ import {
   Drawer,
   Modal,
   Slider,
-  Select,
   Pagination,
-  ScrollArea,
   Text,
-  ActionIcon,
-  Avatar,
 } from "@mantine/core";
-import { ArrowNarrowLeft, Link, Login, Pencil, Plus } from "tabler-icons-react";
-import indexNavigation from "../components/indexNavigation";
+import { Pencil, Plus } from "tabler-icons-react";
+
+import { useRecoilState } from "recoil";
+import { playProblem } from "../components/States";
+import { connectMainServerApiAddress } from "../components/ConstValues";
 
 const rightEnvelope = (subject: number) => {
   const subjectInfo = [
@@ -38,10 +37,7 @@ const rightEnvelope = (subject: number) => {
   ];
 
   return (
-    <Group
-      className="m-auto transition ease-in-out hover:scale-105"
-      spacing={0}
-    >
+    <Group className="m-auto" spacing={0}>
       <Group className="shadow-lg" spacing={0}>
         <Group
           className={`bg-${subjectInfo[subject].startColor} border-r-2 border-gray-300 shadow-lg h-24 w-4 bg-amber-200`}
@@ -115,7 +111,6 @@ const Home: NextPage = () => {
 
   const [drawerOpened, setDrawerOpened] = useState(false);
   const [modalOpened, setModalOpened] = useState(false);
-  const connectServerApiAddress = "https://api.exquiz.me";
 
   const getProblemsets = () => {
     axios
@@ -144,7 +139,7 @@ const Home: NextPage = () => {
   const postRoom = async () => {
     let rt = Infinity;
     await axios
-      .post(connectServerApiAddress + "/api/room/newRoom", {
+      .post(connectMainServerApiAddress + "/api/room/newRoom", {
         maxParticipantCount: maxpart,
         problemsetId: problemsets[curIdx].id,
       })
@@ -162,20 +157,6 @@ const Home: NextPage = () => {
 
   let [problemsets, setProblemsets] = useState([
     { id: -1, title: "", description: "", closingMent: "" },
-  ]);
-
-  let [problem, setProblem] = useState([
-    {
-      answer: "0",
-      description: "",
-      dtype: "MultipleChoiceProblem",
-      idx: 0,
-      picture: "",
-      problemsetId: 0,
-      score: 125,
-      timelimit: 30,
-      title: "",
-    },
   ]);
 
   let [problemOption, setProblemOption] = useState([
@@ -199,6 +180,8 @@ const Home: NextPage = () => {
     currentState: "NOT READY",
     currentProblemNum: -1,
   });
+
+  let [problem, setProblem] = useRecoilState(playProblem);
 
   useEffect(() => {
     getProblemsets();
@@ -248,21 +231,6 @@ const Home: NextPage = () => {
         onClose={() => setModalOpened(false)}
         title="방 생성하기"
       >
-        <p className="font-bold">기관 정보</p>
-        <Select
-          searchable
-          placeholder="기관 이름"
-          data={[
-            { value: "1", label: "이천고등학교" },
-            { value: "2", label: "인덕원고등학교" },
-            { value: "3", label: "이화여자고등학교" },
-          ]}
-        />
-        <br></br>
-        <p className="font-bold">추가 정보</p>
-
-        <TextInput placeholder="a학년 b반"></TextInput>
-        <br></br>
         <p className="font-bold">참가 인원</p>
         <Slider
           onChangeEnd={setMaxpart}
@@ -285,6 +253,7 @@ const Home: NextPage = () => {
             // }
 
             alert("before success" + room.pin);
+
             location.replace("/lobby_display");
             // {
             //   "id": 5,
@@ -302,68 +271,20 @@ const Home: NextPage = () => {
             //   "currentProblemNum": -1
             // }
           }}
+          color="orange"
           className="mx-4 h-[60px] w-[370px]"
           variant="outline"
-          gradient={{ from: "orange", to: "red" }}
-          component="a"
-          rel="noopener noreferrer"
           leftIcon={<Plus size={38} />}
-          styles={(theme: {
-            fn: {
-              darken: (arg0: string, arg1: number) => any;
-            };
-          }) => ({
-            root: {
-              textDecoration: "none",
-              fontWeight: "bold",
-              fontSize: 20,
-              marginRight: 10,
-              color: "orange",
-              backgroundColor: "white",
-              border: "2px solid orange",
-              height: 42,
-
-              "&:hover": {
-                backgroundColor: theme.fn.darken("#FFFFFF", 0.05),
-              },
-            },
-
-            leftIcon: {
-              marginRight: 5,
-            },
-          })}
         >
           방 만들기
         </Button>
       </Modal>
-
-      <header>{indexNavigation()}</header>
-
+      <IndexNavigation />
       <main style={{ margin: "" }}>
         <section className="h-[86vh]">
           <Stack className="flex contents-between">
             <Grid gutter={0} columns={24}>
-              <Grid.Col
-                className="h-[86vh] border-r-2 border-gray-500"
-                span={3}
-              >
-                <Stack>
-                  <Group>
-                    <Avatar
-                      radius="xl"
-                      src={"h".concat(
-                        "ttps://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=250&q=80"
-                      )}
-                    />
-                    <Text>반가워요! 임준현님.</Text>
-                  </Group>
-                  <Button leftIcon={<Plus></Plus>} color="orange">
-                    퀴즈 생성
-                  </Button>
-                  <TextInput placeholder="퀴즈를 탐색해보세요"></TextInput>
-                </Stack>
-              </Grid.Col>
-              <Grid.Col span={21}>
+              <Grid.Col span={24}>
                 <Stack>
                   <Stack className="h-[20vh] bg-gradient-to-r from-amber-500 via-amber-500 to-orange-500"></Stack>
                   <Stack className="h-[20vh]"></Stack>
@@ -373,14 +294,17 @@ const Home: NextPage = () => {
                       <Grid.Col span={29}>
                         <Stack className="h-[40vh]">
                           <TextInput placeholder="찾으시는 퀴즈를 검색해보세요"></TextInput>
-                          <Group>
-                            <Text weight={500} size="xl">
-                              최근 생성
-                            </Text>
-                            <Text weight={0} size="xl">
-                              과목별
-                            </Text>
-                          </Group>
+                          <Button
+                            className="h-24"
+                            size="lg"
+                            onClick={() => {
+                              location.replace("/create_rf");
+                            }}
+                            color="orange"
+                            leftIcon={<Plus></Plus>}
+                          >
+                            퀴즈 생성
+                          </Button>
                           <Grid className="h-[30vh]">
                             {" "}
                             {problemsets.map(
@@ -390,10 +314,10 @@ const Home: NextPage = () => {
                                 ) : (
                                   <Grid.Col span={3} key={i}>
                                     <Stack
-                                      className={`py-4 cursor-pointer ${
+                                      className={`py-4 cursor-pointer border-2 ${
                                         curIdx === i
-                                          ? "border-2 border-amber-500 radius-lg"
-                                          : ""
+                                          ? "border-amber-500 radius-lg"
+                                          : "border-white radius-lg"
                                       }`}
                                       onClick={async () => {
                                         await getProblem(i + 1);
@@ -459,7 +383,9 @@ const Home: NextPage = () => {
             <Text weight={500} size="md">
               @AimHigher77
             </Text>
-            <Button>팔로우</Button>
+            <Button className="shadow-md" color="orange">
+              팔로우
+            </Button>
           </Stack>
         </div>
         <div className="fixed left-[40vw] top-[20vh]">
@@ -479,86 +405,37 @@ const Home: NextPage = () => {
                       ? "아래에서 퀴즈를 선택하세요"
                       : problemsets[curIdx].title}
                   </p>
-                  <p className=" text-2xl">
-                    <strong className="text-2xl text-amber-500 font-bold">
-                      문제 수
-                    </strong>{" "}
-                    : {problem.length}개{" "}
-                    <strong className="text-2xl text-amber-500 font-bold">
+                  <p className=" text-xl">
+                    <strong className="text-xl font-bold">문제 수</strong> :{" "}
+                    {problem.length}개{" "}
+                    <strong className="text-xl font-bold">
                       예상 소요 시간
                     </strong>{" "}
                     : {Math.trunc(totalTime() / 60)}분
                   </p>
                   <Group>
                     <Button
+                      leftIcon={<Plus></Plus>}
                       onClick={() => {
                         setModalOpened(true);
                       }}
-                      className="mx-4 h-[60px] w-[200px]"
-                      variant="outline"
-                      gradient={{ from: "orange", to: "red" }}
-                      component="a"
-                      rel="noopener noreferrer"
-                      leftIcon={<Login size={38} />}
-                      styles={(theme: {
-                        fn: {
-                          darken: (arg0: string, arg1: number) => any;
-                        };
-                      }) => ({
-                        root: {
-                          textDecoration: "none",
-                          fontWeight: "bold",
-                          fontSize: 20,
-                          marginRight: 10,
-                          color: "orange",
-                          backgroundColor: "white",
-                          border: "2px solid orange",
-                          height: 42,
-
-                          "&:hover": {
-                            backgroundColor: theme.fn.darken("#FFFFFF", 0.05),
-                          },
-                        },
-
-                        leftIcon: {
-                          marginRight: 5,
-                        },
-                      })}
+                      className="shadow-md"
+                      color="orange"
                     >
                       방 만들기
                     </Button>
                     <Button
-                      className=" h-[60px] w-[200px] bg-orange-500"
-                      variant="gradient"
-                      gradient={{ from: "orange", to: "red" }}
-                      component="a"
-                      rel="noopener noreferrer"
-                      href="/create_rf"
-                      leftIcon={<Pencil size={38} />}
-                      styles={(theme) => ({
-                        root: {
-                          fontWeight: "bold",
-                          fontSize: 20,
-                          marginLeft: 5,
-                          color: "white",
-                          backgroundColor: "orange",
-                          border: 0,
-                          height: 42,
-
-                          "&:hover": {},
-                        },
-
-                        leftIcon: {
-                          marginRight: 5,
-                        },
-                      })}
+                      leftIcon={<Pencil></Pencil>}
+                      variant="outline"
+                      className="shadow-md"
+                      color="orange"
                     >
                       수정하기
                     </Button>
                   </Group>
                 </Stack>
               </Group>
-              <ScrollArea>
+              {/* <ScrollArea>
                 {problem.map(({ title }, i) => {
                   return (
                     <p key={i} className="text-2xl font-bold">
@@ -567,7 +444,7 @@ const Home: NextPage = () => {
                     </p>
                   );
                 })}
-              </ScrollArea>
+              </ScrollArea> */}
             </Group>
           </Stack>
         </div>

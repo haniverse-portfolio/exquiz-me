@@ -1,12 +1,17 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from "next/image";
 import styles from "../styles/Home.module.css";
-import indexNavigation from "../components/indexNavigation";
+import IndexNavigation from "../components/IndexNavigation";
 import { useState } from "react";
 
-import { Button, Group, useMantineTheme, Stack, Text } from "@mantine/core";
-import { Pencil, Folders } from "tabler-icons-react";
+import {
+  Button,
+  Group,
+  useMantineTheme,
+  Stack,
+  ActionIcon,
+} from "@mantine/core";
+import { User, Database, TrendingUp } from "tabler-icons-react";
 
 const rightEnvelope = (subject: number) => {
   const subjectInfo = [
@@ -88,56 +93,124 @@ const Home: NextPage = () => {
         <meta name="description" content="exquiz.me" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      {/* navigation bar */}
+      <IndexNavigation />
 
-      <header>{indexNavigation()}</header>
-
-      <main style={{ margin: "0px" }}>
-        <section className="h-[86vh]">
-          <Stack className="items-center flex contents-between">
-            <Stack className="items-center h-[40vh] w-[100vw] bg-gradient-to-r from-amber-500 via-amber-500 to-orange-500">
-              <p className="mx-auto text-white drop-shadow-lg font-bold text-6xl mt-10">
-                퀴즈의 새로운 경험을 제시하다
-              </p>
+      <main>
+        <section className="h-[86.9vh]">
+          <Stack spacing={0} className="items-center flex contents-between">
+            {/* banner-start */}
+            <Stack className="items-center h-[40vh] w-[100vw] bg-gradient-to-l from-amber-500 via-amber-500 to-orange-500 animate-textSlow">
+              <Group className="my-auto px-10" position="apart">
+                <Stack>
+                  <p className="mx-auto text-white drop-shadow-lg font-bold text-6xl">
+                    퀴즈의 새로운 경험을 제시하다
+                  </p>
+                  <p className="mx-auto text-white drop-shadow-lg font-bold text-2xl mt-2">
+                    학교{" "}
+                    <span className="text-transparent bg-clip-text bg-red-200">
+                      선생님
+                    </span>
+                    , 회사{" "}
+                    <span className="text-transparent bg-clip-text bg-blue-200">
+                      팀장님
+                    </span>
+                    , 퀴즈{" "}
+                    <span className="text-transparent bg-clip-text bg-lime-300">
+                      애호가
+                    </span>{" "}
+                    누구든
+                  </p>
+                  <p className="mx-auto text-white drop-shadow-lg font-bold text-2xl">
+                    퀴즈를 만들고 참여하여 다함께 즐겨보세요!
+                  </p>
+                  <Group spacing="xl" className="mt-10">
+                    <Group position="left">
+                      <ActionIcon variant="transparent">
+                        <User color="white" />
+                      </ActionIcon>
+                      <p className="text-white drop-shadow-lg font-bold text-xl">
+                        가입자 0명
+                      </p>
+                    </Group>
+                    <Group position="left">
+                      <ActionIcon variant="transparent">
+                        <Database color="white" />
+                      </ActionIcon>
+                      <p className="text-white drop-shadow-lg font-bold text-xl">
+                        문제 0개
+                      </p>
+                    </Group>
+                    <Group position="left">
+                      <ActionIcon variant="transparent">
+                        <TrendingUp color="white" />
+                      </ActionIcon>
+                      <p className="text-white drop-shadow-lg font-bold text-xl">
+                        개설된 방 0명
+                      </p>
+                    </Group>
+                  </Group>
+                </Stack>
+                <Stack>
+                  <Group>
+                    <Button
+                      size="lg"
+                      className="ease-in-out duration-300 hover:scale-105 shadow-md"
+                      variant="light"
+                      color="orange"
+                    >
+                      🎉 &nbsp;&nbsp;데모 체험하기
+                    </Button>
+                    <Button
+                      size="lg"
+                      className="ease-in-out duration-300 hover:scale-105 shadow-md"
+                      variant="filled"
+                      color="orange"
+                    >
+                      ✍️ &nbsp;&nbsp;퀴즈 만들어보기
+                    </Button>
+                  </Group>
+                </Stack>
+              </Group>
             </Stack>
-            <p className="mx-auto font-bold drop-shadow-md underline decoration-amber-500 text-6xl mb-10">
-              exquiz.me
-            </p>
-            {/* <Image
-                        src="https://exquiz-image.s3.ap-northeast-2.amazonaws.com/static/KakaoTalk_Photo_2022-08-25-00-59-41.png"
-                        alt="Picture of the author"
-                        width={500}
-                        height={500}
-                      /> */}
+            {/* banner-end */}
+
+            {/* category-start */}
+            <Stack className="items-center h-[40vh] w-[100vw]">
+              <Group className="my-auto" spacing="xl" position="center">
+                <Stack>
+                  <Group className="cursor-pointer w-36 h-36 rounded-full bg-gradient-to-r from-red-500 to-orange-500 ease-in-out duration-300 hover:scale-105 shadow-md"></Group>
+                  <p className="m-auto font-bold text-xl text-black">
+                    학교 및 학원
+                  </p>
+                </Stack>
+                <Stack>
+                  <Group className="cursor-pointer w-36 h-36 mx-28 rounded-full bg-gradient-to-r from-blue-500 to-green-500 ease-in-out duration-300 hover:scale-105 shadow-md"></Group>
+                  <p className="m-auto font-bold text-xl text-black">
+                    회사 및 기관
+                  </p>
+                </Stack>
+                <Stack>
+                  <Group className="cursor-pointer w-36 h-36 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 ease-in-out duration-300 hover:scale-105 shadow-md"></Group>
+                  <p className="m-auto font-bold text-xl text-black">
+                    취미 활동
+                  </p>
+                </Stack>
+              </Group>
+            </Stack>
+            {/* category-end */}
           </Stack>
-          <br />
-          <br />
-          <br />
         </section>
       </main>
 
       <footer className={styles.footer}>
-        <Group className=" bg-gradient-to-r shadow-[inset_0_-2px_4px_rgba(128,128,128,0.8)] border-gray-500 from-gray-500 to-gray-500 w-0 h-0" />
-        <Group className="bg-gradient-to-r border-orange-500 from-orange-500 to-red-500 w-0 h-0" />
-        <Group className="bg-gradient-to-r border-blue-500 from-blue-500 to-green-500 w-0 h-0" />
-        <Group className="bg-gradient-to-r border-violet-500 from-violet-500 to-orange-500 w-0 h-0" />
-        <Group className="bg-gradient-to-r border-yellow-500 from-yellow-500 to-orange-500 w-0 h-0" />
-        <Group className="bg-gradient-to-r border-gray-500 from-gray-400 to-gray-400 w-0 h-0" />
-        <Group className="bg-gradient-to-r border-red-500 from-red-500 to-orange-500 w-0 h-0" />
-        <Group className="bg-gradient-to-r border-blue-500 from-blue-700 to-blue-500 w-0 h-0" />
-        <Group className="bg-gradient-to-r border-green-500 from-green-500 to-lime-500 w-0 h-0" />
-        <Group className="bg-gradient-to-r border-amber-500 from-amber-500 to-yellow-400 w-0 h-0" />
-        <Group className="bg-gray-500 w-0 h-0" />
-        <Group className="bg-red-500 w-0 h-0" />
-        <Group className="bg-green-500 w-0 h-0" />
-        <Group className="bg-pink-500 w-0 h-0" />
-        <Group className="bg-orange-500 w-0 h-0" />
         <a
-          className="no-underline text-black text-sm font-semibold"
-          href="/apiTest"
+          className="no-underline text-black text-md font-semibold"
+          href="https://mumomu.tistory.com/"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Copyright ⓒ 2022 exquiz.me | Team MUMOMU
+          Team MUMOMU
         </a>
       </footer>
     </div>

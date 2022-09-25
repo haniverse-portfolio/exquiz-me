@@ -290,7 +290,7 @@ const Home: NextPage = () => {
                 <Stack>
                   {/* ../public/globe_banner.png */}
                   <p className="underline decoration-amber-500 font-bold text-6xl text-left mt-10">
-                    핀 번호
+                    참가 코드
                   </p>
                   <Group>
                     <p className="font-bold text-9xl text-left mb-10">
@@ -322,30 +322,11 @@ const Home: NextPage = () => {
                 <Stack>
                   <Group className="justify-between">
                     <Button
-                      className=" h-[60px] w-[200px] bg-orange-500"
-                      variant="gradient"
-                      gradient={{ from: "orange", to: "red" }}
+                      color="orange"
+                      variant="filled"
                       component="a"
-                      rel="noopener noreferrer"
                       href="/inbox"
                       leftIcon={<Qrcode size={38} />}
-                      styles={(theme) => ({
-                        root: {
-                          fontWeight: "bold",
-                          fontSize: 20,
-                          marginLeft: 5,
-                          color: "white",
-                          backgroundColor: "orange",
-                          border: 0,
-                          height: 42,
-
-                          "&:hover": {},
-                        },
-
-                        leftIcon: {
-                          marginRight: 5,
-                        },
-                      })}
                     >
                       QR코드 화면
                     </Button>
@@ -354,35 +335,11 @@ const Home: NextPage = () => {
                       <strong className="text-amber-500"></strong>
                     </p>
                     <Button
-                      className="mx-4 h-[60px] w-[200px]"
+                      color="orange"
                       variant="outline"
-                      gradient={{ from: "orange", to: "red" }}
                       component="a"
-                      rel="noopener noreferrer"
-                      href="/play"
-                      rightIcon={<ArrowBigRightLines size={38} />}
-                      styles={(theme: {
-                        fn: { darken: (arg0: string, arg1: number) => any };
-                      }) => ({
-                        root: {
-                          textDecoration: "none",
-                          fontWeight: "bold",
-                          fontSize: 20,
-                          marginRight: 10,
-                          color: "orange",
-                          backgroundColor: "white",
-                          border: "2px solid orange",
-                          height: 42,
-
-                          "&:hover": {
-                            backgroundColor: theme.fn.darken("#FFFFFF", 0.05),
-                          },
-                        },
-
-                        leftIcon: {
-                          marginRight: 5,
-                        },
-                      })}
+                      href="/screenshare"
+                      rightIcon={<ArrowBigRightLines size={16} />}
                     >
                       시작하기
                     </Button>

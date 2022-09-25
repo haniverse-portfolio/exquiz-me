@@ -5,114 +5,30 @@ import styles from "../styles/Home.module.css";
 import Link from "next/link";
 import Image from "next/image";
 import axios from "axios";
+import { useRecoilState } from "recoil";
+import { playPin } from "../components/States";
+
+import SockJS from "sockjs-client";
+import Stomp from "stompjs";
 
 import {
   Button,
   ScrollArea,
   Center,
   Group,
-  useMantineTheme,
   Stack,
   TextInput,
   Modal,
-  ColorSwatch,
   ActionIcon,
 } from "@mantine/core";
 
+import { connectMainServerApiAddress } from "../components/ConstValues";
 import { useScrollIntoView } from "@mantine/hooks";
-
 import { Refresh, ArrowNarrowLeft } from "tabler-icons-react";
-
-import { copyFileSync } from "fs";
-import { errorMonitor } from "events";
-import { resourceLimits } from "worker_threads";
-// 85vh 20vw
-// 빈 슬라이드 객관식 주관식 O/X 넌센스 다이나믹
+import { useRef } from "react";
 const Home: NextPage = () => {
-  const [swatchChecked, setSwatchChecked] = useState(true);
-  let swatch = () => {
-    const swatches = Object.keys(theme.colors).map((color) => (
-      <ColorSwatch size={20} key={color} color={theme.colors[color][6]} />
-    ));
-
-    return (
-      <Group className="px-8 w-64" position="center" spacing="xs">
-        {swatches}
-      </Group>
-    );
-
-    // const theme = useMantineTheme();
-    // let color = [
-    //   "theme.colors.grape[6]",
-    //   "red[6]",
-    //   "orange[6]",
-    //   "yellow[6]",
-    //   "green[6]",
-    //   "blue[6]",
-    //   "grape[6]",
-    //   "pink[6]",
-    //   "black[6]",
-    // ];
-    // return (
-    //   <Group position="center" spacing="xs">
-    //     {color.map((cur, i) => {
-    //       return (
-    //         <ColorSwatch
-    //           key={i}
-    //           component="button"
-    //           color={cur[0]}
-    //           onClick={() => setSwatchChecked((c) => !c)}
-    //           sx={{ color: "#fff", cursor: "pointer" }}
-    //         >
-    //           {swatchChecked && <Check width={10} />}
-    //         </ColorSwatch>
-    //       );
-    //     })}
-    //     ;
-    // </Group>
-    // );
-  };
-
-  /* slide */
-  let [curIdx, setCurIdx] = useState(0);
-  /* form */
-  let [tabIdx, setTabIdx] = useState(0);
-
-  {
-    /* *** main state *** */
-  }
-  let [problemSet, setProblemSet] = useState({
-    closingMent: "",
-    description: "",
-    hostId: 1,
-    title: "",
-  });
-
-  {
-    /* mantine statement */
-  }
-  const theme = useMantineTheme();
-  const getColor = (color: string) =>
-    theme.colors[color][theme.colorScheme === "dark" ? 5 : 7];
-
-  {
-    /* 2. 문제 추가 - subNav - tab */
-  }
-
-  {
-    /* 1. 퀴즈 설정 - 메인 #과목 선택 */
-  }
-  const subjectInfo = [
-    { name: "미분류", startColor: "gray", endColor: "gray" },
-    { name: "언어", startColor: "orange", endColor: "red" },
-    { name: "수리과학", startColor: "blue", endColor: "green" },
-    { name: "인문사회", startColor: "violet", endColor: "pink" },
-    { name: "예체능", startColor: "yellow", endColor: "orange" },
-  ];
-
-  {
-    /* 1. 퀴즈 설정 - 사이드바 - #stepper */
-  }
+  const ref = useRef<HTMLInputElement>(null);
+  const [pin, setPin] = useRecoilState(playPin);
 
   const { scrollIntoView, targetRef, scrollableRef } = useScrollIntoView();
   const [step, setStep] = useState(0);
@@ -150,15 +66,78 @@ const Home: NextPage = () => {
     { id: -1, title: "", description: "", closingMent: "" },
   ]);
 
-  const submit = async () => {
-    const { data: result } = await axios.post(
-      "https://dist.exquiz.me/api/room/100310/mq/submit",
-      submitForm
-    );
-    return result.data;
+  const getRoomOpened = () => {
+    alert("axios get: " + pin);
+    axios
+      .get(connectMainServerApiAddress + `api/room/${pin}/open`)
+      .then((result) => {
+        console.log("success" + result.status);
+      })
+      .catch((error) => {
+        console.log("error" + error.status);
+      });
+    return;
   };
+
   let [nickname, setNickname] = useState("");
   let createRand = () => {};
+
+  let stompClient: Stomp.Client;
+
+  let connect = () => {
+    // stompClient.debug = null;
+    const headers = {
+      // connect, subscribe에 쓰이는 headers
+    };
+    var socket = new SockJS(connectMainServerApiAddress + "stomp");
+    //var socket = new SockJS("https://api.exquiz.me/stomp");
+    stompClient = Stomp.over(socket);
+
+    // jwt
+    //var headers = {
+    // Authorization : 'Bearer ' + token.access_token,
+    //};
+    var reconnect = 0;
+    stompClient.connect(
+      {},
+      function (frame) {
+        stompClient.subscribe("/topic/room" + pin, function (message) {
+          var recv = JSON.parse(message.body);
+          console.log("hellooooooo" + message.body);
+        });
+        // stompClient.send(
+        //   "/pub/room/" + pin + "/start",
+        //   {},
+        //   JSON.stringify({ uuid: 123 })
+        // );
+      },
+      function (error) {
+        console.log("fucking" + error);
+        //connect();
+        // if (reconnect++ <= 5) {
+        //   setTimeout(function () {
+        //     console.log("connection reconnect");
+        //     socket = new SockJS(`https://dist.exquiz.me/stomp`);
+        //     stompClient = Stomp.over(socket);
+        //     connect();
+        //   }, 10 * 1000);
+        // }
+      }
+    );
+
+    // stompClient.connect(
+    //   headers,
+    //   (frame) => {
+    //     console.log("연결됨");
+    //     stompClient.subscribe("/topic/room" + pin, function (message) {
+    //       console.log("성공 ㅎㅎ" + JSON.parse(message.body).content);
+    //     });
+    //   },
+    //   () => {
+    //     console.log("연결안됨");
+    //   }
+    // );
+  };
 
   return (
     <div>
@@ -179,78 +158,89 @@ const Home: NextPage = () => {
           <Stack>
             {/* main */}
             {step === 0 ? (
-              <Group>
+              <Stack className="bg-gradient-to-l from-amber-500 via-amber-500 to-orange-500 animate-textSlow">
                 <Center>
                   <Stack>
-                    <Center>
-                      <Stack>
-                        {/* Navigation Bar */}
-                        <p className="underline decoration-amber-500 font-bold text-2xl text-left mt-10">
-                          실시간 퀴즈 플랫폼
-                        </p>
-                        <p className="font-bold text-2xl text-left">
-                          exquiz.me
-                        </p>
-                      </Stack>
-                    </Center>
-                    <Stack>
-                      <Center>
-                        <Group spacing={0}>
-                          <Group className="shadow-lg" spacing={0}>
-                            <Group className="border-r-2 border-gray-300 shadow-lg h-28 w-4 bg-amber-200" />
-                            <Group>
-                              <Stack spacing={0}>
-                                <Group className="border-b-2 border-gray-300 m-0 p-0 h-14 w-40 bg-amber-200"></Group>
-                                <Group
-                                  spacing={2}
-                                  className=" m-0 p-0 h-14 w-40 bg-amber-200"
-                                >
-                                  <Group
-                                    className={`mx-1 text-white cursor-pointer w-12 h-12 bg-gradient-to-r from-blue-500 to-green-500 rounded-full`}
-                                  >
-                                    <p className="text-xs m-auto">학생용</p>
-                                  </Group>
-                                  <Group
-                                    className={`mx-0 text-white cursor-pointer w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full`}
-                                  >
-                                    <p className="text-xs m-auto">모바일</p>
-                                  </Group>
-                                </Group>
-                              </Stack>
-                            </Group>
-                          </Group>
-                          <Group className="shadow-lg m-0 p-0 h-24 w-6 bg-white"></Group>
-                        </Group>
-                      </Center>
-                      <Center>
-                        <Stack>
-                          <TextInput placeholder="핀 번호를 입력하세요"></TextInput>
-                          <Button
-                            onClick={() => {
-                              setStep((prevState) => step + 1);
-                            }}
-                            color="orange"
-                            variant="outline"
-                          >
-                            입장하기
-                          </Button>
-                        </Stack>
-                      </Center>
-
-                      <footer className={styles.footer}>
-                        <a
-                          className="text-gray-700 no-underline text-black text-sm font-semibold"
-                          href="/apiTest"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                        >
-                          Team MUMOMU
-                        </a>
-                      </footer>
-                    </Stack>
+                    {/* Navigation Bar */}
+                    <p className="font-bold text-white text-2xl text-left">
+                      exquiz.me
+                    </p>
                   </Stack>
                 </Center>
-              </Group>
+                <Stack>
+                  <Center>
+                    <Group spacing={0}>
+                      <Group className="shadow-lg" spacing={0}>
+                        <Group className="border-r-2 border-gray-300 shadow-lg h-28 w-4 bg-amber-200" />
+                        <Group>
+                          <Stack spacing={0}>
+                            <Group className="border-b-2 border-gray-300 m-0 p-0 h-14 w-40 bg-amber-200"></Group>
+                            <Group
+                              spacing={2}
+                              className=" m-0 p-0 h-14 w-40 bg-amber-200"
+                            >
+                              <Group
+                                className={`mx-1 text-white cursor-pointer w-12 h-12 bg-gradient-to-r from-blue-500 to-green-500 rounded-full`}
+                              >
+                                <p className="text-xs m-auto">학생용</p>
+                              </Group>
+                              <Group
+                                className={`mx-0 text-white cursor-pointer w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full`}
+                              >
+                                <p className="text-xs m-auto">모바일</p>
+                              </Group>
+                            </Group>
+                          </Stack>
+                        </Group>
+                      </Group>
+                      <Group className="shadow-lg m-0 p-0 h-24 w-6 bg-white"></Group>
+                    </Group>
+                  </Center>
+                  <Center>
+                    <Stack>
+                      <TextInput
+                        ref={ref}
+                        placeholder="핀 번호를 입력하세요"
+                      ></TextInput>
+                      <Button
+                        onClick={() => {
+                          // ref.current?.value ?? "000000"
+                          setPin(ref.current?.value ?? "000000");
+                          alert("Button: " + pin);
+                          getRoomOpened();
+                          // connect();
+
+                          // is room exist : validation check needed
+                          setStep((prevState) => step + 1);
+                        }}
+                        color="orange"
+                        variant="outline"
+                      >
+                        입장하기
+                      </Button>
+                      {/* <Button
+                            onClick={() => {
+                              setPin("888");
+                              alert(pin);
+                            }}
+                          >
+                            111 에서 888
+                          </Button> */}
+                    </Stack>
+                  </Center>
+
+                  <footer className={styles.footer}>
+                    <a
+                      className="text-gray-700 no-underline text-black text-sm font-semibold"
+                      href="/apiTest"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Team MUMOMU
+                    </a>
+                  </footer>
+                </Stack>
+              </Stack>
             ) : (
               <></>
             )}
@@ -328,7 +318,6 @@ const Home: NextPage = () => {
                       <p className="px-14 font-bold text-md text-left">
                         아바타 선택
                       </p>
-                      {swatch()}
                       <Stack>
                         <ScrollArea scrollbarSize={0} style={{ width: 180 }}>
                           <Group style={{ width: 700 }}>
@@ -402,19 +391,6 @@ const Home: NextPage = () => {
             ) : (
               <></>
             )}
-
-            {/* caching tailwind css */}
-            <Group className=" bg-gradient-to-r shadow-[inset_0_-2px_4px_rgba(128,128,128,0.8)] border-gray-500 from-gray-500 to-gray-500 w-0 h-0" />
-            <Group className="bg-gradient-to-r border-orange-500 from-orange-500 to-red-500 w-0 h-0" />
-            <Group className="bg-gradient-to-r border-blue-500 from-blue-500 to-green-500 w-0 h-0" />
-            <Group className="bg-gradient-to-r border-violet-500 from-violet-500 to-orange-500 w-0 h-0" />
-            <Group className="bg-gradient-to-r border-yellow-500 from-yellow-500 to-orange-500 w-0 h-0" />
-            <Group className="bg-gradient-to-r border-gray-500 from-gray-400 to-gray-400 w-0 h-0" />
-            <Group className="bg-gradient-to-r border-red-500 from-red-500 to-orange-500 w-0 h-0" />
-            <Group className="bg-gradient-to-r border-blue-500 from-blue-700 to-blue-500 w-0 h-0" />
-            <Group className="bg-gradient-to-r border-green-500 from-green-500 to-lime-500 w-0 h-0" />
-            <Group className="bg-gradient-to-r border-amber-500 from-amber-500 to-yellow-400 w-0 h-0" />
-            <Group className="bg-gradient-to-r border-violet-500 from-violet-700 to-fuchsia-600 w-0 h-0" />
           </Stack>
         </Center>
       </Stack>

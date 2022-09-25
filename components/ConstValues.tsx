@@ -4,12 +4,12 @@ export const connectMainServerApiAddress = "https://api.exquiz.me/";
 /* create */
 
 export const dtypeName = [
-  "MultipleChoiceProblem",
-  "subjective",
-  "ox",
-  "nonsense",
-  "dynamic",
-  "empty",
+  "객관식",
+  "주관식",
+  "O/X",
+  "넌센스",
+  "다이나믹",
+  "설명",
 ];
 
 export const problemInput = [
