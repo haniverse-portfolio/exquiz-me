@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
@@ -16,6 +17,7 @@ import {
   Group,
   Switch,
   Tooltip,
+  Modal,
 } from "@mantine/core";
 import {
   Emphasis,
@@ -42,19 +44,42 @@ import {
   createTabNextIdx,
   createTargetIdx,
   createTimelimit,
+  indexIsLogined,
+  indexIsModalOpened,
   indexMembership,
+  indexUserInfo,
   language,
 } from "./States";
 
+import {
+  connectMainServerApiAddress,
+  dtypeName,
+  problemInput,
+  optionInput,
+  problemsetInput,
+} from "./ConstValues";
+import axios from "axios";
+import { useState } from "react";
+
 const IndexNavigation = () => {
+  const router = useRouter();
   const [langValue, setLangValue] = useRecoilState(language);
   const [membership, setMembership] = useRecoilState(indexMembership);
+  const [isLogined, setIsLogined] = useRecoilState(indexIsLogined);
+  const [isModalOpened, setModalOpened] = useState(false);
+  const [userInfo, setUserInfo] = useRecoilState(indexUserInfo);
+
+  const googleLogin = () => {
+    axios.get("https://api.exquiz.me/api/google/login");
+    return;
+  };
+
   let membershipComponent = (mtype: string) => {
     if (mtype === "0")
       return (
         <span
           onClick={() => {
-            location.replace("/membership");
+            router.push("/membership");
           }}
           className="text-lg font-bold cursor-pointer"
         >
@@ -63,13 +88,23 @@ const IndexNavigation = () => {
       );
     if (mtype === "1")
       return (
-        <span className="text-lg font-bold cursor-pointer transition ease-in-out text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-green-600 animate-text">
+        <span
+          onClick={() => {
+            router.push("/membership");
+          }}
+          className="text-lg font-bold cursor-pointer transition ease-in-out text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-green-600 animate-text"
+        >
           스탠다드 플랜
         </span>
       );
     if (mtype === "2")
       return (
-        <span className="text-lg font-bold cursor-pointer transition ease-in-out text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 animate-text">
+        <span
+          onClick={() => {
+            router.push("/membership");
+          }}
+          className="text-lg font-bold cursor-pointer transition ease-in-out text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600 animate-text"
+        >
           프리미엄 플랜
         </span>
       );
@@ -106,11 +141,30 @@ const IndexNavigation = () => {
           >
             {membershipComponent(membership)}
           </Tooltip>
-          <Link href="/signup">
-            <span className="p-4 text-lg font-bold cursor-pointer transition ease-in-out">
+          {isLogined === "0" ? (
+            <span
+              onClick={() => {
+                setModalOpened(true);
+                // google auth2
+                // googleLogin();
+                router.push("https://api.exquiz.me/api/google/login");
+                // page convertion
+                // router.push("/signup");
+              }}
+              className="p-4 text-lg font-bold cursor-pointer transition ease-in-out"
+            >
               로그인
             </span>
-          </Link>
+          ) : (
+            <img
+              alt=""
+              onClick={() => {
+                router.push("/signup");
+              }}
+              className="h-10 w-auto cursor-pointer rounded-full"
+              src={userInfo.picture}
+            ></img>
+          )}
           <Switch
             checked={langValue == "KO" ? true : false}
             onChange={(event) => {
@@ -126,6 +180,13 @@ const IndexNavigation = () => {
           />
         </Group>
       </Group>
+      <Modal
+        centered
+        opened={isModalOpened}
+        onClose={() => setModalOpened(false)}
+      >
+        내용물
+      </Modal>
     </header>
   );
 };

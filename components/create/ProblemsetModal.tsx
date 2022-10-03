@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
@@ -100,7 +101,7 @@ export const ProblemsetModal = () => {
   return (
     <Drawer
       position="bottom"
-      opened={problemsetDrawer === "0"}
+      opened={problemsetDrawer === "0" ? false : true}
       onClose={() => setProblemsetDrawer("0")}
       padding="xl"
       size="93.8%"

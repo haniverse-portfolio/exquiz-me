@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
@@ -25,6 +26,7 @@ import {
   ActionIcon,
   Avatar,
   Badge,
+  Tabs,
 } from "@mantine/core";
 import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
 
@@ -42,14 +44,25 @@ import {
   createTabNextIdx,
   createTargetIdx,
   createTimelimit,
+  indexIsLogined,
   language,
 } from "../components/States";
 
-import { ArrowNarrowLeft, Link, Login, Pencil, Plus } from "tabler-icons-react";
+import {
+  ArrowNarrowLeft,
+  Link,
+  Login,
+  Pencil,
+  Plus,
+  Router,
+} from "tabler-icons-react";
 
 const Home: NextPage = () => {
+  const router = useRouter();
   /* ****** dropzone ****** */
   const [files, setFiles] = useState<File[]>([]);
+
+  const [isLogined, setIsLogined] = useRecoilState(indexIsLogined);
   return (
     <div>
       <Head>
@@ -60,6 +73,31 @@ const Home: NextPage = () => {
 
       <IndexNavigation />
       <main className="h-[87vh]">
+        <Tabs orientation="vertical" defaultValue="gallery">
+          <Tabs.List>
+            <Tabs.Tab value="gallery" icon={<Plus size={14} />}>
+              Gallery
+            </Tabs.Tab>
+            <Tabs.Tab value="messages" icon={<Plus size={14} />}>
+              Messages
+            </Tabs.Tab>
+            <Tabs.Tab value="settings" icon={<Plus size={14} />}>
+              Settings
+            </Tabs.Tab>
+          </Tabs.List>
+
+          <Tabs.Panel value="gallery" pl="xs">
+            Gallery tab content
+          </Tabs.Panel>
+
+          <Tabs.Panel value="messages" pl="xs">
+            Messages tab content
+          </Tabs.Panel>
+
+          <Tabs.Panel value="settings" pl="xs">
+            Settings tab content
+          </Tabs.Panel>
+        </Tabs>
         <Grid
           className="h-[87vh] bg-gradient-to-l from-amber-500 via-amber-500 to-orange-500 animate-textSlow"
           columns={24}
@@ -72,7 +110,7 @@ const Home: NextPage = () => {
                 간단한 회원 가입을 통해 exquiz.me의 서비스를 이용해보세요!
               </p>
               <Group>
-                <Dropzone
+                {/* <Dropzone
                   className="h-32 w-32"
                   radius={100}
                   accept={IMAGE_MIME_TYPE}
@@ -81,7 +119,7 @@ const Home: NextPage = () => {
                   <Text className="my-auto" color="gray" align="center">
                     프로필 사진
                   </Text>
-                </Dropzone>
+                </Dropzone> */}
                 <Stack>
                   <TextInput label="닉네임" placeholder="닉네임"></TextInput>
                   <TextInput
@@ -97,6 +135,7 @@ const Home: NextPage = () => {
               <p>관심 분야</p>
               <Group>
                 <Badge
+                  className="cursor-pointer"
                   size="lg"
                   variant="gradient"
                   gradient={{ from: "indigo", to: "cyan" }}
@@ -104,6 +143,7 @@ const Home: NextPage = () => {
                   사교육 및 공교육
                 </Badge>
                 <Badge
+                  className="cursor-pointer"
                   size="lg"
                   variant="gradient"
                   gradient={{ from: "teal", to: "lime", deg: 105 }}
@@ -112,6 +152,7 @@ const Home: NextPage = () => {
                 </Badge>
 
                 <Badge
+                  className="cursor-pointer"
                   size="lg"
                   variant="gradient"
                   gradient={{ from: "orange", to: "red" }}
@@ -119,6 +160,7 @@ const Home: NextPage = () => {
                   개인 취미
                 </Badge>
                 <Badge
+                  className="cursor-pointer"
                   size="lg"
                   variant="gradient"
                   gradient={{ from: "#ed6ea0", to: "#ec8c69", deg: 35 }}
@@ -128,7 +170,8 @@ const Home: NextPage = () => {
               </Group>
               <Button
                 onClick={() => {
-                  location.replace("/inbox");
+                  setIsLogined("1");
+                  router.push("/inbox");
                 }}
                 color="orange"
               >

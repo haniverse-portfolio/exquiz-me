@@ -1,5 +1,4 @@
 /* common */
-export const connectTestServerApiAddress = "https://prod.exquiz.me/";
 export const connectMainServerApiAddress = "https://api.exquiz.me/";
 /* create */
 
@@ -56,12 +55,13 @@ export const optionInput = [
 ];
 
 export const problemsetInput = {
-  scoreSetting: 0,
-  timeSetting: 0,
+  id: 0,
   backgroundMusic: 0,
   closingMent: "",
   description: "",
   hostId: 1,
+  scoreSetting: 0,
+  timeSetting: 0,
   title: "",
 };
 

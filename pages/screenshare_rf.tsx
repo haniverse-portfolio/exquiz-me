@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
@@ -12,6 +13,7 @@ import {
   BellRinging,
   Pencil,
   ArrowBigRightLines,
+  Router,
 } from "tabler-icons-react";
 
 import { useRecoilState } from "recoil";
@@ -19,6 +21,7 @@ import { playProblem, playOption, playProblemset } from "../components/States";
 import { useDebouncedState } from "@mantine/hooks";
 
 const Home: NextPage = () => {
+  const router = useRouter();
   const theme = useMantineTheme();
 
   const secondaryColor =
@@ -43,7 +46,7 @@ const Home: NextPage = () => {
   useEffect(() => {
     if (time <= 0) {
       if (curIdx === problem.length) {
-        location.replace("/leaderboard_display_podium");
+        router.push("/leaderboard_display_podium");
       } else {
         setStep((prevstate) => step + 1);
         setCurIdx((prevState) => curIdx + 1);

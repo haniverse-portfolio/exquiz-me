@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
@@ -20,15 +21,17 @@ import {
   TextInput,
   Modal,
   ActionIcon,
+  Grid,
 } from "@mantine/core";
 
 import { connectMainServerApiAddress } from "../components/ConstValues";
 import { useScrollIntoView } from "@mantine/hooks";
-import { Refresh, ArrowNarrowLeft } from "tabler-icons-react";
+import { Refresh, ArrowNarrowLeft, StepInto } from "tabler-icons-react";
 import { useRef } from "react";
+
 const Home: NextPage = () => {
-  const ref = useRef<HTMLInputElement>(null);
   const [pin, setPin] = useRecoilState(playPin);
+  const ref = useRef<HTMLInputElement>(null);
 
   const { scrollIntoView, targetRef, scrollableRef } = useScrollIntoView();
   const [step, setStep] = useState(0);
@@ -44,7 +47,7 @@ const Home: NextPage = () => {
 
   const getLeaderboard = async () => {
     const { data: result } = await axios.get(
-      "https://dist.exquiz.me/api/room/100310/mq/leaderboard"
+      connectMainServerApiAddress + "api/room/100310/mq/leaderboard"
     );
     return result.data;
   };
@@ -52,7 +55,7 @@ const Home: NextPage = () => {
   const getProblemsets = () => {
     let rt = [{ id: -1, title: "", description: "", closingMent: "" }];
     axios
-      .get("https://prod.exquiz.me/api/problemsets/1")
+      .get(connectMainServerApiAddress + "api/problemsets/1")
       .then((result) => {
         setProblemsets(result.data);
       })
@@ -66,15 +69,15 @@ const Home: NextPage = () => {
     { id: -1, title: "", description: "", closingMent: "" },
   ]);
 
-  const getRoomOpened = () => {
-    alert("axios get: " + pin);
+  const getRoomOpened = (pin: string) => {
+    alert(pin);
     axios
-      .get(connectMainServerApiAddress + `api/room/${pin}/open`)
+      .get(connectMainServerApiAddress + `api/room/${pin.toString()}/open`)
       .then((result) => {
-        console.log("success" + result.status);
+        alert("success" + result.status);
       })
       .catch((error) => {
-        console.log("error" + error.status);
+        alert("error" + error.status);
       });
     return;
   };
@@ -89,7 +92,7 @@ const Home: NextPage = () => {
     const headers = {
       // connect, subscribe에 쓰이는 headers
     };
-    var socket = new SockJS(connectMainServerApiAddress + "stomp");
+  let socket = new SockJS(connectMainServerApiAddress + "stomp");
     //var socket = new SockJS("https://api.exquiz.me/stomp");
     stompClient = Stomp.over(socket);
 
@@ -97,14 +100,17 @@ const Home: NextPage = () => {
     //var headers = {
     // Authorization : 'Bearer ' + token.access_token,
     //};
-    var reconnect = 0;
+    let reconnect = 0;
     stompClient.connect(
       {},
       function (frame) {
-        stompClient.subscribe("/topic/room" + pin, function (message) {
-          var recv = JSON.parse(message.body);
-          console.log("hellooooooo" + message.body);
-        });
+        stompClient.subscribe(
+          "/topic/room" + localStorage.getItem("pin") ?? "000000",
+          function (message) {
+            var recv = JSON.parse(message.body);
+            console.log("hellooooooo" + message.body);
+          }
+        );
         // stompClient.send(
         //   "/pub/room/" + pin + "/start",
         //   {},
@@ -139,6 +145,36 @@ const Home: NextPage = () => {
     // );
   };
 
+  let colorCode = [
+    "bg-red-500",
+
+    "bg-orange-400",
+
+    "bg-amber-300",
+
+    "bg-lime-500",
+
+    "bg-green-500",
+
+    "bg-lime-800",
+
+    "bg-teal-400",
+
+    "bg-cyan-500",
+
+    "bg-sky-600",
+
+    "bg-blue-600",
+
+    "bg-violet-600",
+
+    "bg-purple-300",
+
+    "bg-fuchsia-300",
+
+    "bg-pink-500",
+  ];
+
   return (
     <div>
       <Head>
@@ -158,7 +194,7 @@ const Home: NextPage = () => {
           <Stack>
             {/* main */}
             {step === 0 ? (
-              <Stack className="bg-gradient-to-l from-amber-500 via-amber-500 to-orange-500 animate-textSlow">
+              <Stack className="w-[100vw] h-[100vh] bg-gradient-to-l from-amber-500 via-amber-500 to-orange-500 animate-text">
                 <Center>
                   <Stack>
                     {/* Navigation Bar */}
@@ -167,58 +203,61 @@ const Home: NextPage = () => {
                     </p>
                   </Stack>
                 </Center>
-                <Stack>
-                  <Center>
-                    <Group spacing={0}>
-                      <Group className="shadow-lg" spacing={0}>
-                        <Group className="border-r-2 border-gray-300 shadow-lg h-28 w-4 bg-amber-200" />
-                        <Group>
-                          <Stack spacing={0}>
-                            <Group className="border-b-2 border-gray-300 m-0 p-0 h-14 w-40 bg-amber-200"></Group>
-                            <Group
-                              spacing={2}
-                              className=" m-0 p-0 h-14 w-40 bg-amber-200"
-                            >
+                <Stack justify="space-between">
+                  <Stack>
+                    <Center>
+                      <Group spacing={0}>
+                        <Group className="shadow-lg" spacing={0}>
+                          <Group className="border-r-2 border-gray-300 shadow-lg h-28 w-4 bg-amber-200" />
+                          <Group>
+                            <Stack spacing={0}>
+                              <Group className="border-b-2 border-gray-300 m-0 p-0 h-14 w-40 bg-amber-200"></Group>
                               <Group
-                                className={`mx-1 text-white cursor-pointer w-12 h-12 bg-gradient-to-r from-blue-500 to-green-500 rounded-full`}
+                                spacing={2}
+                                className=" m-0 p-0 h-14 w-40 bg-amber-200"
                               >
-                                <p className="text-xs m-auto">학생용</p>
+                                <Group
+                                  className={`mx-1 text-white cursor-pointer w-12 h-12 bg-gradient-to-r from-blue-500 to-green-500 rounded-full`}
+                                >
+                                  <p className="text-xs m-auto">학생용</p>
+                                </Group>
+                                <Group
+                                  className={`mx-0 text-white cursor-pointer w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full`}
+                                >
+                                  <p className="text-xs m-auto">모바일</p>
+                                </Group>
                               </Group>
-                              <Group
-                                className={`mx-0 text-white cursor-pointer w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full`}
-                              >
-                                <p className="text-xs m-auto">모바일</p>
-                              </Group>
-                            </Group>
-                          </Stack>
+                            </Stack>
+                          </Group>
                         </Group>
+                        <Group className="shadow-lg m-0 p-0 h-24 w-6 bg-white"></Group>
                       </Group>
-                      <Group className="shadow-lg m-0 p-0 h-24 w-6 bg-white"></Group>
-                    </Group>
-                  </Center>
-                  <Center>
-                    <Stack>
-                      <TextInput
-                        ref={ref}
-                        placeholder="핀 번호를 입력하세요"
-                      ></TextInput>
-                      <Button
-                        onClick={() => {
-                          // ref.current?.value ?? "000000"
-                          setPin(ref.current?.value ?? "000000");
-                          alert("Button: " + pin);
-                          getRoomOpened();
-                          // connect();
+                    </Center>
+                    <Center>
+                      <Stack>
+                        <TextInput
+                          value={pin}
+                          onChange={(e) => {
+                            setPin(e.target.value);
+                            console.log(pin);
+                          }}
+                          ref={ref}
+                          placeholder="핀 번호를 입력하세요"
+                        ></TextInput>
+                        <Button
+                          onClick={() => {
+                            getRoomOpened(pin);
+                            // connect();
 
-                          // is room exist : validation check needed
-                          setStep((prevState) => step + 1);
-                        }}
-                        color="orange"
-                        variant="outline"
-                      >
-                        입장하기
-                      </Button>
-                      {/* <Button
+                            // is room exist : validation check needed
+                            setStep((prevState) => step + 1);
+                          }}
+                          color="orange"
+                          variant="light"
+                        >
+                          입장하기
+                        </Button>
+                        {/* <Button
                             onClick={() => {
                               setPin("888");
                               alert(pin);
@@ -226,8 +265,9 @@ const Home: NextPage = () => {
                           >
                             111 에서 888
                           </Button> */}
-                    </Stack>
-                  </Center>
+                      </Stack>
+                    </Center>
+                  </Stack>
 
                   <footer className={styles.footer}>
                     <a
@@ -318,6 +358,11 @@ const Home: NextPage = () => {
                       <p className="px-14 font-bold text-md text-left">
                         아바타 선택
                       </p>
+                      <Grid columns={5}>
+                        {colorCode.map(() => {
+                          return <></>;
+                        })}
+                      </Grid>
                       <Stack>
                         <ScrollArea scrollbarSize={0} style={{ width: 180 }}>
                           <Group style={{ width: 700 }}>

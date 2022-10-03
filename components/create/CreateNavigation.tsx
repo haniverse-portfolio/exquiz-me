@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
@@ -91,9 +92,9 @@ export const CreateNavigation = () => {
   const [imageWord, setImageWord] = useRecoilState(createImageWord);
 
   return (
-    <Grid className="h-[60px] border-b-2 border-gray-300" columns={24}>
+    <Grid className="h-[70px] border-b-2 border-gray-300" columns={24}>
       <Grid.Col span={5}>
-        <Group>
+        <Group className="py-3">
           <Link href="/">
             <ActionIcon>
               <ArrowNarrowLeft size="xl"></ArrowNarrowLeft>
@@ -105,12 +106,13 @@ export const CreateNavigation = () => {
               "ttps://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=250&q=80"
             )}
           />
-          <Text>반가워요! 임준현님.</Text>
+          <p className="font-semibold">반가워요! 임준현님.</p>
         </Group>
       </Grid.Col>
       <Grid.Col span={14}>
         {" "}
         <Group
+          className="my-1"
           onClick={() => {
             setProblemsetDrawer("1");
           }}
@@ -143,21 +145,17 @@ export const CreateNavigation = () => {
           )}
         </Group>
       </Grid.Col>
-      <Grid.Col span={5}>
-        <Group className="border-l-2 border-gray-300">
-          <Button variant="outline" color="orange" onClick={() => {}}>
-            미리보기
-          </Button>
-          <Button
-            variant="outline"
-            color="orange"
-            onClick={() => {
-              setCompleteModalOpened("1");
-            }}
-          >
-            완성하기
-          </Button>
-        </Group>
+      <Grid.Col className="my-2" span={5}>
+        <Button
+          fullWidth
+          variant="filled"
+          color="orange"
+          onClick={() => {
+            setCompleteModalOpened("1");
+          }}
+        >
+          완성하기
+        </Button>
       </Grid.Col>
     </Grid>
   );

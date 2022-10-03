@@ -4,6 +4,7 @@ import Head from "next/head";
 import axios from "axios";
 import { useRef } from "react";
 import { useTimeout } from "@mantine/hooks";
+import { useRecoilState } from "recoil";
 
 import {
   Button,
@@ -13,13 +14,17 @@ import {
   Stack,
   Grid,
   Alert,
+  Container,
+  Progress,
 } from "@mantine/core";
 
 import { useScrollIntoView } from "@mantine/hooks";
 
-import { AlertCircle } from "tabler-icons-react";
+import { AlertCircle, BuildingSkyscraper } from "tabler-icons-react";
+import { playPin } from "../components/States";
 
 const Home: NextPage = () => {
+  const [pin, setPin] = useRecoilState(playPin);
   let [curIdx, setCurIdx] = useState(0);
   {
     /* *** main state *** */
@@ -33,43 +38,156 @@ const Home: NextPage = () => {
 
   let [problem, setProblem] = useState([
     {
-      answer: "3",
+      answer: "0",
       description: "우리나라에서 가장 높은 산은?",
       dtype: "MultipleChoiceProblem",
       idx: 0,
-      picture: "string",
+      picture: "",
       problemsetId: 0,
-      score: 0,
-      timelimit: 0,
-      title: "string",
+      score: 125,
+      timelimit: 30,
+      title: "",
+    },
+    {
+      answer: "0",
+      description: "아이스크림을 영어로 하면?",
+      dtype: "MultipleChoiceProblem",
+      idx: 0,
+      picture: "",
+      problemsetId: 0,
+      score: 125,
+      timelimit: 30,
+      title: "",
+    },
+    {
+      answer: "0",
+      description: "소프트웨어 마에스트로가 있는 빌딩은?",
+      dtype: "MultipleChoiceProblem",
+      idx: 0,
+      picture: "",
+      problemsetId: 0,
+      score: 125,
+      timelimit: 30,
+      title: "",
+    },
+    {
+      answer: "0",
+      description: "🌋이 중 가장 무시무시한 공룡은?🏔",
+      dtype: "MultipleChoiceProblem",
+      idx: 0,
+      picture: "",
+      problemsetId: 0,
+      score: 125,
+      timelimit: 30,
+      title: "",
     },
   ]);
 
   let [option, setOption] = useState([
-    {
-      description: "지리산",
-      idx: 0,
-      picture: "string",
-      problemId: 0,
-    },
-    {
-      description: "설악산",
-      idx: 1,
-      picture: "string",
-      problemId: 0,
-    },
-    {
-      description: "한라산",
-      idx: 2,
-      picture: "string",
-      problemId: 0,
-    },
-    {
-      description: "백두산",
-      idx: 3,
-      picture: "string",
-      problemId: 0,
-    },
+    [
+      {
+        description: "설악산",
+        idx: 0,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "지리산",
+        idx: 1,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "한라산",
+        idx: 2,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "백두산",
+        idx: 3,
+        picture: "",
+        problemId: 0,
+      },
+    ],
+    [
+      {
+        description: "icecoffee",
+        idx: 0,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "icekekki",
+        idx: 1,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "icecream",
+        idx: 2,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "iceball",
+        idx: 3,
+        picture: "",
+        problemId: 0,
+      },
+    ],
+    [
+      {
+        description: "황해주택",
+        idx: 0,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "인하주택",
+        idx: 1,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "아남타워",
+        idx: 2,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "코엑스",
+        idx: 3,
+        picture: "",
+        problemId: 0,
+      },
+    ],
+    [
+      {
+        description: "티라노사우루스",
+        idx: 0,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "트리케라톱스",
+        idx: 1,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "랩터",
+        idx: 2,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "스피노사우루스",
+        idx: 3,
+        picture: "",
+        problemId: 0,
+      },
+    ],
   ]);
 
   {
@@ -112,7 +230,7 @@ const Home: NextPage = () => {
 
   const getLeaderboard = async () => {
     const { data: result } = await axios.get(
-      "https://dist.exquiz.me/api/room/100310/mq/leaderboard"
+      "https://api.exquiz.me/api/room/100310/mq/leaderboard"
     );
     return result.data;
   };
@@ -120,7 +238,7 @@ const Home: NextPage = () => {
   const getProblemsets = () => {
     let rt = [{ id: -1, title: "", description: "", closingMent: "" }];
     axios
-      .get("https://prod.exquiz.me/api/problemsets/1")
+      .get("https://api.exquiz.me/api/problemsets/1")
       .then((result) => {
         setProblemsets(result.data);
       })
@@ -150,38 +268,51 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Center className="w-full h-full">
-        <Center className="h-[100vh]">
-          {/* main */}
-          <Stack>
-            <Grid justify="center" gutter="sm">
-              {option.map((description, i) => {
-                let color = ["red", "blue", "green", "orange"];
-                let bgColor = "bg-" + color[i] + "-500";
-                let hoverColor = "hover:" + bgColor;
-                return (
-                  <Grid.Col key={i} span={5}>
-                    <Button
-                      onClick={() => {
-                        setAnswer(answer === i ? -1 : i);
-                      }}
-                      color={color[i]}
-                      className={`${
-                        answer === i ? "shadow-inner text-white" : ""
-                      } shadow-lg h-28 ${
-                        answer === i ? hoverColor : ""
-                      } w-full  ${answer === i ? bgColor : ""}`}
-                      variant="outline"
-                    >
-                      {option[i].description}
-                    </Button>
-                  </Grid.Col>
-                );
-              })}
-            </Grid>
-          </Stack>
-        </Center>
-      </Center>
+      {/* main */}
+      <Container size={1200}>
+        <Stack className="mt-32 flex ">
+          <p className="text-lg font-semibold">PIN : {pin}</p>
+          <Progress
+            color="orange"
+            className=""
+            value={curIdx / problem.length}
+            animate
+          />
+          <p className="text-lg font-semibold"> 문제 {curIdx + 1 + "번"}</p>
+          <Grid className="" justify="center" gutter="sm">
+            {option[curIdx].map((description, i) => {
+              let color = ["red", "blue", "green", "orange"];
+              let bgColor = "hover:bg-" + color[i] + "-500";
+              return (
+                <Grid.Col
+                  className="!max-w-[50%] !basis-2/4"
+                  key={i}
+                  span={5}
+                  offset={0}
+                >
+                  <Button
+                    fullWidth
+                    style={{ height: "200px" }}
+                    onClick={() => {
+                      setAnswer(answer === i ? -1 : i);
+                    }}
+                    color={color[i]}
+                    className={`${
+                      answer === i ? "shadow-inner text-white" : ""
+                    } shadow-md ${answer === i ? bgColor : ""} ${
+                      answer === i ? bgColor : ""
+                    }`}
+                    variant={answer === i ? "filled" : "outline"}
+                  >
+                    <p className="text-lg"> {option[i].description}</p>
+                  </Button>
+                </Grid.Col>
+              );
+            })}
+          </Grid>
+          <Button color="orange">제출하기</Button>
+        </Stack>
+      </Container>
       {/* caching tailwind css */}
       <Group className="hover:bg-red-500 bg-red-500 w-0 h-0" />
       <Group className="hover:bg-blue-500 bg-blue-500 w-0 h-0" />

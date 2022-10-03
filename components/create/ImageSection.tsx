@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
@@ -44,7 +45,7 @@ import {
   createCompleteModal,
   createProblemsetDrawer,
 } from "../States";
-import { connectTestServerApiAddress, dtypeName } from "../ConstValues";
+import { connectMainServerApiAddress, dtypeName } from "../ConstValues";
 import { useDebouncedState } from "@mantine/hooks";
 import axios from "axios";
 
@@ -90,7 +91,7 @@ export const ImageSection = () => {
     console.log(imageURL);
     let rt = Infinity;
     await axios
-      .post(connectTestServerApiAddress + "api/image/upload", imageURL)
+      .post(connectMainServerApiAddress + "api/image/upload", imageURL)
       .then((result) => {})
       .catch((error) => {
         // alert(error.response.messages);
@@ -106,9 +107,6 @@ export const ImageSection = () => {
                       이미지나 동영상을 첨부하세요
                     </Text>
                   </Dropzone> */}
-      <p className="border-b-2 border-gray-300 text-amber-500 font-bold">
-        이미지 검색
-      </p>
       <TextInput
         size="lg"
         label=""
@@ -161,9 +159,7 @@ export const ImageSection = () => {
             <ScrollArea className="h-[50vh]">
               <Stack className="h-[1500vh]">
                 {imageList.map((link, i) => {
-                  return i < 20 ? (
-                    <></>
-                  ) : (
+                  return (
                     <img
                       className="max-w-full h-auto cursor-pointer"
                       onClick={async () => {

@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
@@ -18,6 +19,10 @@ import {
   GridDots,
   CornerDownRight,
   AlertTriangle,
+  User,
+  Database,
+  Clock,
+  Files,
 } from "tabler-icons-react";
 
 import {
@@ -37,7 +42,7 @@ export const Slide = () => {
     theme.colors[color][theme.colorScheme === "dark" ? 5 : 7];
   return (
     <Stack justify="space-between">
-      <Accordion defaultValue="0" variant="contained">
+      <Accordion className="h-[75vh]" defaultValue="0" variant="contained">
         {problem.map(({ dtype, description }, i) => {
           return (
             <Accordion.Item
@@ -68,15 +73,29 @@ export const Slide = () => {
           );
         })}
       </Accordion>
-      <Stack>
-        <Group position="apart">
+      <Stack className="border-t-2 border-gray-300">
+        <Group position="left" className="mt-4">
           <Stack>
-            <p> 예상 소요 시간</p>
-            <p> 36:00 </p>
+            <Group position="left">
+              <ActionIcon variant="transparent">
+                <Clock color="black" />
+              </ActionIcon>
+              <p className="  font-semibold">예상 소요 시간</p>
+            </Group>
+            <Group position="left">
+              <p> </p>
+            </Group>
           </Stack>
           <Stack>
-            <p> 문제 수</p>
-            <p> {problem.length + "개"} </p>
+            <Group position="left">
+              <ActionIcon variant="transparent">
+                <Files color="black" />
+              </ActionIcon>
+              <p className=" font-semibold">문제 수</p>
+            </Group>
+            <Group position="left">
+              <p> {problem.length + "개"} </p>
+            </Group>
           </Stack>
         </Group>
       </Stack>

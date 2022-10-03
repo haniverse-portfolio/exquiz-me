@@ -1,6 +1,5 @@
 import { atom } from "recoil";
 import {
-  connectTestServerApiAddress,
   connectMainServerApiAddress,
   dtypeName,
   problemInput,
@@ -88,11 +87,6 @@ export const createStep = atom({
   default: 0,
 });
 
-export const partPin = atom({
-  key: "partPin",
-  default: "0",
-});
-
 export const language = atom({
   key: "language",
   default: "KO",
@@ -142,5 +136,52 @@ export const playOption = atom({
 
 export const playPin = atom({
   key: "playPin",
-  default: "111",
+  default: "",
+});
+
+export const inboxProblemsetIdx = atom({
+  key: "inboxProblemsetIdx",
+  default: 0,
+});
+
+export const inboxProblemset = atom({
+  key: "inboxProblemset",
+  default: [{ ...problemsetInput }],
+});
+
+export const inboxProblem = atom({
+  key: "inboxProblem",
+  default: problemInput,
+});
+
+export const inboxOption = atom({
+  key: "inboxOption",
+  default: optionInput,
+});
+
+export const inboxMaxpart = atom({
+  key: "inboxMaxpart",
+  default: 30,
+});
+
+export const indexIsModalOpened = atom({
+  key: "indexIsModalOpened",
+  default: "0",
+});
+
+export const indexToken = atom({
+  key: "indexToken",
+  default: "0",
+});
+
+export const indexUserInfo = atom({
+  key: "indexUserInfo",
+  default: {
+    accessToken: null,
+    email: "",
+    nickname: "",
+    picture: "",
+    role: "",
+    username: "",
+  },
 });

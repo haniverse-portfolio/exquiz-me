@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
@@ -32,7 +33,7 @@ import {
   tabTooltip,
   MARKSCORE,
   MARKSTIME,
-  connectTestServerApiAddress,
+  connectMainServerApiAddress,
 } from "../ConstValues";
 import { ControlBar } from "./ControlBar";
 import { useDebouncedState } from "@mantine/hooks";
@@ -123,7 +124,7 @@ export const CompleteModal = () => {
   const getProblemId = async (idx: number) => {
     let rt = Infinity;
     await axios
-      .post(connectTestServerApiAddress + "api/problem", problem[idx])
+      .post(connectMainServerApiAddress + "api/problem", problem[idx])
       .then((result) => {
         rt = result.data.id;
       })
@@ -136,7 +137,7 @@ export const CompleteModal = () => {
   const postOption = async (idx1: number, idx2: number) => {
     await axios
       .post(
-        connectTestServerApiAddress + "api/problem_option",
+        connectMainServerApiAddress + "api/problem_option",
         option[idx1][idx2]
       )
       .then((result) => {})
@@ -151,7 +152,7 @@ export const CompleteModal = () => {
     await axios
       .post(
         //const { data: result } =
-        connectTestServerApiAddress + "api/problemset",
+        connectMainServerApiAddress + "api/problemset",
         problemSet
       )
       .then((result) => {
@@ -163,6 +164,8 @@ export const CompleteModal = () => {
     return rt;
   };
 
+  const router = useRouter();
+
   return (
     <Modal
       centered
@@ -170,68 +173,14 @@ export const CompleteModal = () => {
       opened={completeModalOpened === "0" ? false : true}
       onClose={() => setCompleteModalOpened("0")}
     >
-      <Stack className="mx-2">
-        <Stack>
-          <p className="border-b-2 border-gray-300 text-amber-500 font-bold">
-            미리보기
-          </p>
-          {/* ../public/globe_banner.png */}
-          <p className="underline decoration-amber-500 font-bold text-3xl text-center mt-10">
-            🌋우리나라에서 가장 높은 산은?🏔
-          </p>
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-          <br></br>
-
-          <br></br>
-          <br></br>
-          <Stack>
-            <Group>
-              <Button
-                color="red"
-                className="h-[15vh] w-[35vw]"
-                variant="outline"
-              >
-                <p className="text-2xl">지리산</p>
-              </Button>
-              <Button
-                className="h-[15vh] w-[35vw]"
-                color="blue"
-                variant="outline"
-              >
-                <p className="text-2xl">설악산</p>
-              </Button>
-            </Group>
-            <Group>
-              <Button
-                className="h-[15vh] w-[35vw]"
-                color="green"
-                variant="outline"
-              >
-                <p className="text-2xl">한라산</p>
-              </Button>
-              <Button
-                className="h-[15vh] w-[35vw]"
-                color="yellow"
-                variant="outline"
-              >
-                <p className="text-2xl">백두산</p>
-              </Button>
-            </Group>
-          </Stack>
-        </Stack>
-
-        <br></br>
-        <Stack>
-          <Group className="justify-between">
-            <p className="font-bold text-4xl text-red-500">00:05</p>
-          </Group>
-        </Stack>
-      </Stack>
+      <Button
+        onClick={() => {
+          console.log(problemSet);
+          getProblemsetId();
+        }}
+      >
+        테스트용
+      </Button>
       <Button
         variant="outline"
         color="orange"
@@ -271,7 +220,7 @@ export const CompleteModal = () => {
             }
           }
           await setStep((prevState) => step + 1);
-          location.replace("/inbox");
+          router.push("/inbox");
         }}
       >
         배포하기

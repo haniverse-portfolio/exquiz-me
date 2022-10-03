@@ -1,8 +1,10 @@
+import { useRouter } from "next/router";
 import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import IndexNavigation from "../components/IndexNavigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 import {
   Button,
@@ -11,7 +13,23 @@ import {
   Stack,
   ActionIcon,
 } from "@mantine/core";
-import { User, Database, TrendingUp } from "tabler-icons-react";
+import {
+  User,
+  Database,
+  TrendingUp,
+  BrandFacebook,
+  BrandTwitter,
+  BrandInstagram,
+  BrandLinkedin,
+  Circle,
+} from "tabler-icons-react";
+import {
+  indexIsLogined,
+  indexToken,
+  indexUserInfo,
+} from "../components/States";
+import { useRecoilState } from "recoil";
+import { connectMainServerApiAddress } from "../components/ConstValues";
 
 const rightEnvelope = (subject: number) => {
   const subjectInfo = [
@@ -79,8 +97,41 @@ const leftEnvelope = (subject: number) => {
   );
 };
 
+// const Window = require("window");
+// const window = new Window();
+
+// const urlParams = new URL(window.location.href).searchParams;
+// const access_token = urlParams.get("access_token");
+
 const Home: NextPage = () => {
+  useEffect(() => {
+    getTest(router.query.access_token as string);
+  }, []);
+
+  const [isLogined, setIsLogined] = useRecoilState(indexIsLogined);
+  const [token, setToken] = useState("");
+  const [userInfo, setUserInfo] = useRecoilState(indexUserInfo);
+
+  const getTest = async (tk: string) => {
+    const config = {
+      headers: { Authorization: `Bearer ${tk}` },
+    };
+
+    axios
+      .get(connectMainServerApiAddress + "api/user", config)
+      .then((result) => {
+        setUserInfo(result.data);
+        setIsLogined("1");
+      })
+      .catch(() => {
+        setIsLogined("0");
+      });
+  };
+
+  const router = useRouter();
   const theme = useMantineTheme();
+  // const [access_token] = router.query.params || [];
+  // const access_token = router.query.params.get("access_token");
 
   const secondaryColor =
     theme.colorScheme === "dark" ? theme.colors.dark[1] : theme.colors.gray[7];
@@ -97,7 +148,7 @@ const Home: NextPage = () => {
       <IndexNavigation />
 
       <main>
-        <section className="h-[86.9vh]">
+        <section className="h-[83vh]">
           <Stack spacing={0} className="items-center flex contents-between">
             {/* banner-start */}
             <Stack className="items-center h-[40vh] w-[100vw] bg-gradient-to-l from-amber-500 via-amber-500 to-orange-500 animate-textSlow">
@@ -121,6 +172,13 @@ const Home: NextPage = () => {
                     </span>{" "}
                     누구든
                   </p>
+                  <Button
+                    onClick={() => {
+                      getTest(router.query.access_token as string);
+                    }}
+                  >
+                    what is params?
+                  </Button>
                   <p className="mx-auto text-white drop-shadow-lg font-bold text-2xl">
                     퀴즈를 만들고 참여하여 다함께 즐겨보세요!
                   </p>
@@ -146,7 +204,7 @@ const Home: NextPage = () => {
                         <TrendingUp color="white" />
                       </ActionIcon>
                       <p className="text-white drop-shadow-lg font-bold text-xl">
-                        개설된 방 0명
+                        개설된 방 0개
                       </p>
                     </Group>
                   </Group>
@@ -162,6 +220,9 @@ const Home: NextPage = () => {
                       🎉 &nbsp;&nbsp;데모 체험하기
                     </Button>
                     <Button
+                      onClick={() => {
+                        router.push("/create");
+                      }}
                       size="lg"
                       className="ease-in-out duration-300 hover:scale-105 shadow-md"
                       variant="filled"
@@ -202,16 +263,48 @@ const Home: NextPage = () => {
           </Stack>
         </section>
       </main>
-
-      <footer className={styles.footer}>
-        <a
-          className="no-underline text-black text-md font-semibold"
-          href="https://mumomu.tistory.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Team MUMOMU
-        </a>
+      <footer className="text-gray-600 body-font">
+        <div className="container px-5 py-8 mx-auto flex items-center sm:flex-row flex-col ">
+          <a className="flex title-font font-medium items-center md:justify-start justify-center text-gray-900">
+            <ActionIcon>
+              <Circle></Circle>
+            </ActionIcon>
+            <span className="ml-3 text-xl">익스퀴즈미</span>
+          </a>
+          <p className="text-sm text-gray-500 sm:ml-4 sm:pl-4 sm:border-l-2 sm:border-gray-200 sm:py-2 sm:mt-0 mt-4">
+            © 2022 익스퀴즈미 —
+            <a
+              href="https://retro5pect.tistory.com/"
+              className="text-gray-600 ml-1"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              @retro5pect
+            </a>
+          </p>
+          <span className="inline-flex sm:ml-auto sm:mt-0 mt-4 justify-center sm:justify-start">
+            <a className="text-gray-500">
+              <ActionIcon>
+                <BrandFacebook></BrandFacebook>
+              </ActionIcon>
+            </a>
+            <a className="ml-3 text-gray-500">
+              <ActionIcon>
+                <BrandTwitter></BrandTwitter>
+              </ActionIcon>
+            </a>
+            <a className="ml-3 text-gray-500">
+              <ActionIcon>
+                <BrandInstagram></BrandInstagram>
+              </ActionIcon>
+            </a>
+            <a className="ml-3 text-gray-500">
+              <ActionIcon>
+                <BrandLinkedin></BrandLinkedin>
+              </ActionIcon>
+            </a>
+          </span>
+        </div>
       </footer>
     </div>
   );

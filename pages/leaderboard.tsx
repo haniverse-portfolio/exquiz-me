@@ -185,7 +185,7 @@ const Home: NextPage = () => {
   const getProblemsets = () => {
     let rt = [{ id: -1, title: "", description: "", closingMent: "" }];
     axios
-      .get("https://prod.exquiz.me/api/problemsets/1")
+      .get("https://api.exquiz.me/api/problemsets/1")
       .then((result) => {
         setProblemsets(result.data);
       })

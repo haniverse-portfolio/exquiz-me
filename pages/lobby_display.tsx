@@ -24,7 +24,7 @@ import {
   createTabNextIdx,
   createTargetIdx,
   createTimelimit,
-  partPin,
+  playPin,
 } from "../components/States";
 
 import {
@@ -158,11 +158,11 @@ const Home: NextPage = () => {
     return;
   };
 
-  let [pin, setPin] = useState("0");
+  let [pin, setPin] = useRecoilState(playPin);
 
   useEffect(() => {
-    pin = JSON.parse(localStorage.getItem("room") ?? "0").pin;
-    setPin(pin);
+    // pin = JSON.parse(localStorage.getItem("room") ?? "0").pin;
+    // setPin(pin);
     connect();
   }, []);
   {
@@ -301,7 +301,7 @@ const Home: NextPage = () => {
                         <Button
                           variant="outline"
                           leftIcon={<Copy></Copy>}
-                          color={copied ? "teal" : "blue"}
+                          color="orange"
                           onClick={copy}
                         >
                           {copied ? "복사됨!" : "복사하기"}

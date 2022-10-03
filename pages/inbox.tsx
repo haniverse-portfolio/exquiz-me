@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
@@ -21,10 +22,18 @@ import {
   Pagination,
   Text,
 } from "@mantine/core";
-import { Pencil, Plus } from "tabler-icons-react";
+import { Pencil, Plus, X } from "tabler-icons-react";
 
 import { useRecoilState } from "recoil";
-import { playProblem } from "../components/States";
+import {
+  inboxMaxpart,
+  inboxOption,
+  inboxProblem,
+  inboxProblemset,
+  inboxProblemsetIdx,
+  playPin,
+  playProblem,
+} from "../components/States";
 import { connectMainServerApiAddress } from "../components/ConstValues";
 
 const rightEnvelope = (subject: number) => {
@@ -107,14 +116,32 @@ const Home: NextPage = () => {
   const secondaryColor =
     theme.colorScheme === "dark" ? theme.colors.dark[1] : theme.colors.gray[7];
 
-  const [active, setActive] = useState(0);
-
+  const [problemsetIdx, setProblemsetIdx] = useRecoilState(inboxProblemsetIdx);
   const [drawerOpened, setDrawerOpened] = useState(false);
   const [modalOpened, setModalOpened] = useState(false);
 
+  const [pin, setPin] = useRecoilState(playPin);
+
+  const deleteProblemset = () => {
+    alert(problemsets[problemsetIdx].id);
+    axios
+      .delete(
+        connectMainServerApiAddress +
+          "api/problemset/" +
+          problemsets[problemsetIdx].id
+      )
+      .then((result) => {
+        setProblemsets(result.data);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+    return;
+  };
+
   const getProblemsets = () => {
     axios
-      .get("https://prod.exquiz.me/api/problemsets/1")
+      .get(connectMainServerApiAddress + "api/problemsets/1")
       .then((result) => {
         setProblemsets(result.data);
       })
@@ -126,7 +153,7 @@ const Home: NextPage = () => {
 
   const getProblem = (idx: number) => {
     axios
-      .get("https://prod.exquiz.me/api/problems/" + idx)
+      .get("https:/api.exquiz.me/api/problems/" + idx)
       .then((result) => {
         setProblem(result.data);
       })
@@ -136,18 +163,20 @@ const Home: NextPage = () => {
     return;
   };
 
+  const setPinFunction = (p: string) => {
+    setPin((prevstate) => p);
+  };
+
   const postRoom = async () => {
     let rt = Infinity;
     await axios
-      .post(connectMainServerApiAddress + "/api/room/newRoom", {
+      .post(connectMainServerApiAddress + "api/room/newRoom", {
         maxParticipantCount: maxpart,
-        problemsetId: problemsets[curIdx].id,
+        problemsetId: problemsets[problemsetIdx].id,
       })
-      .then((result) => {
-        rt = result.data;
-        setRoom(result.data);
-        localStorage.setItem("room", JSON.stringify(result.data));
-        alert("success" + JSON.parse(localStorage.getItem("room") ?? "0").pin);
+      .then(async (result) => {
+        setPin(result.data.pin);
+        router.push("/lobby_display");
       })
       .catch((error) => {
         alert("newRoom_error");
@@ -155,19 +184,14 @@ const Home: NextPage = () => {
     return rt;
   };
 
-  let [problemsets, setProblemsets] = useState([
-    { id: -1, title: "", description: "", closingMent: "" },
-  ]);
-
-  let [problemOption, setProblemOption] = useState([
-    { problemId: -1, idx: 0, description: "", picture: "" },
-  ]);
-
-  let [curIdx, setCurIdx] = useState(0);
-  let [maxpart, setMaxpart] = useState(30);
+  const [problemsets, setProblemsets] = useRecoilState(inboxProblemset);
+  const [problem, setProblem] = useRecoilState(inboxProblem);
+  const [problemOption, setProblemOption] = useRecoilState(inboxOption);
+  const [activePage, setPage] = useState(1);
+  const [maxpart, setMaxpart] = useRecoilState(inboxMaxpart);
   let [room, setRoom] = useState({
     id: -1,
-    pin: "-1",
+    pin: "0",
     maxParticipantCount: -1,
     startDate: "-1",
     endDate: null,
@@ -181,8 +205,6 @@ const Home: NextPage = () => {
     currentProblemNum: -1,
   });
 
-  let [problem, setProblem] = useRecoilState(playProblem);
-
   useEffect(() => {
     getProblemsets();
     // localStorage.setItem("pin", "333333");
@@ -191,13 +213,13 @@ const Home: NextPage = () => {
     // });
   }, []);
 
-  const [activePage, setPage] = useState(1);
-
   const totalTime = () => {
     let sum = 0;
     for (let i = 0; i < problem.length; i++) sum += problem[i].timelimit;
     return sum;
   };
+
+  const router = useRouter();
 
   return (
     <div>
@@ -247,14 +269,9 @@ const Home: NextPage = () => {
           onClick={async () => {
             setModalOpened(false);
             await postRoom();
-            // if (room.currentState !== "READY") {
-            //   alert("something wrong");
-            //   return;
-            // }
 
-            alert("before success" + room.pin);
+            //router.push("/lobby_display");
 
-            location.replace("/lobby_display");
             // {
             //   "id": 5,
             //   "pin": "100494",
@@ -280,13 +297,13 @@ const Home: NextPage = () => {
         </Button>
       </Modal>
       <IndexNavigation />
-      <main style={{ margin: "" }}>
+      <main>
         <section className="h-[86vh]">
           <Stack className="flex contents-between">
             <Grid gutter={0} columns={24}>
               <Grid.Col span={24}>
                 <Stack>
-                  <Stack className="h-[20vh] bg-gradient-to-r from-amber-500 via-amber-500 to-orange-500"></Stack>
+                  <Stack className="h-[20vh] bg-gradient-to-l from-amber-500 via-amber-500 to-orange-500 animate-text"></Stack>
                   <Stack className="h-[20vh]"></Stack>
                   <Stack>
                     <Grid columns={48}>
@@ -298,7 +315,7 @@ const Home: NextPage = () => {
                             className="h-24"
                             size="lg"
                             onClick={() => {
-                              location.replace("/create_rf");
+                              router.push("/create");
                             }}
                             color="orange"
                             leftIcon={<Plus></Plus>}
@@ -308,20 +325,22 @@ const Home: NextPage = () => {
                           <Grid className="h-[30vh]">
                             {" "}
                             {problemsets.map(
-                              ({ id, title, description, closingMent }, i) => {
+                              ({ title, description, closingMent }, i) => {
                                 return Math.trunc(i / 8) !== activePage - 1 ? (
                                   <></>
                                 ) : (
                                   <Grid.Col span={3} key={i}>
                                     <Stack
                                       className={`py-4 cursor-pointer border-2 ${
-                                        curIdx === i
+                                        problemsetIdx === i
                                           ? "border-amber-500 radius-lg"
                                           : "border-white radius-lg"
                                       }`}
                                       onClick={async () => {
                                         await getProblem(i + 1);
-                                        await setCurIdx((prevState) => i);
+                                        await setProblemsetIdx(
+                                          (prevState) => i
+                                        );
                                       }}
                                       align="center"
                                       // className="border-solid border-2 border-amber-500"
@@ -401,9 +420,9 @@ const Home: NextPage = () => {
                 </Group>
                 <Stack>
                   <p className="font-bold text-2xl">
-                    {problemsets[curIdx].title === ""
+                    {problemsets[problemsetIdx].title === ""
                       ? "아래에서 퀴즈를 선택하세요"
-                      : problemsets[curIdx].title}
+                      : problemsets[problemsetIdx].title}
                   </p>
                   <p className=" text-xl">
                     <strong className="text-xl font-bold">문제 수</strong> :{" "}
@@ -432,6 +451,28 @@ const Home: NextPage = () => {
                     >
                       수정하기
                     </Button>
+                    <Button
+                      leftIcon={<X></X>}
+                      onClick={() => {
+                        deleteProblemset();
+                      }}
+                      variant="outline"
+                      className="shadow-md"
+                      color="red"
+                    >
+                      삭제하기
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        alert(pin);
+                        setPin("999999");
+                        setTimeout(() => {
+                          alert(pin);
+                        }, 3000);
+                      }}
+                    >
+                      테스트 버튼
+                    </Button>
                   </Group>
                 </Stack>
               </Group>
@@ -451,28 +492,13 @@ const Home: NextPage = () => {
       </main>
 
       <footer className={styles.footer}>
-        <Group className=" bg-gradient-to-r shadow-[inset_0_-2px_4px_rgba(128,128,128,0.8)] border-gray-500 from-gray-500 to-gray-500 w-0 h-0" />
-        <Group className="bg-gradient-to-r border-orange-500 from-orange-500 to-red-500 w-0 h-0" />
-        <Group className="bg-gradient-to-r border-blue-500 from-blue-500 to-green-500 w-0 h-0" />
-        <Group className="bg-gradient-to-r border-violet-500 from-violet-500 to-orange-500 w-0 h-0" />
-        <Group className="bg-gradient-to-r border-yellow-500 from-yellow-500 to-orange-500 w-0 h-0" />
-        <Group className="bg-gradient-to-r border-gray-500 from-gray-400 to-gray-400 w-0 h-0" />
-        <Group className="bg-gradient-to-r border-red-500 from-red-500 to-orange-500 w-0 h-0" />
-        <Group className="bg-gradient-to-r border-blue-500 from-blue-700 to-blue-500 w-0 h-0" />
-        <Group className="bg-gradient-to-r border-green-500 from-green-500 to-lime-500 w-0 h-0" />
-        <Group className="bg-gradient-to-r border-amber-500 from-amber-500 to-yellow-400 w-0 h-0" />
-        <Group className="bg-gray-500 w-0 h-0" />
-        <Group className="bg-red-500 w-0 h-0" />
-        <Group className="bg-green-500 w-0 h-0" />
-        <Group className="bg-pink-500 w-0 h-0" />
-        <Group className="bg-orange-500 w-0 h-0" />
         <a
-          className="no-underline text-black text-sm font-semibold"
-          href="/apiTest"
+          className="no-underline text-black text-md font-semibold"
+          href="https://mumomu.tistory.com/"
           target="_blank"
           rel="noopener noreferrer"
         >
-          Copyright ⓒ 2022 exquiz.me | Team MUMOMU
+          Team MUMOMU
         </a>
       </footer>
     </div>
@@ -480,3 +506,9 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+
+// new Promise((resolve, reject) => {
+//   resolve(true);
+// }).then(() => {
+//   alert(pin);
+// });

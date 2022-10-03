@@ -40,7 +40,8 @@
     "sockjs": "^0.3.24",
     "tabler-icons-react": "^1.52.0",
     "throttle-typescript": "^1.1.0",
-    "websocket": "^1.0.34"
+    "websocket": "^1.0.34",
+    "window": "^4.2.7"
   },
   "devDependencies": {
     "@types/node": "18.0.3",

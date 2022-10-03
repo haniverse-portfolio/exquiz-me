@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
@@ -29,6 +30,12 @@ import {
   FileUpload,
   Copy,
   X,
+  SquareCheck,
+  Parentheses,
+  AB,
+  QuestionMark,
+  Apps,
+  MathAvg,
 } from "tabler-icons-react";
 
 import {
@@ -55,6 +62,28 @@ import { ControlBar } from "./ControlBar";
 import { useDebouncedState } from "@mantine/hooks";
 
 export const Main = () => {
+  const tabColor = [
+    "bg-gradient-to-r from-red-500 to-orange-500",
+    "bg-gradient-to-r from-orange-500 to-amber-500",
+    "bg-gradient-to-r from-green-500 to-green-500",
+    "bg-gradient-to-r from-blue-700 to-blue-500",
+    "bg-gradient-to-r from-purple-500 to-pink-500",
+    "bg-gradient-to-r from-gray-500 to-gray-400",
+  ];
+
+  function tabIcon(idx: number) {
+    if (idx == 0)
+      return <SquareCheck color="white" className="m-auto" size={"30px"} />;
+    if (idx == 1)
+      return <Parentheses color="white" className="m-auto" size={"30px"} />;
+    if (idx == 2) return <AB color="white" className="m-auto" size={"30px"} />;
+    if (idx == 3)
+      return <QuestionMark color="white" className="m-auto" size={"30px"} />;
+    if (idx == 4)
+      return <Apps color="white" className="m-auto" size={"30px"} />;
+    if (idx == 5)
+      return <MathAvg color="white" className="m-auto" size={"30px"} />;
+  }
   /* ****** routes ****** */
   const [step, setStep] = useRecoilState(createStep);
 
@@ -150,23 +179,16 @@ export const Main = () => {
                 <Stack>{ControlBar(0)}</Stack>
 
                 <Stack spacing="xl" className="w-10/12 mx-2">
-                  <Stack
-                    onClick={() => {
-                      if (curIdx !== 0) setCurIdx((prevState) => curIdx - 1);
-                    }}
-                    className="shadow-lg cursor-pointer hover:bg-gray-200 h-16 bg-white"
-                    // hover:animate-bounce
-                  ></Stack>
-                  <Stack className="py-10" spacing={0}>
+                  <Stack className="py-4 mx-auto" spacing={0}>
                     <Group
-                      align="center"
-                      spacing={0}
-                      className="ml-4 items-center"
+                      classNames="mx-auto"
+                      spacing={12}
+                      className="items-center"
                     >
                       {dtypeName.map((name, i) => {
                         return (
                           <Tooltip
-                            color="orange"
+                            color="black"
                             offset={10}
                             openDelay={500}
                             closeDelay={100}
@@ -179,28 +201,16 @@ export const Main = () => {
                                 setTabChangeIdx((prevstate) => i);
                                 setTabModalOpened("1");
                               }}
-                              className="w-18 h-18 cursor-pointer"
+                              className={`${
+                                i !== tabIdx
+                                  ? "shadow-[inset_0_-2px_4px_rgba(128,128,128,0.8)]"
+                                  : ""
+                              }
+            hover:shadow-none ${
+              tabColor[i]
+            } rounded-lg cursor-pointer w-16 h-16`}
                             >
-                              <Group
-                                className={`${
-                                  i !== tabIdx
-                                    ? "shadow-[inset_0_-2px_4px_rgba(128,128,128,0.8)] text-black bg-white"
-                                    : "bg-amber-500 text-white"
-                                }
-            hover:shadow-none m-auto w-18 h-18`}
-                              >
-                                <Button
-                                  color="orange"
-                                  className={`w-24 ${
-                                    i === tabIdx
-                                      ? "text-white"
-                                      : "text-gray-400"
-                                  } `}
-                                  variant="filled"
-                                >
-                                  {dtypeName[i]}
-                                </Button>
-                              </Group>
+                              {tabIcon(i)}
                             </Group>
                           </Tooltip>
                         );
@@ -211,9 +221,15 @@ export const Main = () => {
                       <Stack className="p-10">
                         {/* 입력 - 문제 설명 */}
                         {/* 입력 - 문제 사진 및 동영상 */}
-                        <Group className="justify-between">
+                        <Group
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "space-between",
+                          }}
+                        >
                           <p className="text-amber-500 font-bold">문제 정보</p>
-                          <Group className="justify-between">
+                          <Group>
                             <ActionIcon variant="outline">
                               <FileUpload></FileUpload>
                             </ActionIcon>
@@ -522,15 +538,6 @@ export const Main = () => {
                       </Stack>
                     </Stack>
                   </Stack>
-                  <Stack
-                    onClick={() => {
-                      console.log(curIdx);
-                      if (curIdx === problem.length - 1) NextPlus();
-                      else setCurIdx((prevState) => curIdx + 1);
-                      console.log(curIdx);
-                    }}
-                    className="shadow-lg cursor-pointer hover:bg-gray-200 h-16 bg-white"
-                  ></Stack>
                 </Stack>
                 {ControlBar(30)}
               </Center>
@@ -538,6 +545,12 @@ export const Main = () => {
           );
         })}
       </Accordion>
+      <Group className="w-0 h-0 bg-gradient-to-r from-red-500 to-orange-500"></Group>
+      <Group className="w-0 h-0 bg-gradient-to-r from-blue-500 to-green-500"></Group>
+      <Group className="w-0 h-0 bg-gradient-to-r from-red-500 to-orange-500"></Group>
+      <Group className="w-0 h-0 bg-gradient-to-r from-red-500 to-orange-500"></Group>
+      <Group className="w-0 h-0 bg-gradient-to-r from-red-500 to-orange-500"></Group>
+      <Group className="w-0 h-0 bg-gradient-to-r from-red-500 to-orange-500"></Group>
     </Stack>
   );
 };
