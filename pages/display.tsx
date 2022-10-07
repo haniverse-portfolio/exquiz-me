@@ -35,8 +35,162 @@ const Home: NextPage = () => {
   let [curIdx, setCurIdx] = useState(0);
   let [answer, setAnswer] = useState(-1);
 
-  let [problem, setProblem] = useRecoilState(playProblem);
-  let [option, setOption] = useRecoilState(playOption);
+  let [problem, setProblem] = useState([
+    {
+      answer: "0",
+      description: "우리나라에서 가장 높은 산은?",
+      dtype: "MultipleChoiceProblem",
+      idx: 0,
+      picture: "",
+      problemsetId: 0,
+      score: 125,
+      timelimit: 30,
+      title: "",
+    },
+    {
+      answer: "0",
+      description: "아이스크림을 영어로 하면?",
+      dtype: "MultipleChoiceProblem",
+      idx: 0,
+      picture: "",
+      problemsetId: 0,
+      score: 125,
+      timelimit: 30,
+      title: "",
+    },
+    {
+      answer: "0",
+      description: "소프트웨어 마에스트로가 있는 빌딩은?",
+      dtype: "MultipleChoiceProblem",
+      idx: 0,
+      picture: "",
+      problemsetId: 0,
+      score: 125,
+      timelimit: 30,
+      title: "",
+    },
+    {
+      answer: "0",
+      description: "🌋이 중 가장 무시무시한 공룡은?🏔",
+      dtype: "MultipleChoiceProblem",
+      idx: 0,
+      picture: "",
+      problemsetId: 0,
+      score: 125,
+      timelimit: 30,
+      title: "",
+    },
+  ]);
+
+  let [option, setOption] = useState([
+    [
+      {
+        description: "설악산",
+        idx: 0,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "지리산",
+        idx: 1,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "한라산",
+        idx: 2,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "백두산",
+        idx: 3,
+        picture: "",
+        problemId: 0,
+      },
+    ],
+    [
+      {
+        description: "icecoffee",
+        idx: 0,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "icekekki",
+        idx: 1,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "icecream",
+        idx: 2,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "iceball",
+        idx: 3,
+        picture: "",
+        problemId: 0,
+      },
+    ],
+    [
+      {
+        description: "황해주택",
+        idx: 0,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "인하주택",
+        idx: 1,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "아남타워",
+        idx: 2,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "코엑스",
+        idx: 3,
+        picture: "",
+        problemId: 0,
+      },
+    ],
+    [
+      {
+        description: "티라노사우루스",
+        idx: 0,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "트리케라톱스",
+        idx: 1,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "랩터",
+        idx: 2,
+        picture: "",
+        problemId: 0,
+      },
+      {
+        description: "스피노사우루스",
+        idx: 3,
+        picture: "",
+        problemId: 0,
+      },
+    ],
+  ]);
+
+  // let [problem, setProblem] = useRecoilState(playProblem);
+  // let [option, setOption] = useRecoilState(playOption);
   let [problemset, setProblemset] = useRecoilState(playProblemset);
 
   useEffect(() => {
