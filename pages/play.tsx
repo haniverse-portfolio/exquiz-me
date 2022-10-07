@@ -280,35 +280,37 @@ const Home: NextPage = () => {
           />
           <p className="text-lg font-semibold"> 문제 {curIdx + 1 + "번"}</p>
           <Grid className="" justify="center" gutter="sm">
-            {option[curIdx].map((description, i) => {
-              let color = ["red", "blue", "green", "orange"];
-              let bgColor = "hover:bg-" + color[i] + "-500";
-              return (
-                <Grid.Col
-                  className="!max-w-[50%] !basis-2/4"
-                  key={i}
-                  span={5}
-                  offset={0}
-                >
-                  <Button
-                    fullWidth
-                    style={{ height: "200px" }}
-                    onClick={() => {
-                      setAnswer(answer === i ? -1 : i);
-                    }}
-                    color={color[i]}
-                    className={`${
-                      answer === i ? "shadow-inner text-white" : ""
-                    } shadow-md ${answer === i ? bgColor : ""} ${
-                      answer === i ? bgColor : ""
-                    }`}
-                    variant={answer === i ? "filled" : "outline"}
+            {option[curIdx].map(
+              ({ description, idx, picture, problemId }, i) => {
+                let color = ["red", "blue", "green", "orange"];
+                let bgColor = "hover:bg-" + color[i] + "-500";
+                return (
+                  <Grid.Col
+                    className="!max-w-[50%] !basis-2/4"
+                    key={i}
+                    span={5}
+                    offset={0}
                   >
-                    <p className="text-lg"> {option[i].description}</p>
-                  </Button>
-                </Grid.Col>
-              );
-            })}
+                    <Button
+                      fullWidth
+                      style={{ height: "200px" }}
+                      onClick={() => {
+                        setAnswer(answer === i ? -1 : i);
+                      }}
+                      color={color[i]}
+                      className={`${
+                        answer === i ? "shadow-inner text-white" : ""
+                      } shadow-md ${answer === i ? bgColor : ""} ${
+                        answer === i ? bgColor : ""
+                      }`}
+                      variant={answer === i ? "filled" : "outline"}
+                    >
+                      <p className="text-lg"> {description}</p>
+                    </Button>
+                  </Grid.Col>
+                );
+              }
+            )}
           </Grid>
           <Button color="orange">제출하기</Button>
         </Stack>

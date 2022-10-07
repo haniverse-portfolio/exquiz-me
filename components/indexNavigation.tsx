@@ -18,6 +18,7 @@ import {
   Switch,
   Tooltip,
   Modal,
+  Loader,
 } from "@mantine/core";
 import {
   Emphasis,
@@ -66,8 +67,8 @@ const IndexNavigation = () => {
   const [langValue, setLangValue] = useRecoilState(language);
   const [membership, setMembership] = useRecoilState(indexMembership);
   const [isLogined, setIsLogined] = useRecoilState(indexIsLogined);
-  const [isModalOpened, setModalOpened] = useState(false);
   const [userInfo, setUserInfo] = useRecoilState(indexUserInfo);
+  const [modalOpened, setModalOpened] = useRecoilState(indexIsModalOpened);
 
   const googleLogin = () => {
     axios.get("https://api.exquiz.me/api/google/login");
@@ -144,10 +145,9 @@ const IndexNavigation = () => {
           {isLogined === "0" ? (
             <span
               onClick={() => {
-                setModalOpened(true);
+                setModalOpened("1");
                 // google auth2
                 // googleLogin();
-                router.push("https://api.exquiz.me/api/google/login");
                 // page convertion
                 // router.push("/signup");
               }}
@@ -159,7 +159,7 @@ const IndexNavigation = () => {
             <img
               alt=""
               onClick={() => {
-                router.push("/signup");
+                router.push("/mypage");
               }}
               className="h-10 w-auto cursor-pointer rounded-full"
               src={userInfo.picture}
@@ -180,13 +180,6 @@ const IndexNavigation = () => {
           />
         </Group>
       </Group>
-      <Modal
-        centered
-        opened={isModalOpened}
-        onClose={() => setModalOpened(false)}
-      >
-        내용물
-      </Modal>
     </header>
   );
 };

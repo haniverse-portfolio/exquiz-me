@@ -48,6 +48,7 @@ import {
 import { connectMainServerApiAddress, dtypeName } from "../ConstValues";
 import { useDebouncedState } from "@mantine/hooks";
 import axios from "axios";
+import { useEffect } from "react";
 
 export const ImageSection = () => {
   /* ****** routes ****** */
@@ -119,7 +120,7 @@ export const ImageSection = () => {
         onChange={(event) => {
           let copy = event.currentTarget.value;
           setImageLoading(true);
-          setImageWord(copy);
+          setImageTmpWord(copy);
         }}
         value={imageWord}
       />

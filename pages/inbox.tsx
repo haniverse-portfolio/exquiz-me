@@ -35,6 +35,7 @@ import {
   playProblem,
 } from "../components/States";
 import { connectMainServerApiAddress } from "../components/ConstValues";
+import { FooterCentered } from "../components/footer";
 
 const rightEnvelope = (subject: number) => {
   const subjectInfo = [
@@ -176,7 +177,7 @@ const Home: NextPage = () => {
       })
       .then(async (result) => {
         setPin(result.data.pin);
-        router.push("/lobby_display");
+        router.push(`/lobby/${result.data.pin}`);
       })
       .catch((error) => {
         alert("newRoom_error");
@@ -298,7 +299,7 @@ const Home: NextPage = () => {
       </Modal>
       <IndexNavigation />
       <main>
-        <section className="h-[86vh]">
+        <section className="h-[81vh]">
           <Stack className="flex contents-between">
             <Grid gutter={0} columns={24}>
               <Grid.Col span={24}>
@@ -462,17 +463,6 @@ const Home: NextPage = () => {
                     >
                       삭제하기
                     </Button>
-                    <Button
-                      onClick={() => {
-                        alert(pin);
-                        setPin("999999");
-                        setTimeout(() => {
-                          alert(pin);
-                        }, 3000);
-                      }}
-                    >
-                      테스트 버튼
-                    </Button>
                   </Group>
                 </Stack>
               </Group>
@@ -491,16 +481,15 @@ const Home: NextPage = () => {
         </div>
       </main>
 
-      <footer className={styles.footer}>
-        <a
-          className="no-underline text-black text-md font-semibold"
-          href="https://mumomu.tistory.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Team MUMOMU
-        </a>
-      </footer>
+      <FooterCentered
+        links={[
+          {
+            link: "https://retro5pect.tistory.com",
+            label: "Copyright 2022 exquiz.me Co. all rights reserved.",
+          },
+          // { link: "https://www.naver.com", label: "네이버" },
+        ]}
+      />
     </div>
   );
 };

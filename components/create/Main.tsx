@@ -60,6 +60,7 @@ import {
 import { dtypeName, tabTooltip, MARKSCORE, MARKSTIME } from "../ConstValues";
 import { ControlBar } from "./ControlBar";
 import { useDebouncedState } from "@mantine/hooks";
+import { useEffect } from "react";
 
 export const Main = () => {
   const tabColor = [
@@ -116,6 +117,10 @@ export const Main = () => {
   const [imageLoading, setImageLoading] = useRecoilState(createIsImageLoading);
   const [imageTmpWord, setImageTmpWord] = useDebouncedState("", 500);
   const [imageWord, setImageWord] = useRecoilState(createImageWord);
+
+  useEffect(() => {
+    setImageWord(imageTmpWord);
+  }, [imageTmpWord]);
 
   const NextPlus = async () => {
     await setProblem((prevstate) => [
@@ -188,6 +193,8 @@ export const Main = () => {
                       {dtypeName.map((name, i) => {
                         return (
                           <Tooltip
+                            className="ease-in-out"
+                            transition="pop"
                             color="black"
                             offset={10}
                             openDelay={500}
@@ -268,7 +275,7 @@ export const Main = () => {
                           }}
                           onMouseDown={(event) => {
                             setImageLoading(true);
-                            setImageWord(problem[curIdx].description);
+                            setImageTmpWord(problem[curIdx].description);
                           }}
                           onChange={(event) => {
                             let copy = JSON.parse(JSON.stringify(problem));
@@ -276,7 +283,7 @@ export const Main = () => {
                               event.currentTarget.value;
                             setProblem(copy);
                             setImageLoading(true);
-                            setImageWord(copy[curIdx].description);
+                            setImageTmpWord(copy[curIdx].description);
                           }}
                           value={problem[curIdx].description}
                           color="orange"
@@ -328,7 +335,7 @@ export const Main = () => {
                                         variant="unstyled"
                                         onMouseDown={(event) => {
                                           setImageLoading(true);
-                                          setImageWord(
+                                          setImageTmpWord(
                                             option[curIdx][i].description
                                           );
                                         }}
@@ -340,7 +347,7 @@ export const Main = () => {
                                             event.currentTarget.value;
                                           setOption(copy);
                                           setImageLoading(true);
-                                          setImageWord(
+                                          setImageTmpWord(
                                             copy[curIdx][i].description
                                           );
                                         }}
@@ -394,7 +401,7 @@ export const Main = () => {
                                         variant="unstyled"
                                         onMouseDown={(event) => {
                                           setImageLoading(true);
-                                          setImageWord(
+                                          setImageTmpWord(
                                             option[curIdx][i].description
                                           );
                                         }}
@@ -404,7 +411,7 @@ export const Main = () => {
                                             event.currentTarget.value;
                                           setOption(copy);
                                           setImageLoading(true);
-                                          setImageWord(
+                                          setImageTmpWord(
                                             copy[curIdx][i].description
                                           );
                                         }}
@@ -455,7 +462,7 @@ export const Main = () => {
                                         variant="unstyled"
                                         onMouseDown={(event) => {
                                           setImageLoading(true);
-                                          setImageWord(
+                                          setImageTmpWord(
                                             option[curIdx][i].description
                                           );
                                         }}
@@ -465,7 +472,7 @@ export const Main = () => {
                                             event.currentTarget.value;
                                           setOption(copy);
                                           setImageLoading(true);
-                                          setImageWord(
+                                          setImageTmpWord(
                                             copy[curIdx][i].description
                                           );
                                         }}

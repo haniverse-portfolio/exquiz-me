@@ -96,6 +96,7 @@ const Home: NextPage = () => {
   /* ****** effect-start ****** */
 
   /* image */
+
   useEffect(() => {
     getImageList(imageWord);
     setImageLoading(false);

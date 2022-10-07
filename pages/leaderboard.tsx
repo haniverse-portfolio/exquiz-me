@@ -1,53 +1,34 @@
-import { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
+import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import Link from "next/link";
-import axios from "axios";
+import { useState } from "react";
 import { useRef } from "react";
 
 import {
   Button,
-  SimpleGrid,
-  Tooltip,
-  Textarea,
-  ScrollArea,
-  Center,
-  Container,
-  ThemeIcon,
-  Checkbox,
-  Group,
-  Accordion,
-  useMantineTheme,
-  Box,
-  ActionIcon,
-  Slider,
-  BackgroundImage,
-  Switch,
-  Stack,
-  MantineProvider,
   Grid,
-  Stepper,
-  TextInput,
-  Image,
-  Paper,
-  Tabs,
-  Modal,
+  SimpleGrid,
+  Input,
+  Card,
   Text,
-  ColorSwatch,
+  Badge,
+  Group,
+  useMantineTheme,
+  Center,
+  Tabs,
+  ThemeIcon,
+  Container,
+  Textarea,
+  Tooltip,
+  Stack,
+  Stepper,
+  ActionIcon,
+  Autocomplete,
+  TextInput,
 } from "@mantine/core";
-
-import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
-
-import { useScrollIntoView } from "@mantine/hooks";
-
 import {
-  AdjustmentsHorizontal,
-  Notes,
-  Plus,
-  Trash,
-  Check,
-  Home2,
   Emphasis,
   FileX,
   Login,
@@ -60,97 +41,22 @@ import {
   AB,
   QuestionMark,
   Apps,
+  Checkbox,
   Parentheses,
-  Folders,
-  FileSettings,
-  FilePlus,
-  FileCheck,
   Settings,
-  ArrowBarRight,
-  ArrowBarLeft,
-  ToggleLeft,
-  Refresh,
+  Plus,
+  Check,
+  Number1,
+  Number2,
+  Number3,
+  Circle,
+  Triangle,
+  X,
+  Folders,
+  ArrowBigRightLines,
 } from "tabler-icons-react";
 
-import { copyFileSync } from "fs";
-import { errorMonitor } from "events";
-import { resourceLimits } from "worker_threads";
-// 85vh 20vw
-// 빈 슬라이드 객관식 주관식 O/X 넌센스 다이나믹
-const Home: NextPage = () => {
-  const [swatchChecked, setSwatchChecked] = useState(true);
-  let swatch = () => {
-    const swatches = Object.keys(theme.colors).map((color) => (
-      <ColorSwatch size={20} key={color} color={theme.colors[color][6]} />
-    ));
-
-    return (
-      <Group className="px-8" position="center" spacing="xs">
-        {swatches}
-      </Group>
-    );
-
-    // const theme = useMantineTheme();
-    // let color = [
-    //   "theme.colors.grape[6]",
-    //   "red[6]",
-    //   "orange[6]",
-    //   "yellow[6]",
-    //   "green[6]",
-    //   "blue[6]",
-    //   "grape[6]",
-    //   "pink[6]",
-    //   "black[6]",
-    // ];
-    // return (
-    //   <Group position="center" spacing="xs">
-    //     {color.map((cur, i) => {
-    //       return (
-    //         <ColorSwatch
-    //           key={i}
-    //           component="button"
-    //           color={cur[0]}
-    //           onClick={() => setSwatchChecked((c) => !c)}
-    //           sx={{ color: "#fff", cursor: "pointer" }}
-    //         >
-    //           {swatchChecked && <Check width={10} />}
-    //         </ColorSwatch>
-    //       );
-    //     })}
-    //     ;
-    // </Group>
-    // );
-  };
-
-  /* slide */
-  let [curIdx, setCurIdx] = useState(0);
-  /* form */
-  let [tabIdx, setTabIdx] = useState(0);
-
-  {
-    /* *** main state *** */
-  }
-  let [problemSet, setProblemSet] = useState({
-    closingMent: "",
-    description: "",
-    hostId: 1,
-    title: "",
-  });
-
-  {
-    /* mantine statement */
-  }
-  const theme = useMantineTheme();
-  const getColor = (color: string) =>
-    theme.colors[color][theme.colorScheme === "dark" ? 5 : 7];
-
-  {
-    /* 2. 문제 추가 - subNav - tab */
-  }
-
-  {
-    /* 1. 퀴즈 설정 - 메인 #과목 선택 */
-  }
+const rightEnvelope = (subject: number) => {
   const subjectInfo = [
     { name: "미분류", startColor: "gray", endColor: "gray" },
     { name: "언어", startColor: "orange", endColor: "red" },
@@ -159,54 +65,253 @@ const Home: NextPage = () => {
     { name: "예체능", startColor: "yellow", endColor: "orange" },
   ];
 
-  {
-    /* 1. 퀴즈 설정 - 사이드바 - #stepper */
-  }
+  return (
+    <Group className="transition ease-in-out hover:scale-105" spacing={0}>
+      <Group className="shadow-lg" spacing={0}>
+        <Group
+          className={`bg-${subjectInfo[subject].startColor} border-r-2 border-gray-300 shadow-lg h-24 w-4 bg-amber-200`}
+        />
+        <Group>
+          <Stack spacing={0}>
+            <Group
+              className={`bg-gradient-to-r from-${subjectInfo[subject].startColor} to-${subjectInfo[subject].endColor} border-b-2 border-gray-300 m-0 p-0 h-12 w-32 bg-amber-200`}
+            />
+            <Group
+              className={`bg-gradient-to-r from-${subjectInfo[subject].startColor} to-${subjectInfo[subject].endColor} m-0 p-0 h-12 w-32 bg-amber-200`}
+            />
+          </Stack>
+        </Group>
+      </Group>
+      <Group
+        className={`bg-gradient-to-r from-${subjectInfo[subject].startColor} to-${subjectInfo[subject].endColor} shadow-lg m-0 p-0 h-20 w-6 bg-white`}
+      ></Group>
+    </Group>
+  );
+};
 
-  const { scrollIntoView, targetRef, scrollableRef } = useScrollIntoView();
-  const [step, setStep] = useState(0);
+const leftEnvelope = (subject: number) => {
+  const subjectInfo = [
+    { name: "미분류", startColor: "gray", endColor: "gray" },
+    { name: "언어", startColor: "orange", endColor: "red" },
+    { name: "수리과학", startColor: "blue", endColor: "green" },
+    { name: "인문사회", startColor: "violet", endColor: "pink" },
+    { name: "예체능", startColor: "yellow", endColor: "orange" },
+  ];
 
-  /* 2. modal */
-  const [modalOpened, setModalOpened] = useState(false);
-  /* submit form */
-  let submitForm = {
-    answerText: "1",
-    problemIdx: 1,
-    uuid: "d7a23266-6fc7-421a-9ed8-aad169013e52",
-  };
+  return (
+    <Group className="transition ease-in-out hover:scale-105" spacing={0}>
+      <Group
+        className={`bg-gradient-to-r shadow-lg m-0 p-0 h-20 w-6 bg-white`}
+      ></Group>
+      <Group className="shadow-lg" spacing={0}>
+        <Group>
+          <Stack spacing={0}>
+            <Group
+              className={`bg-gradient-to-r from-${subjectInfo[subject].startColor}-500 to-${subjectInfo[subject].endColor}-500 m-0 p-0 h-12 w-32 bg-amber-200`}
+            />
+            <Group
+              className={`bg-gradient-to-r from-${subjectInfo[subject].startColor}-500 to-${subjectInfo[subject].endColor}-500 m-0 p-0 h-12 w-32 bg-amber-200`}
+            />
+          </Stack>
+        </Group>
+        <Group
+          className={`bg-${subjectInfo[subject].endColor}-500 border-l-2 border-gray-300 shadow-lg h-24 w-4 bg-amber-200`}
+        />
+      </Group>
+    </Group>
+  );
+};
 
-  const getLeaderboard = async () => {
-    const { data: result } = await axios.get(
-      "https://dist.exquiz.me/api/room/100310/mq/leaderboard"
-    );
-    return result.data;
-  };
+const Home: NextPage = () => {
+  const theme = useMantineTheme();
 
-  const getProblemsets = () => {
-    let rt = [{ id: -1, title: "", description: "", closingMent: "" }];
-    axios
-      .get("https://api.exquiz.me/api/problemsets/1")
-      .then((result) => {
-        setProblemsets(result.data);
-      })
-      .catch((error) => {
-        alert(error);
-      });
-    return;
-  };
+  const secondaryColor =
+    theme.colorScheme === "dark" ? theme.colors.dark[1] : theme.colors.gray[7];
 
-  let [problemsets, setProblemsets] = useState([
-    { id: -1, title: "", description: "", closingMent: "" },
+  const [active, setActive] = useState(0);
+
+  const [status, setStatus] = useState([
+    {
+      nickname: "성찰하는 소크라테스",
+      animal: "Panda",
+      color: "orange",
+      answer: false,
+    },
+    {
+      nickname: "고뇌하는 니체",
+      animal: "Panda",
+      color: "orange",
+      answer: true,
+    },
+    {
+      nickname: "엉뚱한 튜링",
+      animal: "Panda",
+      color: "orange",
+      answer: false,
+    },
+    {
+      nickname: "활기찬 뉴턴",
+      animal: "Panda",
+      color: "orange",
+      answer: false,
+    },
+    {
+      nickname: "명랑한 브라헤",
+      animal: "Panda",
+      color: "orange",
+      answer: true,
+    },
+    {
+      nickname: "정의로운 보어",
+      animal: "Panda",
+      color: "orange",
+      answer: false,
+    },
+    {
+      nickname: "창의적인 레오나르도",
+      animal: "Panda",
+      color: "orange",
+      answer: false,
+    },
+    {
+      nickname: "사색하는 공자",
+      animal: "Panda",
+      color: "orange",
+      answer: true,
+    },
+    {
+      nickname: "부유한 스미스",
+      animal: "Panda",
+      color: "orange",
+      answer: false,
+    },
+    {
+      nickname: "정직한 데카르트",
+      animal: "Panda",
+      color: "orange",
+      answer: true,
+    },
+    {
+      nickname: "슬기로운 세종",
+      animal: "Panda",
+      color: "orange",
+      answer: false,
+    },
+    {
+      nickname: "유능한 한신",
+      animal: "Panda",
+      color: "orange",
+      answer: false,
+    },
+    {
+      nickname: "전설적인 칸",
+      animal: "Panda",
+      color: "orange",
+      answer: false,
+    },
+    {
+      nickname: "전략적인 제갈공명",
+      animal: "Panda",
+      color: "orange",
+      answer: true,
+    },
+    {
+      nickname: "신박한 유레카",
+      animal: "Panda",
+      color: "orange",
+      answer: false,
+    },
+    {
+      nickname: "듬직한 테슬라",
+      animal: "Panda",
+      color: "orange",
+      answer: true,
+    },
+    {
+      nickname: "명석한 칼세이건",
+      animal: "Panda",
+      color: "orange",
+      answer: true,
+    },
+    {
+      nickname: "건강한 클레오파트라",
+      animal: "Panda",
+      color: "orange",
+      answer: false,
+    },
+    {
+      nickname: "용감한 이순신",
+      animal: "Panda",
+      color: "orange",
+      answer: false,
+    },
+    {
+      nickname: "공평한 링컨",
+      animal: "Panda",
+      color: "orange",
+      answer: false,
+    },
+    {
+      nickname: "신속한 나폴레옹",
+      animal: "Panda",
+      color: "orange",
+      answer: false,
+    },
+    {
+      nickname: "뛰어난 워렌버핏",
+      animal: "Panda",
+      color: "orange",
+      answer: true,
+    },
+    {
+      nickname: "비장한 스티브잡스",
+      animal: "Panda",
+      color: "orange",
+      answer: false,
+    },
+    {
+      nickname: "신들린 모차르트",
+      animal: "Panda",
+      color: "orange",
+      answer: false,
+    },
+    {
+      nickname: "감각적인 고흐",
+      animal: "Panda",
+      color: "orange",
+      answer: false,
+    },
+    {
+      nickname: "독보적인 내쉬",
+      animal: "Panda",
+      color: "orange",
+      answer: true,
+    },
+    {
+      nickname: "헌신적인 테레사",
+      animal: "Panda",
+      color: "orange",
+      answer: false,
+    },
+    {
+      nickname: "위대한 스티븐호킹",
+      animal: "Panda",
+      color: "orange",
+      answer: false,
+    },
+    {
+      nickname: "입체적인 피카소",
+      animal: "Panda",
+      color: "orange",
+      answer: true,
+    },
+    {
+      nickname: "성스러운 잔다르크",
+      animal: "Panda",
+      color: "orange",
+      answer: false,
+    },
   ]);
-
-  const submit = async () => {
-    const { data: result } = await axios.post(
-      "https://dist.exquiz.me/api/room/100310/mq/submit",
-      submitForm
-    );
-    return result.data;
-  };
-
   return (
     <div>
       <Head>
@@ -215,159 +320,122 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Modal
-        opened={modalOpened}
-        onClose={() => setModalOpened(false)}
-        title="핀 번호를 입력해주세요"
-      ></Modal>
-
-      <section className={`w-full h-full`}>
-        <Center>
-          <Center className=" my-2 h-[98.3vh]">
+      <main style={{ margin: "0px 10px" }}>
+        <section className="h-[86vh]">
+          <Stack className="items-center flex contents-between">
             <Stack>
-              {/* main */}
-              {step === 0 ? (
-                <Group>
-                  <Center>
-                    <Stack>
-                      <Center>
-                        <Stack>
-                          {/* Navigation Bar */}
-                          <p className="underline decoration-amber-500 font-bold text-4xl text-left mt-10">
-                            맞았습니다!
-                          </p>
-                          <p className="underline decoration-amber-500 font-bold text-2xl text-left mt-10">
-                            내 등수는?
-                          </p>
-                          <p className="font-bold text-2xl text-left">
-                            35명 중 9위
-                            <strong className="text-red-500">(+2)</strong>
-                          </p>
-                          <br></br>
-                          <br></br>
-                        </Stack>
-                      </Center>
-                      <Center>
-                        <Group>
-                          <Stack>
-                            <p></p>
-                            <Group className="rounded-xl bg-gradient-to-r from-stone-400 to-stone-300 h-32 w-12"></Group>
-                          </Stack>
-                          <Group className="rounded-xl bg-gradient-to-r from-amber-400 to-amber-500 h-40 w-12"></Group>
-                          <Group className="rounded-xl bg-gradient-to-r from-amber-700 to-amber-800 h-24 w-12"></Group>
-                        </Group>
-                      </Center>
-                      <Stack>
-                        <Button
-                          onClick={() => {
-                            setStep((prevState) => step + 1);
-                          }}
-                          color="orange"
-                          variant="outline"
-                        >
-                          다음 문제로
-                        </Button>
-                      </Stack>
-                    </Stack>
-                  </Center>
-                </Group>
-              ) : (
-                <></>
-              )}
-
-              {/* main */}
-              {step === 1 ? (
-                <Group>
-                  <Center>
-                    <Stack>
-                      <Center>
-                        <Stack>
-                          {/* Navigation Bar */}
-                          <p className="font-bold text-md text-left">
-                            닉네임 설정
-                          </p>
-                          <TextInput placeholder="똑똑한 소크라테스"></TextInput>
-                          <Button
-                            color="orange"
-                            variant="outline"
-                            leftIcon={<Refresh />}
+              {/* 메인 배너 */}
+              <Stack className="mx-40">
+                <Stack>
+                  {/* ../public/globe_banner.png */}
+                  <p className="underline decoration-amber-500 font-bold text-6xl text-left mt-10">
+                    정답자 수는?
+                  </p>
+                  <p className="font-bold text-6xl text-left mb-10">
+                    35명 중 <strong className="text-amber-500">10명</strong>
+                  </p>
+                </Stack>
+                <Stack>
+                  <Group>
+                    {status.map((cur, i) => {
+                      let color;
+                      return (
+                        <Stack key={i}>
+                          <Group
+                            className={`h-32 w-32 rounded-xl border-2 ${
+                              cur.answer === false ? "bg-gray-200" : ""
+                            }`}
                           >
-                            랜덤 닉네임 생성
-                          </Button>
+                            <Group></Group>
+                          </Group>
+                          <p
+                            className={`text-center ${
+                              cur.answer === false ? "text-gray-400" : ""
+                            }`}
+                          >
+                            {cur.nickname}
+                          </p>
                         </Stack>
-                      </Center>
-                      <Stack>
-                        <Center>
-                          <Stack>
-                            <p className="px-14 font-bold text-md text-left">
-                              아바타 선택
-                            </p>
-                            {swatch()}
-                            <Stack className="w-[90vw] ">
-                              <ScrollArea style={{ width: 300 }}>
-                                <Group>
-                                  <Image
-                                    className="rounded-full"
-                                    src="public/rat.png"
-                                    width={"100px"}
-                                    height={"100px"}
-                                  ></Image>
-                                </Group>
-                              </ScrollArea>
-                            </Stack>
+                      );
+                    })}
+                  </Group>
+                </Stack>
+                <br></br>
+                <Stack>
+                  <Group className="justify-between">
+                    <Button
+                      className=" h-[60px] w-[200px] bg-orange-500"
+                      variant="gradient"
+                      gradient={{ from: "orange", to: "red" }}
+                      component="a"
+                      rel="noopener noreferrer"
+                      href="/inbox"
+                      leftIcon={<Pencil size={38} />}
+                      styles={(theme) => ({
+                        root: {
+                          fontWeight: "bold",
+                          fontSize: 20,
+                          marginLeft: 5,
+                          color: "white",
+                          backgroundColor: "orange",
+                          border: 0,
+                          height: 42,
 
-                            <Center>
-                              <Stack>
-                                <Link href="/play">
-                                  <Button color="orange" variant="outline">
-                                    준비 완료
-                                  </Button>
-                                </Link>
-                              </Stack>
-                            </Center>
-                          </Stack>
-                        </Center>
-                        <Center>
-                          <footer className={styles.footer}>
-                            <a
-                              className="text-gray-700 no-underline text-black text-sm font-semibold"
-                              href="/apiTest"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              Team MUMOMU
-                            </a>
-                          </footer>
-                        </Center>
-                      </Stack>
-                    </Stack>
-                  </Center>
-                </Group>
-              ) : (
-                <></>
-              )}
+                          "&:hover": {},
+                        },
 
-              {/* caching tailwind css */}
-              <Group className=" bg-gradient-to-r shadow-[inset_0_-2px_4px_rgba(128,128,128,0.8)] border-gray-500 from-gray-500 to-gray-500 w-0 h-0" />
-              <Group className="bg-gradient-to-r border-orange-500 from-orange-500 to-red-500 w-0 h-0" />
-              <Group className="bg-gradient-to-r border-blue-500 from-blue-500 to-green-500 w-0 h-0" />
-              <Group className="bg-gradient-to-r border-violet-500 from-violet-500 to-orange-500 w-0 h-0" />
-              <Group className="bg-gradient-to-r border-yellow-500 from-yellow-500 to-orange-500 w-0 h-0" />
-              <Group className="bg-gradient-to-r border-gray-500 from-gray-400 to-gray-400 w-0 h-0" />
-              <Group className="bg-gradient-to-r border-red-500 from-red-500 to-orange-500 w-0 h-0" />
-              <Group className="bg-gradient-to-r border-blue-500 from-blue-700 to-blue-500 w-0 h-0" />
-              <Group className="bg-gradient-to-r border-green-500 from-green-500 to-lime-500 w-0 h-0" />
-              <Group className="bg-gradient-to-r border-amber-500 from-amber-500 to-yellow-400 w-0 h-0" />
-              <Group className="bg-gradient-to-r border-violet-500 from-violet-700 to-fuchsia-600 w-0 h-0" />
+                        leftIcon: {
+                          marginRight: 5,
+                        },
+                      })}
+                    >
+                      해설하기
+                    </Button>
+                    <Button
+                      className="mx-4 h-[60px] w-[200px]"
+                      variant="outline"
+                      gradient={{ from: "orange", to: "red" }}
+                      component="a"
+                      rel="noopener noreferrer"
+                      href="/create_rf"
+                      rightIcon={<ArrowBigRightLines size={38} />}
+                      styles={(theme: {
+                        fn: { darken: (arg0: string, arg1: number) => any };
+                      }) => ({
+                        root: {
+                          textDecoration: "none",
+                          fontWeight: "bold",
+                          fontSize: 20,
+                          marginRight: 10,
+                          color: "orange",
+                          backgroundColor: "white",
+                          border: "2px solid orange",
+                          height: 42,
+
+                          "&:hover": {
+                            backgroundColor: theme.fn.darken("#FFFFFF", 0.05),
+                          },
+                        },
+
+                        leftIcon: {
+                          marginRight: 5,
+                        },
+                      })}
+                    >
+                      다음으로
+                    </Button>
+                  </Group>
+                </Stack>
+              </Stack>
             </Stack>
-          </Center>
-        </Center>
-      </section>
+          </Stack>
+          <br />
+          <br />
+          <br />
+        </section>
+      </main>
     </div>
   );
 };
 
 export default Home;
-function sleep(arg0: number) {
-  throw new Error("Function not implemented.");
-}

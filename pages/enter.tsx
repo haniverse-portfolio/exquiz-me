@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 import { useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
@@ -7,7 +7,7 @@ import Link from "next/link";
 import Image from "next/image";
 import axios from "axios";
 import { useRecoilState } from "recoil";
-import { playPin } from "../components/States";
+import { playColor, playPin } from "../components/States";
 
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
@@ -30,11 +30,78 @@ import { Refresh, ArrowNarrowLeft, StepInto } from "tabler-icons-react";
 import { useRef } from "react";
 
 const Home: NextPage = () => {
+  const adj = [
+    "성찰하는",
+    "고뇌하는",
+    "엉뚱한",
+    "활기찬",
+    "명랑한",
+    "정의로운",
+    "창의적인",
+    "사색하는",
+    "부유한",
+    "정직한",
+    "슬기로운",
+    "유능한",
+    "전설적인",
+    "전략적인",
+    "신박한",
+    "듬직한",
+    "명석한",
+    "건강한",
+    "용감한",
+    "공평한",
+    "신속한",
+    "뛰어난",
+    "비장한",
+    "신들린",
+    "감각적인",
+    "독보적인",
+    "헌신적인",
+    "위대한",
+    "입체적인",
+    "성스러운",
+  ];
+
+  const noun = [
+    "소크라테스",
+    "니체",
+    "튜링",
+    "뉴턴",
+    "브라헤",
+    "보어",
+    "레오나르도",
+    "공자",
+    "스미스",
+    "데카르트",
+    "세종",
+    "한신",
+    "칸",
+    "제갈공명",
+    "유레카",
+    "테슬라",
+    "칼세이건",
+    "클레오파트라",
+    "이순신",
+    "링컨",
+    "나폴레옹",
+    "워렌버핏",
+    "스티브잡스",
+    "모차르트",
+    "고흐",
+    "내쉬",
+    "테레사",
+    "스티븐호킹",
+    "피카소",
+    "잔다르크",
+  ];
+
   const [pin, setPin] = useRecoilState(playPin);
   const ref = useRef<HTMLInputElement>(null);
 
   const { scrollIntoView, targetRef, scrollableRef } = useScrollIntoView();
   const [step, setStep] = useState(0);
+  const [color, setColor] = useRecoilState(playColor);
 
   /* 2. modal */
   const [modalOpened, setModalOpened] = useState(false);
@@ -70,10 +137,25 @@ const Home: NextPage = () => {
   ]);
 
   const getRoomOpened = (pin: string) => {
-    alert(pin);
     axios
       .get(connectMainServerApiAddress + `api/room/${pin.toString()}/open`)
       .then((result) => {
+        // validation
+        if (result.data.currentState !== "READY") return;
+        // connect();
+        // client.send("/pub/room/" + pin, {}, JSON.stringify({}));
+        // scene change
+        setStep((prevstate) => step + 1);
+
+        // JSON.stringify({})
+        // client.activate();
+        //  onConnect:()=>{client.publish({
+        //    destination: "/room" + pin,
+        //    body: {},
+        //    headers: { priority: "9" },
+        //  });}
+
+        // test
         alert("success" + result.status);
       })
       .catch((error) => {
@@ -85,33 +167,24 @@ const Home: NextPage = () => {
   let [nickname, setNickname] = useState("");
   let createRand = () => {};
 
-  let stompClient: Stomp.Client;
+  let client: Stomp.Client;
 
   let connect = () => {
-    // stompClient.debug = null;
+    // client.debug = null;
     const headers = {
       // connect, subscribe에 쓰이는 headers
     };
-  let socket = new SockJS(connectMainServerApiAddress + "stomp");
-    //var socket = new SockJS("https://api.exquiz.me/stomp");
-    stompClient = Stomp.over(socket);
+    let socket = new SockJS(connectMainServerApiAddress + "stomp");
+    client = Stomp.over(socket);
 
-    // jwt
-    //var headers = {
-    // Authorization : 'Bearer ' + token.access_token,
-    //};
     let reconnect = 0;
-    stompClient.connect(
+    client.connect(
       {},
       function (frame) {
-        stompClient.subscribe(
-          "/topic/room" + localStorage.getItem("pin") ?? "000000",
-          function (message) {
-            var recv = JSON.parse(message.body);
-            console.log("hellooooooo" + message.body);
-          }
-        );
-        // stompClient.send(
+        client.subscribe("/topic/room/" + pin ?? "000000", function (message) {
+          // var recv = JSON.parse(message.body);
+        });
+        // client.send(
         //   "/pub/room/" + pin + "/start",
         //   {},
         //   JSON.stringify({ uuid: 123 })
@@ -124,18 +197,18 @@ const Home: NextPage = () => {
         //   setTimeout(function () {
         //     console.log("connection reconnect");
         //     socket = new SockJS(`https://dist.exquiz.me/stomp`);
-        //     stompClient = Stomp.over(socket);
+        //     client = Stomp.over(socket);
         //     connect();
         //   }, 10 * 1000);
         // }
       }
     );
 
-    // stompClient.connect(
+    // client.connect(
     //   headers,
     //   (frame) => {
     //     console.log("연결됨");
-    //     stompClient.subscribe("/topic/room" + pin, function (message) {
+    //     client.subscribe("/topic/room" + pin, function (message) {
     //       console.log("성공 ㅎㅎ" + JSON.parse(message.body).content);
     //     });
     //   },
@@ -144,36 +217,6 @@ const Home: NextPage = () => {
     //   }
     // );
   };
-
-  let colorCode = [
-    "bg-red-500",
-
-    "bg-orange-400",
-
-    "bg-amber-300",
-
-    "bg-lime-500",
-
-    "bg-green-500",
-
-    "bg-lime-800",
-
-    "bg-teal-400",
-
-    "bg-cyan-500",
-
-    "bg-sky-600",
-
-    "bg-blue-600",
-
-    "bg-violet-600",
-
-    "bg-purple-300",
-
-    "bg-fuchsia-300",
-
-    "bg-pink-500",
-  ];
 
   return (
     <div>
@@ -250,7 +293,6 @@ const Home: NextPage = () => {
                             // connect();
 
                             // is room exist : validation check needed
-                            setStep((prevState) => step + 1);
                           }}
                           color="orange"
                           variant="light"
@@ -268,17 +310,6 @@ const Home: NextPage = () => {
                       </Stack>
                     </Center>
                   </Stack>
-
-                  <footer className={styles.footer}>
-                    <a
-                      className="text-gray-700 no-underline text-black text-sm font-semibold"
-                      href="/apiTest"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      Team MUMOMU
-                    </a>
-                  </footer>
                 </Stack>
               </Stack>
             ) : (
@@ -310,40 +341,17 @@ const Home: NextPage = () => {
                     }
                     <Button
                       onClick={() => {
-                        let arr = [
-                          "성찰하는소크라테스",
-                          "고뇌하는니체",
-                          "엉뚱한튜링",
-                          "활기찬뉴턴",
-                          "명랑한브라헤",
-                          "정의로운보어",
-                          "창의적인레오나르도",
-                          "사색하는공자",
-                          "부유한스미스",
-                          "정직한데카르트",
-                          "슬기로운세종",
-                          "유능한한신",
-                          "전설적인칸",
-                          "전략적인제갈공명",
-                          "신박한유레카",
-                          "듬직한테슬라",
-                          "명석한칼세이건",
-                          "건강한클레오파트라",
-                          "용감한이순신",
-                          "공평한링컨",
-                          "신속한나폴레옹",
-                          "뛰어난워렌버핏",
-                          "비장한스티브잡스",
-                          "신들린모차르트",
-                          "감각적인고흐",
-                          "독보적인내쉬",
-                          "헌신적인테레사",
-                          "위대한스티븐호킹",
-                          "입체적인피카소",
-                          "성스러운잔다르크",
-                        ];
+                        let randAdjective =
+                          adj[Math.floor(Math.random() * (adj.length - 1)) + 1];
+                        let randNoun =
+                          noun[
+                            Math.floor(Math.random() * (noun.length - 1)) + 1
+                          ];
+                        let randNum1 = Math.floor(Math.random() * (99 - 1)) + 1;
+                        let randNum2 =
+                          Math.floor(Math.random() * (100 - 1)) + 1;
                         setNickname(
-                          arr[Math.floor(Math.random() * (arr.length - 1)) + 1]
+                          randNum1 + randAdjective + randNoun + randNum2
                         );
                       }}
                       color="orange"
@@ -358,11 +366,18 @@ const Home: NextPage = () => {
                       <p className="px-14 font-bold text-md text-left">
                         아바타 선택
                       </p>
-                      <Grid columns={5}>
-                        {colorCode.map(() => {
-                          return <></>;
-                        })}
-                      </Grid>
+                      <Button
+                        color="orange"
+                        variant="outline"
+                        leftIcon={<Refresh />}
+                        onClick={() => {
+                          var randomColor = require("randomcolor"); // import the script
+                          var randColor = randomColor();
+                          setColor(randColor);
+                        }}
+                      >
+                        색상 바꾸기
+                      </Button>
                       <Stack>
                         <ScrollArea scrollbarSize={0} style={{ width: 180 }}>
                           <Group style={{ width: 700 }}>
@@ -375,7 +390,7 @@ const Home: NextPage = () => {
                             ></Image>
                             <Image
                               alt="hello"
-                              className="cursor-pointer rounded-full"
+                              className={`cursor-pointer rounded-full bg-[${color}]`}
                               src="/../public/fox.png"
                               width={"50px"}
                               height={"50px"}
@@ -411,10 +426,26 @@ const Home: NextPage = () => {
                           </Group>
                         </ScrollArea>
                       </Stack>
-
                       <Stack>
                         <Link href="/play">
-                          <Button color="orange" variant="filled">
+                          <Button
+                            onClick={() => {
+                              connect();
+                              setTimeout(() => {
+                                client.send(
+                                  "/pub/room/" + pin + "/signup",
+                                  {},
+                                  JSON.stringify({
+                                    name: nickname,
+                                    nickname: nickname,
+                                  })
+                                );
+                              }, 3000);
+                              Router.push(`/lobby_user/${pin}`);
+                            }}
+                            color="orange"
+                            variant="filled"
+                          >
                             준비 완료
                           </Button>
                         </Link>

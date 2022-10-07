@@ -1,3 +1,4 @@
+import Router, { useRouter } from "next/router";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
@@ -24,15 +25,16 @@ import {
   createTabNextIdx,
   createTargetIdx,
   createTimelimit,
+  playParticipants,
   playPin,
-} from "../components/States";
+} from "../../components/States";
 
 import {
   dtypeName,
   tabTooltip,
   MARKSCORE,
   MARKSTIME,
-} from "../components/ConstValues";
+} from "../../components/ConstValues";
 
 const connectMainServerApiAddress = "https://api.exquiz.me/";
 
@@ -112,53 +114,24 @@ const leftEnvelope = (subject: number) => {
 };
 
 const Home: NextPage = () => {
+  const router = useRouter();
+
+  const pin = router.query.pin;
   const theme = useMantineTheme();
+  console.log("hello" + router.query.params);
+
+  useEffect(() => {
+    if (!router.isReady) return;
+  }, [router.isReady]);
 
   const secondaryColor =
     theme.colorScheme === "dark" ? theme.colors.dark[1] : theme.colors.gray[7];
 
   const [active, setActive] = useState(0);
 
-  let [partlist, setPartlist] = useState([
-    {
-      currentScore: 0,
-      entryDate: "2022-08-23T08:34:54.994Z",
-      id: 0,
-      name: "string",
-      nickname: "string",
-      roomDto: {
-        currentProblemNum: 0,
-        currentState: "FINISH",
-        endDate: "2022-08-23T08:34:54.994Z",
-        id: 0,
-        maxParticipantCount: 0,
-        pin: "string",
-        problemsetDto: {
-          closingMent: "string",
-          description: "string",
-          id: 0,
-          title: "string",
-        },
-        startDate: "2022-08-23T08:34:54.994Z",
-      },
-      uuid: "string",
-    },
-  ]);
+  const [partlist, setPartlist] = useRecoilState(playParticipants);
 
-  const getPartlist = () => {
-    axios
-      .get(connectMainServerApiAddress + "api/room/" + pin + "/participants")
-      .then((result) => {
-        alert("success");
-        setPartlist(result.data);
-      })
-      .catch((error) => {
-        alert("getParticipants_error");
-      });
-    return;
-  };
-
-  let [pin, setPin] = useRecoilState(playPin);
+  let [roomPin, setPin] = useRecoilState(playPin);
 
   useEffect(() => {
     // pin = JSON.parse(localStorage.getItem("room") ?? "0").pin;
@@ -187,10 +160,20 @@ const Home: NextPage = () => {
     stompClient.connect(
       {},
       function (frame) {
-        stompClient.subscribe("/topic/room" + pin, function (message) {
-          var recv = JSON.parse(message.body);
-          console.log("hellooooooo" + message.body);
-        });
+        stompClient.subscribe(
+          "/topic/room/" + pin + "/host",
+          function (message) {
+            if (JSON.parse(message.body).flag === "PARTICIPANT") {
+              let pivot = JSON.parse(message.body);
+              let copy = [pivot];
+              let rt = [...partlist, pivot];
+              console.log("rt size: " + rt.length);
+
+              if (partlist[0].nickname === "초대해보세요") setPartlist(copy);
+              else setPartlist((prevstate) => rt);
+            }
+          }
+        );
         // stompClient.send(
         //   "/pub/room/" + pin + "/start",
         //   {},
@@ -296,7 +279,7 @@ const Home: NextPage = () => {
                     <p className="font-bold text-9xl text-left mb-10">
                       # {pin}
                     </p>{" "}
-                    <CopyButton value={pin}>
+                    <CopyButton value={pin as string}>
                       {({ copied, copy }) => (
                         <Button
                           variant="outline"
@@ -311,12 +294,20 @@ const Home: NextPage = () => {
                   </Group>
                 </Stack>
                 <Stack>
-                  <Group>
-                    {partlist.map((cur, i) => {
-                      let color;
-                      return <Stack key={i}>{partlist[i].nickname}</Stack>;
-                    })}
-                  </Group>
+                  {
+                    <Group>
+                      {partlist.map((cur, i) => {
+                        return (
+                          <Stack key={i}>
+                            <Group className="h-32 w-32 rounded-xl border-2 bg-gray-200"></Group>
+                            <p className="text-center text-gray-400">
+                              {cur.nickname}
+                            </p>
+                          </Stack>
+                        );
+                      })}
+                    </Group>
+                  }
                 </Stack>
                 <br></br>
                 <Stack>
@@ -331,7 +322,7 @@ const Home: NextPage = () => {
                       QR코드 화면
                     </Button>
                     <p className="font-bold text-4xl">
-                      입장 인원 : &nbsp;
+                      입장 인원 : {partlist.length}명
                       <strong className="text-amber-500"></strong>
                     </p>
                     <Button

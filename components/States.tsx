@@ -13,7 +13,7 @@ export const indexIsLogined = atom({
 });
 
 export const indexMembership = atom({
-  key: "indexIsLogined",
+  key: "indexMembership",
   default: "0",
 });
 
@@ -184,4 +184,33 @@ export const indexUserInfo = atom({
     role: "",
     username: "",
   },
+});
+
+export const playParticipants = atom({
+  key: "playParticipants",
+  default: [
+    {
+      id: 0,
+      sessionId: "",
+      name: "",
+      nickname: "초대해보세요",
+      entryDate: 0,
+      currentScore: 0,
+    },
+  ],
+});
+
+export const signupTabIdx = atom({
+  key: "signupTabIdx",
+  default: "0",
+});
+
+export const playColor = atom({
+  key: "playColor",
+  default: "1",
+});
+
+export const mypageTabIdx = atom({
+  key: "mypageTabIdx",
+  default: "알림",
 });

@@ -9,13 +9,14 @@ import React, { useEffect } from "react";
 import axios from "axios";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
+import { useRecoilState } from "recoil";
 
 import {
   dtypeName,
   tabTooltip,
   MARKSCORE,
   MARKSTIME,
-} from "../components/ConstValues";
+} from "../../components/ConstValues";
 
 const connectMainServerApiAddress = "https://api.exquiz.me/";
 
@@ -28,6 +29,7 @@ import {
 } from "@mantine/core";
 import { ArrowBigRightLines, Qrcode, Copy } from "tabler-icons-react";
 import { randomInt } from "crypto";
+import { playPin } from "../../components/States";
 
 const rightEnvelope = (subject: number) => {
   const subjectInfo = [
@@ -102,7 +104,7 @@ const Home: NextPage = () => {
     theme.colorScheme === "dark" ? theme.colors.dark[1] : theme.colors.gray[7];
 
   const [active, setActive] = useState(0);
-
+  const [pin, setPin] = useRecoilState(playPin);
   const [status, setStatus] = useState([
     {
       nickname: "성찰하는 소크라테스",
@@ -153,13 +155,6 @@ const Home: NextPage = () => {
     return;
   };
 
-  let [pin, setPin] = useState("0");
-
-  useEffect(() => {
-    pin = JSON.parse(localStorage.getItem("room") ?? "0").pin;
-    setPin(pin);
-  }, []);
-
   useEffect(() => {
     connect();
   }, []);
@@ -186,18 +181,17 @@ const Home: NextPage = () => {
     stompClient.connect(
       {},
       function (frame) {
-        stompClient.subscribe("/topic/room" + pin, function (message) {
-          var recv = JSON.parse(message.body);
-          console.log("room" + pin);
+        stompClient.subscribe("/topic/room/" + pin, function (message) {
+          console.log("body type :: " + typeof message.body);
         });
-        stompClient.send(
-          "/pub/room/" + pin + "/signup",
-          {},
-          JSON.stringify({
-            name: "sex2",
-            nickname: "mumomu2",
-          })
-        );
+        // stompClient.send(
+        //   "/pub/room/" + pin + "/signup",
+        //   {},
+        //   JSON.stringify({
+        //     name: "nameananefw1",
+        //     nickname: "234234324",
+        //   })
+        // );
       },
       function (error) {
         console.log("sipal" + error);
@@ -284,141 +278,13 @@ const Home: NextPage = () => {
       </Head>
 
       <main style={{ margin: "0px 10px" }}>
-        <section className="h-[86vh]">
-          <Stack className="items-center flex contents-between">
-            <Stack>
-              {/* 메인 배너 */}
-              <Stack className="mx-40">
-                <Stack>
-                  {/* ../public/globe_banner.png */}
-                  <p className="underline decoration-amber-500 font-bold text-6xl text-left mt-10">
-                    핀 번호
-                  </p>
-                  <Group>
-                    <p className="font-bold text-9xl text-left mb-10">
-                      # {pin}
-                    </p>{" "}
-                    <CopyButton value={pin}>
-                      {({ copied, copy }) => (
-                        <Button
-                          variant="outline"
-                          leftIcon={<Copy></Copy>}
-                          color={copied ? "teal" : "blue"}
-                          onClick={copy}
-                        >
-                          {copied ? "복사됨!" : "복사하기"}
-                        </Button>
-                      )}
-                    </CopyButton>
-                  </Group>
-                </Stack>
-                <Stack>
-                  <Group>
-                    {status.map((cur, i) => {
-                      let color;
-                      return (
-                        <Stack key={i}>
-                          <Group
-                            className={`h-32 w-32 rounded-xl border-2 ${
-                              cur.answer === false ? "bg-gray-200" : ""
-                            }`}
-                          >
-                            <Group></Group>
-                          </Group>
-                          <p
-                            className={`text-center ${
-                              cur.answer === false ? "text-gray-400" : ""
-                            }`}
-                          >
-                            {cur.nickname}
-                          </p>
-                        </Stack>
-                      );
-                    })}
-                  </Group>
-                </Stack>
-                <br></br>
-                <Stack>
-                  <Group className="justify-between">
-                    <Button
-                      className=" h-[60px] w-[200px] bg-orange-500"
-                      variant="gradient"
-                      gradient={{ from: "orange", to: "red" }}
-                      component="a"
-                      rel="noopener noreferrer"
-                      href="/inbox"
-                      leftIcon={<Qrcode size={38} />}
-                      styles={(theme) => ({
-                        root: {
-                          fontWeight: "bold",
-                          fontSize: 20,
-                          marginLeft: 5,
-                          color: "white",
-                          backgroundColor: "orange",
-                          border: 0,
-                          height: 42,
-
-                          "&:hover": {},
-                        },
-
-                        leftIcon: {
-                          marginRight: 5,
-                        },
-                      })}
-                    >
-                      QR코드 화면
-                    </Button>
-                    <p className="font-bold text-4xl">
-                      입장 인원 : &nbsp;
-                      <strong className="text-amber-500">
-                        {status.length}명
-                      </strong>
-                    </p>
-                    <Button
-                      className="mx-4 h-[60px] w-[200px]"
-                      variant="outline"
-                      gradient={{ from: "orange", to: "red" }}
-                      component="a"
-                      rel="noopener noreferrer"
-                      href="/play"
-                      rightIcon={<ArrowBigRightLines size={38} />}
-                      styles={(theme: {
-                        fn: { darken: (arg0: string, arg1: number) => any };
-                      }) => ({
-                        root: {
-                          textDecoration: "none",
-                          fontWeight: "bold",
-                          fontSize: 20,
-                          marginRight: 10,
-                          color: "orange",
-                          backgroundColor: "white",
-                          border: "2px solid orange",
-                          height: 42,
-
-                          "&:hover": {
-                            backgroundColor: theme.fn.darken("#FFFFFF", 0.05),
-                          },
-                        },
-
-                        leftIcon: {
-                          marginRight: 5,
-                        },
-                      })}
-                    >
-                      시작하기
-                    </Button>
-                  </Group>
-                </Stack>
-              </Stack>
-            </Stack>
-          </Stack>
-          <br />
-          <br />
-          <br />
-        </section>
+        <section className="h-[86vh]"></section>
       </main>
     </div>
   );
 };
 
 export default Home;
+function playpin(playpin: any): [any, any] {
+  throw new Error("Function not implemented.");
+}
