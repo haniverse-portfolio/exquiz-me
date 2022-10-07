@@ -6,7 +6,7 @@ import { useState } from "react";
 import axios from "axios";
 import React, { useEffect } from "react";
 import Image from "next/image";
-import IndexNavigation from "../components/IndexNavigation";
+// import IndexNavigation from "../components/IndexNavigation";
 
 import {
   Button,
@@ -297,7 +297,7 @@ const Home: NextPage = () => {
           방 만들기
         </Button>
       </Modal>
-      <IndexNavigation />
+      {/* <IndexNavigation /> */}
       <main>
         <section className="h-[81vh]">
           <Stack className="flex contents-between">
