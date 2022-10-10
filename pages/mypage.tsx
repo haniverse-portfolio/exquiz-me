@@ -5,7 +5,7 @@ import styles from "../styles/Home.module.css";
 import { useState } from "react";
 import axios from "axios";
 import React, { useEffect } from "react";
-import IndexNavigation from "../components/IndexNavigation";
+import IndexNavigation3 from "../components/IndexNavigation3";
 import Image from "next/image";
 import { useRecoilState } from "recoil";
 import {
@@ -44,7 +44,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <IndexNavigation />
+      <IndexNavigation3 />
       <NavbarSimpleColored></NavbarSimpleColored>
     </div>
   );

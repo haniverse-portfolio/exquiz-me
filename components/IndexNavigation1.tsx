@@ -6,30 +6,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRecoilState } from "recoil";
 
-import {
-  Button,
-  Grid,
-  SimpleGrid,
-  Input,
-  TextInput,
-  Center,
-  Container,
-  Group,
-  Switch,
-  Tooltip,
-  Modal,
-  Loader,
-} from "@mantine/core";
-import {
-  Emphasis,
-  FileX,
-  Login,
-  ReportMoney,
-  UserCircle,
-  Pencil,
-  Archive,
-  Folders,
-} from "tabler-icons-react";
+import { Group, Switch, Tooltip } from "@mantine/core";
+import {} from "tabler-icons-react";
 
 import {
   createImageList,
@@ -52,17 +30,10 @@ import {
   language,
 } from "./States";
 
-import {
-  connectMainServerApiAddress,
-  dtypeName,
-  problemInput,
-  optionInput,
-  problemsetInput,
-} from "./ConstValues";
+import {} from "./ConstValues";
 import axios from "axios";
-import { useState } from "react";
 
-const IndexNavigation = () => {
+const IndexNavigation1 = () => {
   const router = useRouter();
   const [langValue, setLangValue] = useRecoilState(language);
   const [membership, setMembership] = useRecoilState(indexMembership);
@@ -184,4 +155,4 @@ const IndexNavigation = () => {
   );
 };
 
-export default IndexNavigation;
+export default IndexNavigation1;

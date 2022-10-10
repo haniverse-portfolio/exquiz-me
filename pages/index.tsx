@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
-import IndexNavigation from "../components/IndexNavigation";
+import IndexNavigation1 from "../components/IndexNavigation1";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -81,7 +81,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {/* navigation bar */}
-      <IndexNavigation />
+      <IndexNavigation1 />
       <Modal
         withCloseButton={false}
         centered
