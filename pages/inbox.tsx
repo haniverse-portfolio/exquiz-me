@@ -6,7 +6,7 @@ import { useState } from "react";
 import axios from "axios";
 import React, { useEffect } from "react";
 import Image from "next/image";
-// import IndexNavigation from "../components/IndexNavigation";
+import IndexNavigation from "../components/IndexNavigation";
 
 import {
   Button,
@@ -36,6 +36,7 @@ import {
 } from "../components/States";
 import { connectMainServerApiAddress } from "../components/ConstValues";
 import { FooterCentered } from "../components/footer";
+import { UserCardImage } from "../components/inboxCreator";
 
 const rightEnvelope = (subject: number) => {
   const subjectInfo = [
@@ -297,7 +298,7 @@ const Home: NextPage = () => {
           방 만들기
         </Button>
       </Modal>
-      {/* <IndexNavigation /> */}
+      <IndexNavigation />
       <main>
         <section className="h-[81vh]">
           <Stack className="flex contents-between">
@@ -313,21 +314,22 @@ const Home: NextPage = () => {
                         <Stack className="h-[40vh]">
                           <TextInput placeholder="찾으시는 퀴즈를 검색해보세요"></TextInput>
                           <Button
+                            variant="light"
                             className="h-24"
-                            size="lg"
+                            size="xl"
                             onClick={() => {
                               router.push("/create");
                             }}
                             color="orange"
                             leftIcon={<Plus></Plus>}
                           >
-                            퀴즈 생성
+                            새 퀴즈 생성
                           </Button>
                           <Grid className="h-[30vh]">
                             {" "}
                             {problemsets.map(
                               ({ title, description, closingMent }, i) => {
-                                return Math.trunc(i / 8) !== activePage - 1 ? (
+                                return Math.trunc(i / 4) !== activePage - 1 ? (
                                   <></>
                                 ) : (
                                   <Grid.Col span={3} key={i}>
@@ -389,24 +391,17 @@ const Home: NextPage = () => {
           </Stack>
         </section>
         <div className="fixed left-[20vw] top-[20vh]">
-          <Stack>
-            <Image
-              alt="hello"
-              className="shadow-lg cursor-pointer rounded-full"
-              src="/../public/dog.png"
-              width={"150px"}
-              height={"150px"}
-            ></Image>
-            <Text weight={500} size="xl">
-              임준현
-            </Text>
-            <Text weight={500} size="md">
-              @AimHigher77
-            </Text>
-            <Button className="shadow-md" color="orange">
-              팔로우
-            </Button>
-          </Stack>
+          <UserCardImage
+            image={"/../../public/halla.png"}
+            avatar={"/../../public/dog2.png"}
+            name={"임준현"}
+            job={"인하대학교 컴퓨터공학과 교수"}
+            stats={[
+              { label: "구독자 수", value: "12" },
+              { label: "구독 수", value: "187" },
+              { label: "제작 문제 수", value: "36" },
+            ]}
+          />
         </div>
         <div className="fixed left-[40vw] top-[20vh]">
           <Stack className="h-[25vh] h-52 w-[55vw] rounded-xl shadow-lg bg-white">

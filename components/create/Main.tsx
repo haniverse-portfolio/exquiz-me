@@ -61,6 +61,7 @@ import { dtypeName, tabTooltip, MARKSCORE, MARKSTIME } from "../ConstValues";
 import { ControlBar } from "./ControlBar";
 import { useDebouncedState } from "@mantine/hooks";
 import { useEffect } from "react";
+import { GradientSegmentedControl } from "./createTabBar";
 
 export const Main = () => {
   const tabColor = [

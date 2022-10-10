@@ -1,3 +1,5 @@
+import Router, { useRouter } from "next/router";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
@@ -21,10 +23,9 @@ import {
 import { useScrollIntoView } from "@mantine/hooks";
 
 import { AlertCircle, BuildingSkyscraper } from "tabler-icons-react";
-import { playPin } from "../components/States";
+import { avatarAnimal } from "../../components/ConstValues";
 
 const Home: NextPage = () => {
-  const [pin, setPin] = useRecoilState(playPin);
   let [curIdx, setCurIdx] = useState(0);
   {
     /* *** main state *** */
@@ -204,18 +205,12 @@ const Home: NextPage = () => {
   {
     /* 1. 퀴즈 설정 - 메인 #과목 선택 */
   }
-  const subjectInfo = [
-    { name: "미분류", startColor: "gray", endColor: "gray" },
-    { name: "언어", startColor: "orange", endColor: "red" },
-    { name: "수리과학", startColor: "blue", endColor: "green" },
-    { name: "인문사회", startColor: "violet", endColor: "pink" },
-    { name: "예체능", startColor: "yellow", endColor: "orange" },
-  ];
 
   {
     /* 1. 퀴즈 설정 - 사이드바 - #stepper */
   }
-
+  const router = useRouter();
+  const pin = router.query.pin;
   const { scrollIntoView, targetRef, scrollableRef } = useScrollIntoView();
   const [answer, setAnswer] = useState(-1);
 
@@ -271,7 +266,18 @@ const Home: NextPage = () => {
       {/* main */}
       <Container size={1200}>
         <Stack className="mt-32 flex ">
-          <p className="text-lg font-semibold">PIN : {pin}</p>
+          <Group position="apart">
+            <Group>
+              <Image
+                alt="hello"
+                className={`cursor-pointer rounded-full`}
+                src={avatarAnimal[0]}
+                width={"100px"}
+                height={"100px"}
+              ></Image>
+            </Group>
+            <p className="text-lg font-semibold">PIN : {pin}</p>
+          </Group>
           <Progress
             color="orange"
             className=""
@@ -312,7 +318,9 @@ const Home: NextPage = () => {
               }
             )}
           </Grid>
-          <Button color="orange">제출하기</Button>
+          <Button size="lg" color="orange">
+            제출하기
+          </Button>
         </Stack>
       </Container>
       {/* caching tailwind css */}

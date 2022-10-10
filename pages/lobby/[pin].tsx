@@ -29,12 +29,7 @@ import {
   playPin,
 } from "../../components/States";
 
-import {
-  dtypeName,
-  tabTooltip,
-  MARKSCORE,
-  MARKSTIME,
-} from "../../components/ConstValues";
+import { avatarAnimal, avatarColor } from "../../components/ConstValues";
 
 const connectMainServerApiAddress = "https://api.exquiz.me/";
 
@@ -44,217 +39,90 @@ import {
   useMantineTheme,
   Stack,
   CopyButton,
+  Divider,
+  Center,
 } from "@mantine/core";
 import { ArrowBigRightLines, Qrcode, Copy } from "tabler-icons-react";
 
-const rightEnvelope = (subject: number) => {
-  const subjectInfo = [
-    { name: "미분류", startColor: "gray", endColor: "gray" },
-    { name: "언어", startColor: "orange", endColor: "red" },
-    { name: "수리과학", startColor: "blue", endColor: "green" },
-    { name: "인문사회", startColor: "violet", endColor: "pink" },
-    { name: "예체능", startColor: "yellow", endColor: "orange" },
-  ];
-
-  return (
-    <Group className="transition ease-in-out hover:scale-105" spacing={0}>
-      <Group className="shadow-lg" spacing={0}>
-        <Group
-          className={`bg-${subjectInfo[subject].startColor} border-r-2 border-gray-300 shadow-lg h-24 w-4 bg-amber-200`}
-        />
-        <Group>
-          <Stack spacing={0}>
-            <Group
-              className={`bg-gradient-to-r from-${subjectInfo[subject].startColor} to-${subjectInfo[subject].endColor} border-b-2 border-gray-300 m-0 p-0 h-12 w-32 bg-amber-200`}
-            />
-            <Group
-              className={`bg-gradient-to-r from-${subjectInfo[subject].startColor} to-${subjectInfo[subject].endColor} m-0 p-0 h-12 w-32 bg-amber-200`}
-            />
-          </Stack>
-        </Group>
-      </Group>
-      <Group
-        className={`bg-gradient-to-r from-${subjectInfo[subject].startColor} to-${subjectInfo[subject].endColor} shadow-lg m-0 p-0 h-20 w-6 bg-white`}
-      ></Group>
-    </Group>
-  );
-};
-
-const leftEnvelope = (subject: number) => {
-  const subjectInfo = [
-    { name: "미분류", startColor: "gray", endColor: "gray" },
-    { name: "언어", startColor: "orange", endColor: "red" },
-    { name: "수리과학", startColor: "blue", endColor: "green" },
-    { name: "인문사회", startColor: "violet", endColor: "pink" },
-    { name: "예체능", startColor: "yellow", endColor: "orange" },
-  ];
-
-  return (
-    <Group className="transition ease-in-out hover:scale-105" spacing={0}>
-      <Group
-        className={`bg-gradient-to-r shadow-lg m-0 p-0 h-20 w-6 bg-white`}
-      ></Group>
-      <Group className="shadow-lg" spacing={0}>
-        <Group>
-          <Stack spacing={0}>
-            <Group
-              className={`bg-gradient-to-r from-${subjectInfo[subject].startColor}-500 to-${subjectInfo[subject].endColor}-500 m-0 p-0 h-12 w-32 bg-amber-200`}
-            />
-            <Group
-              className={`bg-gradient-to-r from-${subjectInfo[subject].startColor}-500 to-${subjectInfo[subject].endColor}-500 m-0 p-0 h-12 w-32 bg-amber-200`}
-            />
-          </Stack>
-        </Group>
-        <Group
-          className={`bg-${subjectInfo[subject].endColor}-500 border-l-2 border-gray-300 shadow-lg h-24 w-4 bg-amber-200`}
-        />
-      </Group>
-    </Group>
-  );
-};
-
 const Home: NextPage = () => {
+  const [partlist, setPartlist] = useRecoilState(playParticipants);
+  // const addParticipant = (cur: object) => {
+  //   // console.log("추가전 직전 참가자 정보");
+  //   // console.log(partlist);
+  //   let newParticipant = cur;
+  //   // JSON.parse(message.body)
+  //   setPartlist([...partlist, curParticipant]);
+  // };
+
+  const getRoomOpened = (pin: string) => {
+    axios
+      .get(connectMainServerApiAddress + `api/room/${router.query.pin}/open`)
+      .then((result) => {
+        // validation
+        if (result.data.currentState !== "READY") return;
+      })
+      .catch((error) => {
+        router.push("/404");
+      });
+    return;
+  };
   const router = useRouter();
 
   const pin = router.query.pin;
   const theme = useMantineTheme();
-  console.log("hello" + router.query.params);
 
   useEffect(() => {
     if (!router.isReady) return;
+    connect();
   }, [router.isReady]);
 
+  const [curParticipant, setCurParticipant] = useState({
+    colorNumber: 0,
+    imageNumber: 0,
+    flag: "",
+    fromSession: "",
+    id: 0,
+    name: "test_index_0",
+    nickname: "",
+    entryDate: 0,
+    currentScore: 0,
+  });
   const secondaryColor =
     theme.colorScheme === "dark" ? theme.colors.dark[1] : theme.colors.gray[7];
 
   const [active, setActive] = useState(0);
 
-  const [partlist, setPartlist] = useRecoilState(playParticipants);
-
-  let [roomPin, setPin] = useRecoilState(playPin);
-
-  useEffect(() => {
-    // pin = JSON.parse(localStorage.getItem("room") ?? "0").pin;
-    // setPin(pin);
-    connect();
-  }, []);
   {
     /* webSocket */
   }
   let stompClient: Stomp.Client;
 
   let connect = () => {
-    // stompClient.debug = null;
-    const headers = {
-      // connect, subscribe에 쓰이는 headers
-    };
+    const headers = {};
     var socket = new SockJS(connectMainServerApiAddress + "stomp");
-    //var socket = new SockJS("https://api.exquiz.me/stomp");
     stompClient = Stomp.over(socket);
 
-    // jwt
-    //var headers = {
-    // Authorization : 'Bearer ' + token.access_token,
-    //};
     var reconnect = 0;
     stompClient.connect(
       {},
       function (frame) {
+        console.log(router.query.pin);
+        if (router.query.pin === undefined) router.push("/404");
+        getRoomOpened(router.query.pin as string);
         stompClient.subscribe(
-          "/topic/room/" + pin + "/host",
+          "/topic/room/" + router.query.pin + "/host",
           function (message) {
-            if (JSON.parse(message.body).flag === "PARTICIPANT") {
-              let pivot = JSON.parse(message.body);
-              let copy = [pivot];
-              let rt = [...partlist, pivot];
-              console.log("rt size: " + rt.length);
-
-              if (partlist[0].nickname === "초대해보세요") setPartlist(copy);
-              else setPartlist((prevstate) => rt);
+            if (JSON.parse(message.body).messageType === "PARTICIPANT") {
+              setPartlist(JSON.parse(message.body).participantList);
             }
           }
         );
-        // stompClient.send(
-        //   "/pub/room/" + pin + "/start",
-        //   {},
-        //   JSON.stringify({ uuid: 123 })
-        // );
       },
       function (error) {
-        console.log("fucking" + error);
-        //connect();
-        // if (reconnect++ <= 5) {
-        //   setTimeout(function () {
-        //     console.log("connection reconnect");
-        //     socket = new SockJS(`https://dist.exquiz.me/stomp`);
-        //     stompClient = Stomp.over(socket);
-        //     connect();
-        //   }, 10 * 1000);
-        // }
+        connect();
       }
     );
-
-    // stompClient.connect(
-    //   headers,
-    //   (frame) => {
-    //     console.log("연결됨");
-    //     stompClient.subscribe("/topic/room" + pin, function (message) {
-    //       console.log("성공 ㅎㅎ" + JSON.parse(message.body).content);
-    //     });
-    //   },
-    //   () => {
-    //     console.log("연결안됨");
-    //   }
-    // );
   };
-
-  // let send = (data: Object) => {
-  //   const headers = {
-  //     // connect, subscribe에 쓰이는 headers
-  //   };
-
-  //   stompClient.send("/pub/test", {}, JSON.stringify(data));
-  // };
-
-  // let subscribe = () => {
-  //   const headers = {
-  //     // connect, subscribe에 쓰이는 headers
-  //   };
-
-  //   stompClient.subscribe(
-  //     "/topic/room" + pin,
-  //     (frame) => {
-  //       alert(frame.body);
-  //       // subscribe 후 실행하는 곳
-  //     },
-  //     headers
-  //   );
-  // };
-
-  // let unsubscribe = () => {
-  //   const headers = {
-  //     // connect, subscribe에 쓰이는 headers
-  //   };
-
-  //   stompClient.subscribe(
-  //     "/topic/room",
-  //     (frame) => {
-  //       // subscribe 후 실행하는 곳
-  //     },
-  //     headers
-  //   ).unsubscribe;
-  // };
-
-  // let disConnect = () => {
-  //   if (stompClient !== null) {
-  //     const headers = {
-  //       // disconnect에 쓰이는 headers
-  //     };
-  //     stompClient.disconnect(function () {
-  //       // disconnect 후 실행하는 곳
-  //     }, headers);
-  //   }
-  // };
 
   return (
     <div>
@@ -263,26 +131,26 @@ const Home: NextPage = () => {
         <meta name="description" content="exquiz.me" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
       <main style={{ margin: "0px 10px" }}>
-        <section className="h-[86vh]">
+        <section className="h-[85vh]">
           <Stack className="items-center flex contents-between">
             <Stack>
               {/* 메인 배너 */}
-              <Stack className="mx-40">
+              <Stack className="mx-12">
                 <Stack>
-                  {/* ../public/globe_banner.png */}
-                  <p className="underline decoration-amber-500 font-bold text-6xl text-left mt-10">
+                  {/* <p className="underline decoration-amber-500 font-bold text-6xl text-left mt-10">
                     참가 코드
-                  </p>
-                  <Group>
-                    <p className="font-bold text-9xl text-left mb-10">
-                      # {pin}
+                  </p> */}
+                  <Group className="mt-10">
+                    <p className="font-bold text-9xl text-left">
+                      <strong className="text-gray-400">#</strong>{" "}
+                      {router.query.pin}
                     </p>{" "}
                     <CopyButton value={pin as string}>
                       {({ copied, copy }) => (
                         <Button
-                          variant="outline"
+                          size="xl"
+                          variant="light"
                           leftIcon={<Copy></Copy>}
                           color="orange"
                           onClick={copy}
@@ -291,16 +159,43 @@ const Home: NextPage = () => {
                         </Button>
                       )}
                     </CopyButton>
+                    <Button
+                      size="xl"
+                      color="orange"
+                      variant="filled"
+                      component="a"
+                      href="/inbox"
+                      leftIcon={<Qrcode size={38} />}
+                    >
+                      QR코드
+                    </Button>
                   </Group>
                 </Stack>
+                <Divider my="xs" />
                 <Stack>
                   {
-                    <Group>
+                    <Group className="h-[56vh]">
                       {partlist.map((cur, i) => {
-                        return (
+                        return cur.nickname === "초대해보세요" ? (
+                          <></>
+                        ) : (
                           <Stack key={i}>
-                            <Group className="h-32 w-32 rounded-xl border-2 bg-gray-200"></Group>
-                            <p className="text-center text-gray-400">
+                            <Group className="h-32 w-32 rounded-xl border-2 bg-gray-200">
+                              <Center
+                                className={`w-[120px] h-[120px] ${
+                                  avatarColor[cur.colorNumber]
+                                } rounded-full shadow-lg`}
+                              >
+                                <Image
+                                  alt="hello"
+                                  className={`cursor-pointer rounded-full`}
+                                  src={avatarAnimal[cur.imageNumber]}
+                                  width={"100px"}
+                                  height={"100px"}
+                                ></Image>
+                              </Center>
+                            </Group>
+                            <p className="text-center text-black">
                               {cur.nickname}
                             </p>
                           </Stack>
@@ -309,23 +204,21 @@ const Home: NextPage = () => {
                     </Group>
                   }
                 </Stack>
-                <br></br>
+                <Divider my="xs" />
                 <Stack>
-                  <Group className="justify-between">
-                    <Button
-                      color="orange"
-                      variant="filled"
-                      component="a"
-                      href="/inbox"
-                      leftIcon={<Qrcode size={38} />}
-                    >
-                      QR코드 화면
-                    </Button>
+                  <Group position="apart" className="justify-between">
                     <p className="font-bold text-4xl">
-                      입장 인원 : {partlist.length}명
-                      <strong className="text-amber-500"></strong>
+                      입장 인원 /{" "}
+                      <strong className="text-amber-500">
+                        {partlist.length === 1 &&
+                        partlist[0].nickname === "초대해보세요"
+                          ? 0
+                          : partlist.length}
+                      </strong>
+                      명<strong className="text-amber-500"></strong>
                     </p>
                     <Button
+                      size="xl"
                       color="orange"
                       variant="outline"
                       component="a"

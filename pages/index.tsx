@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
-// import IndexNavigation from "../components/IndexNavigation";
+import IndexNavigation from "../components/IndexNavigation";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -81,7 +81,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {/* navigation bar */}
-      {/* <IndexNavigation /> */}
+      <IndexNavigation />
       <Modal
         withCloseButton={false}
         centered
@@ -157,14 +157,14 @@ const Home: NextPage = () => {
                     </Button>
                     <Button
                       onClick={() => {
-                        router.push("/create");
+                        router.push("/inbox");
                       }}
                       size="lg"
                       className="ease-in-out duration-300 hover:scale-105 shadow-md"
                       variant="filled"
                       color="orange"
                     >
-                      ✍️ &nbsp;&nbsp;퀴즈 만들어보기
+                      ✍️ &nbsp;&nbsp;내 퀴즈 관리하기
                     </Button>
                   </Group>
                 </Stack>

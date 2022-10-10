@@ -127,7 +127,7 @@ export function NavbarSimpleColored() {
   ));
 
   return (
-    <Navbar height={700} width={{ sm: 300 }} p="md" className={classes.navbar}>
+    <Navbar height={884} width={{ sm: 300 }} p="md" className={classes.navbar}>
       <Navbar.Section grow>
         <Group className={classes.header} position="apart">
           <span className={classes.version}>익스퀴즈미</span>

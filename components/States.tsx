@@ -190,9 +190,12 @@ export const playParticipants = atom({
   key: "playParticipants",
   default: [
     {
+      colorNumber: 0,
+      imageNumber: 0,
+      flag: "",
+      fromSession: "",
       id: 0,
-      sessionId: "",
-      name: "",
+      name: "test_index_0",
       nickname: "초대해보세요",
       entryDate: 0,
       currentScore: 0,
@@ -205,12 +208,22 @@ export const signupTabIdx = atom({
   default: "0",
 });
 
+export const playAnimal = atom({
+  key: "playAnimal",
+  default: 0,
+});
+
 export const playColor = atom({
   key: "playColor",
-  default: "1",
+  default: 0,
 });
 
 export const mypageTabIdx = atom({
   key: "mypageTabIdx",
   default: "알림",
+});
+
+export const enterNotificationInfo = atom({
+  key: "enterNotificationInfo",
+  default: "닉네임을 입력하고 아바타를 선택하세요",
 });

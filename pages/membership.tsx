@@ -23,6 +23,10 @@ import {
 
 import { ArrowBigLeft } from "tabler-icons-react";
 import { indexMembership } from "../components/States";
+import { FeaturesCard1 } from "../components/membershipCard1";
+import { FeaturesCard2 } from "../components/membershipCard2";
+import { FeaturesCard3 } from "../components/membershipCard3";
+import { HeroImageRight } from "../components/membershipHero";
 
 const Home: NextPage = () => {
   const router = useRouter();
@@ -136,92 +140,104 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <section className=" bg-gradient-to-r from-purple-500 to-pink-500 animate-text">
-        <Stack>
-          <Group>
-            <ActionIcon
-              onClick={() => {
-                router.push("/");
-              }}
-              variant="transparent"
-            >
-              <ArrowBigLeft color="white"></ArrowBigLeft>
-            </ActionIcon>
-          </Group>
-          <Group className="h-[100vh]">
-            <Container className="m-10 p-2 h-10/12 w-3/12 bg-white shadow-lg sm:rounded-3xl backdrop-blur-xl bg-opacity-60">
-              <Card className="bg-opacity-0" shadow="sm" p="lg">
-                <Group
-                  position="apart"
-                  style={{ marginBottom: 5, marginTop: theme.spacing.sm }}
-                >
-                  <Text style={{ display: "block" }} weight={500}>
-                    무료 플랜
-                  </Text>
-                  <Badge color="gray" variant="light">
-                    익스퀴즈미 회원 무료 제공
-                  </Badge>
-                </Group>
-
-                <Text
-                  size="sm"
-                  style={{ color: secondaryColor, lineHeight: 1.5 }}
-                >
-                  익스퀴즈미가 제공하는 무료 서비스 입니다.
-                </Text>
-
-                {membershipInfo("0")}
-              </Card>
-            </Container>
-            <Container className="m-10 p-2 h-10/12 w-3/12 bg-white shadow-lg sm:rounded-3xl backdrop-blur-xl bg-opacity-60">
-              <Card shadow="sm" p="lg">
-                <Group
-                  position="apart"
-                  style={{ marginBottom: 5, marginTop: theme.spacing.sm }}
-                >
-                  <Text weight={500}>스탠다드 플랜 (실속형)</Text>
-                  <Badge color="blue" variant="light">
-                    30% 할인 특가
-                  </Badge>
-                </Group>
-
-                <Text
-                  size="sm"
-                  style={{ color: secondaryColor, lineHeight: 1.5 }}
-                >
-                  퀴즈 제작 및 참여의 필수적인 기능을 합리적인 가격에
-                  제공합니다.
-                </Text>
-                {membershipInfo("1")}
-              </Card>
-            </Container>
-            <Container className="m-10 p-2 h-10/12 w-3/12 bg-white shadow-lg sm:rounded-3xl backdrop-blur-xl bg-opacity-60">
-              <Card shadow="sm" p="lg">
-                <Group
-                  position="apart"
-                  style={{ marginBottom: 5, marginTop: theme.spacing.sm }}
-                >
-                  <Text weight={500}>프리미엄 플랜</Text>
-                  <Badge color="orange" variant="light">
-                    모든 서비스 이용 가능
-                  </Badge>
-                </Group>
-
-                <Text
-                  size="sm"
-                  style={{ color: secondaryColor, lineHeight: 1.5 }}
-                >
-                  퀴즈 제작 및 참여의 모든 과정에서 최고의 서비스를 제공합니다.
-                </Text>
-
-                {membershipInfo("2")}
-              </Card>
-            </Container>
-          </Group>
-        </Stack>
-      </section>
+      <HeroImageRight></HeroImageRight>
     </div>
   );
 };
 
 export default Home;
+
+{
+  /* <section className="">
+<Stack>
+  <Group>
+    <ActionIcon
+      onClick={() => {
+        router.push("/");
+      }}
+      variant="transparent"
+    >
+      <ArrowBigLeft color="black"></ArrowBigLeft>
+    </ActionIcon>
+  </Group>
+  <p className="text-center font-semibold text-2xl">
+    익스퀴즈미의 다양한 상품을 둘러보세요!
+  </p>
+  <Group>
+    <FeaturesCard1 />
+    <FeaturesCard2 />
+    <FeaturesCard3 />
+  </Group>
+  <Group className="h-[100vh]">
+    <Container className="m-10 p-2 h-10/12 w-3/12 bg-white shadow-lg sm:rounded-3xl backdrop-blur-xl bg-opacity-60">
+      <Card className="bg-opacity-0" shadow="sm" p="lg">
+        <Group
+          position="apart"
+          style={{ marginBottom: 5, marginTop: theme.spacing.sm }}
+        >
+          <Text style={{ display: "block" }} weight={500}>
+            무료 플랜
+          </Text>
+          <Badge color="gray" variant="light">
+            익스퀴즈미 회원 무료 제공
+          </Badge>
+        </Group>
+
+        <Text
+          size="sm"
+          style={{ color: secondaryColor, lineHeight: 1.5 }}
+        >
+          익스퀴즈미가 제공하는 무료 서비스 입니다.
+        </Text>
+
+        {membershipInfo("0")}
+      </Card>
+    </Container>
+    <Container className="m-10 p-2 h-10/12 w-3/12 bg-white shadow-lg sm:rounded-3xl backdrop-blur-xl bg-opacity-60">
+      <Card shadow="sm" p="lg">
+        <Group
+          position="apart"
+          style={{ marginBottom: 5, marginTop: theme.spacing.sm }}
+        >
+          <Text weight={500}>스탠다드 플랜 (실속형)</Text>
+          <Badge color="blue" variant="light">
+            30% 할인 특가
+          </Badge>
+        </Group>
+
+        <Text
+          size="sm"
+          style={{ color: secondaryColor, lineHeight: 1.5 }}
+        >
+          퀴즈 제작 및 참여의 필수적인 기능을 합리적인 가격에
+          제공합니다.
+        </Text>
+        {membershipInfo("1")}
+      </Card>
+    </Container>
+    <Container className="m-10 p-2 h-10/12 w-3/12 bg-white shadow-lg sm:rounded-3xl backdrop-blur-xl bg-opacity-60">
+      <Card shadow="sm" p="lg">
+        <Group
+          position="apart"
+          style={{ marginBottom: 5, marginTop: theme.spacing.sm }}
+        >
+          <Text weight={500}>프리미엄 플랜</Text>
+          <Badge color="orange" variant="light">
+            모든 서비스 이용 가능
+          </Badge>
+        </Group>
+
+        <Text
+          size="sm"
+          style={{ color: secondaryColor, lineHeight: 1.5 }}
+        >
+          퀴즈 제작 및 참여의 모든 과정에서 최고의 서비스를 제공합니다.
+        </Text>
+
+        {membershipInfo("2")}
+      </Card>
+    </Container>
+  </Group>
+</Stack>
+</section> */
+}
