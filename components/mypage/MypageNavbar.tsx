@@ -13,7 +13,7 @@ import {
 } from "@tabler/icons";
 import { MantineLogo } from "@mantine/ds";
 import { useRecoilState } from "recoil";
-import { mypageTabIdx } from "./States";
+import { mypageTabIdx } from "../States";
 import Link from "next/link";
 import { userInfo } from "os";
 import { Router } from "tabler-icons-react";

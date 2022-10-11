@@ -100,13 +100,6 @@ export const CreateNavigation = () => {
               <ArrowNarrowLeft size="xl"></ArrowNarrowLeft>
             </ActionIcon>
           </Link>
-          <Avatar
-            radius="xl"
-            src={"h".concat(
-              "ttps://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=250&q=80"
-            )}
-          />
-          <p className="font-semibold">반가워요! 임준현님.</p>
         </Group>
       </Grid.Col>
       <Grid.Col span={14}>

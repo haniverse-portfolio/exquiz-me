@@ -27,7 +27,6 @@ import {
 import { useDebouncedState } from "@mantine/hooks";
 import { Center, Stack, Grid, Notification } from "@mantine/core";
 
-import { Slide } from "../components/create/Slide";
 import { Main } from "../components/create/Main";
 import { CreateNavigation } from "../components/create/CreateNavigation";
 import { CompleteModal } from "../components/create/CompleteModal";
@@ -47,6 +46,7 @@ import {
 import { TabChangeModal } from "../components/create/TabChangeModal";
 import { ImageSection } from "../components/create/ImageSection";
 import { connectMainServerApiAddress } from "../components/ConstValues";
+import { NavbarMinimal } from "../components/create/slideProblemControlBar";
 
 const Home: NextPage = () => {
   // const [files, setFiles] = useState<FileWithPath[]>([]);
@@ -236,7 +236,7 @@ const Home: NextPage = () => {
             {/* slide + create + image */}
             <Grid columns={24} className="h-[80vh]">
               <Grid.Col span={5}>
-                <Slide />
+                <NavbarMinimal></NavbarMinimal>
               </Grid.Col>
               <Grid.Col span={14}>
                 <Main></Main>

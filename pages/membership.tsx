@@ -23,9 +23,6 @@ import {
 
 import { ArrowBigLeft } from "tabler-icons-react";
 import { indexMembership } from "../components/States";
-import { FeaturesCard1 } from "../components/membershipCard1";
-import { FeaturesCard2 } from "../components/membershipCard2";
-import { FeaturesCard3 } from "../components/membershipCard3";
 import { HeroImageRight } from "../components/membershipHero";
 
 const Home: NextPage = () => {

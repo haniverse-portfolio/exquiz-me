@@ -2,10 +2,10 @@ import { useRouter } from "next/router";
 import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
-import IndexNavigation1 from "../components/IndexNavigation1";
-import { useState, useEffect } from "react";
+import IndexNavigation from "../components/index/IndexNavigation";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
-
+import { useScrollIntoView } from "@mantine/hooks";
 import {
   Button,
   Group,
@@ -13,6 +13,7 @@ import {
   Stack,
   ActionIcon,
   Modal,
+  ScrollArea,
 } from "@mantine/core";
 import {
   User,
@@ -34,8 +35,11 @@ import {
 } from "../components/States";
 import { useRecoilState } from "recoil";
 import { connectMainServerApiAddress } from "../components/ConstValues";
-import { FooterCentered } from "../components/footer";
 import { AuthenticationForm } from "../components/googleLogin";
+import { IndexHero1 } from "../components/index/IndexHero1";
+import { IndexHero2 } from "../components/index/IndexHero2";
+import { IndexHero3 } from "../components/index/IndexHero3";
+import { FooterLinks } from "../components/index/indexFooter";
 
 const Home: NextPage = () => {
   const router = useRouter();
@@ -68,10 +72,14 @@ const Home: NextPage = () => {
       .then((result) => {
         setUserInfo(result.data);
         setIsLogined("1");
-        router.push("/");
+        router.push("/inbox");
       })
       .catch(() => {});
   };
+
+  const { scrollIntoView, targetRef } = useScrollIntoView<HTMLDivElement>({
+    offset: 60,
+  });
   /* *** axios end *** */
   return (
     <div>
@@ -81,7 +89,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {/* navigation bar */}
-      <IndexNavigation1 />
+      <IndexNavigation />
       <Modal
         withCloseButton={false}
         centered
@@ -90,8 +98,8 @@ const Home: NextPage = () => {
       >
         <AuthenticationForm></AuthenticationForm>
       </Modal>
-      <main>
-        <section className="h-[82vh]">
+      <ScrollArea>
+        <section style={{ height: "calc(100vh - 60px)" }}>
           <Stack spacing={0} className="items-center flex contents-between">
             {/* banner-start */}
             <Stack className="items-center h-[40vh] w-[100vw] bg-gradient-to-l from-amber-500 via-amber-500 to-orange-500 animate-textSlow">
@@ -176,7 +184,10 @@ const Home: NextPage = () => {
             <Stack className="items-center h-[40vh] w-[100vw]">
               <Group className="my-auto" spacing="xl" position="center">
                 <Stack>
-                  <Group className="cursor-pointer w-36 h-36 rounded-full bg-gradient-to-r from-red-500 to-orange-500 ease-in-out duration-300 hover:scale-105 shadow-md">
+                  <Group
+                    onClick={() => scrollIntoView({ alignment: "center" })}
+                    className="cursor-pointer w-36 h-36 rounded-full bg-gradient-to-r from-red-500 to-orange-500 ease-in-out duration-300 hover:scale-105 shadow-md"
+                  >
                     <ActionIcon
                       size={64}
                       className="m-auto"
@@ -186,11 +197,14 @@ const Home: NextPage = () => {
                     </ActionIcon>
                   </Group>
                   <p className="m-auto font-bold text-xl text-black">
-                    학교 및 학원
+                    문제 출제
                   </p>
                 </Stack>
                 <Stack>
-                  <Group className="cursor-pointer w-36 h-36 mx-28 rounded-full bg-gradient-to-r from-blue-500 to-green-500 ease-in-out duration-300 hover:scale-105 shadow-md">
+                  <Group
+                    onClick={() => scrollIntoView({ alignment: "center" })}
+                    className="cursor-pointer w-36 h-36 mx-28 rounded-full bg-gradient-to-r from-blue-500 to-green-500 ease-in-out duration-300 hover:scale-105 shadow-md"
+                  >
                     <ActionIcon
                       size={64}
                       className="m-auto"
@@ -200,11 +214,14 @@ const Home: NextPage = () => {
                     </ActionIcon>
                   </Group>
                   <p className="m-auto font-bold text-xl text-black">
-                    회사 및 기관
+                    관리 배포
                   </p>
                 </Stack>
                 <Stack>
-                  <Group className="cursor-pointer w-36 h-36 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 ease-in-out duration-300 hover:scale-105 shadow-md">
+                  <Group
+                    onClick={() => scrollIntoView({ alignment: "center" })}
+                    className="cursor-pointer w-36 h-36 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 ease-in-out duration-300 hover:scale-105 shadow-md"
+                  >
                     <ActionIcon
                       size={64}
                       className="m-auto"
@@ -214,7 +231,7 @@ const Home: NextPage = () => {
                     </ActionIcon>
                   </Group>
                   <p className="m-auto font-bold text-xl text-black">
-                    취미 활동
+                    참여 활동
                   </p>
                 </Stack>
               </Group>
@@ -222,16 +239,83 @@ const Home: NextPage = () => {
             {/* category-end */}
           </Stack>
         </section>
-      </main>
-      <FooterCentered
-        links={[
-          {
-            link: "https://retro5pect.tistory.com",
-            label: "Copyright 2022 exquiz.me Co. all rights reserved.",
-          },
-          // { link: "https://www.naver.com", label: "네이버" },
-        ]}
-      />
+        <section ref={targetRef} className="h-screen">
+          <IndexHero1></IndexHero1>
+        </section>
+        <section ref={targetRef} className="h-screen">
+          <IndexHero2></IndexHero2>
+        </section>
+        <section ref={targetRef} className="h-screen">
+          <IndexHero3></IndexHero3>
+        </section>
+        <FooterLinks
+          data={[
+            {
+              title: "서비스 정보",
+              links: [
+                {
+                  label: "기능 구성",
+                  link: "#",
+                },
+                {
+                  label: "가격 정책",
+                  link: "#",
+                },
+                {
+                  label: "고객 지원",
+                  link: "#",
+                },
+                {
+                  label: "패치 노트",
+                  link: "#",
+                },
+              ],
+            },
+            {
+              title: "회사 정보",
+              links: [
+                {
+                  label: "회사 소개",
+                  link: "#",
+                },
+                {
+                  label: "팀원 소개",
+                  link: "#",
+                },
+                {
+                  label: "자회사 소개",
+                  link: "#",
+                },
+                {
+                  label: "우리집 소개",
+                  link: "#",
+                },
+              ],
+            },
+            {
+              title: "Contact us",
+              links: [
+                {
+                  label: "디스코드",
+                  link: "#",
+                },
+                {
+                  label: "카카오톡",
+                  link: "#",
+                },
+                {
+                  label: "인스타그램",
+                  link: "#",
+                },
+                {
+                  label: "G메일",
+                  link: "#",
+                },
+              ],
+            },
+          ]}
+        ></FooterLinks>
+      </ScrollArea>
     </div>
   );
 };

@@ -4,10 +4,22 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import Link from "next/link";
+
+import SockJS from "sockjs-client";
+import Stomp from "stompjs";
 import { useState } from "react";
 import { useRef } from "react";
 import React, { useEffect } from "react";
-import { Button, Group, useMantineTheme, Stack, Grid } from "@mantine/core";
+import {
+  Button,
+  Group,
+  useMantineTheme,
+  Stack,
+  Grid,
+  Progress,
+  Center,
+  Divider,
+} from "@mantine/core";
 import {
   Alarm,
   BellRinging,
@@ -17,8 +29,12 @@ import {
 } from "tabler-icons-react";
 
 import { useRecoilState } from "recoil";
-import { playProblem, playOption, playProblemset } from "../components/States";
 import { useDebouncedState } from "@mantine/hooks";
+import {
+  avatarAnimal,
+  connectMainServerApiAddress,
+  testUserData,
+} from "../../components/ConstValues";
 
 const Home: NextPage = () => {
   const router = useRouter();
@@ -189,13 +205,38 @@ const Home: NextPage = () => {
     ],
   ]);
 
+  let stompClient: Stomp.Client;
+
+  let connect = () => {
+    const headers = {};
+    var socket = new SockJS(connectMainServerApiAddress + "stomp");
+    stompClient = Stomp.over(socket);
+
+    var reconnect = 0;
+    stompClient.connect(
+      {},
+      function (frame) {
+        stompClient.subscribe(
+          "/topic/room/" + router.query.pin + "/host",
+          function (message) {
+            // do it
+          }
+        );
+      },
+      function (error) {
+        // connect();
+      }
+    );
+  };
+
   // let [problem, setProblem] = useRecoilState(playProblem);
   // let [option, setOption] = useRecoilState(playOption);
-  let [problemset, setProblemset] = useRecoilState(playProblemset);
 
   useEffect(() => {
-    setTime(time - 1);
-  }, []);
+    if (!router.isReady) return;
+    setTime(time);
+    connect();
+  }, [router.isReady]);
 
   useEffect(() => {
     if (time <= 0) {
@@ -205,7 +246,7 @@ const Home: NextPage = () => {
         setStep((prevstate) => step + 1);
         setCurIdx((prevState) => curIdx + 1);
       }
-    } else setTime(time - 1);
+    } else setTime(time);
   }, [time]);
 
   useEffect(() => {
@@ -219,6 +260,22 @@ const Home: NextPage = () => {
         <meta name="description" content="exquiz.me" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <Button
+        color="orange"
+        onClick={() => {
+          setStep(step - 1);
+        }}
+      >
+        테스트용 이전 씬
+      </Button>
+      <Button
+        color="orange"
+        onClick={() => {
+          setStep(step + 1);
+        }}
+      >
+        테스트용 다음 씬
+      </Button>
 
       <main>
         <section className="h-[100vh]">
@@ -231,6 +288,7 @@ const Home: NextPage = () => {
                   <p className="underline decoration-amber-500 font-bold text-7xl text-center mt-10">
                     {problem[curIdx].description}
                   </p>
+                  <Progress size="xl" color="orange" value={50} />
                   <Image
                     alt="hello"
                     src="/../public/halla.png"
@@ -238,107 +296,58 @@ const Home: NextPage = () => {
                     height={400}
                   ></Image>
                   <Stack>
-                    <Grid columns={24} justify="center" gutter="sm">
-                      {option.map((description, i) => {
-                        let color = ["red", "blue", "green", "orange"];
-                        let bgColor = "bg-" + color[i] + "-500";
-                        let hoverColor = "hover:" + bgColor;
-                        return (
-                          <Grid.Col key={i} span={12}>
-                            <Button
-                              fullWidth
-                              onClick={() => {
-                                setAnswer(answer === i ? -1 : i);
-                              }}
-                              color={color[i]}
-                              className={`h-[30vh] ${
-                                answer === i ? "shadow-inner text-white" : ""
-                              } shadow-lg h-28 ${
-                                answer === i ? hoverColor : ""
-                              } w-full  ${answer === i ? bgColor : ""}`}
-                              variant="outline"
+                    <Grid className="" justify="center" gutter="sm">
+                      {option[curIdx].map(
+                        ({ description, idx, picture, problemId }, i) => {
+                          let color = ["red", "blue", "green", "orange"];
+                          let bgColor = "hover:bg-" + color[i] + "-500";
+                          return (
+                            <Grid.Col
+                              className="!max-w-[50%] !basis-2/4"
+                              key={i}
+                              span={5}
+                              offset={0}
                             >
-                              {option[curIdx][i].description}
-                            </Button>
-                          </Grid.Col>
-                        );
-                      })}
+                              <Button
+                                fullWidth
+                                style={{ height: "100px" }}
+                                onClick={() => {
+                                  setAnswer(answer === i ? -1 : i);
+                                }}
+                                color={color[i]}
+                                className={`${
+                                  answer === i ? "shadow-inner text-white" : ""
+                                } shadow-md ${answer === i ? bgColor : ""} ${
+                                  answer === i ? bgColor : ""
+                                }`}
+                                variant={answer === i ? "filled" : "outline"}
+                              >
+                                <p className="text-lg"> {description}</p>
+                              </Button>
+                            </Grid.Col>
+                          );
+                        }
+                      )}
                     </Grid>
                   </Stack>
                 </Stack>
-
-                <br></br>
-                <Stack>
-                  <Group className="justify-between">
-                    <Button
-                      onClick={() => {
-                        if (time <= 50) setTime(time + 10);
-                      }}
-                      className="mx-4 h-[60px] w-[200px]"
-                      variant="outline"
-                      gradient={{ from: "orange", to: "red" }}
-                      component="a"
-                      rel="noopener noreferrer"
-                      rightIcon={<Alarm size={38} />}
-                      styles={(theme: {
-                        fn: { darken: (arg0: string, arg1: number) => any };
-                      }) => ({
-                        root: {
-                          textDecoration: "none",
-                          fontWeight: "bold",
-                          fontSize: 20,
-                          marginRight: 10,
-                          color: "orange",
-                          backgroundColor: "white",
-                          border: "2px solid orange",
-                          height: 42,
-
-                          "&:hover": {
-                            backgroundColor: theme.fn.darken("#FFFFFF", 0.05),
-                          },
-                        },
-
-                        leftIcon: {
-                          marginRight: 5,
-                        },
-                      })}
-                    >
-                      시간 연장 +10
-                    </Button>
-                    <p className="font-bold text-4xl text-red-500">{time}</p>
-
-                    <Button
-                      onClick={() => {
-                        setTime(0);
-                      }}
-                      className=" h-[60px] w-[200px] bg-orange-500"
-                      variant="gradient"
-                      gradient={{ from: "orange", to: "red" }}
-                      component="a"
-                      rel="noopener noreferrer"
-                      leftIcon={<BellRinging size={38} />}
-                      styles={(theme) => ({
-                        root: {
-                          fontWeight: "bold",
-                          fontSize: 20,
-                          marginLeft: 5,
-                          color: "white",
-                          backgroundColor: "orange",
-                          border: 0,
-                          height: 42,
-
-                          "&:hover": {},
-                        },
-
-                        leftIcon: {
-                          marginRight: 5,
-                        },
-                      })}
-                    >
-                      조기 종료
-                    </Button>
+                <Divider my="xs" />
+                <Center>
+                  <Group>
+                    {[0, 3, 5, 2, 4, 6, 8, 7, 0, 2].map((description, i) => {
+                      return (
+                        <Image
+                          key={i}
+                          alt="hello"
+                          className={`cursor-pointer rounded-full`}
+                          src={avatarAnimal[description]}
+                          width={"50px"}
+                          height={"50px"}
+                        ></Image>
+                      );
+                    })}
                   </Group>
-                </Stack>
+                </Center>
               </Stack>
             ) : (
               <></>
@@ -360,31 +369,38 @@ const Home: NextPage = () => {
                     height={400}
                   ></Image>
                   <Stack>
-                    <Grid columns={24} justify="center" gutter="sm">
-                      {option.map((description, i) => {
-                        let color = ["red", "blue", "green", "orange"];
-                        let bgColor = "bg-" + color[i] + "-500";
-                        let hoverColor = "hover:" + bgColor;
-                        return (
-                          <Grid.Col key={i} span={12}>
-                            <Button
-                              onClick={() => {
-                                setAnswer(answer === i ? -1 : i);
-                              }}
-                              color={color[i]}
-                              className={`${
-                                answer === i ? "shadow-inner text-white" : ""
-                              } shadow-lg h-28 ${
-                                answer === i ? hoverColor : ""
-                              } w-full  ${answer === i ? bgColor : ""}`}
-                              variant="outline"
+                    <Grid className="" justify="center" gutter="sm">
+                      {option[curIdx].map(
+                        ({ description, idx, picture, problemId }, i) => {
+                          let color = ["red", "blue", "green", "orange"];
+                          let bgColor = "hover:bg-" + color[i] + "-500";
+                          return (
+                            <Grid.Col
+                              className="!max-w-[50%] !basis-2/4"
+                              key={i}
+                              span={5}
+                              offset={0}
                             >
-                              {option[curIdx][i].description}
-                              30%
-                            </Button>
-                          </Grid.Col>
-                        );
-                      })}
+                              <Button
+                                fullWidth
+                                style={{ height: "100px" }}
+                                onClick={() => {
+                                  setAnswer(answer === i ? -1 : i);
+                                }}
+                                color={color[i]}
+                                className={`${
+                                  answer === i ? "shadow-inner text-white" : ""
+                                } shadow-md ${answer === i ? bgColor : ""} ${
+                                  answer === i ? bgColor : ""
+                                }`}
+                                variant={answer === i ? "filled" : "outline"}
+                              >
+                                <p className="text-lg"> {description}</p>
+                              </Button>
+                            </Grid.Col>
+                          );
+                        }
+                      )}
                     </Grid>
                   </Stack>
                 </Stack>
@@ -431,79 +447,39 @@ const Home: NextPage = () => {
                       정답자 수는?
                     </p>
                     <p className="font-bold text-6xl text-left mb-10">
-                      27명 중 <strong className="text-amber-500">9명</strong>
+                      35명 중 <strong className="text-amber-500">10명</strong>
                     </p>
                   </Stack>
-                  <br></br>
                   <Stack>
-                    <Group className="justify-between">
-                      <Button
-                        onClick={() => {
-                          setStep(1);
-                        }}
-                        className=" h-[60px] w-[200px] bg-orange-500"
-                        variant="gradient"
-                        gradient={{ from: "orange", to: "red" }}
-                        component="a"
-                        rel="noopener noreferrer"
-                        href="/inbox"
-                        leftIcon={<Pencil size={38} />}
-                        styles={(theme) => ({
-                          root: {
-                            fontWeight: "bold",
-                            fontSize: 20,
-                            marginLeft: 5,
-                            color: "white",
-                            backgroundColor: "orange",
-                            border: 0,
-                            height: 42,
-
-                            "&:hover": {},
-                          },
-
-                          leftIcon: {
-                            marginRight: 5,
-                          },
-                        })}
-                      >
-                        해설하기
-                      </Button>
-                      <Button
-                        onClick={() => {
-                          setStep(0);
-                        }}
-                        className="mx-4 h-[60px] w-[200px]"
-                        variant="outline"
-                        gradient={{ from: "orange", to: "red" }}
-                        component="a"
-                        rel="noopener noreferrer"
-                        href="/create_rf"
-                        rightIcon={<ArrowBigRightLines size={38} />}
-                        styles={(theme: {
-                          fn: { darken: (arg0: string, arg1: number) => any };
-                        }) => ({
-                          root: {
-                            textDecoration: "none",
-                            fontWeight: "bold",
-                            fontSize: 20,
-                            marginRight: 10,
-                            color: "orange",
-                            backgroundColor: "white",
-                            border: "2px solid orange",
-                            height: 42,
-
-                            "&:hover": {
-                              backgroundColor: theme.fn.darken("#FFFFFF", 0.05),
-                            },
-                          },
-
-                          leftIcon: {
-                            marginRight: 5,
-                          },
-                        })}
-                      >
-                        다음 문제
-                      </Button>
+                    <Group>
+                      {testUserData.map((cur, i) => {
+                        let color;
+                        return (
+                          <Stack key={i}>
+                            <Center
+                              className={`h-32 w-32 rounded-xl border-2 ${
+                                cur.answer === false ? "bg-gray-200" : ""
+                              }`}
+                            >
+                              <Image
+                                key={i}
+                                alt="hello"
+                                className={`cursor-pointer rounded-full`}
+                                src={avatarAnimal[0]}
+                                width={"100px"}
+                                height={"100px"}
+                              ></Image>
+                            </Center>
+                            <p
+                              className={`text-center ${
+                                cur.answer === false ? "text-gray-400" : ""
+                              }`}
+                            >
+                              {cur.nickname}
+                            </p>
+                          </Stack>
+                        );
+                      })}
                     </Group>
                   </Stack>
                 </Stack>

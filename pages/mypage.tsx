@@ -5,7 +5,7 @@ import styles from "../styles/Home.module.css";
 import { useState } from "react";
 import axios from "axios";
 import React, { useEffect } from "react";
-import IndexNavigation3 from "../components/IndexNavigation3";
+import MypageNavigation from "../components/mypage/MypageNavigation";
 import Image from "next/image";
 import { useRecoilState } from "recoil";
 import {
@@ -26,7 +26,7 @@ import {
 } from "../components/States";
 
 import { Logout, Pencil, Plus } from "tabler-icons-react";
-import { NavbarSimpleColored } from "../components/mypageNavbar";
+import { NavbarSimpleColored } from "../components/mypage/MypageNavbar";
 
 const Home: NextPage = () => {
   const router = useRouter();
@@ -44,7 +44,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <IndexNavigation3 />
+      <MypageNavigation />
       <NavbarSimpleColored></NavbarSimpleColored>
     </div>
   );

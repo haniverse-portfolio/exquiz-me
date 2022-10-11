@@ -28,12 +28,12 @@ import {
   indexMembership,
   indexUserInfo,
   language,
-} from "./States";
+} from "../States";
 
-import {} from "./ConstValues";
+import {} from "../ConstValues";
 import axios from "axios";
 
-const IndexNavigation1 = () => {
+const InboxNavigation = () => {
   const router = useRouter();
   const [langValue, setLangValue] = useRecoilState(language);
   const [membership, setMembership] = useRecoilState(indexMembership);
@@ -104,15 +104,7 @@ const IndexNavigation1 = () => {
           />
         </Link>
         <Group>
-          <Tooltip
-            offset={15}
-            label="구독 연장까지 60일 남았습니다."
-            color="black"
-            position="bottom"
-            withArrow
-          >
-            {membershipComponent(membership)}
-          </Tooltip>
+          {membershipComponent(membership)}
           {isLogined === "0" ? (
             <span
               onClick={() => {
@@ -155,4 +147,4 @@ const IndexNavigation1 = () => {
   );
 };
 
-export default IndexNavigation1;
+export default InboxNavigation;

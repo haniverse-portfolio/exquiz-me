@@ -6,7 +6,7 @@ import { useState } from "react";
 import axios from "axios";
 import React, { useEffect } from "react";
 import Image from "next/image";
-import IndexNavigation2 from "../components/IndexNavigation2";
+import InboxNavigation from "../components/inbox/InboxNavigation";
 
 import {
   Button,
@@ -36,7 +36,7 @@ import {
 } from "../components/States";
 import { connectMainServerApiAddress } from "../components/ConstValues";
 import { FooterCentered } from "../components/footer";
-import { UserCardImage } from "../components/inboxCreator";
+import { UserCardImage } from "../components/inbox/InboxCreator";
 
 const rightEnvelope = (subject: number) => {
   const subjectInfo = [
@@ -298,7 +298,7 @@ const Home: NextPage = () => {
           방 만들기
         </Button>
       </Modal>
-      <IndexNavigation2 />
+      <InboxNavigation />
       <main>
         <section className="h-[81vh]">
           <Stack className="flex contents-between">

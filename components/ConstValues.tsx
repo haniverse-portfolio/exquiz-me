@@ -1,3 +1,12 @@
+import {
+  AB,
+  Apps,
+  MathAvg,
+  Parentheses,
+  QuestionMark,
+  SquareCheck,
+} from "tabler-icons-react";
+
 /* common */
 export const connectMainServerApiAddress = "https://api.exquiz.me/";
 /* create */
@@ -23,9 +32,83 @@ export const problemInput = [
     timelimit: 30,
     title: "",
   },
+  {
+    answer: "0",
+    description: "",
+    dtype: "MultipleChoiceProblem",
+    idx: 0,
+    picture: "",
+    problemsetId: 0,
+    score: 125,
+    timelimit: 30,
+    title: "",
+  },
+  {
+    answer: "0",
+    description: "",
+    dtype: "MultipleChoiceProblem",
+    idx: 0,
+    picture: "",
+    problemsetId: 0,
+    score: 125,
+    timelimit: 30,
+    title: "",
+  },
 ];
 
 export const optionInput = [
+  [
+    {
+      description: "",
+      idx: 0,
+      picture: "",
+      problemId: 0,
+    },
+    {
+      description: "",
+      idx: 1,
+      picture: "",
+      problemId: 0,
+    },
+    {
+      description: "",
+      idx: 2,
+      picture: "",
+      problemId: 0,
+    },
+    {
+      description: "",
+      idx: 3,
+      picture: "",
+      problemId: 0,
+    },
+  ],
+  [
+    {
+      description: "",
+      idx: 0,
+      picture: "",
+      problemId: 0,
+    },
+    {
+      description: "",
+      idx: 1,
+      picture: "",
+      problemId: 0,
+    },
+    {
+      description: "",
+      idx: 2,
+      picture: "",
+      problemId: 0,
+    },
+    {
+      description: "",
+      idx: 3,
+      picture: "",
+      problemId: 0,
+    },
+  ],
   [
     {
       description: "",
@@ -181,3 +264,208 @@ export const avatarColor = [
   "bg-teal-500",
   "bg-indigo-500",
 ];
+
+export const testUserData = [
+  {
+    nickname: "성찰하는 소크라테스",
+    animal: "Panda",
+    color: "orange",
+    answer: false,
+  },
+  {
+    nickname: "고뇌하는 니체",
+    animal: "Panda",
+    color: "orange",
+    answer: true,
+  },
+  {
+    nickname: "엉뚱한 튜링",
+    animal: "Panda",
+    color: "orange",
+    answer: false,
+  },
+  {
+    nickname: "활기찬 뉴턴",
+    animal: "Panda",
+    color: "orange",
+    answer: false,
+  },
+  {
+    nickname: "명랑한 브라헤",
+    animal: "Panda",
+    color: "orange",
+    answer: true,
+  },
+  {
+    nickname: "정의로운 보어",
+    animal: "Panda",
+    color: "orange",
+    answer: false,
+  },
+  {
+    nickname: "창의적인 레오나르도",
+    animal: "Panda",
+    color: "orange",
+    answer: false,
+  },
+  {
+    nickname: "사색하는 공자",
+    animal: "Panda",
+    color: "orange",
+    answer: true,
+  },
+  {
+    nickname: "부유한 스미스",
+    animal: "Panda",
+    color: "orange",
+    answer: false,
+  },
+  {
+    nickname: "정직한 데카르트",
+    animal: "Panda",
+    color: "orange",
+    answer: true,
+  },
+  {
+    nickname: "슬기로운 세종",
+    animal: "Panda",
+    color: "orange",
+    answer: false,
+  },
+  {
+    nickname: "유능한 한신",
+    animal: "Panda",
+    color: "orange",
+    answer: false,
+  },
+  {
+    nickname: "전설적인 칸",
+    animal: "Panda",
+    color: "orange",
+    answer: false,
+  },
+  {
+    nickname: "전략적인 제갈공명",
+    animal: "Panda",
+    color: "orange",
+    answer: true,
+  },
+  {
+    nickname: "신박한 유레카",
+    animal: "Panda",
+    color: "orange",
+    answer: false,
+  },
+  {
+    nickname: "듬직한 테슬라",
+    animal: "Panda",
+    color: "orange",
+    answer: true,
+  },
+  {
+    nickname: "명석한 칼세이건",
+    animal: "Panda",
+    color: "orange",
+    answer: true,
+  },
+  {
+    nickname: "건강한 클레오파트라",
+    animal: "Panda",
+    color: "orange",
+    answer: false,
+  },
+  {
+    nickname: "용감한 이순신",
+    animal: "Panda",
+    color: "orange",
+    answer: false,
+  },
+  {
+    nickname: "공평한 링컨",
+    animal: "Panda",
+    color: "orange",
+    answer: false,
+  },
+  {
+    nickname: "신속한 나폴레옹",
+    animal: "Panda",
+    color: "orange",
+    answer: false,
+  },
+  {
+    nickname: "뛰어난 워렌버핏",
+    animal: "Panda",
+    color: "orange",
+    answer: true,
+  },
+  {
+    nickname: "비장한 스티브잡스",
+    animal: "Panda",
+    color: "orange",
+    answer: false,
+  },
+  {
+    nickname: "신들린 모차르트",
+    animal: "Panda",
+    color: "orange",
+    answer: false,
+  },
+  {
+    nickname: "감각적인 고흐",
+    animal: "Panda",
+    color: "orange",
+    answer: false,
+  },
+  {
+    nickname: "독보적인 내쉬",
+    animal: "Panda",
+    color: "orange",
+    answer: true,
+  },
+  {
+    nickname: "헌신적인 테레사",
+    animal: "Panda",
+    color: "orange",
+    answer: false,
+  },
+  {
+    nickname: "위대한 스티븐호킹",
+    animal: "Panda",
+    color: "orange",
+    answer: false,
+  },
+  {
+    nickname: "입체적인 피카소",
+    animal: "Panda",
+    color: "orange",
+    answer: true,
+  },
+  {
+    nickname: "성스러운 잔다르크",
+    animal: "Panda",
+    color: "orange",
+    answer: false,
+  },
+];
+
+export const tabColor = [
+  "bg-gradient-to-r from-red-500 to-orange-500",
+  "bg-gradient-to-r from-orange-500 to-amber-500",
+  "bg-gradient-to-r from-green-500 to-green-500",
+  "bg-gradient-to-r from-blue-700 to-blue-500",
+  "bg-gradient-to-r from-purple-500 to-pink-500",
+  "bg-gradient-to-r from-gray-500 to-gray-400",
+];
+
+export function tabIcon(idx: number) {
+  if (idx == 0)
+    return <SquareCheck color="white" className="m-auto" size={"30px"} />;
+  if (idx == 1)
+    return <Parentheses color="white" className="m-auto" size={"30px"} />;
+  if (idx == 2) return <AB color="white" className="m-auto" size={"30px"} />;
+  if (idx == 3)
+    return <QuestionMark color="white" className="m-auto" size={"30px"} />;
+  if (idx == 4) return <Apps color="white" className="m-auto" size={"30px"} />;
+  if (idx == 5)
+    return <MathAvg color="white" className="m-auto" size={"30px"} />;
+}

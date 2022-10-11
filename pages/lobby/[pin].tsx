@@ -119,7 +119,7 @@ const Home: NextPage = () => {
         );
       },
       function (error) {
-        connect();
+        // connect();
       }
     );
   };
@@ -222,7 +222,7 @@ const Home: NextPage = () => {
                       color="orange"
                       variant="outline"
                       component="a"
-                      href="/screenshare"
+                      href={`/display/${pin}`}
                       rightIcon={<ArrowBigRightLines size={16} />}
                     >
                       시작하기

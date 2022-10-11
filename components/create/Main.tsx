@@ -21,6 +21,7 @@ import {
   TextInput,
   Grid,
   Slider,
+  ScrollArea,
 } from "@mantine/core";
 import {
   Plus,
@@ -57,35 +58,20 @@ import {
   createCompleteModal,
   createProblemsetDrawer,
 } from "../States";
-import { dtypeName, tabTooltip, MARKSCORE, MARKSTIME } from "../ConstValues";
+import {
+  dtypeName,
+  tabTooltip,
+  MARKSCORE,
+  MARKSTIME,
+  tabColor,
+  tabIcon,
+} from "../ConstValues";
 import { ControlBar } from "./ControlBar";
 import { useDebouncedState } from "@mantine/hooks";
 import { useEffect } from "react";
 import { GradientSegmentedControl } from "./createTabBar";
 
 export const Main = () => {
-  const tabColor = [
-    "bg-gradient-to-r from-red-500 to-orange-500",
-    "bg-gradient-to-r from-orange-500 to-amber-500",
-    "bg-gradient-to-r from-green-500 to-green-500",
-    "bg-gradient-to-r from-blue-700 to-blue-500",
-    "bg-gradient-to-r from-purple-500 to-pink-500",
-    "bg-gradient-to-r from-gray-500 to-gray-400",
-  ];
-
-  function tabIcon(idx: number) {
-    if (idx == 0)
-      return <SquareCheck color="white" className="m-auto" size={"30px"} />;
-    if (idx == 1)
-      return <Parentheses color="white" className="m-auto" size={"30px"} />;
-    if (idx == 2) return <AB color="white" className="m-auto" size={"30px"} />;
-    if (idx == 3)
-      return <QuestionMark color="white" className="m-auto" size={"30px"} />;
-    if (idx == 4)
-      return <Apps color="white" className="m-auto" size={"30px"} />;
-    if (idx == 5)
-      return <MathAvg color="white" className="m-auto" size={"30px"} />;
-  }
   /* ****** routes ****** */
   const [step, setStep] = useRecoilState(createStep);
 
@@ -172,7 +158,7 @@ export const Main = () => {
 
   return (
     <Stack justify="space-between">
-      <Accordion defaultValue="0" variant="contained">
+      <ScrollArea style={{ height: 872 }}>
         {problem.map(({ dtype, description }, i) => {
           return (
             <Group
@@ -264,7 +250,9 @@ export const Main = () => {
                             </ActionIcon>
                           </Group>
                         </Group>
-                        <TextInput
+                        <Textarea
+                          minRows={8}
+                          maxRows={8}
                           size="xl"
                           // onKeyUp={
                           //   throttle(() => {
@@ -288,9 +276,8 @@ export const Main = () => {
                           }}
                           value={problem[curIdx].description}
                           color="orange"
-                          placeholder="문제 설명"
-                          icon={<Plus size={14} />}
-                        ></TextInput>
+                          placeholder="문제 설명을 입력하세요"
+                        ></Textarea>
                         <p className="text-amber-500 font-bold">선지 정보</p>
                         {/* 입력 - 선지 정보 */}
                         {tabIdx === 0 ? (
@@ -552,13 +539,7 @@ export const Main = () => {
             </Group>
           );
         })}
-      </Accordion>
-      <Group className="w-0 h-0 bg-gradient-to-r from-red-500 to-orange-500"></Group>
-      <Group className="w-0 h-0 bg-gradient-to-r from-blue-500 to-green-500"></Group>
-      <Group className="w-0 h-0 bg-gradient-to-r from-red-500 to-orange-500"></Group>
-      <Group className="w-0 h-0 bg-gradient-to-r from-red-500 to-orange-500"></Group>
-      <Group className="w-0 h-0 bg-gradient-to-r from-red-500 to-orange-500"></Group>
-      <Group className="w-0 h-0 bg-gradient-to-r from-red-500 to-orange-500"></Group>
+      </ScrollArea>
     </Stack>
   );
 };

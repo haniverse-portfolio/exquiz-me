@@ -43,7 +43,6 @@ import {
 import { useScrollIntoView } from "@mantine/hooks";
 import { Refresh, ArrowNarrowLeft, StepInto, Dice2 } from "tabler-icons-react";
 import { useRef } from "react";
-import { FooterCentered } from "../components/footer";
 import { FooterCenteredUser } from "../components/footer_user";
 
 const Home: NextPage = () => {
@@ -104,8 +103,9 @@ const Home: NextPage = () => {
     return;
   };
 
-  let [nickname, setNickname] = useState("");
-  let [name, setName] = useState("");
+  const [nickname, setNickname] = useState("");
+
+  const [name, setName] = useState("");
   let createRand = () => {};
 
   let client: Stomp.Client;
@@ -353,7 +353,7 @@ const Home: NextPage = () => {
                       "/pub/room/" + pin + "/signup",
                       {},
                       JSON.stringify({
-                        name: nickname,
+                        name: name,
                         nickname: nickname,
                         imageNumber: animal,
                         colorNumber: color,

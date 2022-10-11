@@ -102,13 +102,13 @@ export const ImageSection = () => {
   };
 
   return (
-    <Stack className="w-[20vw] h-[80vh]">
+    <Stack className="w-[20vw] h-[80px]">
       {/* <Dropzone accept={IMAGE_MIME_TYPE} onDrop={setFiles}>
                     <Text color="gray" align="center">
                       이미지나 동영상을 첨부하세요
                     </Text>
                   </Dropzone> */}
-      <TextInput
+      {/* <TextInput
         size="lg"
         label=""
         placeholder="검색어를 입력하세요"
@@ -123,7 +123,7 @@ export const ImageSection = () => {
           setImageTmpWord(copy);
         }}
         value={imageWord}
-      />
+      /> */}
       {imageLoading === true ? (
         <Stack>
           <Stack className="mx-2">
@@ -157,7 +157,7 @@ export const ImageSection = () => {
           {imageList.length === 0 ? (
             <p className="text-gray-500">검색결과 없음.</p>
           ) : (
-            <ScrollArea className="h-[50vh]">
+            <ScrollArea className="h-[93vh]">
               <Stack className="h-[1500vh]">
                 {imageList.map((link, i) => {
                   return (

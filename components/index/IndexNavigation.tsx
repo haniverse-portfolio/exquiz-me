@@ -10,30 +10,17 @@ import { Group, Switch, Tooltip } from "@mantine/core";
 import {} from "tabler-icons-react";
 
 import {
-  createImageList,
-  createImageURL,
-  createIsImageLoading,
-  createOption,
-  createProblem,
-  createProblemIdx,
-  createProblemset,
-  createScore,
-  createStep,
-  createTabCurrentIdx,
-  createTabNextIdx,
-  createTargetIdx,
-  createTimelimit,
   indexIsLogined,
   indexIsModalOpened,
   indexMembership,
   indexUserInfo,
   language,
-} from "./States";
+} from "../States";
 
-import {} from "./ConstValues";
+import {} from "../ConstValues";
 import axios from "axios";
 
-const IndexNavigation2 = () => {
+const IndexNavigation = () => {
   const router = useRouter();
   const [langValue, setLangValue] = useRecoilState(language);
   const [membership, setMembership] = useRecoilState(indexMembership);
@@ -84,7 +71,7 @@ const IndexNavigation2 = () => {
   };
 
   return (
-    <header>
+    <header className="bg-white sticky top-0">
       <Group
         style={{
           height: "60px",
@@ -104,15 +91,7 @@ const IndexNavigation2 = () => {
           />
         </Link>
         <Group>
-          <Tooltip
-            offset={15}
-            label="구독 연장까지 60일 남았습니다."
-            color="black"
-            position="bottom"
-            withArrow
-          >
-            {membershipComponent(membership)}
-          </Tooltip>
+          {membershipComponent(membership)}
           {isLogined === "0" ? (
             <span
               onClick={() => {
@@ -155,4 +134,4 @@ const IndexNavigation2 = () => {
   );
 };
 
-export default IndexNavigation2;
+export default IndexNavigation;
