@@ -25,7 +25,7 @@ import {
   createTabNextIdx,
   createTargetIdx,
   createTimelimit,
-  playParticipants,
+  lobbyParticipants,
   playPin,
 } from "../../components/States";
 
@@ -45,7 +45,7 @@ import {
 import { ArrowBigRightLines, Qrcode, Copy } from "tabler-icons-react";
 
 const Home: NextPage = () => {
-  const [partlist, setPartlist] = useRecoilState(playParticipants);
+  const [partlist, setPartlist] = useRecoilState(lobbyParticipants);
   // const addParticipant = (cur: object) => {
   //   // console.log("추가전 직전 참가자 정보");
   //   // console.log(partlist);
@@ -175,10 +175,8 @@ const Home: NextPage = () => {
                 <Stack>
                   {
                     <Group className="h-[56vh]">
-                      {partlist.map((cur, i) => {
-                        return cur.nickname === "초대해보세요" ? (
-                          <></>
-                        ) : (
+                      {partlist.map((cur: any, i) => {
+                        return (
                           <Stack key={i}>
                             <Group className="h-32 w-32 rounded-xl border-2 bg-gray-200">
                               <Center
@@ -208,14 +206,9 @@ const Home: NextPage = () => {
                 <Stack>
                   <Group position="apart" className="justify-between">
                     <p className="font-bold text-4xl">
-                      입장 인원 /{" "}
-                      <strong className="text-amber-500">
-                        {partlist.length === 1 &&
-                        partlist[0].nickname === "초대해보세요"
-                          ? 0
-                          : partlist.length}
-                      </strong>
-                      명<strong className="text-amber-500"></strong>
+                      입장 인원 / &nbsp;
+                      {partlist.length}명
+                      <strong className="text-amber-500"></strong>
                     </p>
                     <Button
                       size="xl"
@@ -242,3 +235,15 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+
+// {
+//   colorNumber: 0,
+//   imageNumber: 0,
+//   flag: "",
+//   fromSession: "",
+//   id: 0,
+//   name: "test_index_0",
+//   nickname: "초대해보세요",
+//   entryDate: 0,
+//   currentScore: 0,
+// },

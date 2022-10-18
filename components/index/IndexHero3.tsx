@@ -186,9 +186,12 @@ export function IndexHero3() {
             }
             return (
               <Group
+                onClick={() => {
+                  setTabIdx(i);
+                }}
                 key={i}
                 className={`${
-                  i !== tabIdx
+                  i === tabIdx
                     ? "shadow-[inset_0_-2px_4px_rgba(128,128,128,0.8)]"
                     : ""
                 }
@@ -212,7 +215,7 @@ export function IndexHero3() {
                   <Checkbox
                     className="pl-2"
                     defaultChecked={false}
-                    color="purple"
+                    color="orange"
                     size="xl"
                   />
                   <Textarea

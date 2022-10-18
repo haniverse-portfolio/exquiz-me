@@ -55,6 +55,9 @@ const Home: NextPage = () => {
 
   /* *** effect start *** */
   useEffect(() => {
+    if (navigator.userAgent.match(/iPhone|iPad|iPod|Android/i)) {
+      location.replace("/enter");
+    }
     if ((router.query.access_token as string) !== "/") {
       getTest(router.query.access_token as string);
     }
@@ -99,7 +102,7 @@ const Home: NextPage = () => {
         <AuthenticationForm></AuthenticationForm>
       </Modal>
       <ScrollArea>
-        <section style={{ height: "calc(100vh - 60px)" }}>
+        <section style={{ height: "calc(100vh - 70px)" }}>
           <Stack spacing={0} className="items-center flex contents-between">
             {/* banner-start */}
             <Stack className="items-center h-[40vh] w-[100vw] bg-gradient-to-l from-amber-500 via-amber-500 to-orange-500 animate-textSlow">
@@ -293,7 +296,7 @@ const Home: NextPage = () => {
               ],
             },
             {
-              title: "Contact us",
+              title: "개발자 연락처",
               links: [
                 {
                   label: "디스코드",

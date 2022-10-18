@@ -19,6 +19,7 @@ import {
   Progress,
   Center,
   Divider,
+  Drawer,
 } from "@mantine/core";
 import {
   Alarm,
@@ -29,14 +30,27 @@ import {
 } from "tabler-icons-react";
 
 import { useRecoilState } from "recoil";
-import { useDebouncedState } from "@mantine/hooks";
+import { useDebouncedState, useInterval } from "@mantine/hooks";
 import {
   avatarAnimal,
   connectMainServerApiAddress,
+  testPlayOption,
+  testPlayProblem,
   testUserData,
 } from "../../components/ConstValues";
+import {
+  playIsDrawerOpened,
+  playMessagetype,
+  playParticipants,
+} from "../../components/States";
+import axios from "axios";
 
 const Home: NextPage = () => {
+  const [seconds, setSeconds] = useState(30);
+  const interval = useInterval(() => setSeconds((s) => s - 0.05), 50);
+  const [messagetypestate, setPlaymessagetypestate] =
+    useRecoilState(playMessagetype);
+
   const router = useRouter();
   const theme = useMantineTheme();
 
@@ -47,163 +61,14 @@ const Home: NextPage = () => {
   let [image, setImage] = useState("/../public/panda.png");
 
   let [step, setStep] = useState(0);
-  let [time, setTime] = useDebouncedState(15, 1000);
   let [curIdx, setCurIdx] = useState(0);
   let [answer, setAnswer] = useState(-1);
 
-  let [problem, setProblem] = useState([
-    {
-      answer: "0",
-      description: "우리나라에서 가장 높은 산은?",
-      dtype: "MultipleChoiceProblem",
-      idx: 0,
-      picture: "",
-      problemsetId: 0,
-      score: 125,
-      timelimit: 30,
-      title: "",
-    },
-    {
-      answer: "0",
-      description: "아이스크림을 영어로 하면?",
-      dtype: "MultipleChoiceProblem",
-      idx: 0,
-      picture: "",
-      problemsetId: 0,
-      score: 125,
-      timelimit: 30,
-      title: "",
-    },
-    {
-      answer: "0",
-      description: "소프트웨어 마에스트로가 있는 빌딩은?",
-      dtype: "MultipleChoiceProblem",
-      idx: 0,
-      picture: "",
-      problemsetId: 0,
-      score: 125,
-      timelimit: 30,
-      title: "",
-    },
-    {
-      answer: "0",
-      description: "🌋이 중 가장 무시무시한 공룡은?🏔",
-      dtype: "MultipleChoiceProblem",
-      idx: 0,
-      picture: "",
-      problemsetId: 0,
-      score: 125,
-      timelimit: 30,
-      title: "",
-    },
-  ]);
-
-  let [option, setOption] = useState([
-    [
-      {
-        description: "설악산",
-        idx: 0,
-        picture: "",
-        problemId: 0,
-      },
-      {
-        description: "지리산",
-        idx: 1,
-        picture: "",
-        problemId: 0,
-      },
-      {
-        description: "한라산",
-        idx: 2,
-        picture: "",
-        problemId: 0,
-      },
-      {
-        description: "백두산",
-        idx: 3,
-        picture: "",
-        problemId: 0,
-      },
-    ],
-    [
-      {
-        description: "icecoffee",
-        idx: 0,
-        picture: "",
-        problemId: 0,
-      },
-      {
-        description: "icekekki",
-        idx: 1,
-        picture: "",
-        problemId: 0,
-      },
-      {
-        description: "icecream",
-        idx: 2,
-        picture: "",
-        problemId: 0,
-      },
-      {
-        description: "iceball",
-        idx: 3,
-        picture: "",
-        problemId: 0,
-      },
-    ],
-    [
-      {
-        description: "황해주택",
-        idx: 0,
-        picture: "",
-        problemId: 0,
-      },
-      {
-        description: "인하주택",
-        idx: 1,
-        picture: "",
-        problemId: 0,
-      },
-      {
-        description: "아남타워",
-        idx: 2,
-        picture: "",
-        problemId: 0,
-      },
-      {
-        description: "코엑스",
-        idx: 3,
-        picture: "",
-        problemId: 0,
-      },
-    ],
-    [
-      {
-        description: "티라노사우루스",
-        idx: 0,
-        picture: "",
-        problemId: 0,
-      },
-      {
-        description: "트리케라톱스",
-        idx: 1,
-        picture: "",
-        problemId: 0,
-      },
-      {
-        description: "랩터",
-        idx: 2,
-        picture: "",
-        problemId: 0,
-      },
-      {
-        description: "스피노사우루스",
-        idx: 3,
-        picture: "",
-        problemId: 0,
-      },
-    ],
-  ]);
+  const [problem, setProblem] = useState(testPlayProblem);
+  const [option, setOption] = useState(testPlayOption);
+  const [isDrawerOpened, setDrawerOpened] = useState(playIsDrawerOpened);
+  const [participants, setParticipants] = useState(playParticipants);
+  const [leftParticipants, setLeftParticipants] = useState(playParticipants);
 
   let stompClient: Stomp.Client;
 
@@ -234,24 +99,36 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     if (!router.isReady) return;
-    setTime(time);
     connect();
   }, [router.isReady]);
 
   useEffect(() => {
-    if (time <= 0) {
-      if (curIdx === problem.length) {
-        router.push("/leaderboard_display_podium");
-      } else {
-        setStep((prevstate) => step + 1);
-        setCurIdx((prevState) => curIdx + 1);
-      }
-    } else setTime(time);
-  }, [time]);
+    if (messagetypestate === "NEWPROBLEM") {
+      interval.start();
+      return interval.stop;
+    }
+  }, [messagetypestate]);
 
   useEffect(() => {
     setImage("/../public/dino_env.png");
   }, []);
+
+  const getParticipantList = () => {
+    axios
+      .get(
+        connectMainServerApiAddress +
+          "api/room/" +
+          router.query.pin +
+          "/participants"
+      )
+      .then((result) => {
+        setParticipants(result.data);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+    return;
+  };
 
   return (
     <div>
@@ -260,6 +137,15 @@ const Home: NextPage = () => {
         <meta name="description" content="exquiz.me" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      {/* <Drawer
+        opened={isDrawerOpened === "0" ? false : true}
+        onClose={() => setDrawerOpened("0")}
+        title="Register"
+        padding="xl"
+        size="100%"
+      >
+        hello
+      </Drawer> */}
       <Button
         color="orange"
         onClick={() => {
@@ -276,6 +162,13 @@ const Home: NextPage = () => {
       >
         테스트용 다음 씬
       </Button>
+      <Button
+        onClick={() => {
+          setPlaymessagetypestate("NEWPROBLEM");
+        }}
+      >
+        문제 시간 스타트
+      </Button>
 
       <main>
         <section className="h-[100vh]">
@@ -285,10 +178,15 @@ const Home: NextPage = () => {
               <Stack>
                 <Stack>
                   {/* ../public/globe_banner.png */}
-                  <p className="underline decoration-amber-500 font-bold text-7xl text-center mt-10">
+                  <p className=" font-bold text-7xl text-center mt-10">
                     {problem[curIdx].description}
                   </p>
-                  <Progress size="xl" color="orange" value={50} />
+                  <Progress
+                    size="xl"
+                    color="orange"
+                    value={(seconds / problem[curIdx].timelimit) * 100.0}
+                  />
+                  <p>테스트용 시간 출력: {seconds}</p>
                   <Image
                     alt="hello"
                     src="/../public/halla.png"
@@ -315,12 +213,8 @@ const Home: NextPage = () => {
                                   setAnswer(answer === i ? -1 : i);
                                 }}
                                 color={color[i]}
-                                className={`${
-                                  answer === i ? "shadow-inner text-white" : ""
-                                } shadow-md ${answer === i ? bgColor : ""} ${
-                                  answer === i ? bgColor : ""
-                                }`}
-                                variant={answer === i ? "filled" : "outline"}
+                                className="shadow-md"
+                                variant="outline"
                               >
                                 <p className="text-lg"> {description}</p>
                               </Button>
@@ -498,156 +392,3 @@ const Home: NextPage = () => {
 };
 
 export default Home;
-
-// [
-//   [
-//     {
-//       description: "설악산",
-//       idx: 0,
-//       picture: "",
-//       problemId: 0,
-//     },
-//     {
-//       description: "지리산",
-//       idx: 1,
-//       picture: "",
-//       problemId: 0,
-//     },
-//     {
-//       description: "한라산",
-//       idx: 2,
-//       picture: "",
-//       problemId: 0,
-//     },
-//     {
-//       description: "백두산",
-//       idx: 3,
-//       picture: "",
-//       problemId: 0,
-//     },
-//   ],
-//   [
-//     {
-//       description: "icecoffee",
-//       idx: 0,
-//       picture: "",
-//       problemId: 0,
-//     },
-//     {
-//       description: "icekekki",
-//       idx: 1,
-//       picture: "",
-//       problemId: 0,
-//     },
-//     {
-//       description: "icecream",
-//       idx: 2,
-//       picture: "",
-//       problemId: 0,
-//     },
-//     {
-//       description: "iceball",
-//       idx: 3,
-//       picture: "",
-//       problemId: 0,
-//     },
-//   ],
-//   [
-//     {
-//       description: "황해주택",
-//       idx: 0,
-//       picture: "",
-//       problemId: 0,
-//     },
-//     {
-//       description: "인하주택",
-//       idx: 1,
-//       picture: "",
-//       problemId: 0,
-//     },
-//     {
-//       description: "아남타워",
-//       idx: 2,
-//       picture: "",
-//       problemId: 0,
-//     },
-//     {
-//       description: "코엑스",
-//       idx: 3,
-//       picture: "",
-//       problemId: 0,
-//     },
-//   ],
-//   [
-//     {
-//       description: "티라노사우루스",
-//       idx: 0,
-//       picture: "",
-//       problemId: 0,
-//     },
-//     {
-//       description: "트리케라톱스",
-//       idx: 1,
-//       picture: "",
-//       problemId: 0,
-//     },
-//     {
-//       description: "랩터",
-//       idx: 2,
-//       picture: "",
-//       problemId: 0,
-//     },
-//     {
-//       description: "스피노사우루스",
-//       idx: 3,
-//       picture: "",
-//       problemId: 0,
-//     },
-//   ],]
-
-// [
-//   {
-//     answer: "0",
-//     description: "우리나라에서 가장 높은 산은?",
-//     dtype: "MultipleChoiceProblem",
-//     idx: 0,
-//     picture: "",
-//     problemsetId: 0,
-//     score: 125,
-//     timelimit: 30,
-//     title: "",
-//   },
-//   {
-//     answer: "0",
-//     description: "아이스크림을 영어로 하면?",
-//     dtype: "MultipleChoiceProblem",
-//     idx: 0,
-//     picture: "",
-//     problemsetId: 0,
-//     score: 125,
-//     timelimit: 30,
-//     title: "",
-//   },
-//   {
-//     answer: "0",
-//     description: "소프트웨어 마에스트로가 있는 빌딩은?",
-//     dtype: "MultipleChoiceProblem",
-//     idx: 0,
-//     picture: "",
-//     problemsetId: 0,
-//     score: 125,
-//     timelimit: 30,
-//     title: "",
-//   },
-//   {
-//     answer: "0",
-//     description: "🌋이 중 가장 무시무시한 공룡은?🏔",
-//     dtype: "MultipleChoiceProblem",
-//     idx: 0,
-//     picture: "",
-//     problemsetId: 0,
-//     score: 125,
-//     timelimit: 30,
-//     title: "",
-//   },
-// ]

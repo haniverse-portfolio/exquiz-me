@@ -47,6 +47,7 @@ import { TabChangeModal } from "../components/create/TabChangeModal";
 import { ImageSection } from "../components/create/ImageSection";
 import { connectMainServerApiAddress } from "../components/ConstValues";
 import { NavbarMinimal } from "../components/create/slideProblemControlBar";
+import { SearchSection } from "../components/create/SearchSection";
 
 const Home: NextPage = () => {
   // const [files, setFiles] = useState<FileWithPath[]>([]);
@@ -109,7 +110,6 @@ const Home: NextPage = () => {
     //   copy[curIdx].score = Math.trunc(100 + (scoreValue / 25) * 100);
     //   return copy;
     // });
-
     const value = Math.trunc(100 + (scoreValue / 25) * 100);
     const newProblem = replaceItemAtIndex(problem, curIdx, {
       ...problem[curIdx],
@@ -131,15 +131,6 @@ const Home: NextPage = () => {
   }, [timelimit]);
 
   /* ****** effect-end****** */
-
-  function tabIcon(idx: number) {
-    if (idx == 0) return <SquareCheck className="m-auto" size={"30px"} />;
-    if (idx == 1) return <Parentheses className="m-auto" size={"30px"} />;
-    if (idx == 2) return <AB className="m-auto" size={"30px"} />;
-    if (idx == 3) return <QuestionMark className="m-auto" size={"30px"} />;
-    if (idx == 4) return <Apps className="m-auto" size={"30px"} />;
-    if (idx == 5) return <MathAvg className="m-auto" size={"30px"} />;
-  }
 
   const getImageList = async (name: string) => {
     let rt = Infinity;
@@ -230,22 +221,25 @@ const Home: NextPage = () => {
       {/* 퀴즈 제작 */}
       <main>
         {step === 0 ? (
-          <Stack spacing="xs">
+          <>
             {/* navigation bar */}
             <CreateNavigation />
             {/* slide + create + image */}
-            <Grid columns={24} className="h-[80vh]">
-              <Grid.Col span={5}>
+            <Grid columns={48} style={{ height: "calc(100vh - 70px)" }}>
+              <Grid.Col span="auto">
                 <NavbarMinimal></NavbarMinimal>
               </Grid.Col>
-              <Grid.Col span={14}>
+              <Grid.Col span={7}>
+                <SearchSection />
+              </Grid.Col>
+              <Grid.Col span={28}>
                 <Main></Main>
               </Grid.Col>
-              <Grid.Col span={5}>
+              <Grid.Col span={10}>
                 <ImageSection />
               </Grid.Col>
             </Grid>
-          </Stack>
+          </>
         ) : (
           <></>
         )}

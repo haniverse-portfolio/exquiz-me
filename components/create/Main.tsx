@@ -22,6 +22,8 @@ import {
   Grid,
   Slider,
   ScrollArea,
+  SimpleGrid,
+  Divider,
 } from "@mantine/core";
 import {
   Plus,
@@ -57,6 +59,8 @@ import {
   createStep,
   createCompleteModal,
   createProblemsetDrawer,
+  createSlideProblem,
+  createActive,
 } from "../States";
 import {
   dtypeName,
@@ -68,8 +72,10 @@ import {
 } from "../ConstValues";
 import { ControlBar } from "./ControlBar";
 import { useDebouncedState } from "@mantine/hooks";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { GradientSegmentedControl } from "./createTabBar";
+import { Editor } from "@tinymce/tinymce-react";
+import { Dropzone, FileWithPath, IMAGE_MIME_TYPE } from "@mantine/dropzone";
 
 export const Main = () => {
   /* ****** routes ****** */
@@ -86,7 +92,8 @@ export const Main = () => {
   );
   /* *** slide *** */
   const [cur, setCur] = useRecoilState(createTargetIdx);
-  const [curIdx, setCurIdx] = useRecoilState(createProblemIdx);
+  const [active, setActive] = useRecoilState(createActive);
+  const [slideProblem, setSlideProblem] = useRecoilState(createSlideProblem);
   /* *** form *** */
   const [tabIdx, setTabIdx] = useRecoilState(createTabCurrentIdx);
   const [tabChangeIdx, setTabChangeIdx] = useRecoilState(createTabNextIdx);
@@ -156,9 +163,25 @@ export const Main = () => {
     ]);
   };
 
+  // const editorRef = useRef({});
+
+  const [files, setFiles] = useState<FileWithPath[]>([]);
+
+  const previews = files.map((file, index) => {
+    const imageUrl = URL.createObjectURL(file);
+    return (
+      <></>
+      // <Image
+      //   key={index}
+      //   src={imageUrl}
+      //   imageProps={{ onLoad: () => URL.revokeObjectURL(imageUrl) }}
+      // />
+    );
+  });
+
   return (
     <Stack justify="space-between">
-      <ScrollArea style={{ height: 872 }}>
+      <ScrollArea style={{ height: "calc(100vh - 70px)" }}>
         {problem.map(({ dtype, description }, i) => {
           return (
             <Group
@@ -168,62 +191,99 @@ export const Main = () => {
             >
               <Center>
                 {/* slide */}
-                <Stack>{ControlBar(0)}</Stack>
+                {/* <Stack>{ControlBar(0)}</Stack> */}
 
                 <Stack spacing="xl" className="w-10/12 mx-2">
                   <Stack className="py-4 mx-auto" spacing={0}>
-                    <Group
-                      classNames="mx-auto"
-                      spacing={12}
-                      className="items-center"
-                    >
-                      {dtypeName.map((name, i) => {
-                        return (
-                          <Tooltip
-                            className="ease-in-out"
-                            transition="pop"
-                            color="black"
-                            offset={10}
-                            openDelay={500}
-                            closeDelay={100}
-                            position="top-start"
-                            key={i}
-                            label={tabTooltip[i]}
-                          >
-                            <Group
-                              onClick={() => {
-                                setTabChangeIdx((prevstate) => i);
-                                setTabModalOpened("1");
-                              }}
-                              className={`${
-                                i !== tabIdx
-                                  ? "shadow-[inset_0_-2px_4px_rgba(128,128,128,0.8)]"
-                                  : ""
-                              }
+                    <Center>
+                      <Group
+                        classNames="mx-auto"
+                        spacing={12}
+                        className="items-center"
+                      >
+                        {dtypeName.map((name, i) => {
+                          return (
+                            <Tooltip
+                              className="ease-in-out"
+                              transition="pop"
+                              color="black"
+                              offset={10}
+                              openDelay={500}
+                              closeDelay={100}
+                              position="top-start"
+                              key={i}
+                              label={tabTooltip[i]}
+                            >
+                              <Group
+                                onClick={() => {
+                                  setTabChangeIdx((prevstate) => i);
+                                  setTabModalOpened("1");
+                                }}
+                                className={`${
+                                  i !== tabIdx
+                                    ? "shadow-[inset_0_-2px_4px_rgba(128,128,128,0.8)]"
+                                    : ""
+                                }
             hover:shadow-none ${
               tabColor[i]
             } rounded-lg cursor-pointer w-16 h-16`}
-                            >
-                              {tabIcon(i)}
-                            </Group>
-                          </Tooltip>
-                        );
-                      })}
-                      {/* <Group ref={targetRef}>.</Group> */}
-                    </Group>
+                              >
+                                {tabIcon(i)}
+                              </Group>
+                            </Tooltip>
+                          );
+                        })}
+                        {/* <Group ref={targetRef}>.</Group> */}
+                      </Group>
+                    </Center>
                     <Stack className={` bg-white items-center shadow-lg`}>
                       <Stack className="p-10">
                         {/* 입력 - 문제 설명 */}
                         {/* 입력 - 문제 사진 및 동영상 */}
-                        <Group
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "space-between",
-                          }}
-                        >
-                          <p className="text-amber-500 font-bold">문제 정보</p>
-                          <Group>
+                        {/* <Editor
+                            apiKey="your-api-key"
+                            onInit={(evt, editor) =>
+                              (editorRef.current = editor)
+                            }
+                            initialValue="<p>This is the initial content of the editor.</p>"
+                            init={{
+                              language: "ko_KR",
+                              content_langs: [
+                                { title: "Korean", code: "ko" },
+                                { title: "English", code: "en" },
+                              ],
+                              height: 500,
+                              menubar: false,
+                              plugins: [
+                                "advlist",
+                                "autolink",
+                                "lists",
+                                "link",
+                                "image",
+                                "charmap",
+                                "preview",
+                                "anchor",
+                                "searchreplace",
+                                "visualblocks",
+                                "code",
+                                "fullscreen",
+                                "insertdatetime",
+                                "media",
+                                "table",
+                                "code",
+                                "help",
+                                "wordcount",
+                              ],
+                              toolbar:
+                                "undo redo | blocks | " +
+                                "bold italic forecolor | alignleft aligncenter " +
+                                "alignright alignjustify | bullist numlist outdent indent | " +
+                                "removeformat | help",
+                              content_style:
+                                "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+                            }}
+                          /> */}
+                        {/* <Group>
                             <ActionIcon variant="outline">
                               <FileUpload></FileUpload>
                             </ActionIcon>
@@ -233,14 +293,14 @@ export const Main = () => {
                             <ActionIcon
                               onClick={async () => {
                                 if (problem.length === 1) return;
-                                if (problem.length - 1 === curIdx)
-                                  await setCurIdx((prevState) => curIdx - 1);
+                                if (problem.length - 1 === active)
+                                  await setactive((prevState) => active - 1);
                                 let copy1 = [...problem];
-                                copy1.splice(curIdx, 1);
+                                copy1.splice(active, 1);
                                 setProblem(copy1);
 
                                 let copy2 = [...option];
-                                copy2.splice(curIdx, 1);
+                                copy2.splice(active, 1);
                                 setOption(copy2);
                               }}
                               className="bg-red-200 hover:bg-red-200"
@@ -248,248 +308,296 @@ export const Main = () => {
                             >
                               <X></X>
                             </ActionIcon>
+                          </Group> */}
+                        <Stack spacing={0}>
+                          <Group className="ml-2 rounded-t-xl h-8 w-16 bg-amber-500">
+                            <p className=" m-auto text-center text-white font-semibold">
+                              문제 {i + 1}
+                            </p>
                           </Group>
-                        </Group>
-                        <Textarea
-                          minRows={8}
-                          maxRows={8}
-                          size="xl"
-                          // onKeyUp={
-                          //   throttle(() => {
-                          //     alert("hello");
-                          //   }, 500);
-                          // }
-                          onClick={() => {
-                            setCur(0);
-                          }}
-                          onMouseDown={(event) => {
-                            setImageLoading(true);
-                            setImageTmpWord(problem[curIdx].description);
-                          }}
-                          onChange={(event) => {
-                            let copy = JSON.parse(JSON.stringify(problem));
-                            copy[curIdx].description =
-                              event.currentTarget.value;
-                            setProblem(copy);
-                            setImageLoading(true);
-                            setImageTmpWord(copy[curIdx].description);
-                          }}
-                          value={problem[curIdx].description}
-                          color="orange"
-                          placeholder="문제 설명을 입력하세요"
-                        ></Textarea>
-                        <p className="text-amber-500 font-bold">선지 정보</p>
+                          <TextInput
+                            className="!border-2 !border-amber-500"
+                            size="xl"
+                            // onKeyUp={
+                            //   throttle(() => {
+                            //     alert("hello");
+                            //   }, 500);
+                            // }
+                            onClick={() => {
+                              setCur(0);
+                            }}
+                            onMouseDown={(event) => {
+                              setImageLoading(true);
+                              setImageTmpWord(problem[active].description);
+                            }}
+                            onChange={(event) => {
+                              let copy = JSON.parse(JSON.stringify(problem));
+                              copy[active].description =
+                                event.currentTarget.value;
+                              // let copy2 = JSON.parse(
+                              //   JSON.stringify(slideProblem)
+                              // );
+                              // copy2[active].label = event.currentTarget.value;
+                              setProblem(copy);
+                              // setSlideProblem(copy2);
+                              setImageLoading(true);
+                              setImageTmpWord(copy[active].description);
+                            }}
+                            value={problem[active].description}
+                            color="orange"
+                            placeholder="문제 설명을 입력하세요"
+                          ></TextInput>
+                        </Stack>
+                        <div>
+                          <Dropzone
+                            className="cursor-default"
+                            accept={IMAGE_MIME_TYPE}
+                            onDrop={setFiles}
+                          >
+                            <Stack>
+                              <Center>
+                                <Group>
+                                  <Button color="orange">이미지 검색</Button>
+                                  <Button color="orange">이미지 업로드</Button>
+                                </Group>
+                              </Center>
+                              <Text color="gray" align="center">
+                                이미지를 검색하거나 직접 업로드할 수 있어요
+                              </Text>
+                            </Stack>
+                          </Dropzone>
+
+                          <SimpleGrid
+                            cols={4}
+                            breakpoints={[{ maxWidth: "sm", cols: 1 }]}
+                            mt={previews.length > 0 ? "xl" : 0}
+                          >
+                            {previews}
+                          </SimpleGrid>
+                        </div>
                         {/* 입력 - 선지 정보 */}
-                        {tabIdx === 0 ? (
-                          <Grid>
-                            {option[curIdx].map(
-                              ({ description, idx, picture, problemId }, i) => {
-                                const ans = problem[curIdx].answer;
-                                return (
-                                  <Grid.Col
-                                    onClick={() => {
-                                      setCur(i);
-                                    }}
-                                    key={i}
-                                    span={5}
-                                  >
-                                    <Group
-                                      className={`bg-amber-100 rounded-lg border-solid border-2 border-amber-500`}
+                        <Center>
+                          {tabIdx === 0 ? (
+                            <Grid>
+                              {option[active].map(
+                                (
+                                  { description, idx, picture, problemId },
+                                  i
+                                ) => {
+                                  const ans = problem[active].answer;
+                                  return (
+                                    <Grid.Col
+                                      onClick={() => {
+                                        setCur(i);
+                                      }}
+                                      key={i}
+                                      span={5}
                                     >
-                                      <Checkbox
-                                        className="pl-2"
-                                        defaultChecked={false}
-                                        onClick={(event) => {
-                                          let copy = JSON.parse(
-                                            JSON.stringify(problem)
-                                          );
-                                          // (this.checked === true)?:"":
-                                          copy[curIdx].answer = i.toString();
-                                          setProblem(copy);
-                                        }}
-                                        checked={
-                                          problem[curIdx].answer ===
-                                          i.toString()
-                                            ? true
-                                            : false
-                                        }
-                                        // checked={true}
+                                      <Group
+                                        className={`bg-amber-100 rounded-lg border-solid border-2 border-amber-500`}
+                                      >
+                                        <Checkbox
+                                          className="pl-2"
+                                          defaultChecked={false}
+                                          onClick={(event) => {
+                                            let copy = JSON.parse(
+                                              JSON.stringify(problem)
+                                            );
+                                            // (this.checked === true)?:"":
+                                            copy[active].answer = i.toString();
+                                            setProblem(copy);
+                                          }}
+                                          checked={
+                                            problem[active].answer ===
+                                            i.toString()
+                                              ? true
+                                              : false
+                                          }
+                                          // checked={true}
 
-                                        color="orange"
-                                        size="xl"
-                                      />
-                                      <Textarea
-                                        className=""
-                                        variant="unstyled"
-                                        onMouseDown={(event) => {
-                                          setImageLoading(true);
-                                          setImageTmpWord(
-                                            option[curIdx][i].description
-                                          );
-                                        }}
-                                        onChange={(event) => {
-                                          let copy = JSON.parse(
-                                            JSON.stringify(option)
-                                          );
-                                          copy[curIdx][i].description =
-                                            event.currentTarget.value;
-                                          setOption(copy);
-                                          setImageLoading(true);
-                                          setImageTmpWord(
-                                            copy[curIdx][i].description
-                                          );
-                                        }}
-                                        value={description}
-                                        placeholder={`선지 ${i + 1}`}
-                                        autosize
-                                        minRows={4}
-                                        maxRows={4}
-                                      />
-                                    </Group>
-                                  </Grid.Col>
-                                );
-                              }
-                            )}
-                          </Grid>
-                        ) : (
-                          <></>
-                        )}
+                                          color="orange"
+                                          size="xl"
+                                        />
+                                        <Textarea
+                                          className=""
+                                          variant="unstyled"
+                                          onMouseDown={(event) => {
+                                            setImageLoading(true);
+                                            setImageTmpWord(
+                                              option[active][i].description
+                                            );
+                                          }}
+                                          onChange={(event) => {
+                                            let copy = JSON.parse(
+                                              JSON.stringify(option)
+                                            );
+                                            copy[active][i].description =
+                                              event.currentTarget.value;
+                                            setOption(copy);
+                                            setImageLoading(true);
+                                            setImageTmpWord(
+                                              copy[active][i].description
+                                            );
+                                          }}
+                                          value={description}
+                                          placeholder={`선지 ${i + 1}`}
+                                          autosize
+                                          minRows={4}
+                                          maxRows={4}
+                                        />
+                                      </Group>
+                                    </Grid.Col>
+                                  );
+                                }
+                              )}
+                            </Grid>
+                          ) : (
+                            <></>
+                          )}
 
-                        {tabIdx === 1 ? (
-                          <Grid>
-                            {option[curIdx].map(
-                              ({ description, idx, picture, problemId }, i) => {
-                                const ans = problem[curIdx].answer;
-                                return (
-                                  <Grid.Col key={i} span={2}>
-                                    <Group
-                                      className={`bg-amber-100 rounded-lg border-solid border-2 border-amber-500`}
-                                    >
-                                      <Checkbox
-                                        defaultChecked={false}
-                                        onClick={(event) => {
-                                          let copy = [...problem];
-                                          // (this.checked === true)?:"":
-                                          copy[curIdx].answer = i.toString();
-                                          setProblem(copy);
-                                        }}
-                                        checked={
-                                          problem[curIdx].answer ===
-                                          i.toString()
-                                            ? true
-                                            : false
-                                        }
-                                        // checked={true}
+                          {tabIdx === 1 ? (
+                            <Grid>
+                              {option[active].map(
+                                (
+                                  { description, idx, picture, problemId },
+                                  i
+                                ) => {
+                                  const ans = problem[active].answer;
+                                  return (
+                                    <Grid.Col key={i} span={2}>
+                                      <Group
+                                        className={`bg-amber-100 rounded-lg border-solid border-2 border-amber-500`}
+                                      >
+                                        <Checkbox
+                                          defaultChecked={false}
+                                          onClick={(event) => {
+                                            let copy = [...problem];
+                                            // (this.checked === true)?:"":
+                                            copy[active].answer = i.toString();
+                                            setProblem(copy);
+                                          }}
+                                          checked={
+                                            problem[active].answer ===
+                                            i.toString()
+                                              ? true
+                                              : false
+                                          }
+                                          // checked={true}
 
-                                        color="orange"
-                                        size="xl"
-                                      />
-                                      <TextInput
-                                        className=""
-                                        variant="unstyled"
-                                        onMouseDown={(event) => {
-                                          setImageLoading(true);
-                                          setImageTmpWord(
-                                            option[curIdx][i].description
-                                          );
-                                        }}
-                                        onChange={(event) => {
-                                          let copy = [...option];
-                                          copy[curIdx][i].description =
-                                            event.currentTarget.value;
-                                          setOption(copy);
-                                          setImageLoading(true);
-                                          setImageTmpWord(
-                                            copy[curIdx][i].description
-                                          );
-                                        }}
-                                        value={description}
-                                        placeholder={`선지 ${i + 1}`}
-                                      />
-                                    </Group>
-                                  </Grid.Col>
-                                );
-                              }
-                            )}
-                          </Grid>
-                        ) : (
-                          <></>
-                        )}
+                                          color="orange"
+                                          size="xl"
+                                        />
+                                        <TextInput
+                                          className=""
+                                          variant="unstyled"
+                                          onMouseDown={(event) => {
+                                            setImageLoading(true);
+                                            setImageTmpWord(
+                                              option[active][i].description
+                                            );
+                                          }}
+                                          onChange={(event) => {
+                                            let copy = [...option];
+                                            copy[active][i].description =
+                                              event.currentTarget.value;
+                                            setOption(copy);
+                                            setImageLoading(true);
+                                            setImageTmpWord(
+                                              copy[active][i].description
+                                            );
+                                          }}
+                                          value={description}
+                                          placeholder={`선지 ${i + 1}`}
+                                        />
+                                      </Group>
+                                    </Grid.Col>
+                                  );
+                                }
+                              )}
+                            </Grid>
+                          ) : (
+                            <></>
+                          )}
 
-                        {tabIdx === 2 ? (
-                          <Grid>
-                            {option[curIdx].map(
-                              ({ description, idx, picture, problemId }, i) => {
-                                const ans = problem[curIdx].answer;
-                                return (
-                                  <Grid.Col key={i} span={2}>
-                                    <Group
-                                      className={`bg-amber-100 rounded-lg border-solid border-2 border-amber-500`}
-                                    >
-                                      <Checkbox
-                                        defaultChecked={false}
-                                        onClick={(event) => {
-                                          let copy = [...problem];
-                                          // (this.checked === true)?:"":
-                                          copy[curIdx].answer = i.toString();
-                                          setProblem(copy);
-                                        }}
-                                        checked={
-                                          problem[curIdx].answer ===
-                                          i.toString()
-                                            ? true
-                                            : false
-                                        }
-                                        // checked={true}
+                          {tabIdx === 2 ? (
+                            <Grid>
+                              {option[active].map(
+                                (
+                                  { description, idx, picture, problemId },
+                                  i
+                                ) => {
+                                  const ans = problem[active].answer;
+                                  return (
+                                    <Grid.Col key={i} span={2}>
+                                      <Group
+                                        className={`bg-amber-100 rounded-lg border-solid border-2 border-amber-500`}
+                                      >
+                                        <Checkbox
+                                          defaultChecked={false}
+                                          onClick={(event) => {
+                                            let copy = [...problem];
+                                            // (this.checked === true)?:"":
+                                            copy[active].answer = i.toString();
+                                            setProblem(copy);
+                                          }}
+                                          checked={
+                                            problem[active].answer ===
+                                            i.toString()
+                                              ? true
+                                              : false
+                                          }
+                                          // checked={true}
 
-                                        color="orange"
-                                        size="xl"
-                                      />
-                                      <Textarea
-                                        className=""
-                                        variant="unstyled"
-                                        onMouseDown={(event) => {
-                                          setImageLoading(true);
-                                          setImageTmpWord(
-                                            option[curIdx][i].description
-                                          );
-                                        }}
-                                        onChange={(event) => {
-                                          let copy = [...option];
-                                          copy[curIdx][i].description =
-                                            event.currentTarget.value;
-                                          setOption(copy);
-                                          setImageLoading(true);
-                                          setImageTmpWord(
-                                            copy[curIdx][i].description
-                                          );
-                                        }}
-                                        value={description}
-                                        placeholder={`선지 ${i + 1}`}
-                                        autosize
-                                        minRows={4}
-                                        maxRows={4}
-                                      />
-                                    </Group>
-                                  </Grid.Col>
-                                );
-                              }
-                            )}
-                          </Grid>
-                        ) : (
-                          <></>
-                        )}
-                        <Group position="left">
+                                          color="orange"
+                                          size="xl"
+                                        />
+                                        <Textarea
+                                          className=""
+                                          variant="unstyled"
+                                          onMouseDown={(event) => {
+                                            setImageLoading(true);
+                                            setImageTmpWord(
+                                              option[active][i].description
+                                            );
+                                          }}
+                                          onChange={(event) => {
+                                            let copy = [...option];
+                                            copy[active][i].description =
+                                              event.currentTarget.value;
+                                            setOption(copy);
+                                            setImageLoading(true);
+                                            setImageTmpWord(
+                                              copy[active][i].description
+                                            );
+                                          }}
+                                          value={description}
+                                          placeholder={`선지 ${i + 1}`}
+                                          autosize
+                                          minRows={4}
+                                          maxRows={4}
+                                        />
+                                      </Group>
+                                    </Grid.Col>
+                                  );
+                                }
+                              )}
+                            </Grid>
+                          ) : (
+                            <></>
+                          )}
+                        </Center>
+                        <Divider my="xs" />
+                        <Group position="apart">
                           <Stack>
-                            <p>
+                            <Text>
                               <strong className="text-amber-500">배점</strong>
                               &nbsp;
                               <span className="text-gray-500">
-                                {problem[curIdx].score}점
+                                {problem[active].score}점
                               </span>
-                            </p>
+                            </Text>
                             <Slider
-                              className="w-[5vw]"
+                              className="w-[20vw]"
                               onChangeEnd={setScoreValue}
                               color="orange"
                               label={(val) =>
@@ -498,7 +606,7 @@ export const Main = () => {
                               }
                               defaultValue={25}
                               value={Math.trunc(
-                                ((problem[curIdx].score - 100) / 100) * 25
+                                ((problem[active].score - 100) / 100) * 25
                               )}
                               step={25}
                               marks={MARKSCORE}
@@ -510,11 +618,11 @@ export const Main = () => {
                               <strong className="text-amber-500">시간</strong>
                               &nbsp;
                               <span className="text-gray-500">
-                                {problem[curIdx].timelimit}초
+                                {problem[active].timelimit}초
                               </span>
                             </p>
                             <Slider
-                              className="w-[5vw]"
+                              className="w-[20vw]"
                               onChangeEnd={setTimelimit}
                               color="orange"
                               label={(val) =>
@@ -522,7 +630,7 @@ export const Main = () => {
                                   ?.label
                               }
                               value={Math.trunc(
-                                ((problem[curIdx].timelimit - 10) / 10) * 25
+                                ((problem[active].timelimit - 10) / 10) * 25
                               )}
                               step={25}
                               marks={MARKSTIME}
@@ -534,7 +642,7 @@ export const Main = () => {
                     </Stack>
                   </Stack>
                 </Stack>
-                {ControlBar(30)}
+                {/* {ControlBar(30)} */}
               </Center>
             </Group>
           );

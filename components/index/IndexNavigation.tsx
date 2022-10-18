@@ -71,7 +71,7 @@ const IndexNavigation = () => {
   };
 
   return (
-    <header className="bg-white sticky top-0">
+    <header className="bg-white sticky top-0 z-50">
       <Group
         style={{
           height: "60px",

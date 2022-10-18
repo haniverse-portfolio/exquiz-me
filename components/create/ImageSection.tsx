@@ -157,7 +157,7 @@ export const ImageSection = () => {
           {imageList.length === 0 ? (
             <p className="text-gray-500">검색결과 없음.</p>
           ) : (
-            <ScrollArea className="h-[93vh]">
+            <ScrollArea style={{ height: "calc(100vh - 70px)" }}>
               <Stack className="h-[1500vh]">
                 {imageList.map((link, i) => {
                   return (

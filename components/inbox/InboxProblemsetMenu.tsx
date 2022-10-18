@@ -1,42 +1,44 @@
-import { createStyles, Card, Avatar, Text, Group, Button } from "@mantine/core";
+import {
+  createStyles,
+  Card,
+  Text,
+  Group,
+  Button,
+  ActionIcon,
+  ThemeIcon,
+} from "@mantine/core";
+import { IconSearch, IconArrowRight, IconPencil } from "@tabler/icons";
 
 const useStyles = createStyles((theme) => ({
   card: {
     backgroundColor:
       theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white,
   },
-
-  avatar: {
-    border: `2px solid ${
-      theme.colorScheme === "dark" ? theme.colors.dark[7] : theme.white
-    }`,
-  },
 }));
 
-export interface UserCardImageProps {
+export interface InboxProblemsetMenuProps {
   image: string;
-  avatar: string;
   name: string;
   job: string;
   stats: { label: string; value: string }[];
 }
 
-export function UserCardImage({
+export function InboxProblemsetMenu({
   image,
-  avatar,
   name,
   job,
   stats,
-}: UserCardImageProps) {
+}: InboxProblemsetMenuProps) {
   const { classes, theme } = useStyles();
 
   const items = stats.map((stat) => (
     <div key={stat.label}>
-      <Text align="center" size="lg" weight={500}>
-        {stat.value}
-      </Text>
       <Text align="center" size="sm" color="dimmed">
         {stat.label}
+      </Text>
+      <Text align="center" size="lg" weight={500}>
+        {stat.value}
+        {stat.label === "문제 수" ? "개" : "분"}
       </Text>
     </div>
   ));
@@ -44,31 +46,29 @@ export function UserCardImage({
   return (
     <Card withBorder p="xl" radius="md" className={classes.card}>
       <Card.Section sx={{ backgroundImage: `url(${image})`, height: 140 }} />
-      <Avatar
-        src={avatar}
-        size={80}
-        radius={80}
-        mx="auto"
-        mt={-30}
-        className={classes.avatar}
-      />
-      <Text align="center" size="lg" weight={500} mt="sm">
+      <Text align="left" size="lg" weight={500} mt="sm">
         {name}
       </Text>
-      <Text align="center" size="sm" color="dimmed">
+      <Text align="left" size="sm" color="dimmed">
         {job}
       </Text>
       <Group mt="md" position="center" spacing={30}>
         {items}
       </Group>
       <Button
+        variant="outline"
+        leftIcon={
+          <ThemeIcon color="orange" size={32} radius="xl">
+            <IconPencil size={18} stroke={1.5} />
+          </ThemeIcon>
+        }
         fullWidth
-        radius="md"
+        radius="xl"
         mt="xl"
         size="md"
-        color={theme.colorScheme === "dark" ? undefined : "orange"}
+        color="orange"
       >
-        구독하기
+        수정하기
       </Button>
     </Card>
   );

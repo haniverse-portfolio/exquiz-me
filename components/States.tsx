@@ -5,8 +5,29 @@ import {
   problemInput,
   optionInput,
   problemsetInput,
+  slideProblemInput,
 } from "./ConstValues";
 
+/* *** common *** */
+export const language = atom({
+  key: "language",
+  default: "KO",
+});
+
+export const indexUserInfo = atom({
+  key: "indexUserInfo",
+  default: {
+    accessToken: null,
+    email: "",
+    nickname: "",
+    picture: "",
+    role: "",
+    username: "",
+  },
+});
+/* *** common *** */
+
+/* *** index *** */
 export const indexIsLogined = atom({
   key: "indexIsLogined",
   default: "0",
@@ -17,6 +38,18 @@ export const indexMembership = atom({
   default: "0",
 });
 
+export const indexIsModalOpened = atom({
+  key: "indexIsModalOpened",
+  default: "0",
+});
+
+export const indexToken = atom({
+  key: "indexToken",
+  default: "0",
+});
+/* *** index *** */
+
+/* *** create *** */
 export const createTargetIdx = atom({
   key: "createTargetIdx",
   default: 0,
@@ -35,6 +68,11 @@ export const createTabCurrentIdx = atom({
 export const createTabNextIdx = atom({
   key: "createTabNextIdx",
   default: 0,
+});
+
+export const createSlideProblem = atom({
+  key: "createSlideProblem",
+  default: slideProblemInput,
 });
 
 export const createProblemset = atom({
@@ -87,11 +125,6 @@ export const createStep = atom({
   default: 0,
 });
 
-export const language = atom({
-  key: "language",
-  default: "KO",
-});
-
 export const createCompleteModal = atom({
   key: "createCompleteModal",
   default: "0",
@@ -107,6 +140,13 @@ export const createProblemsetDrawer = atom({
   default: "0",
 });
 
+export const createActive = atom({
+  key: "createActive",
+  default: 0,
+});
+/* *** create *** */
+
+/* *** play *** */
 export const playProblemset = atom({
   key: "playProblemset",
   default: {},
@@ -139,6 +179,54 @@ export const playPin = atom({
   default: "",
 });
 
+export const playMessagetype = atom({
+  key: "playMessagetype",
+  default: "o",
+});
+
+export const playParticipants = atom({
+  key: "playParticipants",
+  default: [
+    {
+      colorNumber: 0,
+      currentScore: 0,
+      entryDate: "",
+      id: 0,
+      imageNumber: 0,
+      name: "",
+      nickname: "",
+      sessionId: "",
+    },
+  ],
+});
+
+export const lobbyParticipants = atom({
+  key: "lobbyParticipants",
+  default: [],
+});
+
+export const playAnimal = atom({
+  key: "playAnimal",
+  default: 0,
+});
+
+export const playColor = atom({
+  key: "playColor",
+  default: 0,
+});
+
+export const playIsDrawerOpened = atom({
+  key: "playIsDrawerOpened",
+  default: "0",
+});
+/* *** play *** */
+
+/* *** inbox *** */
+export const inboxIsModalOpened = atom({
+  key: "inboxIsModalOpened",
+  default: "0",
+});
+
 export const inboxProblemsetIdx = atom({
   key: "inboxProblemsetIdx",
   default: 0,
@@ -163,59 +251,11 @@ export const inboxMaxpart = atom({
   key: "inboxMaxpart",
   default: 30,
 });
-
-export const indexIsModalOpened = atom({
-  key: "indexIsModalOpened",
-  default: "0",
-});
-
-export const indexToken = atom({
-  key: "indexToken",
-  default: "0",
-});
-
-export const indexUserInfo = atom({
-  key: "indexUserInfo",
-  default: {
-    accessToken: null,
-    email: "",
-    nickname: "",
-    picture: "",
-    role: "",
-    username: "",
-  },
-});
-
-export const playParticipants = atom({
-  key: "playParticipants",
-  default: [
-    {
-      colorNumber: 0,
-      imageNumber: 0,
-      flag: "",
-      fromSession: "",
-      id: 0,
-      name: "test_index_0",
-      nickname: "초대해보세요",
-      entryDate: 0,
-      currentScore: 0,
-    },
-  ],
-});
+/* *** inbox *** */
 
 export const signupTabIdx = atom({
   key: "signupTabIdx",
   default: "0",
-});
-
-export const playAnimal = atom({
-  key: "playAnimal",
-  default: 0,
-});
-
-export const playColor = atom({
-  key: "playColor",
-  default: 0,
 });
 
 export const mypageTabIdx = atom({
@@ -223,7 +263,9 @@ export const mypageTabIdx = atom({
   default: "알림",
 });
 
+/* *** enter *** */
 export const enterNotificationInfo = atom({
   key: "enterNotificationInfo",
   default: "닉네임을 입력하고 아바타를 선택하세요",
 });
+/* *** enter *** */

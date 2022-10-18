@@ -6,6 +6,7 @@ import {
   UnstyledButton,
   createStyles,
   Stack,
+  ScrollArea,
 } from "@mantine/core";
 import {
   TablerIcon,
@@ -20,10 +21,25 @@ import {
   IconSwitchHorizontal,
   IconSquareCheck,
   IconPlus,
+  IconX,
+  IconTrash,
+  IconAlarm,
+  IconFiles,
 } from "@tabler/icons";
 import { MantineLogo } from "@mantine/ds";
 import Image from "next/image";
-import { Plus } from "tabler-icons-react";
+import { Plus, X } from "tabler-icons-react";
+import { useRecoilState, useResetRecoilState } from "recoil";
+import {
+  createActive,
+  createOption,
+  createProblem,
+  createSlideProblem,
+  createTabCurrentIdx,
+} from "../States";
+import { useEffect } from "react";
+import { dtypeName } from "../ConstValues";
+import { create } from "domain";
 
 const useStyles = createStyles((theme) => ({
   link: {
@@ -67,7 +83,11 @@ export interface NavbarLinkProps {
 function NavbarLink({ icon: Icon, label, active, onClick }: NavbarLinkProps) {
   const { classes, cx } = useStyles();
   return (
-    <Tooltip label={label} position="right" transitionDuration={0}>
+    <Tooltip
+      label={label === "" ? "퀴즈를 작성해주세요" : label}
+      position="right"
+      transitionDuration={0}
+    >
       <UnstyledButton
         onClick={onClick}
         className={cx(classes.link, { [classes.active]: active })}
@@ -78,20 +98,69 @@ function NavbarLink({ icon: Icon, label, active, onClick }: NavbarLinkProps) {
   );
 }
 
-const mockdata = [
-  { icon: IconSquareCheck, label: "1. 문제를 잘 읽고 문제를" },
-  { icon: IconSquareCheck, label: "2. 문제를 잘 읽고 문제를" },
-  { icon: IconSquareCheck, label: "3. 문제를 잘 읽고 문제를" },
-  { icon: IconSquareCheck, label: "4. 문제를 잘 읽고 문제를" },
-  { icon: IconSquareCheck, label: "5. 문제를 잘 읽고 문제를" },
-  { icon: IconSquareCheck, label: "6. 문제를 잘 읽고 문제를" },
-  { icon: IconSquareCheck, label: "7. 문제를 잘 읽고 문제를" },
-];
-
 export function NavbarMinimal() {
-  const [active, setActive] = useState(2);
+  const [problem, setProblem] = useRecoilState(createProblem);
+  const [option, setOption] = useRecoilState(createOption);
+  const [tabIdx, setTabIdx] = useRecoilState(createTabCurrentIdx);
+  const [slideProblem, setSlideProblem] = useRecoilState(createSlideProblem);
+  const [active, setActive] = useRecoilState(createActive);
 
-  const links = mockdata.map((link, index) => (
+  const NextPlus = () => {
+    setProblem((prevstate) => [
+      ...prevstate,
+      {
+        answer: "-1",
+        description: "",
+        dtype: dtypeName[tabIdx],
+        idx: 0,
+        picture: "",
+        problemsetId: 0,
+        score: 300,
+        timelimit: 30,
+        title: "",
+      },
+    ]);
+
+    setOption((prevstate) => [
+      ...prevstate,
+      [
+        {
+          description: "",
+          idx: 0,
+          picture: "",
+          problemId: 0,
+        },
+        {
+          description: "",
+          idx: 1,
+          picture: "",
+          problemId: 0,
+        },
+        {
+          description: "",
+          idx: 2,
+          picture: "",
+          problemId: 0,
+        },
+        {
+          description: "",
+          idx: 3,
+          picture: "",
+          problemId: 0,
+        },
+      ],
+    ]);
+    setSlideProblem((prevstate) => [
+      ...prevstate,
+      {
+        icon: IconSquareCheck,
+        label: "",
+      },
+    ]);
+    setActive(active + 1);
+  };
+
+  const links = slideProblem.map((link, index) => (
     <NavbarLink
       {...link}
       key={link.label}
@@ -101,26 +170,55 @@ export function NavbarMinimal() {
   ));
 
   return (
-    <Navbar height={872} width={{ base: 80 }} p="md">
-      <Center>
-        <Image
-          src="/../public/favicon.ico"
-          alt="Picture of the author"
-          width={40}
-          height={40}
-        />
-      </Center>
-      <Navbar.Section grow mt={50}>
-        <Stack justify="center" spacing={0}>
-          {links}
-        </Stack>
-      </Navbar.Section>
-      <Navbar.Section>
-        <Stack justify="center" spacing={0}>
-          <NavbarLink icon={IconPlus} label="Change account" />
-          <NavbarLink icon={IconLogout} label="Logout" />
-        </Stack>
-      </Navbar.Section>
+    <Navbar
+      style={{ height: "calc(100vh - 70px)" }}
+      width={{ base: 80 }}
+      p="md"
+    >
+      <Stack style={{ height: "calc(100vh - 70px)" }} justify="space-between">
+        <Navbar.Section>
+          <Stack justify="center" spacing={0}>
+            <NavbarLink
+              onClick={async () => {
+                if (problem.length === 1) return;
+                if (problem.length - 1 === active)
+                  await setActive((prevState) => active - 1);
+                let copy1 = [...problem];
+                copy1.splice(active, 1);
+                setProblem(copy1);
+
+                let copy2 = [...option];
+                copy2.splice(active, 1);
+                setOption(copy2);
+
+                let copy3 = [...slideProblem];
+                copy3.splice(active, 1);
+                setSlideProblem(copy3);
+              }}
+              icon={IconTrash}
+              label="삭제하기"
+            />
+            <NavbarLink
+              onClick={() => {
+                NextPlus();
+              }}
+              icon={IconPlus}
+              label="추가하기"
+            />
+          </Stack>
+        </Navbar.Section>
+        <Navbar.Section>
+          <Stack justify="center" spacing={0}>
+            {links}
+          </Stack>
+        </Navbar.Section>
+        <Navbar.Section>
+          <Stack justify="center" spacing={0}>
+            <NavbarLink icon={IconFiles} label={`${slideProblem.length}개`} />
+            <NavbarLink icon={IconAlarm} label="30분" />
+          </Stack>
+        </Navbar.Section>
+      </Stack>
     </Navbar>
   );
 }

@@ -8,6 +8,8 @@ import React, { useEffect } from "react";
 import Image from "next/image";
 import InboxNavigation from "../components/inbox/InboxNavigation";
 
+import { IconSearch } from "@tabler/icons";
+
 import {
   Button,
   Grid,
@@ -26,6 +28,7 @@ import { Pencil, Plus, X } from "tabler-icons-react";
 
 import { useRecoilState } from "recoil";
 import {
+  inboxIsModalOpened,
   inboxMaxpart,
   inboxOption,
   inboxProblem,
@@ -36,7 +39,8 @@ import {
 } from "../components/States";
 import { connectMainServerApiAddress } from "../components/ConstValues";
 import { FooterCentered } from "../components/footer";
-import { UserCardImage } from "../components/inbox/InboxCreator";
+import { InboxProblemsetMenu } from "../components/inbox/InboxProblemsetMenu";
+import { InboxProfileMenu } from "../components/inbox/InboxProfileMenu";
 
 const rightEnvelope = (subject: number) => {
   const subjectInfo = [
@@ -119,8 +123,8 @@ const Home: NextPage = () => {
     theme.colorScheme === "dark" ? theme.colors.dark[1] : theme.colors.gray[7];
 
   const [problemsetIdx, setProblemsetIdx] = useRecoilState(inboxProblemsetIdx);
+  const [modalOpened, setModalOpened] = useRecoilState(inboxIsModalOpened);
   const [drawerOpened, setDrawerOpened] = useState(false);
-  const [modalOpened, setModalOpened] = useState(false);
 
   const [pin, setPin] = useRecoilState(playPin);
 
@@ -251,8 +255,8 @@ const Home: NextPage = () => {
 
       <Modal
         centered
-        opened={modalOpened}
-        onClose={() => setModalOpened(false)}
+        opened={modalOpened === "0" ? false : true}
+        onClose={() => setModalOpened("0")}
         title="방 생성하기"
       >
         <p className="font-bold">참가 인원</p>
@@ -269,7 +273,7 @@ const Home: NextPage = () => {
         <br></br>
         <Button
           onClick={async () => {
-            setModalOpened(false);
+            setModalOpened("0");
             await postRoom();
 
             //router.push("/lobby_display");
@@ -301,190 +305,105 @@ const Home: NextPage = () => {
       <InboxNavigation />
       <main>
         <section className="h-[81vh]">
-          <Stack className="flex contents-between">
-            <Grid gutter={0} columns={24}>
-              <Grid.Col span={24}>
-                <Stack>
-                  <Stack className="h-[20vh] bg-gradient-to-l from-amber-500 via-amber-500 to-orange-500 animate-text"></Stack>
-                  <Stack className="h-[20vh]"></Stack>
-                  <Stack>
-                    <Grid columns={48}>
-                      <Grid.Col span={16}></Grid.Col>
-                      <Grid.Col span={29}>
-                        <Stack className="h-[40vh]">
-                          <TextInput placeholder="찾으시는 퀴즈를 검색해보세요"></TextInput>
-                          <Button
-                            variant="light"
-                            className="h-24"
-                            size="xl"
-                            onClick={() => {
-                              router.push("/create");
-                            }}
-                            color="orange"
-                            leftIcon={<Plus></Plus>}
-                          >
-                            새 퀴즈 생성
-                          </Button>
-                          <Grid className="h-[30vh]">
-                            {" "}
-                            {problemsets.map(
-                              ({ title, description, closingMent }, i) => {
-                                return Math.trunc(i / 4) !== activePage - 1 ? (
-                                  <></>
-                                ) : (
-                                  <Grid.Col span={3} key={i}>
-                                    <Stack
-                                      className={`py-4 cursor-pointer border-2 ${
-                                        problemsetIdx === i
-                                          ? "border-amber-500 radius-lg"
-                                          : "border-white radius-lg"
-                                      }`}
-                                      onClick={async () => {
-                                        await getProblem(i + 1);
-                                        await setProblemsetIdx(
-                                          (prevState) => i
-                                        );
-                                      }}
-                                      align="center"
-                                      // className="border-solid border-2 border-amber-500"
-                                    >
-                                      <Group key={i} spacing={0}>
-                                        <Group
-                                          className="shadow-lg"
-                                          spacing={0}
-                                        >
-                                          <Group className="border-r-2 border-gray-300 shadow-lg h-24 w-4 bg-amber-200" />
-                                          <Group>
-                                            <Stack spacing={0}>
-                                              <Group className="border-b-2 border-gray-300 m-0 p-0 h-12 w-32 bg-amber-200" />
-                                              <Group className=" m-0 p-0 h-12 w-32 bg-amber-200"></Group>
-                                            </Stack>
-                                          </Group>
-                                        </Group>
-                                        <Group className="shadow-lg m-0 p-0 h-20 w-4 bg-white"></Group>
-                                      </Group>
-                                      <p className="text-xl font-bold m-auto">
-                                        {title}
-                                      </p>
-                                    </Stack>
-                                  </Grid.Col>
-                                );
-                              }
-                            )}
-                          </Grid>
-                          <Center>
-                            <Pagination
-                              color="orange"
-                              page={activePage}
-                              onChange={setPage}
-                              total={problemsets.length / 8}
-                            />
-                          </Center>
+          <Stack className="h-[20vh] bg-gradient-to-r from-[#ffc069] to-[#fa751e]"></Stack>
+          <Grid gutter="md" columns={24}>
+            <Grid.Col span={3} />
+            <Grid.Col span={4}>
+              <Stack className="relative bottom-24">
+                <InboxProblemsetMenu
+                  image={"/../../public/halla.png"}
+                  name={problemsets[problemsetIdx].title}
+                  job={problemsets[problemsetIdx].description}
+                  stats={[
+                    { label: "문제 수", value: problem.length.toString() },
+                    {
+                      label: "소요 시간",
+                      value: Math.trunc(totalTime() / 60).toString(),
+                    },
+                  ]}
+                />
+                <InboxProfileMenu
+                  image={"/../../public/halla.png"}
+                  name={"임준현"}
+                  job={"@aimhigher77"}
+                  stats={[
+                    { label: "전체 문제", value: "100" },
+                    { label: "팔로잉", value: "150" },
+                    { label: "팔로워", value: "150" },
+                  ]}
+                />
+              </Stack>
+            </Grid.Col>
+            <Grid.Col span={14}>
+              <Stack className="h-[40vh] relative bottom-24">
+                <TextInput
+                  icon={<IconSearch size={14} />}
+                  variant="unstyled"
+                  placeholder="찾으시는 퀴즈를 검색해보세요"
+                ></TextInput>
+                <Button
+                  variant="filled"
+                  className="h-24"
+                  size="xl"
+                  onClick={() => {
+                    router.push("/create");
+                  }}
+                  color="orange"
+                >
+                  퀴즈 생성
+                </Button>
+                <Grid className="h-[30vh]">
+                  {" "}
+                  {problemsets.map(({ title, description, closingMent }, i) => {
+                    return Math.trunc(i / 4) !== activePage - 1 ? (
+                      <></>
+                    ) : (
+                      <Grid.Col span={3} key={i}>
+                        <Stack
+                          className={`py-4 cursor-pointer border-2 ${
+                            problemsetIdx === i
+                              ? "border-amber-500 radius-lg"
+                              : "border-white radius-lg"
+                          }`}
+                          onClick={async () => {
+                            await getProblem(i + 1);
+                            await setProblemsetIdx((prevState) => i);
+                          }}
+                          align="center"
+                          // className="border-solid border-2 border-amber-500"
+                        >
+                          <Group key={i} spacing={0}>
+                            <Group className="shadow-lg" spacing={0}>
+                              <Group className="border-r-2 border-gray-300 shadow-lg h-24 w-4 bg-amber-200" />
+                              <Group>
+                                <Stack spacing={0}>
+                                  <Group className="border-b-2 border-gray-300 m-0 p-0 h-12 w-32 bg-amber-200" />
+                                  <Group className=" m-0 p-0 h-12 w-32 bg-amber-200"></Group>
+                                </Stack>
+                              </Group>
+                            </Group>
+                            <Group className="shadow-lg m-0 p-0 h-20 w-4 bg-white"></Group>
+                          </Group>
+                          <p className="text-xl font-bold m-auto">{title}</p>
                         </Stack>
                       </Grid.Col>
-                      <Grid.Col span={3}></Grid.Col>
-                    </Grid>
-                  </Stack>
-                </Stack>
-              </Grid.Col>
-            </Grid>
-          </Stack>
+                    );
+                  })}
+                </Grid>
+                <Center>
+                  <Pagination
+                    color="orange"
+                    page={activePage}
+                    onChange={setPage}
+                    total={problemsets.length / 8}
+                  />
+                </Center>
+              </Stack>
+            </Grid.Col>
+            <Grid.Col span={3} />
+          </Grid>
         </section>
-        <div className="fixed left-[20vw] top-[20vh]">
-          <UserCardImage
-            image={"/../../public/halla.png"}
-            avatar={"/../../public/dog2.png"}
-            name={"임준현"}
-            job={"인하대학교 컴퓨터공학과 교수"}
-            stats={[
-              { label: "구독자 수", value: "12" },
-              { label: "구독 수", value: "187" },
-              { label: "제작 문제 수", value: "36" },
-            ]}
-          />
-        </div>
-        <div className="fixed left-[40vw] top-[20vh]">
-          <Stack className="h-[25vh] h-52 w-[55vw] rounded-xl shadow-lg bg-white">
-            <Group className="justify-between">
-              <Group>
-                <Group>
-                  <Stack>
-                    <Group className="h-52 w-52 rounded-xl">
-                      {rightEnvelope(0)}
-                    </Group>
-                  </Stack>
-                </Group>
-                <Stack>
-                  <p className="font-bold text-2xl">
-                    {problemsets[problemsetIdx].title === ""
-                      ? "아래에서 퀴즈를 선택하세요"
-                      : problemsets[problemsetIdx].title}
-                  </p>
-                  <p className=" text-xl">
-                    <strong className="text-xl font-bold">문제 수</strong> :{" "}
-                    {problem.length}개{" "}
-                    <strong className="text-xl font-bold">
-                      예상 소요 시간
-                    </strong>{" "}
-                    : {Math.trunc(totalTime() / 60)}분
-                  </p>
-                  <Group>
-                    <Button
-                      leftIcon={<Plus></Plus>}
-                      onClick={() => {
-                        setModalOpened(true);
-                      }}
-                      className="shadow-md"
-                      color="orange"
-                    >
-                      방 만들기
-                    </Button>
-                    <Button
-                      leftIcon={<Pencil></Pencil>}
-                      variant="outline"
-                      className="shadow-md"
-                      color="orange"
-                    >
-                      수정하기
-                    </Button>
-                    <Button
-                      leftIcon={<X></X>}
-                      onClick={() => {
-                        deleteProblemset();
-                      }}
-                      variant="outline"
-                      className="shadow-md"
-                      color="red"
-                    >
-                      삭제하기
-                    </Button>
-                  </Group>
-                </Stack>
-              </Group>
-              {/* <ScrollArea>
-                {problem.map(({ title }, i) => {
-                  return (
-                    <p key={i} className="text-2xl font-bold">
-                      {i + 1}.&nbsp;
-                      {title}
-                    </p>
-                  );
-                })}
-              </ScrollArea> */}
-            </Group>
-          </Stack>
-        </div>
       </main>
-
-      <FooterCentered
-        links={[
-          {
-            link: "https://retro5pect.tistory.com",
-            label: "Copyright 2022 exquiz.me Co. all rights reserved.",
-          },
-          // { link: "https://www.naver.com", label: "네이버" },
-        ]}
-      />
     </div>
   );
 };
@@ -496,3 +415,19 @@ export default Home;
 // }).then(() => {
 //   alert(pin);
 // });
+
+// relative bottom-24
+
+{
+  /* <Button
+leftIcon={<X></X>}
+onClick={() => {
+  deleteProblemset();
+}}
+variant="outline"
+className="shadow-md"
+color="red"
+>
+삭제하기
+</Button> */
+}

@@ -7,6 +7,8 @@ import {
   SquareCheck,
 } from "tabler-icons-react";
 
+import { IconSquareCheck } from "@tabler/icons";
+
 /* common */
 export const connectMainServerApiAddress = "https://api.exquiz.me/";
 /* create */
@@ -18,6 +20,12 @@ export const dtypeName = [
   "넌센스",
   "다이나믹",
   "설명",
+];
+
+export const slideProblemInput = [
+  { icon: IconSquareCheck, label: "" },
+  { icon: IconSquareCheck, label: "" },
+  { icon: IconSquareCheck, label: "" },
 ];
 
 export const problemInput = [
@@ -469,3 +477,157 @@ export function tabIcon(idx: number) {
   if (idx == 5)
     return <MathAvg color="white" className="m-auto" size={"30px"} />;
 }
+
+export const testPlayProblem = [
+  {
+    answer: "0",
+    description: "우리나라에서 가장 높은 산은?",
+    dtype: "MultipleChoiceProblem",
+    idx: 0,
+    picture: "",
+    problemsetId: 0,
+    score: 125,
+    timelimit: 30,
+    title: "",
+  },
+  {
+    answer: "0",
+    description: "아이스크림을 영어로 하면?",
+    dtype: "MultipleChoiceProblem",
+    idx: 0,
+    picture: "",
+    problemsetId: 0,
+    score: 125,
+    timelimit: 30,
+    title: "",
+  },
+  {
+    answer: "0",
+    description: "소프트웨어 마에스트로가 있는 빌딩은?",
+    dtype: "MultipleChoiceProblem",
+    idx: 0,
+    picture: "",
+    problemsetId: 0,
+    score: 125,
+    timelimit: 30,
+    title: "",
+  },
+  {
+    answer: "0",
+    description: "🌋이 중 가장 무시무시한 공룡은?🏔",
+    dtype: "MultipleChoiceProblem",
+    idx: 0,
+    picture: "",
+    problemsetId: 0,
+    score: 125,
+    timelimit: 30,
+    title: "",
+  },
+];
+
+export const testPlayOption = [
+  [
+    {
+      description: "설악산",
+      idx: 0,
+      picture: "",
+      problemId: 0,
+    },
+    {
+      description: "지리산",
+      idx: 1,
+      picture: "",
+      problemId: 0,
+    },
+    {
+      description: "한라산",
+      idx: 2,
+      picture: "",
+      problemId: 0,
+    },
+    {
+      description: "백두산",
+      idx: 3,
+      picture: "",
+      problemId: 0,
+    },
+  ],
+  [
+    {
+      description: "icecoffee",
+      idx: 0,
+      picture: "",
+      problemId: 0,
+    },
+    {
+      description: "icekekki",
+      idx: 1,
+      picture: "",
+      problemId: 0,
+    },
+    {
+      description: "icecream",
+      idx: 2,
+      picture: "",
+      problemId: 0,
+    },
+    {
+      description: "iceball",
+      idx: 3,
+      picture: "",
+      problemId: 0,
+    },
+  ],
+  [
+    {
+      description: "황해주택",
+      idx: 0,
+      picture: "",
+      problemId: 0,
+    },
+    {
+      description: "인하주택",
+      idx: 1,
+      picture: "",
+      problemId: 0,
+    },
+    {
+      description: "아남타워",
+      idx: 2,
+      picture: "",
+      problemId: 0,
+    },
+    {
+      description: "코엑스",
+      idx: 3,
+      picture: "",
+      problemId: 0,
+    },
+  ],
+  [
+    {
+      description: "티라노사우루스",
+      idx: 0,
+      picture: "",
+      problemId: 0,
+    },
+    {
+      description: "트리케라톱스",
+      idx: 1,
+      picture: "",
+      problemId: 0,
+    },
+    {
+      description: "랩터",
+      idx: 2,
+      picture: "",
+      problemId: 0,
+    },
+    {
+      description: "스피노사우루스",
+      idx: 3,
+      picture: "",
+      problemId: 0,
+    },
+  ],
+];

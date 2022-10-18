@@ -94,13 +94,15 @@ export const CreateNavigation = () => {
   return (
     <Grid className="h-[70px] border-b-2 border-gray-300" columns={24}>
       <Grid.Col span={5}>
-        <Group className="py-3">
-          <Link href="/">
-            <ActionIcon>
-              <ArrowNarrowLeft size="xl"></ArrowNarrowLeft>
-            </ActionIcon>
-          </Link>
-        </Group>
+        <Link href="/">
+          <Image
+            className="my-auto"
+            src="/../public/favicon.ico"
+            alt="Picture of the author"
+            width={50}
+            height={50}
+          />
+        </Link>
       </Grid.Col>
       <Grid.Col span={14}>
         {" "}

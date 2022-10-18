@@ -106,7 +106,7 @@ export function HeroImageRight() {
             <Text className={classes.description} mt={30}>
               쉽게 완성하고 참여 가능한 퀴즈 플랫폼을 경험하세요 –<br></br>
               익스퀴즈미는 사용자님의 환경에 대응하는 6가지 종류의 퀴즈 유형과
-              커스터마이징 가능한 선지와 출제 도구을 가지고 있습니다.
+              커스터마이징 가능한 선지와 출제 도구를 가지고 있습니다.
             </Text>
 
             <Button
