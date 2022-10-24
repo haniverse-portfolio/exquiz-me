@@ -1,3 +1,4 @@
+import Router, { useRouter } from "next/router";
 import {
   createStyles,
   Card,
@@ -9,9 +10,17 @@ import {
   Avatar,
   Stack,
   ThemeIcon,
+  Center,
 } from "@mantine/core";
-import { IconSearch, IconArrowRight, IconArrowLeft } from "@tabler/icons";
-import { useRecoilState } from "recoil";
+import Image from "next/image";
+import {
+  IconSearch,
+  IconArrowRight,
+  IconArrowLeft,
+  IconPlus,
+} from "@tabler/icons";
+import { Pencil } from "tabler-icons-react";
+import { avatarAnimal, avatarColor } from "../ConstValues";
 import { inboxIsModalOpened } from "../States";
 
 const useStyles = createStyles((theme) => ({
@@ -35,6 +44,7 @@ export function InboxProfileMenu({
   stats,
 }: InboxProfileMenuProps) {
   const { classes, theme } = useStyles();
+  const router = useRouter();
 
   const items = stats.map((stat) => (
     <div key={stat.label}>
@@ -47,23 +57,29 @@ export function InboxProfileMenu({
     </div>
   ));
 
-  const [modalOpened, setModalOpened] = useRecoilState(inboxIsModalOpened);
-
   return (
     <Card withBorder p="xl" radius="md" className={classes.card}>
-      <Group>
-        <Avatar
-          component="a"
-          href="https://github.com/rtivital"
-          target="_blank"
-          src="avatar.png"
-          alt="it's me"
-        />
+      <Group position="right">
+        <ActionIcon>
+          <Pencil></Pencil>
+        </ActionIcon>
+      </Group>
+      <Center>
+        <Image
+          alt="hello"
+          className={`cursor-pointer rounded-full`}
+          src={avatarAnimal[0]}
+          width={"80px"}
+          height={"80px"}
+        ></Image>
+      </Center>
+
+      <Group position="center">
         <Stack>
-          <Text align="left" size="lg" weight={500} mt="sm">
+          <Text align="center" size="lg" weight={500} mt="sm">
             {name}
           </Text>
-          <Text align="left" size="sm" color="dimmed">
+          <Text align="center" size="sm" color="dimmed">
             {job}
           </Text>
         </Stack>
@@ -74,11 +90,11 @@ export function InboxProfileMenu({
       </Group>
       <Button
         onClick={() => {
-          setModalOpened("1");
+          Router.push("/create");
         }}
         leftIcon={
           <ThemeIcon size={32} radius="xl" color="orange" variant="filled">
-            <IconArrowLeft size={18} stroke={1.5} />
+            <IconPlus size={18} stroke={1.5} />
           </ThemeIcon>
         }
         fullWidth
@@ -87,7 +103,7 @@ export function InboxProfileMenu({
         size="md"
         color={theme.colorScheme === "dark" ? undefined : "orange"}
       >
-        퀴즈방 생성
+        퀴즈 만들기
       </Button>
     </Card>
   );

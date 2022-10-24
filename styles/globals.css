@@ -1,5 +1,12 @@
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@100;200;300;400;500;600;700&family=PT+Sans:wght@700&display=swap");
-@tailwind base;
+/* @import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@100;200;300;400;500;600;700&family=PT+Sans:wght@700&display=swap"); */
+@font-face {
+  font-family: "SUIT-Medium";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Medium.woff2")
+    format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+/* @tailwind base; */
 @tailwind components;
 @tailwind utilities;
 /* * {
@@ -8,8 +15,12 @@
 ::-webkit-scrollbar {
   display: none;
 } */
-* {
+/* * {
   font-family: "IBM Plex Sans KR", sans-serif !important;
+} */
+
+* {
+  font-family: "SUIT-Medium";
 }
 
 html,
@@ -28,7 +39,6 @@ a {
   transition: ease-in-out;
   box-sizing: border-box;
 }
-
 
 h2 {
   font-weight: bold;

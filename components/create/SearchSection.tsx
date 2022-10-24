@@ -61,23 +61,24 @@ export const SearchSection = () => {
     const theme = useMantineTheme();
 
     return (
-      <TextInput
-        icon={<IconSearch size={18} stroke={1.5} />}
-        radius="xl"
-        size="md"
-        rightSection={
-          <ActionIcon size={32} radius="xl" color="orange" variant="filled">
-            {theme.dir === "ltr" ? (
-              <IconArrowRight size={18} stroke={1.5} />
-            ) : (
-              <IconArrowLeft size={18} stroke={1.5} />
-            )}
-          </ActionIcon>
-        }
-        placeholder="퀴즈 검색하기"
-        rightSectionWidth={42}
-        {...props}
-      />
+      <></>
+      // <TextInput
+      //   icon={<IconSearch size={18} stroke={1.5} />}
+      //   radius="xl"
+      //   size="md"
+      //   rightSection={
+      //     <ActionIcon size={32} radius="xl" color="orange" variant="filled">
+      //       {theme.dir === "ltr" ? (
+      //         <IconArrowRight size={18} stroke={1.5} />
+      //       ) : (
+      //         <IconArrowLeft size={18} stroke={1.5} />
+      //       )}
+      //     </ActionIcon>
+      //   }
+      //   placeholder="퀴즈 검색하기"
+      //   rightSectionWidth={42}
+      //   {...props}
+      // />
     );
   }
   return (

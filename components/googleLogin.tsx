@@ -56,10 +56,10 @@ export function AuthenticationForm(props: PaperProps) {
         </Button>
       </Group>
 
-      <Divider label="이메일로 로그인하기" labelPosition="center" my="lg" />
+      {/* <Divider label="이메일로 로그인하기" labelPosition="center" my="lg" /> */}
 
-      <form onSubmit={form.onSubmit(() => {})}>
-        <Stack>
+      {/* <form onSubmit={form.onSubmit(() => {})}> */}
+      {/* <Stack>
           {type === "register" && (
             <TextInput
               label="Name"
@@ -105,9 +105,9 @@ export function AuthenticationForm(props: PaperProps) {
               }
             />
           )}
-        </Stack>
+        </Stack> */}
 
-        <Group position="apart" mt="xl">
+      {/* <Group position="apart" mt="xl">
           <Anchor
             component="button"
             type="button"
@@ -122,8 +122,8 @@ export function AuthenticationForm(props: PaperProps) {
           <Button color="orange" type="submit">
             로그인
           </Button>
-        </Group>
-      </form>
+        </Group> */}
+      {/* </form> */}
     </Paper>
   );
 }

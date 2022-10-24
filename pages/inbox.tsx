@@ -23,8 +23,14 @@ import {
   Slider,
   Pagination,
   Text,
+  ThemeIcon,
+  ActionIcon,
+  Textarea,
+  ScrollArea,
+  Divider,
+  MantineProvider,
 } from "@mantine/core";
-import { Pencil, Plus, X } from "tabler-icons-react";
+import { BrandAsana, Pencil, Plus, X } from "tabler-icons-react";
 
 import { useRecoilState } from "recoil";
 import {
@@ -42,72 +48,6 @@ import { FooterCentered } from "../components/footer";
 import { InboxProblemsetMenu } from "../components/inbox/InboxProblemsetMenu";
 import { InboxProfileMenu } from "../components/inbox/InboxProfileMenu";
 
-const rightEnvelope = (subject: number) => {
-  const subjectInfo = [
-    { name: "미분류", startColor: "gray", endColor: "gray" },
-    { name: "언어", startColor: "orange", endColor: "red" },
-    { name: "수리과학", startColor: "blue", endColor: "green" },
-    { name: "인문사회", startColor: "violet", endColor: "pink" },
-    { name: "예체능", startColor: "yellow", endColor: "orange" },
-  ];
-
-  return (
-    <Group className="m-auto" spacing={0}>
-      <Group className="shadow-lg" spacing={0}>
-        <Group
-          className={`bg-${subjectInfo[subject].startColor} border-r-2 border-gray-300 shadow-lg h-24 w-4 bg-amber-200`}
-        />
-        <Group>
-          <Stack spacing={0}>
-            <Group
-              className={`bg-gradient-to-r from-${subjectInfo[subject].startColor} to-${subjectInfo[subject].endColor} border-b-2 border-gray-300 m-0 p-0 h-12 w-32 bg-amber-200`}
-            />
-            <Group
-              className={`bg-gradient-to-r from-${subjectInfo[subject].startColor} to-${subjectInfo[subject].endColor} m-0 p-0 h-12 w-32 bg-amber-200`}
-            />
-          </Stack>
-        </Group>
-      </Group>
-      <Group
-        className={`bg-gradient-to-r from-${subjectInfo[subject].startColor} to-${subjectInfo[subject].endColor} shadow-lg m-0 p-0 h-20 w-6 bg-white`}
-      ></Group>
-    </Group>
-  );
-};
-
-const leftEnvelope = (subject: number) => {
-  const subjectInfo = [
-    { name: "미분류", startColor: "gray", endColor: "gray" },
-    { name: "언어", startColor: "orange", endColor: "red" },
-    { name: "수리과학", startColor: "blue", endColor: "green" },
-    { name: "인문사회", startColor: "violet", endColor: "pink" },
-    { name: "예체능", startColor: "yellow", endColor: "orange" },
-  ];
-
-  return (
-    <Group className="transition ease-in-out hover:scale-105" spacing={0}>
-      <Group
-        className={`bg-gradient-to-r shadow-lg m-0 p-0 h-20 w-6 bg-white`}
-      ></Group>
-      <Group className="shadow-lg" spacing={0}>
-        <Group>
-          <Stack spacing={0}>
-            <Group
-              className={`bg-gradient-to-r from-${subjectInfo[subject].startColor}-500 to-${subjectInfo[subject].endColor}-500 m-0 p-0 h-12 w-32 bg-amber-200`}
-            />
-            <Group
-              className={`bg-gradient-to-r from-${subjectInfo[subject].startColor}-500 to-${subjectInfo[subject].endColor}-500 m-0 p-0 h-12 w-32 bg-amber-200`}
-            />
-          </Stack>
-        </Group>
-        <Group
-          className={`bg-${subjectInfo[subject].endColor}-500 border-l-2 border-gray-300 shadow-lg h-24 w-4 bg-amber-200`}
-        />
-      </Group>
-    </Group>
-  );
-};
-
 const Home: NextPage = () => {
   const MARKS = [
     { value: 0, label: "10명" },
@@ -124,7 +64,6 @@ const Home: NextPage = () => {
 
   const [problemsetIdx, setProblemsetIdx] = useRecoilState(inboxProblemsetIdx);
   const [modalOpened, setModalOpened] = useRecoilState(inboxIsModalOpened);
-  const [drawerOpened, setDrawerOpened] = useState(false);
 
   const [pin, setPin] = useRecoilState(playPin);
 
@@ -235,169 +174,190 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Drawer
-        position="bottom"
-        opened={drawerOpened}
-        onClose={() => setDrawerOpened(false)}
-        title="퀴즈 설정"
-        padding="xl"
-        size="93.8%"
-        overlayColor={
-          theme.colorScheme === "dark"
-            ? theme.colors.dark[9]
-            : theme.colors.gray[2]
-        }
-        overlayOpacity={0.55}
-        // overlayBlur={3}
-      >
-        {rightEnvelope(0)}
-      </Drawer>
-
       <Modal
+        withCloseButton={false}
         centered
         opened={modalOpened === "0" ? false : true}
         onClose={() => setModalOpened("0")}
-        title="방 생성하기"
       >
-        <p className="font-bold">참가 인원</p>
-        <Slider
-          onChangeEnd={setMaxpart}
-          labelAlwaysOn
-          color="orange"
-          label={(val) => MARKS.find((mark) => mark.value === val)?.label}
-          defaultValue={50}
-          step={25}
-          marks={MARKS}
-          styles={{ markLabel: { display: "none" } }}
-        />
-        <br></br>
-        <Button
-          onClick={async () => {
-            setModalOpened("0");
-            await postRoom();
+        <Stack>
+          <Group position="apart">
+            <ActionIcon className="cursor-default" variant="transparent">
+              <X className="cursor-default" color="white"></X>
+            </ActionIcon>
+            <p className="text-xl text-center">퀴즈방 생성하기</p>
+            <ActionIcon
+              onClick={() => {
+                setModalOpened("0");
+              }}
+            >
+              <X></X>
+            </ActionIcon>
+          </Group>
+          <p className="font-bold">추가 정보</p>
+          <Textarea placeholder="A학년 B반의 퀴즈방입니다."></Textarea>
 
-            //router.push("/lobby_display");
-
-            // {
-            //   "id": 5,
-            //   "pin": "100494",
-            //   "maxParticipantCount": 5,
-            //   "startDate": "2022-08-23T08:22:20.896+00:00",
-            //   "endDate": null,
-            //   "problemsetDto": {
-            //     "id": 1,
-            //     "title": "tempTitle",
-            //     "description": "tempDescription",
-            //     "closingMent": "Goodbye Command"
-            //   },
-            //   "currentState": "READY",
-            //   "currentProblemNum": -1
-            // }
-          }}
-          color="orange"
-          className="mx-4 h-[60px] w-[370px]"
-          variant="outline"
-          leftIcon={<Plus size={38} />}
-        >
-          방 만들기
-        </Button>
+          <p className="font-bold">참가 인원</p>
+          <Slider
+            showLabelOnHover={false}
+            onChangeEnd={setMaxpart}
+            color="orange"
+            defaultValue={50}
+            step={25}
+            marks={MARKS}
+          />
+          <br></br>
+          <Button
+            size="lg"
+            className="mx-12"
+            onClick={async () => {
+              setModalOpened("0");
+              await postRoom();
+            }}
+            color="orange"
+            variant="outline"
+            leftIcon={<BrandAsana size={38} />}
+          >
+            방 만들기
+          </Button>
+        </Stack>
       </Modal>
       <InboxNavigation />
-      <main>
-        <section className="h-[81vh]">
+      <main style={{ height: "calc(100vh - 70px)" }}>
+        <section style={{ height: "calc(100vh - 70px)" }}>
           <Stack className="h-[20vh] bg-gradient-to-r from-[#ffc069] to-[#fa751e]"></Stack>
-          <Grid gutter="md" columns={24}>
+          <Grid
+            style={{ height: "calc(80vh - 70px)" }}
+            gutter="md"
+            columns={24}
+          >
             <Grid.Col span={3} />
             <Grid.Col span={4}>
-              <Stack className="relative bottom-24">
-                <InboxProblemsetMenu
-                  image={"/../../public/halla.png"}
-                  name={problemsets[problemsetIdx].title}
-                  job={problemsets[problemsetIdx].description}
-                  stats={[
-                    { label: "문제 수", value: problem.length.toString() },
-                    {
-                      label: "소요 시간",
-                      value: Math.trunc(totalTime() / 60).toString(),
-                    },
-                  ]}
-                />
+              <Stack className="relative bottom-32">
                 <InboxProfileMenu
                   image={"/../../public/halla.png"}
                   name={"임준현"}
-                  job={"@aimhigher77"}
+                  job={"인하대학교 컴퓨터공학과 교수"}
                   stats={[
                     { label: "전체 문제", value: "100" },
                     { label: "팔로잉", value: "150" },
                     { label: "팔로워", value: "150" },
                   ]}
                 />
+                <InboxProblemsetMenu
+                  image={"/../../public/halla.png"}
+                  name={problemsets[problemsetIdx].title}
+                  job={problemsets[problemsetIdx].description}
+                  stats={[
+                    {
+                      label: "전체 문제 개수",
+                      value: problem.length.toString(),
+                    },
+                    {
+                      label: "예상 소요 시간",
+                      value: Math.trunc(totalTime() / 60).toString(),
+                    },
+                  ]}
+                />
               </Stack>
             </Grid.Col>
             <Grid.Col span={14}>
-              <Stack className="h-[40vh] relative bottom-24">
-                <TextInput
-                  icon={<IconSearch size={14} />}
-                  variant="unstyled"
-                  placeholder="찾으시는 퀴즈를 검색해보세요"
-                ></TextInput>
-                <Button
-                  variant="filled"
-                  className="h-24"
-                  size="xl"
-                  onClick={() => {
-                    router.push("/create");
+              <Stack className="h-[80vh] relative bottom-32">
+                <MantineProvider
+                  inherit
+                  theme={{
+                    components: {
+                      InputWrapper: {
+                        styles: (theme) => ({
+                          label: {
+                            backgroundColor:
+                              theme.colorScheme === "dark"
+                                ? "rgba(255, 255, 255, .1)"
+                                : "rgba(0, 0, 0, .1)",
+                          },
+                        }),
+                      },
+
+                      Input: {
+                        styles: (theme) => ({
+                          input: {
+                            borderColor:
+                              theme.colors.violet[theme.fn.primaryShade()],
+                            color: "white",
+                            fontSize: "32px",
+                            fontWeight: "bold",
+                          },
+                        }),
+                      },
+                    },
                   }}
-                  color="orange"
                 >
-                  퀴즈 생성
-                </Button>
-                <Grid className="h-[30vh]">
-                  {" "}
-                  {problemsets.map(({ title, description, closingMent }, i) => {
-                    return Math.trunc(i / 4) !== activePage - 1 ? (
-                      <></>
-                    ) : (
-                      <Grid.Col span={3} key={i}>
-                        <Stack
-                          className={`py-4 cursor-pointer border-2 ${
-                            problemsetIdx === i
-                              ? "border-amber-500 radius-lg"
-                              : "border-white radius-lg"
-                          }`}
-                          onClick={async () => {
-                            await getProblem(i + 1);
-                            await setProblemsetIdx((prevState) => i);
-                          }}
-                          align="center"
-                          // className="border-solid border-2 border-amber-500"
-                        >
-                          <Group key={i} spacing={0}>
-                            <Group className="shadow-lg" spacing={0}>
-                              <Group className="border-r-2 border-gray-300 shadow-lg h-24 w-4 bg-amber-200" />
-                              <Group>
-                                <Stack spacing={0}>
-                                  <Group className="border-b-2 border-gray-300 m-0 p-0 h-12 w-32 bg-amber-200" />
-                                  <Group className=" m-0 p-0 h-12 w-32 bg-amber-200"></Group>
-                                </Stack>
-                              </Group>
-                            </Group>
-                            <Group className="shadow-lg m-0 p-0 h-20 w-4 bg-white"></Group>
-                          </Group>
-                          <p className="text-xl font-bold m-auto">{title}</p>
-                        </Stack>
-                      </Grid.Col>
-                    );
-                  })}
-                </Grid>
-                <Center>
-                  <Pagination
-                    color="orange"
-                    page={activePage}
-                    onChange={setPage}
-                    total={problemsets.length / 8}
-                  />
-                </Center>
+                  <TextInput
+                    className="py-12"
+                    icon={<IconSearch size={14} />}
+                    variant="unstyled"
+                    placeholder="찾으시는 퀴즈를 검색해보세요"
+                  ></TextInput>
+                </MantineProvider>
+                <ScrollArea scrollbarSize={0} className="80vh">
+                  <Grid style={{ height: 2500 }} gutter={0} columns={2}>
+                    {problemsets.map(
+                      ({ title, description, closingMent }, i) => {
+                        return (
+                          <Grid.Col
+                            span={1}
+                            key={i}
+                            className={`h-80 cursor-pointer`}
+                            onClick={async () => {
+                              await getProblem(i + 1);
+                              await setProblemsetIdx((prevState) => i);
+                            }}
+                            // className="border-solid border-2 border-amber-500"
+                          >
+                            <Stack className="m-4">
+                              <Stack spacing={0}>
+                                <Grid columns={10}>
+                                  <Grid.Col
+                                    className="h-16 rounded-t-xl bg-[#FFD178]"
+                                    span={6}
+                                  ></Grid.Col>
+                                  <Grid.Col
+                                    className="shadow-xl mt-4 h-12 rounded-t-xl bg-[#F8D385]"
+                                    span={4}
+                                  ></Grid.Col>
+                                </Grid>
+                                <Grid
+                                  className={`${
+                                    problemsetIdx === i ? "shadow-xl" : ""
+                                  } h-60 rounded-b-xl bg-[#FFD178]`}
+                                  columns={10}
+                                >
+                                  <Grid.Col span={10}>
+                                    <Stack justify="flex-end">
+                                      <p className="mt-32 text-xl text-left">
+                                        2022년 10월 24일
+                                      </p>
+                                      <Divider size="sm"></Divider>
+                                      <p className="text-xl font-bold text-left">
+                                        {title}
+                                      </p>
+                                    </Stack>
+                                  </Grid.Col>
+                                </Grid>
+                              </Stack>
+                              {/* <Image
+                                src="/../public/folder.png"
+                                width="700"
+                                height="500"
+                                alt="error"
+                              ></Image> */}
+                            </Stack>
+                          </Grid.Col>
+                        );
+                      }
+                    )}
+                  </Grid>
+                </ScrollArea>
               </Stack>
             </Grid.Col>
             <Grid.Col span={3} />
@@ -431,3 +391,6 @@ color="red"
 삭제하기
 </Button> */
 }
+
+// {problemsets.map(({ title, description, closingMent }, i) => {
+//   return Math.trunc(i / 4) !== activePage - 1 ? (

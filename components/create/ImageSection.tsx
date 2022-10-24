@@ -17,6 +17,7 @@ import {
   Center,
   Skeleton,
   ScrollArea,
+  Grid,
 } from "@mantine/core";
 import {
   Plus,
@@ -126,30 +127,50 @@ export const ImageSection = () => {
       /> */}
       {imageLoading === true ? (
         <Stack>
-          <Stack className="mx-2">
-            <Group>
-              <Skeleton height={100} width="30%" radius="sm" />
-              <Skeleton height={100} width="30%" radius="sm" />
-              <Skeleton height={100} width="30%" radius="sm" />
-            </Group>
-            <Group>
-              <Skeleton height={100} width="45%" radius="sm" />
-              <Skeleton height={100} width="45%" radius="sm" />
-            </Group>
+          <Stack>
+            <Grid columns={6}>
+              <Grid.Col span={2}>
+                <Skeleton height={100} radius="sm" />
+              </Grid.Col>
+              <Grid.Col span={2}>
+                <Skeleton height={100} radius="sm" />
+              </Grid.Col>
+              <Grid.Col span={2}>
+                <Skeleton height={100} radius="sm" />
+              </Grid.Col>
+            </Grid>
+            <Grid columns={6}>
+              <Grid.Col span={3}>
+                <Skeleton height={100} radius="sm" />
+              </Grid.Col>
+              <Grid.Col span={3}>
+                <Skeleton height={100} radius="sm" />
+              </Grid.Col>
+            </Grid>
           </Stack>
           <Center>
             <p className="text-gray-500"> 이미지 검색 중...</p>
           </Center>
-          <Stack className="mx-2">
-            <Group>
-              <Skeleton height={100} width="30%" radius="sm" />
-              <Skeleton height={100} width="30%" radius="sm" />
-              <Skeleton height={100} width="30%" radius="sm" />
-            </Group>
-            <Group>
-              <Skeleton height={100} width="45%" radius="sm" />
-              <Skeleton height={100} width="45%" radius="sm" />
-            </Group>
+          <Stack>
+            <Grid columns={6}>
+              <Grid.Col span={2}>
+                <Skeleton height={100} radius="sm" />
+              </Grid.Col>
+              <Grid.Col span={2}>
+                <Skeleton height={100} radius="sm" />
+              </Grid.Col>
+              <Grid.Col span={2}>
+                <Skeleton height={100} radius="sm" />
+              </Grid.Col>
+            </Grid>
+            <Grid columns={6}>
+              <Grid.Col span={3}>
+                <Skeleton height={100} radius="sm" />
+              </Grid.Col>
+              <Grid.Col span={3}>
+                <Skeleton height={100} radius="sm" />
+              </Grid.Col>
+            </Grid>
           </Stack>
         </Stack>
       ) : (
@@ -161,20 +182,24 @@ export const ImageSection = () => {
               <Stack className="h-[1500vh]">
                 {imageList.map((link, i) => {
                   return (
-                    <img
-                      className="max-w-full h-auto cursor-pointer"
-                      onClick={async () => {
-                        if (cur == 0) problem[curIdx].picture = link;
-                        else option[curIdx][cur].picture = link;
-                        let copy = imageURL;
-                        copy.url = link;
-                        setImageURL((prevstate) => copy);
-                        await postImage();
-                      }}
+                    <Center
+                      className="cursor-pointer w-full rounded-xl shadow-lg"
                       key={i}
-                      src={link}
-                      alt="alt"
-                    ></img>
+                    >
+                      <img
+                        className="max-w-full h-auto cursor-pointer"
+                        onClick={async () => {
+                          if (cur == 0) problem[curIdx].picture = link;
+                          else option[curIdx][cur].picture = link;
+                          let copy = imageURL;
+                          copy.url = link;
+                          setImageURL((prevstate) => copy);
+                          await postImage();
+                        }}
+                        src={link}
+                        alt="alt"
+                      ></img>
+                    </Center>
                   );
                 })}
               </Stack>

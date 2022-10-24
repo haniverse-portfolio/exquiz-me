@@ -80,6 +80,8 @@ const Home: NextPage = () => {
       .catch(() => {});
   };
 
+  const viewport = useRef<HTMLDivElement>() as any;
+
   const { scrollIntoView, targetRef } = useScrollIntoView<HTMLDivElement>({
     offset: 60,
   });
@@ -91,8 +93,6 @@ const Home: NextPage = () => {
         <meta name="description" content="exquiz.me" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {/* navigation bar */}
-      <IndexNavigation />
       <Modal
         withCloseButton={false}
         centered
@@ -101,17 +101,23 @@ const Home: NextPage = () => {
       >
         <AuthenticationForm></AuthenticationForm>
       </Modal>
-      <ScrollArea>
+      {/* navigation bar */}
+      <ScrollArea
+        style={{ width: "100vw", height: "100vh" }}
+        viewportRef={viewport}
+        scrollbarSize={0}
+      >
+        <IndexNavigation />
         <section style={{ height: "calc(100vh - 70px)" }}>
           <Stack spacing={0} className="items-center flex contents-between">
             {/* banner-start */}
             <Stack className="items-center h-[40vh] w-[100vw] bg-gradient-to-l from-amber-500 via-amber-500 to-orange-500 animate-textSlow">
               <Group className="my-auto px-10" position="apart">
-                <Stack>
+                <Stack spacing={0}>
                   <p className="mx-auto text-white drop-shadow-lg font-bold text-6xl">
                     퀴즈의 새로운 경험을 제시하다
                   </p>
-                  <p className="mx-auto text-white drop-shadow-lg font-bold text-2xl mt-2">
+                  <p className="mx-auto text-white drop-shadow-lg font-bold text-2xl">
                     학교{" "}
                     <span className="text-transparent bg-clip-text bg-red-200">
                       선생님
@@ -188,7 +194,13 @@ const Home: NextPage = () => {
               <Group className="my-auto" spacing="xl" position="center">
                 <Stack>
                   <Group
-                    onClick={() => scrollIntoView({ alignment: "center" })}
+                    onClick={() => {
+                      viewport.current.scrollTo({
+                        top: viewport.current.scrollHeight,
+                        // top: viewport.current.scrollHeight / 2,
+                        behavior: "smooth",
+                      });
+                    }}
                     className="cursor-pointer w-36 h-36 rounded-full bg-gradient-to-r from-red-500 to-orange-500 ease-in-out duration-300 hover:scale-105 shadow-md"
                   >
                     <ActionIcon
@@ -205,7 +217,12 @@ const Home: NextPage = () => {
                 </Stack>
                 <Stack>
                   <Group
-                    onClick={() => scrollIntoView({ alignment: "center" })}
+                    onClick={() => {
+                      viewport.current.scrollTo({
+                        top: "200vh",
+                        behavior: "smooth",
+                      });
+                    }}
                     className="cursor-pointer w-36 h-36 mx-28 rounded-full bg-gradient-to-r from-blue-500 to-green-500 ease-in-out duration-300 hover:scale-105 shadow-md"
                   >
                     <ActionIcon
@@ -222,7 +239,13 @@ const Home: NextPage = () => {
                 </Stack>
                 <Stack>
                   <Group
-                    onClick={() => scrollIntoView({ alignment: "center" })}
+                    onClick={() => {
+                      viewport.current.scrollTo({
+                        top: "300vh",
+                        behavior: "smooth",
+                      });
+                    }}
+                    // onClick={() => scrollIntoView({ alignment: "center" })}
                     className="cursor-pointer w-36 h-36 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 ease-in-out duration-300 hover:scale-105 shadow-md"
                   >
                     <ActionIcon
@@ -242,13 +265,13 @@ const Home: NextPage = () => {
             {/* category-end */}
           </Stack>
         </section>
-        <section ref={targetRef} className="h-screen">
+        <section className="h-screen">
           <IndexHero1></IndexHero1>
         </section>
-        <section ref={targetRef} className="h-screen">
+        <section className="h-screen">
           <IndexHero2></IndexHero2>
         </section>
-        <section ref={targetRef} className="h-screen">
+        <section className="h-screen">
           <IndexHero3></IndexHero3>
         </section>
         <FooterLinks

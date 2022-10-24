@@ -93,9 +93,12 @@ export const TabChangeModal = () => {
   return (
     <Modal
       title={
-        <ActionIcon color="red">
-          <AlertTriangle></AlertTriangle>
-        </ActionIcon>
+        <Group>
+          <ActionIcon color="red">
+            <AlertTriangle></AlertTriangle>
+          </ActionIcon>
+          <p className="text-xl font-semibold">주의</p>
+        </Group>
       }
       transition="fade"
       transitionDuration={600}
@@ -109,7 +112,8 @@ export const TabChangeModal = () => {
         <p>현재까지 작성된 내용이 사라집니다.</p>
         <Group>
           <Button
-            variant="outline"
+            fullWidth
+            variant="filled"
             color="orange"
             onClick={() => {
               let nxt = tabChangeIdx;
@@ -150,6 +154,7 @@ export const TabChangeModal = () => {
             네
           </Button>
           <Button
+            fullWidth
             variant="outline"
             color="orange"
             onClick={() => {

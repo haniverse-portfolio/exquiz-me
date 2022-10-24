@@ -7,6 +7,8 @@ import axios from "axios";
 import { useRef } from "react";
 import { useTimeout } from "@mantine/hooks";
 import { useRecoilState } from "recoil";
+import SockJS from "sockjs-client";
+import Stomp from "stompjs";
 
 import {
   Button,
@@ -18,6 +20,7 @@ import {
   Alert,
   Container,
   Progress,
+  Divider,
 } from "@mantine/core";
 
 import { useScrollIntoView } from "@mantine/hooks";
@@ -25,11 +28,34 @@ import { useScrollIntoView } from "@mantine/hooks";
 import { AlertCircle, BuildingSkyscraper } from "tabler-icons-react";
 import {
   avatarAnimal,
+  connectMainServerApiAddress,
   testPlayOption,
   testPlayProblem,
 } from "../../components/ConstValues";
 
 const Home: NextPage = () => {
+  let client: Stomp.Client;
+
+  let connect = () => {
+    const headers = {};
+    let socket = new SockJS(connectMainServerApiAddress + "stomp");
+    client = Stomp.over(socket);
+
+    let reconnect = 0;
+    client.connect(
+      {},
+      function (frame) {
+        client.subscribe(
+          "/topic/room/" + pin ?? "000000",
+          function (message) {}
+        );
+      },
+      function (error) {
+        console.log("websocket error");
+      }
+    );
+  };
+
   let [curIdx, setCurIdx] = useState(0);
   const [step, setStep] = useState(0);
   {
@@ -129,17 +155,24 @@ const Home: NextPage = () => {
                   alt="hello"
                   className={`cursor-pointer rounded-full`}
                   src={avatarAnimal[0]}
-                  width={"100px"}
-                  height={"100px"}
+                  width={"80px"}
+                  height={"80px"}
                 ></Image>
+                <Stack spacing={0}>
+                  <p>정직한 데카르트</p>
+                  <Divider size="xs"></Divider>
+                  <p>2350 / 1위</p>
+                </Stack>
               </Group>
               <p className="text-lg font-semibold">PIN : {pin}</p>
             </Group>
             <Progress
+              className="border-2"
+              mt="md"
+              size="xl"
+              radius="xl"
+              value={80}
               color="orange"
-              className=""
-              value={curIdx / problem.length}
-              animate
             />
             <p className="text-lg font-semibold"> 문제 {curIdx + 1 + "번"}</p>
             <Grid className="" justify="center" gutter="sm">
@@ -175,7 +208,25 @@ const Home: NextPage = () => {
                 }
               )}
             </Grid>
-            <Button size="lg" color="orange">
+            <Button
+              onClick={() => {
+                connect();
+                setTimeout(() => {
+                  client.send(
+                    "/pub/room/" + pin + "/submit",
+                    {},
+                    JSON.stringify({
+                      messageType: "ANSWER", // 반드시 "ANSWER"
+                      fromSession: "", // 사용자 session id - google login시 발급
+                      problemIdx: 0, // 제출한 문제의 번호
+                      answerText: "0",
+                    })
+                  );
+                }, 500);
+              }}
+              size="lg"
+              color="orange"
+            >
               제출하기
             </Button>
           </Stack>

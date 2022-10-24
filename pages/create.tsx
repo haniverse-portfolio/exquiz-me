@@ -97,6 +97,9 @@ const Home: NextPage = () => {
   /* ****** effect-start ****** */
 
   /* image */
+  useEffect(() => {
+    setProblemsetDrawer("1");
+  }, []);
 
   useEffect(() => {
     getImageList(imageWord);
@@ -226,7 +229,7 @@ const Home: NextPage = () => {
             <CreateNavigation />
             {/* slide + create + image */}
             <Grid columns={48} style={{ height: "calc(100vh - 70px)" }}>
-              <Grid.Col span="auto">
+              <Grid.Col span={3}>
                 <NavbarMinimal></NavbarMinimal>
               </Grid.Col>
               <Grid.Col span={7}>

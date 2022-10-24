@@ -11,23 +11,7 @@ import axios from "axios";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 import { useRecoilState } from "recoil";
-import {
-  createImageList,
-  createImageURL,
-  createIsImageLoading,
-  createOption,
-  createProblem,
-  createProblemIdx,
-  createProblemset,
-  createScore,
-  createStep,
-  createTabCurrentIdx,
-  createTabNextIdx,
-  createTargetIdx,
-  createTimelimit,
-  lobbyParticipants,
-  playPin,
-} from "../../components/States";
+import { lobbyParticipants } from "../../components/States";
 
 import { avatarAnimal, avatarColor } from "../../components/ConstValues";
 
@@ -41,8 +25,12 @@ import {
   CopyButton,
   Divider,
   Center,
+  ActionIcon,
+  Grid,
+  ScrollArea,
 } from "@mantine/core";
 import { ArrowBigRightLines, Qrcode, Copy } from "tabler-icons-react";
+import LobbyNavigation from "../../components/lobby/LobbyNavigation";
 
 const Home: NextPage = () => {
   const [partlist, setPartlist] = useRecoilState(lobbyParticipants);
@@ -95,21 +83,21 @@ const Home: NextPage = () => {
   {
     /* webSocket */
   }
-  let stompClient: Stomp.Client;
+  let client: Stomp.Client;
 
   let connect = () => {
     const headers = {};
     var socket = new SockJS(connectMainServerApiAddress + "stomp");
-    stompClient = Stomp.over(socket);
+    client = Stomp.over(socket);
 
     var reconnect = 0;
-    stompClient.connect(
+    client.connect(
       {},
       function (frame) {
         console.log(router.query.pin);
         if (router.query.pin === undefined) router.push("/404");
         getRoomOpened(router.query.pin as string);
-        stompClient.subscribe(
+        client.subscribe(
           "/topic/room/" + router.query.pin + "/host",
           function (message) {
             if (JSON.parse(message.body).messageType === "PARTICIPANT") {
@@ -131,53 +119,82 @@ const Home: NextPage = () => {
         <meta name="description" content="exquiz.me" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main style={{ margin: "0px 10px" }}>
-        <section className="h-[85vh]">
-          <Stack className="items-center flex contents-between">
-            <Stack>
-              {/* 메인 배너 */}
-              <Stack className="mx-12">
-                <Stack>
-                  {/* <p className="underline decoration-amber-500 font-bold text-6xl text-left mt-10">
-                    참가 코드
-                  </p> */}
-                  <Group className="mt-10">
-                    <p className="font-bold text-9xl text-left">
-                      <strong className="text-gray-400">#</strong>{" "}
-                      {router.query.pin}
-                    </p>{" "}
+      <LobbyNavigation></LobbyNavigation>
+      <section style={{ height: "calc(100vh - 70px)" }}>
+        {/* 메인 배너 */}
+        <Grid style={{ height: "calc(100vh - 70px)" }} gutter={0} columns={20}>
+          <Grid.Col
+            style={{ height: "calc(100vh - 70px)" }}
+            className="bg-[#FFD178]"
+            span={7}
+          >
+            <Center>
+              <Stack>
+                <p className=" text-5xl text-left">실시간 퀴즈 플랫폼</p>
+                <p className="font-semibold text-5xl text-left">exquiz.me</p>
+                <Stack className="shadow-lg rounded-xl bg-white border-8 border-amber-500">
+                  <Image
+                    src="/../../public/rat.png"
+                    width={300}
+                    height={300}
+                    alt="QR CODE"
+                  ></Image>
+                  <Group position="center">
+                    <p className="font-bold text-gray-500 text-2xl text-left">
+                      PIN 번호
+                    </p>
                     <CopyButton value={pin as string}>
                       {({ copied, copy }) => (
-                        <Button
-                          size="xl"
-                          variant="light"
-                          leftIcon={<Copy></Copy>}
-                          color="orange"
-                          onClick={copy}
-                        >
-                          {copied ? "복사됨!" : "복사하기"}
-                        </Button>
+                        <ActionIcon variant="outline" onClick={copy}>
+                          <Copy></Copy>
+                        </ActionIcon>
                       )}
                     </CopyButton>
-                    <Button
-                      size="xl"
-                      color="orange"
-                      variant="filled"
-                      component="a"
-                      href="/inbox"
-                      leftIcon={<Qrcode size={38} />}
-                    >
-                      QR코드
-                    </Button>
                   </Group>
+                  <p className="font-bold text-6xl text-center">
+                    #{router.query.pin}
+                  </p>
                 </Stack>
-                <Divider my="xs" />
-                <Stack>
-                  {
-                    <Group className="h-[56vh]">
+                <Stack className="rounded-full bg-white">
+                  <p className="py-8 font-bold text-4xl text-center">
+                    입장 인원 &nbsp;
+                    <strong className="text-amber-500">
+                      {partlist.length}
+                    </strong>
+                    /30명
+                    <strong className="text-amber-500"></strong>
+                  </p>
+                </Stack>
+                <Button
+                  onClick={() => {
+                    connect();
+                    setTimeout(() => {
+                      client.send("/pub/room/" + pin + "/start", {});
+                    }, 500);
+                  }}
+                  size="xl"
+                  color="orange"
+                  variant="filled"
+                  component="a"
+                  href={`/display/${pin}`}
+                >
+                  퀴즈 시작하기
+                </Button>
+              </Stack>
+            </Center>
+          </Grid.Col>
+          <Grid.Col style={{ height: "calc(100vh - 70px)" }} span={13}>
+            <Stack>
+              <p className="font-semibold text-xl p-8">
+                삼삼고등학교 3학년 2반
+              </p>
+              {
+                <ScrollArea style={{ height: "calc(100vh - 70px)" }}>
+                  <Stack style={{ height: "400vh" }}>
+                    <Grid columns={6}>
                       {partlist.map((cur: any, i) => {
                         return (
-                          <Stack key={i}>
+                          <Grid.Col span={1} key={i}>
                             <Group className="h-32 w-32 rounded-xl border-2 bg-gray-200">
                               <Center
                                 className={`w-[120px] h-[120px] ${
@@ -196,40 +213,17 @@ const Home: NextPage = () => {
                             <p className="text-center text-black">
                               {cur.nickname}
                             </p>
-                          </Stack>
+                          </Grid.Col>
                         );
                       })}
-                    </Group>
-                  }
-                </Stack>
-                <Divider my="xs" />
-                <Stack>
-                  <Group position="apart" className="justify-between">
-                    <p className="font-bold text-4xl">
-                      입장 인원 / &nbsp;
-                      {partlist.length}명
-                      <strong className="text-amber-500"></strong>
-                    </p>
-                    <Button
-                      size="xl"
-                      color="orange"
-                      variant="outline"
-                      component="a"
-                      href={`/display/${pin}`}
-                      rightIcon={<ArrowBigRightLines size={16} />}
-                    >
-                      시작하기
-                    </Button>
-                  </Group>
-                </Stack>
-              </Stack>
+                    </Grid>
+                  </Stack>
+                </ScrollArea>
+              }
             </Stack>
-          </Stack>
-          <br />
-          <br />
-          <br />
-        </section>
-      </main>
+          </Grid.Col>
+        </Grid>
+      </section>
     </div>
   );
 };

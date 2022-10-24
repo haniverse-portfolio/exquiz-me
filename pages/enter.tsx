@@ -98,7 +98,7 @@ const Home: NextPage = () => {
         setStep((prevstate) => step + 1);
       })
       .catch((error) => {
-        alert("error" + error.status);
+        alert("핀 번호를 다시 확인해보세요");
       });
     return;
   };
@@ -125,7 +125,7 @@ const Home: NextPage = () => {
         );
       },
       function (error) {
-        console.log("fucking" + error);
+        console.log("websocket error");
       }
     );
   };
@@ -359,8 +359,8 @@ const Home: NextPage = () => {
                         colorNumber: color,
                       })
                     );
-                  }, 3000);
-                  // Router.push(`/play/${pin}`);
+                  }, 500);
+                  Router.push(`/play/${pin}`);
                 }}
                 color="orange"
                 variant="filled"

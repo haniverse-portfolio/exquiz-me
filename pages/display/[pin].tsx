@@ -20,6 +20,7 @@ import {
   Center,
   Divider,
   Drawer,
+  ActionIcon,
 } from "@mantine/core";
 import {
   Alarm,
@@ -146,78 +147,98 @@ const Home: NextPage = () => {
       >
         hello
       </Drawer> */}
-      <Button
-        color="orange"
-        onClick={() => {
-          setStep(step - 1);
-        }}
-      >
-        테스트용 이전 씬
-      </Button>
-      <Button
-        color="orange"
-        onClick={() => {
-          setStep(step + 1);
-        }}
-      >
-        테스트용 다음 씬
-      </Button>
-      <Button
-        onClick={() => {
-          setPlaymessagetypestate("NEWPROBLEM");
-        }}
-      >
-        문제 시간 스타트
-      </Button>
 
       <main>
-        <section className="h-[100vh]">
+        <header className="bg-[#273248]">
+          <Group
+            position="center"
+            style={{
+              height: "140px",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <ActionIcon variant="transparent" size={60}>
+              <Alarm size={60} color="orange"></Alarm>
+            </ActionIcon>
+            <Progress
+              className="w-[70vw]"
+              size="xl"
+              color="orange"
+              value={(seconds / problem[curIdx].timelimit) * 100.0}
+            />
+            <p className="font-semibold text-amber-500 text-3xl">
+              {Math.floor(seconds)}
+            </p>
+          </Group>
+        </header>
+        <section className="bg-[#EDF4F7] h-[100vh-140px]">
+          {/* <Button
+            color="orange"
+            onClick={() => {
+              setStep(step - 1);
+            }}
+          >
+            테스트용 이전 씬
+          </Button>
+          <Button
+            color="orange"
+            onClick={() => {
+              setStep(step + 1);
+            }}
+          >
+            테스트용 다음 씬
+          </Button>
+          <Button
+            onClick={() => {
+              setPlaymessagetypestate("NEWPROBLEM");
+            }}
+          >
+            문제 시간 스타트
+          </Button> */}
+          <br></br>
           <Stack className="items-center flex contents-between">
             {/* 메인 배너 */}
             {step === 0 ? (
               <Stack>
                 <Stack>
-                  {/* ../public/globe_banner.png */}
-                  <p className=" font-bold text-7xl text-center mt-10">
-                    {problem[curIdx].description}
-                  </p>
-                  <Progress
-                    size="xl"
-                    color="orange"
-                    value={(seconds / problem[curIdx].timelimit) * 100.0}
-                  />
-                  <p>테스트용 시간 출력: {seconds}</p>
+                  <Stack className="bg-white mx-16 rounded-xl shadow-xl">
+                    <Stack className="ml-16 relative bottom-8 rounded-full bg-orange-500 h-12 w-40">
+                      <p className=" text-center text-2xl text-white font-semibold">
+                        문제 1/5
+                      </p>
+                    </Stack>
+                    <Group>
+                      <p className="ml-16 text-4xl text-amber-500">Q</p>
+                      <p className=" font-bold text-4xl text-left mt-10">
+                        {problem[curIdx].description}
+                      </p>
+                    </Group>
+                    <Stack className="rounded-full bg-white h-12 w-40"></Stack>
+                  </Stack>
                   <Image
                     alt="hello"
-                    src="/../public/halla.png"
+                    src="/../public/halla4.jpeg"
                     width={600}
                     height={400}
                   ></Image>
-                  <Stack>
-                    <Grid className="" justify="center" gutter="sm">
+                  <Stack className=" mx-16">
+                    <Grid columns={4} gutter="xl">
                       {option[curIdx].map(
                         ({ description, idx, picture, problemId }, i) => {
                           let color = ["red", "blue", "green", "orange"];
                           let bgColor = "hover:bg-" + color[i] + "-500";
                           return (
                             <Grid.Col
-                              className="!max-w-[50%] !basis-2/4"
+                              className="h-60 bg-white rounded-xl shadow-xl"
                               key={i}
-                              span={5}
+                              span={1}
                               offset={0}
                             >
-                              <Button
-                                fullWidth
-                                style={{ height: "100px" }}
-                                onClick={() => {
-                                  setAnswer(answer === i ? -1 : i);
-                                }}
-                                color={color[i]}
-                                className="shadow-md"
-                                variant="outline"
-                              >
-                                <p className="text-lg"> {description}</p>
-                              </Button>
+                              <p className="text-2xl text-left">{i + 1}</p>
+                              <p className="text-2xl text-center">
+                                {description}
+                              </p>
                             </Grid.Col>
                           );
                         }
@@ -263,7 +284,7 @@ const Home: NextPage = () => {
                     height={400}
                   ></Image>
                   <Stack>
-                    <Grid className="" justify="center" gutter="sm">
+                    <Grid justify="center" gutter="sm">
                       {option[curIdx].map(
                         ({ description, idx, picture, problemId }, i) => {
                           let color = ["red", "blue", "green", "orange"];
@@ -392,3 +413,5 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+
+//!max-w-[25%] !basis-1/4

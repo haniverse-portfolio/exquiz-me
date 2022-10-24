@@ -197,7 +197,7 @@ export const Main = () => {
                   <Stack className="py-4 mx-auto" spacing={0}>
                     <Center>
                       <Group
-                        classNames="mx-auto"
+                        classNames="bg-amber-500 mx-auto"
                         spacing={12}
                         className="items-center"
                       >
@@ -220,7 +220,7 @@ export const Main = () => {
                                   setTabModalOpened("1");
                                 }}
                                 className={`${
-                                  i !== tabIdx
+                                  i === tabIdx
                                     ? "shadow-[inset_0_-2px_4px_rgba(128,128,128,0.8)]"
                                     : ""
                                 }
@@ -456,7 +456,7 @@ export const Main = () => {
                           )}
 
                           {tabIdx === 1 ? (
-                            <Grid>
+                            <Grid grow columns={4}>
                               {option[active].map(
                                 (
                                   { description, idx, picture, problemId },
@@ -604,7 +604,7 @@ export const Main = () => {
                                 MARKSCORE.find((mark) => mark.value === val)
                                   ?.label
                               }
-                              defaultValue={25}
+                              defaultValue={50}
                               value={Math.trunc(
                                 ((problem[active].score - 100) / 100) * 25
                               )}
@@ -622,6 +622,7 @@ export const Main = () => {
                               </span>
                             </p>
                             <Slider
+                              defaultValue={50}
                               className="w-[20vw]"
                               onChangeEnd={setTimelimit}
                               color="orange"
