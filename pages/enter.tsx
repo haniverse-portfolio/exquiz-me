@@ -1,5 +1,5 @@
 import Router, { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
@@ -12,6 +12,7 @@ import {
   playAnimal,
   playColor,
   playPin,
+  playUserCurInfo,
 } from "../components/States";
 
 import SockJS from "sockjs-client";
@@ -46,6 +47,8 @@ import { useRef } from "react";
 import { FooterCenteredUser } from "../components/footer_user";
 
 const Home: NextPage = () => {
+  const router = useRouter();
+
   const [pin, setPin] = useRecoilState(playPin);
   const ref = useRef<HTMLInputElement>(null);
 
@@ -55,6 +58,11 @@ const Home: NextPage = () => {
   const [color, setColor] = useRecoilState(playColor);
 
   const [notiInfo, setNotiInfo] = useRecoilState(enterNotificationInfo);
+  useEffect(() => {
+    if (!router.isReady) return;
+    if (step !== 1) return;
+    connect();
+  }, [step]);
 
   /* 2. modal */
   const [modalOpened, setModalOpened] = useState(false);
@@ -104,25 +112,29 @@ const Home: NextPage = () => {
   };
 
   const [nickname, setNickname] = useState("");
+  const [userCurInfo, setUserCurInfo] = useRecoilState(playUserCurInfo);
 
   const [name, setName] = useState("");
   let createRand = () => {};
 
   let client: Stomp.Client;
+  let socket = new SockJS(connectMainServerApiAddress + "stomp");
+  client = Stomp.over(socket);
 
   let connect = () => {
     const headers = {};
-    let socket = new SockJS(connectMainServerApiAddress + "stomp");
-    client = Stomp.over(socket);
 
     let reconnect = 0;
     client.connect(
       {},
       function (frame) {
-        client.subscribe(
-          "/topic/room/" + pin ?? "000000",
-          function (message) {}
-        );
+        client.subscribe("/topic/room/" + pin + "/host", function (message) {
+          setUserCurInfo(JSON.parse(message.body));
+          localStorage.setItem(
+            "fromSession",
+            JSON.parse(message.body).fromSession
+          );
+        });
       },
       function (error) {
         console.log("websocket error");
@@ -347,20 +359,19 @@ const Home: NextPage = () => {
               <Button
                 size="lg"
                 onClick={() => {
-                  connect();
+                  client.send(
+                    "/pub/room/" + pin + "/signup",
+                    {},
+                    JSON.stringify({
+                      name: name,
+                      nickname: nickname,
+                      imageNumber: animal,
+                      colorNumber: color,
+                    })
+                  );
                   setTimeout(() => {
-                    client.send(
-                      "/pub/room/" + pin + "/signup",
-                      {},
-                      JSON.stringify({
-                        name: name,
-                        nickname: nickname,
-                        imageNumber: animal,
-                        colorNumber: color,
-                      })
-                    );
+                    Router.push(`/play/${pin}`);
                   }, 500);
-                  Router.push(`/play/${pin}`);
                 }}
                 color="orange"
                 variant="filled"

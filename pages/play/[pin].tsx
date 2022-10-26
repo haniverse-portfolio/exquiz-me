@@ -4,28 +4,23 @@ import { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import axios from "axios";
-import { useRef } from "react";
-import { useTimeout } from "@mantine/hooks";
-import { useRecoilState } from "recoil";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 
 import {
   Button,
-  Center,
   Group,
   useMantineTheme,
   Stack,
   Grid,
-  Alert,
   Container,
-  Progress,
   Divider,
+  Loader,
+  Center,
 } from "@mantine/core";
 
 import { useScrollIntoView } from "@mantine/hooks";
 
-import { AlertCircle, BuildingSkyscraper } from "tabler-icons-react";
 import {
   avatarAnimal,
   connectMainServerApiAddress,
@@ -34,27 +29,35 @@ import {
 } from "../../components/ConstValues";
 
 const Home: NextPage = () => {
+  const router = useRouter();
+  const pin = router.query.pin;
+
   let client: Stomp.Client;
+  let socket = new SockJS(connectMainServerApiAddress + "stomp");
+  client = Stomp.over(socket);
 
   let connect = () => {
     const headers = {};
-    let socket = new SockJS(connectMainServerApiAddress + "stomp");
-    client = Stomp.over(socket);
 
     let reconnect = 0;
     client.connect(
       {},
       function (frame) {
-        client.subscribe(
-          "/topic/room/" + pin ?? "000000",
-          function (message) {}
-        );
+        client.subscribe("/topic/room/" + pin ?? "000000", function (message) {
+          if (JSON.parse(message.body).messageType === "NEW_PROBLEM") {
+            setStep(step + 1);
+          }
+        });
       },
       function (error) {
         console.log("websocket error");
       }
     );
   };
+  useEffect(() => {
+    if (!router.isReady) return;
+    connect();
+  }, [router.isReady]);
 
   let [curIdx, setCurIdx] = useState(0);
   const [step, setStep] = useState(0);
@@ -70,6 +73,8 @@ const Home: NextPage = () => {
 
   let [problem, setProblem] = useState(testPlayProblem);
   let [option, setOption] = useState(testPlayOption);
+  const { scrollIntoView, targetRef, scrollableRef } = useScrollIntoView();
+  const [answer, setAnswer] = useState(-1);
 
   {
     /* mantine statement */
@@ -89,13 +94,7 @@ const Home: NextPage = () => {
   {
     /* 1. 퀴즈 설정 - 사이드바 - #stepper */
   }
-  const router = useRouter();
-  const pin = router.query.pin;
-  const { scrollIntoView, targetRef, scrollableRef } = useScrollIntoView();
-  const [answer, setAnswer] = useState(-1);
 
-  /* 2. modal */
-  const [modalOpened, setModalOpened] = useState(false);
   /* submit form */
   let submitForm = {
     answerText: "1",
@@ -115,17 +114,13 @@ const Home: NextPage = () => {
     axios
       .get("https://api.exquiz.me/api/problemsets/1")
       .then((result) => {
-        setProblemsets(result.data);
+        setProblemSet(result.data);
       })
       .catch((error) => {
         alert(error);
       });
     return;
   };
-
-  let [problemsets, setProblemsets] = useState([
-    { id: -1, title: "", description: "", closingMent: "" },
-  ]);
 
   const submit = async () => {
     const { data: result } = await axios.post(
@@ -142,11 +137,24 @@ const Home: NextPage = () => {
         <meta name="description" content="exquiz.me" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {step === 0 ? <></> : <></>}
+      {step === 0 ? (
+        <Stack className="bg-orange-400 h-[100vh]">
+          <Center>
+            <Stack>
+              <Center>
+                <Loader color="yellow" size="xl" />
+              </Center>
+              <p className="text-xl text-white font-semibold">
+                start 들어올때까지 대기중
+              </p>
+            </Stack>
+          </Center>
+        </Stack>
+      ) : (
+        <></>
+      )}
 
       {step === 1 ? (
-        <></>
-      ) : (
         <Container size={1200}>
           <Stack className="mt-32 flex ">
             <Group position="apart">
@@ -160,20 +168,12 @@ const Home: NextPage = () => {
                 ></Image>
                 <Stack spacing={0}>
                   <p>정직한 데카르트</p>
-                  <Divider size="xs"></Divider>
-                  <p>2350 / 1위</p>
+                  {/* <p>2350 / 1위</p> */}
                 </Stack>
               </Group>
               <p className="text-lg font-semibold">PIN : {pin}</p>
             </Group>
-            <Progress
-              className="border-2"
-              mt="md"
-              size="xl"
-              radius="xl"
-              value={80}
-              color="orange"
-            />
+            <Divider size="xs"></Divider>
             <p className="text-lg font-semibold"> 문제 {curIdx + 1 + "번"}</p>
             <Grid className="" justify="center" gutter="sm">
               {option[curIdx].map(
@@ -210,19 +210,29 @@ const Home: NextPage = () => {
             </Grid>
             <Button
               onClick={() => {
-                connect();
+                //connect();
                 setTimeout(() => {
                   client.send(
                     "/pub/room/" + pin + "/submit",
                     {},
                     JSON.stringify({
                       messageType: "ANSWER", // 반드시 "ANSWER"
-                      fromSession: "", // 사용자 session id - google login시 발급
+                      fromSession: localStorage.getItem("fromSession"), // 사용자 session id - google login시 발급
                       problemIdx: 0, // 제출한 문제의 번호
-                      answerText: "0",
+                      answerText: answer.toString(),
                     })
                   );
                 }, 500);
+                // client.send(
+                //   "/pub/room/" + pin + "/submit",
+                //   {},
+                //   JSON.stringify({
+                //     messageType: "ANSWER", // 반드시 "ANSWER"
+                //     fromSession: "", // 사용자 session id - google login시 발급
+                //     problemIdx: 0, // 제출한 문제의 번호
+                //     answerText: answer.toString,
+                //   })
+                // );
               }}
               size="lg"
               color="orange"
@@ -231,6 +241,8 @@ const Home: NextPage = () => {
             </Button>
           </Stack>
         </Container>
+      ) : (
+        <></>
       )}
     </div>
   );

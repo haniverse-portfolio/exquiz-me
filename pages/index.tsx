@@ -135,7 +135,7 @@ const Home: NextPage = () => {
                   <p className="mx-auto text-white drop-shadow-lg font-bold text-2xl">
                     퀴즈를 만들고 참여하여 다함께 즐겨보세요!
                   </p>
-                  <Group spacing="xl" className="mt-10">
+                  {/* <Group spacing="xl" className="mt-10">
                     <Group position="left">
                       <ActionIcon variant="transparent">
                         <User color="white" />
@@ -160,7 +160,7 @@ const Home: NextPage = () => {
                         개설된 방 0개
                       </p>
                     </Group>
-                  </Group>
+                  </Group> */}
                 </Stack>
                 <Stack>
                   <Group>

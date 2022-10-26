@@ -248,15 +248,15 @@ export const noun = [
 ];
 
 export const avatarAnimal = [
-  "/../public/dog.png",
-  "/../public/dog2.png",
-  "/../public/fox.png",
-  "/../public/koala.png",
-  "/../public/monkey.png",
-  "/../public/panda.png",
-  "/../public/rabbit.png",
-  "/../public/rat.png",
-  "/../public/wolf.png",
+  "https://www.exquiz.me/dog.png",
+  "https://www.exquiz.me/dog2.png",
+  "https://www.exquiz.me/fox.png",
+  "https://www.exquiz.me/koala.png",
+  "https://www.exquiz.me/monkey.png",
+  "https://www.exquiz.me/panda.png",
+  "https://www.exquiz.me/rabbit.png",
+  "https://www.exquiz.me/rat.png",
+  "https://www.exquiz.me/wolf.png",
 ];
 
 export const avatarColor = [

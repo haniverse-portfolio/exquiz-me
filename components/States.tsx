@@ -200,6 +200,21 @@ export const playParticipants = atom({
   ],
 });
 
+export const playUserCurInfo = atom({
+  key: "playUserCurInfo",
+  default: {
+    messageType: "", // "PARTICIPANT"
+    fromSession: "", // 사용자 session id - google login시 발급
+    id: "", // 사용자 id
+    name: "", // 사용자 구분 이름
+    nickname: "", // 사용자 닉네임
+    entryDate: "", // 생성일(입장시간)
+    currentScore: 0, // 점수
+    imageNumber: 0, // 사용자 이미지
+    colorNumber: 0, // 사용자 배경색
+  },
+});
+
 export const lobbyParticipants = atom({
   key: "lobbyParticipants",
   default: [],

@@ -151,7 +151,7 @@ export function FooterLinks({ data }: FooterLinksProps) {
         <div className={classes.logo}>
           <Group>
             <Image
-              src="/../public/favicon.ico"
+              src="https://www.exquiz.me/favicon.ico"
               alt="Picture of the author"
               width={30}
               height={30}

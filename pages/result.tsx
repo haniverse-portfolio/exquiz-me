@@ -340,7 +340,7 @@ const Home: NextPage = () => {
                       <Image
                         alt="hello"
                         className="shadow-lg cursor-pointer rounded-full"
-                        src="/../public/dog.png"
+                        src="https://www.exquiz.me/dog.png"
                         width={"50px"}
                         height={"50px"}
                       ></Image>
@@ -355,7 +355,7 @@ const Home: NextPage = () => {
                       <Image
                         alt="hello"
                         className="shadow-lg cursor-pointer rounded-full"
-                        src="/../public/wolf.png"
+                        src="https://www.exquiz.me/wolf.png"
                         width={"50px"}
                         height={"50px"}
                       ></Image>
@@ -370,7 +370,7 @@ const Home: NextPage = () => {
                       <Image
                         alt="hello"
                         className="shadow-lg cursor-pointer rounded-full"
-                        src="/../public/rabbit.png"
+                        src="https://www.exquiz.me/rabbit.png"
                         width={"50px"}
                         height={"50px"}
                       ></Image>

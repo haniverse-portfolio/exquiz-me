@@ -85,10 +85,11 @@ const Home: NextPage = () => {
   }
   let client: Stomp.Client;
 
+  var socket = new SockJS(connectMainServerApiAddress + "stomp");
+  client = Stomp.over(socket);
+
   let connect = () => {
     const headers = {};
-    var socket = new SockJS(connectMainServerApiAddress + "stomp");
-    client = Stomp.over(socket);
 
     var reconnect = 0;
     client.connect(
@@ -129,16 +130,19 @@ const Home: NextPage = () => {
             span={7}
           >
             <Center>
-              <Stack>
-                <p className=" text-5xl text-left">실시간 퀴즈 플랫폼</p>
-                <p className="font-semibold text-5xl text-left">exquiz.me</p>
+              <Stack spacing={0}>
+                <p className="m-0 text-5xl text-left">실시간 퀴즈 플랫폼</p>
+                <p className="m-0 font-semibold text-5xl text-left">
+                  exquiz.me
+                </p>
                 <Stack className="shadow-lg rounded-xl bg-white border-8 border-amber-500">
                   <Image
-                    src="/../../public/rat.png"
+                    className="m-0"
+                    src="https://www.exquiz.me/rat.png"
                     width={300}
                     height={300}
                     alt="QR CODE"
-                  ></Image>
+                  />
                   <Group position="center">
                     <p className="font-bold text-gray-500 text-2xl text-left">
                       PIN 번호
@@ -167,10 +171,7 @@ const Home: NextPage = () => {
                 </Stack>
                 <Button
                   onClick={() => {
-                    connect();
-                    setTimeout(() => {
-                      client.send("/pub/room/" + pin + "/start", {});
-                    }, 500);
+                    client.send("/pub/room/" + pin + "/start", {});
                   }}
                   size="xl"
                   color="orange"

@@ -84,7 +84,7 @@ const IndexNavigation = () => {
         <Link href="/">
           <Image
             className="cursor-pointer pl-8"
-            src="/../public/favicon.ico"
+            src="https://www.exquiz.me/favicon.ico"
             alt="Picture of the author"
             width={50}
             height={50}

@@ -59,7 +59,7 @@ const Home: NextPage = () => {
     theme.colorScheme === "dark" ? theme.colors.dark[1] : theme.colors.gray[7];
 
   const [active, setActive] = useState(0);
-  let [image, setImage] = useState("/../public/panda.png");
+  let [image, setImage] = useState("https://www.exquiz.me/panda.png");
 
   let [step, setStep] = useState(0);
   let [curIdx, setCurIdx] = useState(0);
@@ -216,12 +216,12 @@ const Home: NextPage = () => {
                     </Group>
                     <Stack className="rounded-full bg-white h-12 w-40"></Stack>
                   </Stack>
-                  <Image
+                  {/* <Image
                     alt="hello"
                     src="/../public/halla4.jpeg"
                     width={600}
                     height={400}
-                  ></Image>
+                  ></Image> */}
                   <Stack className=" mx-16">
                     <Grid columns={4} gutter="xl">
                       {option[curIdx].map(
@@ -247,22 +247,6 @@ const Home: NextPage = () => {
                   </Stack>
                 </Stack>
                 <Divider my="xs" />
-                <Center>
-                  <Group>
-                    {[0, 3, 5, 2, 4, 6, 8, 7, 0, 2].map((description, i) => {
-                      return (
-                        <Image
-                          key={i}
-                          alt="hello"
-                          className={`cursor-pointer rounded-full`}
-                          src={avatarAnimal[description]}
-                          width={"50px"}
-                          height={"50px"}
-                        ></Image>
-                      );
-                    })}
-                  </Group>
-                </Center>
               </Stack>
             ) : (
               <></>
