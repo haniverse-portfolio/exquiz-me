@@ -172,7 +172,7 @@ const Home: NextPage = () => {
             <ActionIcon className="cursor-default" variant="transparent">
               <X className="cursor-default" color="white"></X>
             </ActionIcon>
-            <p className="text-xl text-center">퀴즈방 생성하기</p>
+            <p className="m-0 text-xl text-center">퀴즈방 생성하기</p>
             <ActionIcon
               onClick={() => {
                 setModalOpened("0");
@@ -181,10 +181,10 @@ const Home: NextPage = () => {
               <X></X>
             </ActionIcon>
           </Group>
-          <p className="font-bold">추가 정보</p>
+          <p className="m-0 font-bold">추가 정보</p>
           <Textarea placeholder="A학년 B반의 퀴즈방입니다."></Textarea>
 
-          <p className="font-bold">참가 인원</p>
+          <p className="m-0 font-bold">참가 인원</p>
           <Slider
             showLabelOnHover={false}
             onChangeEnd={setMaxpart}

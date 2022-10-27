@@ -32,6 +32,7 @@ import {
   NumberInput,
   Notification,
   Divider,
+  Tooltip,
 } from "@mantine/core";
 
 import {
@@ -162,7 +163,9 @@ const Home: NextPage = () => {
           {/* size={800} */}
           <Container className="bg-[#ffd178] h-[100vh]">
             <Stack className="flex">
-              <p className="ml-4 text-2xl font-bold text-white">exquiz.me</p>
+              <p className="cursor-pointer ml-4 text-2xl font-bold text-white">
+                exquiz.me
+              </p>
               {/* <Notification disallowClose color="orange" title="알림">
                 6자리의 숫자로 된 핀 번호를 입력하세요.
               </Notification> */}
@@ -191,7 +194,7 @@ const Home: NextPage = () => {
                   ref={ref}
                   placeholder="6자리 숫자를 입력하세요"
                 ></TextInput>
-                <p className="text-center text-lg font-semibold cursor-pointer text-orange-500">
+                <p className="text-center text-lg font-semibold cursor-pointer text-orange-500 underline">
                   QR코드로 입장하기
                 </p>
                 <Button
@@ -228,67 +231,43 @@ const Home: NextPage = () => {
       {/* main */}
       {step === 1 ? (
         <>
-          <Container className="h-[90vh]" size={800}>
-            <Stack className="mt-4 flex ">
-              <ActionIcon
+          <Container className="h-[100vh] bg-[#ffd178]" size={800}>
+            <Stack>
+              {/* <Notification disallowClose color="orange" title="알림">
+                {notiInfo}
+              </Notification> */}
+              {/* Navigation Bar */}
+              <p
                 onClick={() => {
                   setStep((prevState) => 0);
                 }}
+                className="cursor-pointer ml-4 text-2xl font-bold text-white"
               >
-                <ArrowNarrowLeft></ArrowNarrowLeft>
-              </ActionIcon>
-
-              <Notification disallowClose color="orange" title="알림">
-                {notiInfo}
-              </Notification>
-              {/* Navigation Bar */}
-              <p className="font-bold text-md text-left">이름 설정</p>
-              {
-                <TextInput
-                  maxLength={14}
-                  size="lg"
-                  value={name}
-                  onChange={(event) => {
-                    setName((prevState) => event.target.value);
-                  }}
-                  placeholder="이름을 입력하세요"
-                ></TextInput>
-              }
-              <p className="font-bold text-md text-left">닉네임 설정</p>
-              {
-                <TextInput
-                  maxLength={14}
-                  size="lg"
-                  value={nickname}
-                  onChange={(event) => {
-                    setNickname((prevState) => event.target.value);
-                  }}
-                  placeholder="닉네임을 입력하세요"
-                ></TextInput>
-              }
-              <Button
-                size="lg"
-                onClick={() => {
-                  let randAdjective =
-                    adj[Math.floor(Math.random() * (adj.length - 1)) + 1];
-                  let randNoun =
-                    noun[Math.floor(Math.random() * (noun.length - 1)) + 1];
-                  let randNum1 = Math.floor(Math.random() * (99 - 1)) + 1;
-                  let randNum2 = Math.floor(Math.random() * (100 - 1)) + 1;
-                  setNickname(randNum1 + randAdjective + randNoun + randNum2);
-                  setNotiInfo("닉네임이 생성되었습니다!");
-                }}
-                color="orange"
-                variant="outline"
-                leftIcon={<Refresh />}
-              >
-                랜덤 닉네임 생성
-              </Button>
-              <p className="font-bold text-md text-left">아바타 선택</p>
-              <Grid columns={12}>
-                <Grid.Col span={2}></Grid.Col>
-                <Grid.Col span={8}>
-                  <Center>
+                exquiz.me
+              </p>
+              <Stack className="p-8 rounded-xl shadow-lg bg-white">
+                <p className="font-bold text-2xl text-md text-center">
+                  프로필 설정
+                </p>
+                <Center>
+                  <Tooltip
+                    position="bottom"
+                    offset={20}
+                    opened={true}
+                    label="⚡️이미지를 클릭해 랜덤 프로필을 생성하세요!⚡️"
+                    withArrow
+                    onClick={() => {
+                      let randAnimal =
+                        Math.floor(Math.random() * (avatarAnimal.length - 1)) +
+                        1;
+                      let randAvatarColor =
+                        Math.floor(Math.random() * (avatarColor.length - 1)) +
+                        1;
+                      setAnimal(randAnimal);
+                      setColor(randAvatarColor);
+                      setNotiInfo("아바타가 생성되었습니다!");
+                    }}
+                  >
                     <Center
                       className={`w-[140px] h-[140px] ${avatarColor[color]} rounded-full shadow-lg`}
                     >
@@ -300,15 +279,10 @@ const Home: NextPage = () => {
                         height={"120px"}
                       ></Image>
                     </Center>
-                  </Center>
-                </Grid.Col>
-                <Grid.Col span={2}></Grid.Col>
-              </Grid>
-              <Button
-                size="lg"
-                color="orange"
-                variant="light"
-                leftIcon={<Dice2 />}
+                  </Tooltip>
+                </Center>
+                {/* <p
+                className="cursor-pointer text-center text-lg text-orange-500 font-semibold"
                 onClick={() => {
                   let randAnimal =
                     Math.floor(Math.random() * (avatarAnimal.length - 1)) + 1;
@@ -319,33 +293,88 @@ const Home: NextPage = () => {
                   setNotiInfo("아바타가 생성되었습니다!");
                 }}
               >
-                주사위 굴리기
-              </Button>
+                이미지를 클릭해 랜덤 프로필을 생성하세요!
+              </p> */}
+                <p className="m-0 mt-16 font-bold text-md text-left text-gray-400">
+                  이름
+                </p>
+                {
+                  <TextInput
+                    maxLength={14}
+                    size="lg"
+                    value={name}
+                    onChange={(event) => {
+                      setName((prevState) => event.target.value);
+                    }}
+                    placeholder="본인 확인을 위한 이름을 적어주세요"
+                  ></TextInput>
+                }
+                <p className="m-0 font-bold text-md text-left text-gray-400">
+                  닉네임
+                </p>
+                {
+                  <TextInput
+                    rightSection={
+                      <ActionIcon
+                        onClick={() => {
+                          let randAdjective =
+                            adj[
+                              Math.floor(Math.random() * (adj.length - 1)) + 1
+                            ];
+                          let randNoun =
+                            noun[
+                              Math.floor(Math.random() * (noun.length - 1)) + 1
+                            ];
+                          let randNum1 =
+                            Math.floor(Math.random() * (99 - 1)) + 1;
+                          let randNum2 =
+                            Math.floor(Math.random() * (100 - 1)) + 1;
+                          setNickname(
+                            randNum1 + randAdjective + randNoun + randNum2
+                          );
+                          setNotiInfo("닉네임이 생성되었습니다!");
+                        }}
+                        variant="outline"
+                        color="orange"
+                      >
+                        <Refresh></Refresh>
+                      </ActionIcon>
+                    }
+                    maxLength={14}
+                    size="lg"
+                    value={nickname}
+                    onChange={(event) => {
+                      setNickname((prevState) => event.target.value);
+                    }}
+                    placeholder="퀴즈에 사용될 닉네임을 입력해주세요"
+                  ></TextInput>
+                }
 
-              <Divider my="xs" />
+                <Divider my="xs" />
 
-              <Button
-                size="lg"
-                onClick={() => {
-                  client.send(
-                    "/pub/room/" + pin + "/signup",
-                    {},
-                    JSON.stringify({
-                      name: name,
-                      nickname: nickname,
-                      imageNumber: animal,
-                      colorNumber: color,
-                    })
-                  );
-                  setTimeout(() => {
-                    Router.push(`/play/${pin}`);
-                  }, 500);
-                }}
-                color="orange"
-                variant="filled"
-              >
-                준비 완료
-              </Button>
+                <Button
+                  size="lg"
+                  onClick={() => {
+                    client.send(
+                      "/pub/room/" + pin + "/signup",
+                      {},
+                      JSON.stringify({
+                        name: name,
+                        nickname: nickname,
+                        imageNumber: animal,
+                        colorNumber: color,
+                      })
+                    );
+                    setTimeout(() => {
+                      Router.push(`/play/${pin}`);
+                    }, 500);
+                  }}
+                  color="orange"
+                  variant="filled"
+                >
+                  준비 완료
+                </Button>
+              </Stack>
             </Stack>
           </Container>
         </>

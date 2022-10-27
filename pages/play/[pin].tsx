@@ -138,14 +138,14 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {step === 0 ? (
-        <Stack className="bg-orange-400 h-[100vh]">
+        <Stack align="center" className="bg-orange-400 h-[100vh]">
           <Center>
-            <Stack>
+            <Stack className="mt-[45vh]">
               <Center>
                 <Loader color="yellow" size="xl" />
               </Center>
-              <p className="text-xl text-white font-semibold">
-                start 들어올때까지 대기중
+              <p className="text-center text-xl text-white font-semibold">
+                퀴즈 시작 대기 중...
               </p>
             </Stack>
           </Center>

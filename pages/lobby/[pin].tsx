@@ -127,7 +127,7 @@ const Home: NextPage = () => {
           <Grid.Col
             style={{ height: "calc(100vh - 70px)" }}
             className="bg-[#FFD178]"
-            span={7}
+            span={6}
           >
             <Center>
               <Stack spacing={0}>
@@ -141,9 +141,11 @@ const Home: NextPage = () => {
                     </p>
                   </Stack>
                 </Center>
-                <Stack className=" w-80 h-80 shadow-lg rounded-2xl bg-white border-2">
+                <Stack
+                  align="center"
+                  className=" w-80 h-80 shadow-lg rounded-2xl bg-white border-8 border-orange-500 border-solid"
+                >
                   <Image
-                    className=""
                     src="https://www.exquiz.me/qrcode.png"
                     width={150}
                     height={150}
@@ -168,6 +170,7 @@ const Home: NextPage = () => {
                   </CopyButton>
                 </Group>
                 <Button
+                  className="cursor-pointer"
                   onClick={() => {
                     client.send("/pub/room/" + pin + "/start", {});
                   }}
@@ -185,16 +188,15 @@ const Home: NextPage = () => {
           <Grid.Col
             style={{ height: "calc(100vh - 70px)" }}
             className="bg-[#F9F5F4]"
-            span={13}
+            span={14}
           >
-            <Stack>
-              <Group className="px-8" position="apart">
-                <p className="font-semibold text-xl">삼삼고등학교 3학년 2반</p>{" "}
-                <p className="font-bold text-4xl text-center">
+            <Stack className="px-8">
+              <Group position="apart">
+                <p className="font-semibold text-3xl">삼삼고등학교 3학년 2반</p>{" "}
+                <p className="font-bold text-2xl text-center">
                   입장 인원 &nbsp;
-                  <strong className="text-amber-500">{partlist.length}</strong>
+                  <strong className="text-blue-500">{partlist.length}</strong>
                   /30명
-                  <strong className="text-amber-500"></strong>
                 </p>
               </Group>
               <Divider size="sm"></Divider>
@@ -204,25 +206,31 @@ const Home: NextPage = () => {
                     <Grid columns={6}>
                       {partlist.map((cur: any, i) => {
                         return (
-                          <Grid.Col span={1} key={i}>
-                            <Group className="h-32 w-32 rounded-xl border-2 bg-gray-200">
-                              <Center
-                                className={`w-[120px] h-[120px] ${
-                                  avatarColor[cur.colorNumber]
-                                } rounded-full shadow-lg`}
-                              >
-                                <Image
-                                  alt="hello"
-                                  className={`cursor-pointer rounded-full`}
-                                  src={avatarAnimal[cur.imageNumber]}
-                                  width={"100px"}
-                                  height={"100px"}
-                                ></Image>
-                              </Center>
-                            </Group>
-                            <p className="text-center text-black">
-                              {cur.nickname}
-                            </p>
+                          <Grid.Col
+                            className="p-8 h-42 w-36 rounded-xl bg-white shadow-lg"
+                            span={1}
+                            key={i}
+                          >
+                            <Center>
+                              <Stack>
+                                <Center
+                                  className={`w-[120px] h-[120px] ${
+                                    avatarColor[cur.colorNumber]
+                                  } rounded-full shadow-lg`}
+                                >
+                                  <Image
+                                    alt="hello"
+                                    className={`cursor-pointer rounded-full`}
+                                    src={avatarAnimal[cur.imageNumber]}
+                                    width={"100px"}
+                                    height={"100px"}
+                                  ></Image>
+                                </Center>
+                                <p className="text-center text-black">
+                                  {cur.nickname}
+                                </p>
+                              </Stack>
+                            </Center>
                           </Grid.Col>
                         );
                       })}
