@@ -6,6 +6,7 @@ import {
   optionInput,
   problemsetInput,
   slideProblemInput,
+  inboxRoomInput,
 } from "./ConstValues";
 
 /* *** common *** */
@@ -265,6 +266,11 @@ export const inboxOption = atom({
 export const inboxMaxpart = atom({
   key: "inboxMaxpart",
   default: 30,
+});
+
+export const inboxRoom = atom({
+  key: "inboxRoom",
+  default: inboxRoomInput,
 });
 /* *** inbox *** */
 

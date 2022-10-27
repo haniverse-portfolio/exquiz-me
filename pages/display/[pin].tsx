@@ -67,9 +67,7 @@ const Home: NextPage = () => {
 
   const [problem, setProblem] = useState(testPlayProblem);
   const [option, setOption] = useState(testPlayOption);
-  const [isDrawerOpened, setDrawerOpened] = useState(playIsDrawerOpened);
   const [participants, setParticipants] = useState(playParticipants);
-  const [leftParticipants, setLeftParticipants] = useState(playParticipants);
 
   let stompClient: Stomp.Client;
 
@@ -148,8 +146,8 @@ const Home: NextPage = () => {
         hello
       </Drawer> */}
 
-      <main>
-        <header className="bg-[#273248]">
+      <main className="h-[100vh]">
+        <header className="h-[140px] bg-[#273248]">
           <Group
             position="center"
             style={{
@@ -172,8 +170,12 @@ const Home: NextPage = () => {
             </p>
           </Group>
         </header>
-        <section className="bg-[#EDF4F7] h-[100vh-140px]">
-          {/* <Button
+        <section
+          style={{ height: "calc(100vh - 140px)" }}
+          className="bg-[#EDF4F7]"
+        >
+          <Button
+            variant="outline"
             color="orange"
             onClick={() => {
               setStep(step - 1);
@@ -182,6 +184,7 @@ const Home: NextPage = () => {
             테스트용 이전 씬
           </Button>
           <Button
+            variant="outline"
             color="orange"
             onClick={() => {
               setStep(step + 1);
@@ -190,12 +193,13 @@ const Home: NextPage = () => {
             테스트용 다음 씬
           </Button>
           <Button
+            variant="outline"
             onClick={() => {
               setPlaymessagetypestate("NEWPROBLEM");
             }}
           >
             문제 시간 스타트
-          </Button> */}
+          </Button>
           <br></br>
           <Stack className="items-center flex contents-between">
             {/* 메인 배너 */}
@@ -203,8 +207,11 @@ const Home: NextPage = () => {
               <Stack>
                 <Stack>
                   <Stack className="bg-white mx-16 rounded-xl shadow-xl">
-                    <Stack className="ml-16 relative bottom-8 rounded-full bg-orange-500 h-12 w-40">
-                      <p className=" text-center text-2xl text-white font-semibold">
+                    <Stack
+                      align="center"
+                      className="ml-16 relative bottom-8 rounded-full bg-orange-500 h-12 w-40"
+                    >
+                      <p className="m-auto text-center text-2xl text-white font-semibold">
                         문제 1/5
                       </p>
                     </Stack>
@@ -226,14 +233,11 @@ const Home: NextPage = () => {
                     <Grid columns={4} gutter="xl">
                       {option[curIdx].map(
                         ({ description, idx, picture, problemId }, i) => {
-                          let color = ["red", "blue", "green", "orange"];
-                          let bgColor = "hover:bg-" + color[i] + "-500";
                           return (
                             <Grid.Col
                               className="h-60 bg-white rounded-xl shadow-xl"
                               key={i}
                               span={1}
-                              offset={0}
                             >
                               <p className="text-2xl text-left">{i + 1}</p>
                               <p className="text-2xl text-center">

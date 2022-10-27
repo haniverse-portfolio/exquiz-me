@@ -29,6 +29,7 @@ import {
   ScrollArea,
   Divider,
   MantineProvider,
+  Select,
 } from "@mantine/core";
 import { BrandAsana, Pencil, Plus, X } from "tabler-icons-react";
 
@@ -40,6 +41,7 @@ import {
   inboxProblem,
   inboxProblemset,
   inboxProblemsetIdx,
+  inboxRoom,
   playPin,
   playProblem,
 } from "../components/States";
@@ -120,6 +122,7 @@ const Home: NextPage = () => {
         problemsetId: problemsets[problemsetIdx].id,
       })
       .then(async (result) => {
+        setRoom(result.data);
         setPin(result.data.pin);
         router.push(`/lobby/${result.data.pin}`);
       })
@@ -131,24 +134,8 @@ const Home: NextPage = () => {
 
   const [problemsets, setProblemsets] = useRecoilState(inboxProblemset);
   const [problem, setProblem] = useRecoilState(inboxProblem);
-  const [problemOption, setProblemOption] = useRecoilState(inboxOption);
-  const [activePage, setPage] = useState(1);
   const [maxpart, setMaxpart] = useRecoilState(inboxMaxpart);
-  let [room, setRoom] = useState({
-    id: -1,
-    pin: "0",
-    maxParticipantCount: -1,
-    startDate: "-1",
-    endDate: null,
-    problemsetDto: {
-      id: -1,
-      title: "-1",
-      description: "-1",
-      closingMent: "-1",
-    },
-    currentState: "NOT READY",
-    currentProblemNum: -1,
-  });
+  const [room, setRoom] = useRecoilState(inboxRoom);
 
   useEffect(() => {
     getProblemsets();
@@ -261,7 +248,7 @@ const Home: NextPage = () => {
                 />
               </Stack>
             </Grid.Col>
-            <Grid.Col span={14}>
+            <Grid.Col span={12}>
               <Stack className="h-[80vh] relative bottom-32">
                 <MantineProvider
                   inherit
@@ -299,6 +286,15 @@ const Home: NextPage = () => {
                     placeholder="찾으시는 퀴즈를 검색해보세요"
                   ></TextInput>
                 </MantineProvider>
+                <Group position="right">
+                  <Select
+                    placeholder="정렬 필터"
+                    data={[
+                      { value: "시간 순", label: "시간 순" },
+                      { value: "인기 순", label: "인기 순" },
+                    ]}
+                  />
+                </Group>
                 <ScrollArea scrollbarSize={0} className="80vh">
                   <Grid style={{ height: 2500 }} gutter={0} columns={2}>
                     {problemsets.map(
@@ -318,27 +314,40 @@ const Home: NextPage = () => {
                               <Stack spacing={0}>
                                 <Grid columns={10}>
                                   <Grid.Col
-                                    className="h-16 rounded-t-xl bg-[#FFD178]"
+                                    className={`${
+                                      problemsetIdx === i
+                                        ? "border-x-2 border-t-2 border-solid border-blue-500"
+                                        : ""
+                                    }h-16 rounded-t-xl bg-[#FFD178]`}
                                     span={6}
                                   ></Grid.Col>
                                   <Grid.Col
-                                    className="shadow-xl mt-4 h-12 rounded-t-xl bg-[#F8D385]"
+                                    className={`${
+                                      problemsetIdx === i
+                                        ? "border-t-2 border-r-2 border-solid border-blue-500"
+                                        : ""
+                                    } shadow-xl mt-4 h-12 rounded-t-xl bg-[#F8D385]`}
                                     span={4}
                                   ></Grid.Col>
                                 </Grid>
                                 <Grid
                                   className={`${
-                                    problemsetIdx === i ? "shadow-xl" : ""
+                                    problemsetIdx === i
+                                      ? "shadow-xl border-x-2 border-b-2 border-solid border-blue-500"
+                                      : ""
                                   } h-60 rounded-b-xl bg-[#FFD178]`}
                                   columns={10}
                                 >
                                   <Grid.Col span={10}>
-                                    <Stack justify="flex-end">
-                                      <p className="mt-32 text-xl text-left">
-                                        2022년 10월 24일
+                                    <Stack
+                                      className="mx-4"
+                                      spacing={0}
+                                      justify="flex-end"
+                                    >
+                                      <p className="m-0 mt-28 text-lg text-left text-gray-500">
+                                        22년 10월 24일
                                       </p>
-                                      <Divider size="sm"></Divider>
-                                      <p className="text-xl font-bold text-left">
+                                      <p className="mb-4 text-2xl font-bold text-left text-gray-600">
                                         {title}
                                       </p>
                                     </Stack>
@@ -360,7 +369,7 @@ const Home: NextPage = () => {
                 </ScrollArea>
               </Stack>
             </Grid.Col>
-            <Grid.Col span={3} />
+            <Grid.Col span={5} />
           </Grid>
         </section>
       </main>

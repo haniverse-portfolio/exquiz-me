@@ -631,3 +631,19 @@ export const testPlayOption = [
     },
   ],
 ];
+
+export const inboxRoomInput = {
+  id: -1,
+  pin: "0",
+  maxParticipantCount: -1,
+  startDate: "-1",
+  endDate: null,
+  problemsetDto: {
+    id: -1,
+    title: "-1",
+    description: "-1",
+    closingMent: "-1",
+  },
+  currentState: "NOT READY",
+  currentProblemNum: -1,
+};

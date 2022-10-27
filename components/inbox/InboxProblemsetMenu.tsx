@@ -62,13 +62,13 @@ export function InboxProblemsetMenu({
       className="!rounded-xl !shadow-lg !bg-indigo-100"
     >
       <Group position="apart">
-        <ActionIcon>
-          <X></X>
+        <ActionIcon className="cursor-default" variant="transparent">
+          <X className="cursor-default" color="indigo.6"></X>
         </ActionIcon>
         <p className="text-lg text-center">퀴즈 정보</p>
 
-        <ActionIcon className="cursor-default" variant="transparent">
-          <X className="cursor-default" color="indigo.6"></X>
+        <ActionIcon>
+          <X></X>
         </ActionIcon>
       </Group>
       <Stack className="bg-white p-4 rounded-xl h-[230px]">

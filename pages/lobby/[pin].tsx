@@ -131,44 +131,42 @@ const Home: NextPage = () => {
           >
             <Center>
               <Stack spacing={0}>
-                <p className="m-0 text-5xl text-left">실시간 퀴즈 플랫폼</p>
-                <p className="m-0 font-semibold text-5xl text-left">
-                  exquiz.me
+                <p className="py-16 m-0 font-semibold text-3xl text-center">
+                  퀴즈 입장 로비 방
                 </p>
-                <Stack className="shadow-lg rounded-xl bg-white border-8 border-amber-500">
+                <Center>
+                  <Stack className="w-64 h-12 shadow-lg rounded-t-2xl bg-orange-500">
+                    <p className="text-center text-white">
+                      QR코드를 공유해보세요!
+                    </p>
+                  </Stack>
+                </Center>
+                <Stack className=" w-80 h-80 shadow-lg rounded-2xl bg-white border-2">
                   <Image
-                    className="m-0"
-                    src="https://www.exquiz.me/rat.png"
-                    width={300}
-                    height={300}
+                    className=""
+                    src="https://www.exquiz.me/qrcode.png"
+                    width={150}
+                    height={150}
                     alt="QR CODE"
                   />
-                  <Group position="center">
-                    <p className="font-bold text-gray-500 text-2xl text-left">
-                      PIN 번호
-                    </p>
-                    <CopyButton value={pin as string}>
-                      {({ copied, copy }) => (
-                        <ActionIcon variant="outline" onClick={copy}>
-                          <Copy></Copy>
-                        </ActionIcon>
-                      )}
-                    </CopyButton>
-                  </Group>
-                  <p className="font-bold text-6xl text-center">
+                </Stack>
+                <Group position="center">
+                  <p className="font-bold text-orange-500 text-2xl text-center">
+                    PIN 번호
+                  </p>
+                </Group>
+                <Group position="center">
+                  <p className="font-bold text-4xl text-center">
                     #{router.query.pin}
                   </p>
-                </Stack>
-                <Stack className="rounded-full bg-white">
-                  <p className="py-8 font-bold text-4xl text-center">
-                    입장 인원 &nbsp;
-                    <strong className="text-amber-500">
-                      {partlist.length}
-                    </strong>
-                    /30명
-                    <strong className="text-amber-500"></strong>
-                  </p>
-                </Stack>
+                  <CopyButton value={pin as string}>
+                    {({ copied, copy }) => (
+                      <ActionIcon color="orange" variant="light" onClick={copy}>
+                        <Copy></Copy>
+                      </ActionIcon>
+                    )}
+                  </CopyButton>
+                </Group>
                 <Button
                   onClick={() => {
                     client.send("/pub/room/" + pin + "/start", {});
@@ -179,16 +177,27 @@ const Home: NextPage = () => {
                   component="a"
                   href={`/display/${pin}`}
                 >
-                  퀴즈 시작하기
+                  퀴즈 시작하기!
                 </Button>
               </Stack>
             </Center>
           </Grid.Col>
-          <Grid.Col style={{ height: "calc(100vh - 70px)" }} span={13}>
+          <Grid.Col
+            style={{ height: "calc(100vh - 70px)" }}
+            className="bg-[#F9F5F4]"
+            span={13}
+          >
             <Stack>
-              <p className="font-semibold text-xl p-8">
-                삼삼고등학교 3학년 2반
-              </p>
+              <Group className="px-8" position="apart">
+                <p className="font-semibold text-xl">삼삼고등학교 3학년 2반</p>{" "}
+                <p className="font-bold text-4xl text-center">
+                  입장 인원 &nbsp;
+                  <strong className="text-amber-500">{partlist.length}</strong>
+                  /30명
+                  <strong className="text-amber-500"></strong>
+                </p>
+              </Group>
+              <Divider size="sm"></Divider>
               {
                 <ScrollArea style={{ height: "calc(100vh - 70px)" }}>
                   <Stack style={{ height: "400vh" }}>

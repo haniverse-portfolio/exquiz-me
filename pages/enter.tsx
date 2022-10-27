@@ -159,91 +159,59 @@ const Home: NextPage = () => {
       {/* main */}
       {step === 0 ? (
         <>
-          <Container className="h-[65vh]" size={800}>
-            <Stack className="mt-32 flex ">
-              {/* <Group spacing="sm">
-              <NumberInput
-                color="orange"
-                className=" w-[11vw]"
-                hideControls
-                maxLength={1}
-              ></NumberInput>
-
-              <NumberInput
-                className="w-[11vw]"
-                hideControls
-                maxLength={1}
-              ></NumberInput>
-
-              <NumberInput
-                className="w-[11vw]"
-                hideControls
-                maxLength={1}
-              ></NumberInput>
-
-              <NumberInput
-                className="w-[11vw]"
-                hideControls
-                maxLength={1}
-              ></NumberInput>
-
-              <NumberInput
-                className="w-[11vw]"
-                hideControls
-                maxLength={1}
-              ></NumberInput>
-
-              <NumberInput
-                className="w-[11vw]"
-                hideControls
-                maxLength={1}
-              ></NumberInput>
-            </Group> */}
-
-              <p className="text-lg font-bold cursor-pointer ">
-                세상의 모든 퀴즈
-              </p>
-              <p className="text-2xl font-bold cursor-pointer transition ease-in-out text-transparent bg-clip-text bg-gradient-to-l from-amber-500 via-amber-500 to-orange-500 animate-text">
-                익스퀴즈미
-              </p>
-              <Notification disallowClose color="orange" title="알림">
+          {/* size={800} */}
+          <Container className="bg-[#ffd178] h-[100vh]">
+            <Stack className="flex">
+              <p className="ml-4 text-2xl font-bold text-white">exquiz.me</p>
+              {/* <Notification disallowClose color="orange" title="알림">
                 6자리의 숫자로 된 핀 번호를 입력하세요.
-              </Notification>
-              <TextInput
-                maxLength={6}
-                size="xl"
-                value={pin}
-                onChange={(e) => {
-                  /* validation */
-                  if (
-                    e.target.value !== "" &&
-                    parseInt(e.target.value).toString().length !==
-                      e.target.value.length
-                  ) {
-                    setNotiInfo("잘못된 입력값입니다.");
-                  }
-                  setPin(e.target.value);
-                }}
-                ref={ref}
-                placeholder="핀 번호를 입력하세요"
-              ></TextInput>
-              <Button
-                size="lg"
-                fullWidth
-                onClick={() => {
-                  getRoomOpened(pin);
-                  // connect();
+              </Notification> */}
+              <Stack className="p-8 rounded-xl shadow-lg bg-white">
+                <p className="text-center text-2xl font-bold text-black">
+                  퀴즈방 입장하기
+                </p>
+                <p className="text-center text-lg font-semibold text-gray-500">
+                  공유 받은 PIN 번호로 입장해주세요
+                </p>
+                <TextInput
+                  maxLength={6}
+                  size="xl"
+                  value={pin}
+                  onChange={(e) => {
+                    /* validation */
+                    if (
+                      e.target.value !== "" &&
+                      parseInt(e.target.value).toString().length !==
+                        e.target.value.length
+                    ) {
+                      setNotiInfo("잘못된 입력값입니다.");
+                    }
+                    setPin(e.target.value);
+                  }}
+                  ref={ref}
+                  placeholder="6자리 숫자를 입력하세요"
+                ></TextInput>
+                <p className="text-center text-lg font-semibold cursor-pointer text-orange-500">
+                  QR코드로 입장하기
+                </p>
+                <Button
+                  size="lg"
+                  fullWidth
+                  onClick={() => {
+                    getRoomOpened(pin);
+                    // connect();
 
-                  // is room exist : validation check needed
-                }}
-                color="orange"
-                variant="light"
-              >
-                입장하기
-              </Button>
+                    // is room exist : validation check needed
+                  }}
+                  color="orange"
+                  variant="light"
+                >
+                  입장하기
+                </Button>
+              </Stack>
             </Stack>
           </Container>
-          <FooterCenteredUser
+          {/* <FooterCenteredUser
             links={[
               {
                 link: "https://retro5pect.tistory.com",
@@ -251,7 +219,7 @@ const Home: NextPage = () => {
               },
               // { link: "https://www.naver.com", label: "네이버" },
             ]}
-          />
+          /> */}
         </>
       ) : (
         <></>
