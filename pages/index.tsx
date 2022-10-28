@@ -124,9 +124,9 @@ const Home: NextPage = () => {
       >
         <IndexNavigation />
         <section style={{ height: "calc(100vh - 70px)" }}>
-          <Stack spacing={0} className="items-center flex contents-between">
+          <Stack spacing={0} className=" flex contents-between">
             {/* banner-start */}
-            <Stack className="items-center h-[40vh] w-[100vw] bg-gradient-to-l from-amber-500 via-amber-500 to-orange-500 animate-textSlow">
+            <Stack className="h-[40vh] w-[100vw] bg-gradient-to-l from-amber-500 via-amber-500 to-orange-500 animate-textSlow">
               <Group className="my-auto px-10" position="apart">
                 <Stack spacing={0}>
                   <p className="mx-auto text-white drop-shadow-lg font-bold text-6xl">

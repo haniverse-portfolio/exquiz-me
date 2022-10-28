@@ -7,6 +7,7 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import Image from "next/image";
 import InboxNavigation from "../components/inbox/InboxNavigation";
+import IndexNavigation from "../components/index/IndexNavigation";
 
 import { IconSearch } from "@tabler/icons";
 
@@ -215,7 +216,7 @@ const Home: NextPage = () => {
           </Button>
         </Stack>
       </Modal>
-      <InboxNavigation />
+      <IndexNavigation />
       <main style={{ height: "calc(100vh - 70px)" }}>
         <section style={{ height: "calc(100vh - 70px)" }}>
           <Stack className="h-[20vh] bg-gradient-to-r from-[#ffc069] to-[#fa751e]"></Stack>
@@ -286,8 +287,9 @@ const Home: NextPage = () => {
                   }}
                 >
                   <TextInput
-                    className="py-12"
-                    icon={<IconSearch size={14} />}
+                    id="inbox_textinput"
+                    className="!placeholder-white py-12"
+                    icon={<IconSearch color="white" size={26} />}
                     variant="unstyled"
                     placeholder="찾으시는 퀴즈를 검색해보세요"
                   ></TextInput>

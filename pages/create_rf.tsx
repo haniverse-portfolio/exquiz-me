@@ -234,7 +234,15 @@ const Home: NextPage = () => {
             {/* <ImageSection /> */}
             <Grid columns={5} style={{ height: "calc(100vh - 120px)" }}>
               <Grid.Col className="bg-[#273248]" span={1}>
-                <NavbarMinimal></NavbarMinimal>
+                {/* {imageList.map(() => {
+                  return (
+                    <Center
+                      className="cursor-pointer w-full rounded-xl shadow-lg"
+                      key={i}
+                    >
+                    </Center>
+                  );
+                })} */}
               </Grid.Col>
               <Grid.Col span={4}></Grid.Col>
             </Grid>
