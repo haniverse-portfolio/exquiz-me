@@ -219,30 +219,26 @@ const Home: NextPage = () => {
       <CompleteModal />
       <TabChangeModal />
       {/* title */}
-      <ProblemsetModal />
 
       {/* 퀴즈 제작 */}
       <main>
         {step === 0 ? (
-          <>
+          <Stack>
             {/* navigation bar */}
             <CreateNavigation />
             {/* slide + create + image */}
-            <Grid columns={24} style={{ height: "calc(100vh - 70px)" }}>
-              <Grid.Col span={6}>
+
+            {/* <NavbarMinimal></NavbarMinimal> */}
+            {/* <SearchSection /> */}
+            {/* <Main></Main> */}
+            {/* <ImageSection /> */}
+            <Grid columns={5} style={{ height: "calc(100vh - 120px)" }}>
+              <Grid.Col className="bg-[#273248]" span={1}>
                 <NavbarMinimal></NavbarMinimal>
               </Grid.Col>
-              <Grid.Col span={7}>
-                <SearchSection />
-              </Grid.Col>
-              <Grid.Col span={28}>
-                <Main></Main>
-              </Grid.Col>
-              <Grid.Col span={10}>
-                <ImageSection />
-              </Grid.Col>
+              <Grid.Col span={4}></Grid.Col>
             </Grid>
-          </>
+          </Stack>
         ) : (
           <></>
         )}

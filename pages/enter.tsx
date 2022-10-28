@@ -130,11 +130,13 @@ const Home: NextPage = () => {
       {},
       function (frame) {
         client.subscribe("/topic/room/" + pin + "/host", function (message) {
-          setUserCurInfo(JSON.parse(message.body));
-          localStorage.setItem(
-            "fromSession",
-            JSON.parse(message.body).fromSession
-          );
+          if (JSON.parse(message.body).messageType === "PARTICIPANT") {
+            setUserCurInfo(JSON.parse(message.body));
+            localStorage.setItem(
+              "fromSession",
+              JSON.parse(message.body).fromSession
+            );
+          }
         });
       },
       function (error) {

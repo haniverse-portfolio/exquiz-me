@@ -88,9 +88,13 @@ const Home: NextPage = () => {
 
   const getProblemsets = () => {
     axios
-      .get(connectMainServerApiAddress + "api/problemsets/1")
+      .get(
+        connectMainServerApiAddress +
+          "api/problemsets/" +
+          localStorage.getItem("host_id")?.toString()
+      )
       .then((result) => {
-        setProblemsets(result.data);
+        if (result.data.size > 0) setProblemsets(result.data);
       })
       .catch((error) => {
         alert(error);
@@ -138,7 +142,9 @@ const Home: NextPage = () => {
   const [room, setRoom] = useRecoilState(inboxRoom);
 
   useEffect(() => {
-    getProblemsets();
+    if (localStorage.getItem("access_token") === null)
+      router.push("https://api.exquiz.me/api/google/login");
+    else getProblemsets();
     // localStorage.setItem("pin", "333333");
     // problemsets.sort((a, b) => {
     //   return b.id - a.id;

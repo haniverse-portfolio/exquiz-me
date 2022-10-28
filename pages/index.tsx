@@ -53,13 +53,28 @@ const Home: NextPage = () => {
   const [modalOpened, setModalOpened] = useRecoilState(indexIsModalOpened);
   /* *** states end *** */
 
+  let validateQueryString = (p_string: string) => {
+    var field = p_string;
+    var url = window.location.href;
+    if (url.indexOf("?" + field + "=") != -1) return true;
+    else if (url.indexOf("&" + field + "=") != -1) return true;
+    return false;
+  };
+
   /* *** effect start *** */
   useEffect(() => {
+    // break;
+    if (!router.isReady) return;
+
     if (navigator.userAgent.match(/iPhone|iPad|iPod|Android/i)) {
       location.replace("/enter");
     }
-    if ((router.query.access_token as string) !== "/") {
+    if (validateQueryString("access_token")) {
       getTest(router.query.access_token as string);
+      localStorage.setItem("access_token", router.query.access_token as string);
+    }
+    if (validateQueryString("host_id")) {
+      localStorage.setItem("host_id", router.query.host_id as string);
     }
   }, [router.query.access_token as string]);
   /* *** effect start *** */
@@ -135,6 +150,20 @@ const Home: NextPage = () => {
                   <p className="mx-auto text-white drop-shadow-lg font-bold text-2xl">
                     퀴즈를 만들고 참여하여 다함께 즐겨보세요!
                   </p>
+                  <Button
+                    onClick={() => {
+                      localStorage.removeItem("access_token");
+                    }}
+                  >
+                    액세스 토큰 삭제
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      localStorage.removeItem("host_id");
+                    }}
+                  >
+                    호스트 아이디 삭제
+                  </Button>
                   {/* <Group spacing="xl" className="mt-10">
                     <Group position="left">
                       <ActionIcon variant="transparent">

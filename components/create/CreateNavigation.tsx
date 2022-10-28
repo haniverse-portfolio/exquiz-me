@@ -32,6 +32,7 @@ import {
   Copy,
   X,
   ArrowNarrowLeft,
+  ChevronLeft,
 } from "tabler-icons-react";
 
 import {
@@ -92,57 +93,26 @@ export const CreateNavigation = () => {
   const [imageWord, setImageWord] = useRecoilState(createImageWord);
 
   return (
-    <Grid className="h-[70px] border-b-2 border-gray-300" columns={24}>
-      <Grid.Col span={5}>
-        <Link href="/">
-          <Image
-            className="my-auto"
-            src="https://www.exquiz.me/favicon.ico"
-            alt="Picture of the author"
-            width={50}
-            height={50}
-          />
-        </Link>
-      </Grid.Col>
-      <Grid.Col span={14}>
-        {" "}
-        <Group
-          className="my-1"
-          onClick={() => {
-            setProblemsetDrawer("1");
-          }}
-        >
-          <Group className="cursor-pointer" spacing={0}>
-            <Group className="shadow-lg" spacing={0}>
-              <Group className="border-r-2 border-gray-300 shadow-lg h-12 w-4 bg-amber-200" />
-              <Group>
-                <Stack spacing={0}>
-                  <Group className="border-b-2 border-gray-300 m-0 p-0 h-6 w-16 bg-amber-200"></Group>
-                  <Group spacing={2} className=" m-0 p-0 h-6 w-16 bg-amber-200">
-                    <Group
-                      className={`mx-1 text-white w-5 h-5 rounded-full`}
-                    ></Group>
-                    <Group
-                      className={`mx-0 text-white w-5 h-5 rounded-full`}
-                    ></Group>
-                  </Group>
-                </Stack>
-              </Group>
-            </Group>
-            <Group className="shadow-lg m-0 p-0 h-10 w-3 bg-white"></Group>
-          </Group>
-          {problemSet.title === "" ? (
-            <p className="text-2xl text-gray-400 font-bold">
-              제목을 입력해주세요
-            </p>
-          ) : (
-            <p className="text-2xl font-bold">{problemSet.title}</p>
-          )}
-        </Group>
-      </Grid.Col>
-      <Grid.Col className="my-2" span={5}>
+    <Group
+      className="px-8 shadow-lg h-[120px] border-b-2 border-gray-300"
+      position="apart"
+    >
+      <Link href="/">
+        <ActionIcon size={60}>
+          <ChevronLeft size={36}></ChevronLeft>
+        </ActionIcon>
+      </Link>
+      <TextInput
+        size="xl"
+        placeholder="퀴즈방 이름을 입력해주세요"
+        variant="unstyled"
+      ></TextInput>
+
+      <Group>
+        <Button variant="outline" color="orange" onClick={() => {}}>
+          미리보기
+        </Button>
         <Button
-          fullWidth
           variant="filled"
           color="orange"
           onClick={() => {
@@ -151,7 +121,7 @@ export const CreateNavigation = () => {
         >
           완성하기
         </Button>
-      </Grid.Col>
-    </Grid>
+      </Group>
+    </Group>
   );
 };

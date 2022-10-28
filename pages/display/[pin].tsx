@@ -22,6 +22,7 @@ import {
   Drawer,
   ActionIcon,
   ScrollArea,
+  MantineProvider,
 } from "@mantine/core";
 import {
   Alarm,
@@ -29,6 +30,7 @@ import {
   Pencil,
   ArrowBigRightLines,
   Router,
+  IdOff,
 } from "tabler-icons-react";
 
 import { useRecoilState } from "recoil";
@@ -48,6 +50,7 @@ import {
 import axios from "axios";
 
 const Home: NextPage = () => {
+  // let audio = new Audio("/../../public/background_music.mp3") as any;
   const [seconds, setSeconds] = useState(30);
   const interval = useInterval(() => setSeconds((s) => s - 0.05), 50);
   const [messagetypestate, setPlaymessagetypestate] =
@@ -76,7 +79,6 @@ const Home: NextPage = () => {
     const headers = {};
     var socket = new SockJS(connectMainServerApiAddress + "stomp");
     stompClient = Stomp.over(socket);
-
     var reconnect = 0;
     stompClient.connect(
       {},
@@ -84,7 +86,9 @@ const Home: NextPage = () => {
         stompClient.subscribe(
           "/topic/room/" + router.query.pin + "/host",
           function (message) {
-            // do it
+            if (JSON.parse(message.body).messageType === "NEW_PROBLEM") {
+              // audio.play();
+            }
           }
         );
       },
@@ -96,6 +100,10 @@ const Home: NextPage = () => {
 
   // let [problem, setProblem] = useRecoilState(playProblem);
   // let [option, setOption] = useRecoilState(playOption);
+
+  // useEffect(() => {
+  //   audio.play();
+  // }, []);
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -110,7 +118,15 @@ const Home: NextPage = () => {
   }, [messagetypestate]);
 
   useEffect(() => {
-    setImage("/../public/dino_env.png");
+    if (seconds <= 0) {
+      setSeconds(30);
+      interval.stop();
+      setStep(1);
+    }
+  }, [seconds]);
+
+  useEffect(() => {
+    setImage("https://exquiz.me/dino_env.png");
   }, []);
 
   const getParticipantList = () => {
@@ -196,12 +212,24 @@ const Home: NextPage = () => {
                     <ActionIcon variant="transparent" size={60}>
                       <Alarm size={60} color="orange"></Alarm>
                     </ActionIcon>
-                    <Progress
-                      className="w-[70vw]"
-                      size="xl"
-                      color="orange"
-                      value={(seconds / problem[curIdx].timelimit) * 100.0}
-                    />
+                    <MantineProvider
+                      inherit
+                      theme={{
+                        defaultGradient: { from: "red", to: "orange", deg: 45 },
+                      }}
+                    >
+                      <Progress
+                        className="w-[70vw]"
+                        size="xl"
+                        color="orange"
+                        // color={theme.fn.gradient({
+                        //   from: "red",
+                        //   to: "orange",
+                        //   deg: 45,
+                        // })}
+                        value={(seconds / problem[curIdx].timelimit) * 100.0}
+                      />
+                    </MantineProvider>
                     <p className="font-semibold text-amber-500 text-3xl">
                       {Math.floor(seconds)}
                     </p>
@@ -236,12 +264,13 @@ const Home: NextPage = () => {
                       </p>
                     </Stack>
                     <Group>
-                      <p className="ml-16 text-4xl text-amber-500">Q</p>
-                      <p className=" font-bold text-4xl text-left mt-10">
+                      <p className="ml-16 text-4xl text-orange-500 font-bold">
+                        Q.{" "}
+                      </p>
+                      <p className="font-bold text-4xl text-left mt-10">
                         {problem[curIdx].description}
                       </p>
                     </Group>
-                    <Stack className="rounded-full bg-white h-12 w-40"></Stack>
                   </Stack>
                   {/* <Image
                     alt="hello"
@@ -259,7 +288,7 @@ const Home: NextPage = () => {
                                 variant="white"
                                 color="gray.5"
                                 fullWidth
-                                className="!h-60 bg-white rounded-xl shadow-xl"
+                                className="!h-60 bg-white rounded-xl"
                               >
                                 <p className="text-2xl text-left">{i + 1}. </p>
                                 <p className="text-2xl text-center">
@@ -278,91 +307,6 @@ const Home: NextPage = () => {
               <></>
             )}
             {step === 1 ? (
-              <Stack>
-                <Stack>
-                  {/* ../public/globe_banner.png */}
-                  <p className="underline decoration-amber-500 font-bold text-7xl text-center mt-10">
-                    정답은 3번입니다.
-                  </p>
-                  <p className="underline decoration-amber-500 font-bold text-7xl text-center mt-10">
-                    {problem[curIdx].description}
-                  </p>
-                  <Image
-                    alt="hello"
-                    src={image}
-                    width={600}
-                    height={400}
-                  ></Image>
-                  <Stack>
-                    <Grid justify="center" gutter="sm">
-                      {option[curIdx].map(
-                        ({ description, idx, picture, problemId }, i) => {
-                          let color = ["red", "blue", "green", "orange"];
-                          let bgColor = "hover:bg-" + color[i] + "-500";
-                          return (
-                            <Grid.Col
-                              className="!max-w-[50%] !basis-2/4"
-                              key={i}
-                              span={5}
-                              offset={0}
-                            >
-                              <Button
-                                fullWidth
-                                style={{ height: "100px" }}
-                                onClick={() => {
-                                  setAnswer(answer === i ? -1 : i);
-                                }}
-                                color={color[i]}
-                                className={`${
-                                  answer === i ? "shadow-inner text-white" : ""
-                                } shadow-md ${answer === i ? bgColor : ""} ${
-                                  answer === i ? bgColor : ""
-                                }`}
-                                variant={answer === i ? "filled" : "outline"}
-                              >
-                                <p className="text-lg"> {description}</p>
-                              </Button>
-                            </Grid.Col>
-                          );
-                        }
-                      )}
-                    </Grid>
-                  </Stack>
-                </Stack>
-
-                <Group className="justify-between">
-                  <Button
-                    color="orange"
-                    onClick={() => {
-                      setStep(step + 1);
-                    }}
-                    className="mx-4 h-[60px] w-[200px]"
-                    variant="outline"
-                    component="a"
-                    rel="noopener noreferrer"
-                    rightIcon={<Alarm size={38} />}
-                  >
-                    순위 변동
-                  </Button>
-
-                  <Button
-                    color="orange"
-                    onClick={() => {
-                      setStep(step - 1);
-                    }}
-                    component="a"
-                    rel="noopener noreferrer"
-                    leftIcon={<BellRinging size={38} />}
-                  >
-                    다음으로
-                  </Button>
-                </Group>
-              </Stack>
-            ) : (
-              <></>
-            )}
-
-            {step === 2 ? (
               <Grid
                 style={{ height: "calc(100vh - 70px)" }}
                 gutter={0}
@@ -387,10 +331,24 @@ const Home: NextPage = () => {
                         </p>
                       </Stack>
                       <Stack>
-                        <Button color="orange" variant="light" size="xl">
+                        <Button
+                          onClick={() => {
+                            setStep(2);
+                          }}
+                          color="orange"
+                          variant="light"
+                          size="xl"
+                        >
                           해설하기
                         </Button>
-                        <Button color="orange" variant="filled" size="xl">
+                        <Button
+                          onClick={() => {
+                            setStep(0);
+                          }}
+                          color="orange"
+                          variant="filled"
+                          size="xl"
+                        >
                           다음으로
                         </Button>
                       </Stack>
@@ -407,37 +365,93 @@ const Home: NextPage = () => {
                       <ScrollArea style={{ height: "calc(100vh - 70px)" }}>
                         <Stack style={{ height: "400vh" }}>
                           {/* <Grid columns={6}>
-                            {partlist.map((cur: any, i) => {
-                              return (
-                                <Grid.Col span={1} key={i}>
-                                  <Group className="h-32 w-32 rounded-xl border-2 bg-gray-200">
-                                    <Center
-                                      className={`w-[120px] h-[120px] ${
-                                        avatarColor[cur.colorNumber]
-                                      } rounded-full shadow-lg`}
-                                    >
-                                      <Image
-                                        alt="hello"
-                                        className={`cursor-pointer rounded-full`}
-                                        src={avatarAnimal[cur.imageNumber]}
-                                        width={"100px"}
-                                        height={"100px"}
-                                      ></Image>
-                                    </Center>
-                                  </Group>
-                                  <p className="text-center text-black">
-                                    {cur.nickname}
-                                  </p>
-                                </Grid.Col>
-                              );
-                            })}
-                          </Grid> */}
+                          {partlist.map((cur: any, i) => {
+                            return (
+                              <Grid.Col span={1} key={i}>
+                                <Group className="h-32 w-32 rounded-xl border-2 bg-gray-200">
+                                  <Center
+                                    className={`w-[120px] h-[120px] ${
+                                      avatarColor[cur.colorNumber]
+                                    } rounded-full shadow-lg`}
+                                  >
+                                    <Image
+                                      alt="hello"
+                                      className={`cursor-pointer rounded-full`}
+                                      src={avatarAnimal[cur.imageNumber]}
+                                      width={"100px"}
+                                      height={"100px"}
+                                    ></Image>
+                                  </Center>
+                                </Group>
+                                <p className="text-center text-black">
+                                  {cur.nickname}
+                                </p>
+                              </Grid.Col>
+                            );
+                          })}
+                        </Grid> */}
                         </Stack>
                       </ScrollArea>
                     }
                   </Stack>
                 </Grid.Col>
               </Grid>
+            ) : (
+              <></>
+            )}
+
+            {step === 2 ? (
+              <>
+                <Stack>
+                  <Stack className="bg-white mx-16 rounded-xl shadow-xl">
+                    <Stack
+                      align="center"
+                      className="ml-16 relative bottom-8 rounded-full bg-orange-500 h-12 w-40"
+                    >
+                      <p className="m-auto text-center text-2xl text-white font-semibold">
+                        문제 1/5
+                      </p>
+                    </Stack>
+                    <Group>
+                      <p className="ml-16 text-4xl text-orange-500 font-bold">
+                        Q.{" "}
+                      </p>
+                      <p className="font-bold text-4xl text-left mt-10">
+                        {problem[curIdx].description}
+                      </p>
+                    </Group>
+                  </Stack>
+                  {/* <Image
+                  alt="hello"
+                  src="/../public/halla4.jpeg"
+                  width={600}
+                  height={400}
+                ></Image> */}
+                  <Stack className=" mx-16">
+                    <Grid columns={4} gutter="xl">
+                      {option[curIdx].map(
+                        ({ description, idx, picture, problemId }, i) => {
+                          return (
+                            <Grid.Col key={i} span={1}>
+                              <Button
+                                variant="white"
+                                color="gray.5"
+                                fullWidth
+                                className="!h-60 bg-white rounded-xl"
+                              >
+                                <p className="text-2xl text-left">{i + 1}. </p>
+                                <p className="text-2xl text-center">
+                                  {description}
+                                </p>
+                              </Button>
+                            </Grid.Col>
+                          );
+                        }
+                      )}
+                    </Grid>
+                  </Stack>
+                </Stack>
+              </>
             ) : (
               <></>
             )}

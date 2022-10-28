@@ -45,7 +45,7 @@ const Home: NextPage = () => {
       function (frame) {
         client.subscribe("/topic/room/" + pin ?? "000000", function (message) {
           if (JSON.parse(message.body).messageType === "NEW_PROBLEM") {
-            setStep(step + 1);
+            setStep(1);
           }
         });
       },
@@ -57,6 +57,19 @@ const Home: NextPage = () => {
   useEffect(() => {
     if (!router.isReady) return;
     connect();
+    // setTimeout(() => {
+    //   var cat = localStorage.getItem("fromSession");
+    //   client.send(
+    //     "/pub/room/" + pin + "/submit",
+    //     {},
+    //     JSON.stringify({
+    //       messageType: "ANSWER", // 반드시 "ANSWER"
+    //       fromSession: cat, // 사용자 session id - google login시 발급
+    //       problemIdx: 0, // 제출한 문제의 번호
+    //       answerText: answer.toString(),
+    //     })
+    //   );
+    // }, 500);
   }, [router.isReady]);
 
   let [curIdx, setCurIdx] = useState(0);
@@ -149,6 +162,14 @@ const Home: NextPage = () => {
               </p>
             </Stack>
           </Center>
+          <Button
+            onClick={() => {
+              var cat = localStorage.getItem("fromSession");
+              alert(cat);
+            }}
+          >
+            세션 값 확인
+          </Button>
         </Stack>
       ) : (
         <></>
@@ -212,12 +233,13 @@ const Home: NextPage = () => {
               onClick={() => {
                 //connect();
                 setTimeout(() => {
+                  var cat = localStorage.getItem("fromSession");
                   client.send(
                     "/pub/room/" + pin + "/submit",
                     {},
                     JSON.stringify({
                       messageType: "ANSWER", // 반드시 "ANSWER"
-                      fromSession: localStorage.getItem("fromSession"), // 사용자 session id - google login시 발급
+                      fromSession: cat, // 사용자 session id - google login시 발급
                       problemIdx: 0, // 제출한 문제의 번호
                       answerText: answer.toString(),
                     })
@@ -238,6 +260,14 @@ const Home: NextPage = () => {
               color="orange"
             >
               제출하기
+            </Button>
+            <Button
+              onClick={() => {
+                var cat = localStorage.getItem("fromSession");
+                alert(cat);
+              }}
+            >
+              세션 값 확인
             </Button>
           </Stack>
         </Container>
