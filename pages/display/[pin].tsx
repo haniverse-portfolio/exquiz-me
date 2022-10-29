@@ -105,9 +105,7 @@ const Home: NextPage = () => {
   useEffect(() => {
     const promise = bgAudio.current.play();
     if (promise !== undefined) {
-      promise.then().catch((error) => {
-        console.log("audio_error: " + error);
-      });
+      alert("audio_not_play");
     }
   }, []);
 

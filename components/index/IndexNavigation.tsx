@@ -75,7 +75,13 @@ const IndexNavigation = () => {
       <Group position="apart" className="h-[60px] px-4 shadow">
         <Link href="/">
           <Group className="cursor-pointer">
-            <Image src="/index/bulb_bg.png" alt="logo" width={50} height={50} />
+            <Image
+              className="rounded-full"
+              src="/index/bulb_bg.png"
+              alt="logo"
+              width={50}
+              height={50}
+            />
             <span className="font-semibold text-[24px]">exquiz.me</span>
           </Group>
         </Link>
