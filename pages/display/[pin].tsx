@@ -50,7 +50,8 @@ import {
 import axios from "axios";
 
 const Home: NextPage = () => {
-  // let audio = new Audio("/../../public/background_music.mp3") as any;
+  const bgAudio = useRef(null) as any;
+
   const [seconds, setSeconds] = useState(30);
   const interval = useInterval(() => setSeconds((s) => s - 0.05), 50);
   const [messagetypestate, setPlaymessagetypestate] =
@@ -101,9 +102,14 @@ const Home: NextPage = () => {
   // let [problem, setProblem] = useRecoilState(playProblem);
   // let [option, setOption] = useRecoilState(playOption);
 
-  // useEffect(() => {
-  //   audio.play();
-  // }, []);
+  useEffect(() => {
+    const promise = bgAudio.current.play();
+    if (promise !== undefined) {
+      promise.then().catch((error) => {
+        console.log("audio_error: " + error);
+      });
+    }
+  }, []);
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -162,7 +168,11 @@ const Home: NextPage = () => {
       >
         hello
       </Drawer> */}
-
+      <audio
+        ref={bgAudio}
+        className="invisible"
+        src="/background_music.mp3"
+      ></audio>
       <main className="h-[100vh]">
         <section
           style={{ height: "calc(100vh - 140px)" }}
@@ -254,10 +264,10 @@ const Home: NextPage = () => {
                   </Group>
                 </Group>
                 <Stack>
-                  <Stack className="bg-white mx-16 rounded-xl shadow-xl">
+                  <Stack className="relative bg-white mx-16 rounded-xl shadow-xl">
                     <Stack
                       align="center"
-                      className="ml-16 relative bottom-8 rounded-full bg-orange-500 h-12 w-40"
+                      className="ml-16 absolute -top-8 rounded-full bg-orange-500 h-12 w-40"
                     >
                       <p className="m-auto text-center text-2xl text-white font-semibold">
                         문제 1/5

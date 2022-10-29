@@ -326,7 +326,7 @@ const Home: NextPage = () => {
                                       problemsetIdx === i
                                         ? "border-x-2 border-t-2 border-solid border-blue-500"
                                         : ""
-                                    }h-16 rounded-t-xl bg-[#FFD178]`}
+                                    } h-16 rounded-t-xl bg-[#FFD178]`}
                                     span={6}
                                   ></Grid.Col>
                                   <Grid.Col
@@ -341,7 +341,7 @@ const Home: NextPage = () => {
                                 <Grid
                                   className={`${
                                     problemsetIdx === i
-                                      ? "shadow-xl border-x-2 border-b-2 border-solid border-blue-500"
+                                      ? "shadow-xl border-x-2 border-t-0 border-b-2 border-solid border-blue-500"
                                       : ""
                                   } h-60 rounded-b-xl bg-[#FFD178]`}
                                   columns={10}

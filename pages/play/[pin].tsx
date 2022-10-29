@@ -151,17 +151,18 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {step === 0 ? (
-        <Stack align="center" className="bg-orange-400 h-[100vh]">
-          <Center>
-            <Stack className="mt-[45vh]">
-              <Center>
-                <Loader color="yellow" size="xl" />
-              </Center>
-              <p className="text-center text-xl text-white font-semibold">
-                퀴즈 시작 대기 중...
-              </p>
-            </Stack>
-          </Center>
+        <Stack
+          align="center"
+          className="flex items-center justify-center bg-orange-400 h-[100vh]"
+        >
+          <Stack>
+            <Center>
+              <Loader color="yellow" size="xl" />
+            </Center>
+            <p className="text-center text-xl text-white font-semibold">
+              퀴즈 시작 대기 중...
+            </p>
+          </Stack>
           <Button
             onClick={() => {
               var cat = localStorage.getItem("fromSession");

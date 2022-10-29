@@ -97,7 +97,7 @@ const Home: NextPage = () => {
       function (frame) {
         console.log(router.query.pin);
         if (router.query.pin === undefined) router.push("/404");
-        getRoomOpened(router.query.pin as string);
+        // getRoomOpened(router.query.pin as string);
         client.subscribe(
           "/topic/room/" + router.query.pin + "/host",
           function (message) {

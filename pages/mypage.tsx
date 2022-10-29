@@ -5,7 +5,7 @@ import styles from "../styles/Home.module.css";
 import { useState } from "react";
 import axios from "axios";
 import React, { useEffect } from "react";
-import MypageNavigation from "../components/mypage/MypageNavigation";
+import MypageNavigation from "../components/index/IndexNavigation";
 import Image from "next/image";
 import { useRecoilState } from "recoil";
 import {

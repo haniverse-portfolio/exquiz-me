@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import type { NextPage } from "next";
 import Head from "next/head";
-import styles from "../styles/Home.module.css";
+import Image from "next/image";
 import IndexNavigation from "../components/index/IndexNavigation";
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
@@ -14,20 +14,8 @@ import {
   ActionIcon,
   Modal,
   ScrollArea,
+  Container,
 } from "@mantine/core";
-import {
-  User,
-  Database,
-  TrendingUp,
-  BrandFacebook,
-  BrandTwitter,
-  BrandInstagram,
-  BrandLinkedin,
-  Circle,
-  Pencil,
-  BuildingSkyscraper,
-  Puzzle,
-} from "tabler-icons-react";
 import {
   indexIsLogined,
   indexIsModalOpened,
@@ -108,6 +96,79 @@ const Home: NextPage = () => {
         <meta name="description" content="exquiz.me" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      {/* navigation bar */}
+      <ScrollArea
+        style={{ width: "100vw", height: "100vh" }}
+        viewportRef={viewport}
+        scrollbarSize={0}
+      >
+        <IndexNavigation />
+        <section
+          className="bg-[#F9F5F4]"
+          style={{ height: "calc(100vh - 60px)" }}
+        >
+          {/* original-160px */}
+          <Stack className="h-[120px]"></Stack>
+          <Stack spacing={0} className=" flex contents-between">
+            {/* banner-start */}
+            <Stack>
+              <Stack spacing={0}>
+                <h1 className="text-[#121212] text-center font-bold text-[40px]">
+                  퀴즈의 새로운 경험을 제시하다
+                </h1>
+                <Stack className="h-[34px]"></Stack>
+                <h2 className="text-[#818181] text-[24px] text-center">
+                  <p>
+                    <span className="text-[#F9761E]">학교 선생님</span>,&nbsp;
+                    <span className="text-[#85B6FF]">회사 팀장님</span>,&nbsp;
+                    <span className="text-[#4CAF50]">퀴즈 애호가</span> 누구든
+                  </p>
+                  <p>퀴즈를 만들고 참여하여 다함께 즐겨보세요!</p>
+                </h2>
+              </Stack>
+            </Stack>
+            {/* banner-end */}
+            <Stack className="h-[100px]"></Stack>
+            {/* demo-image-start */}
+            <Group position="center">
+              <Image
+                className="hover:scale-125"
+                src="/index/demo1.svg"
+                alt="demo1"
+                width={477}
+                height={339}
+              ></Image>
+              <Image
+                src="/index/demo2.svg"
+                alt="demo2"
+                width={476}
+                height={338}
+              ></Image>
+              <Image
+                src="/index/demo3.svg"
+                alt="demo3"
+                width={477}
+                height={339}
+              ></Image>
+            </Group>
+          </Stack>
+          <Stack className="h-[48px]"></Stack>
+          <Container className="w-[20vw] text-center">
+            <Button
+              fullWidth
+              radius="xl"
+              className="shadow"
+              size="xl"
+              variant="outline"
+              color="orange.6"
+            >
+              퀴즈 맛보기
+            </Button>
+          </Container>
+        </section>
+        <section className="h-screen"></section>
+      </ScrollArea>
+      {/* modal */}
       <Modal
         withCloseButton={false}
         centered
@@ -116,55 +177,29 @@ const Home: NextPage = () => {
       >
         <AuthenticationForm></AuthenticationForm>
       </Modal>
-      {/* navigation bar */}
-      <ScrollArea
-        style={{ width: "100vw", height: "100vh" }}
-        viewportRef={viewport}
-        scrollbarSize={0}
-      >
-        <IndexNavigation />
-        <section style={{ height: "calc(100vh - 70px)" }}>
-          <Stack spacing={0} className=" flex contents-between">
-            {/* banner-start */}
-            <Stack className="h-[40vh] w-[100vw] bg-gradient-to-l from-amber-500 via-amber-500 to-orange-500 animate-textSlow">
-              <Group className="my-auto px-10" position="apart">
-                <Stack spacing={0}>
-                  <p className="mx-auto text-white drop-shadow-lg font-bold text-6xl">
-                    퀴즈의 새로운 경험을 제시하다
-                  </p>
-                  <p className="mx-auto text-white drop-shadow-lg font-bold text-2xl">
-                    학교{" "}
-                    <span className="text-transparent bg-clip-text bg-red-200">
-                      선생님
-                    </span>
-                    , 회사{" "}
-                    <span className="text-transparent bg-clip-text bg-blue-200">
-                      팀장님
-                    </span>
-                    , 퀴즈{" "}
-                    <span className="text-transparent bg-clip-text bg-lime-300">
-                      애호가
-                    </span>{" "}
-                    누구든
-                  </p>
-                  <p className="mx-auto text-white drop-shadow-lg font-bold text-2xl">
-                    퀴즈를 만들고 참여하여 다함께 즐겨보세요!
-                  </p>
-                  <Button
-                    onClick={() => {
-                      localStorage.removeItem("access_token");
-                    }}
-                  >
-                    액세스 토큰 삭제
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      localStorage.removeItem("host_id");
-                    }}
-                  >
-                    호스트 아이디 삭제
-                  </Button>
-                  {/* <Group spacing="xl" className="mt-10">
+    </div>
+  );
+};
+
+export default Home;
+
+// onClick={() => {
+//   viewport.current.scrollTo({
+//     top: "200vh",
+//     behavior: "smooth",
+//   });
+// }}
+
+// onClick={() => {
+//   viewport.current.scrollTo({
+//     top: viewport.current.scrollHeight,
+//     // top: viewport.current.scrollHeight / 2,
+//     behavior: "smooth",
+//   });
+// }}
+
+{
+  /* <Group spacing="xl" className="mt-10">
                     <Group position="left">
                       <ActionIcon variant="transparent">
                         <User color="white" />
@@ -189,10 +224,26 @@ const Home: NextPage = () => {
                         개설된 방 0개
                       </p>
                     </Group>
-                  </Group> */}
-                </Stack>
-                <Stack>
-                  <Group>
+                  </Group> */
+}
+
+// <Button
+//   onClick={() => {
+//     localStorage.removeItem("access_token");
+//   }}
+// >
+//   액세스 토큰 삭제
+// </Button>
+// <Button
+//   onClick={() => {
+//     localStorage.removeItem("host_id");
+//   }}
+// >
+//   호스트 아이디 삭제
+// </Button>
+
+{
+  /* <Group>
                     <Button
                       size="lg"
                       className="ease-in-out duration-300 hover:scale-105 shadow-md"
@@ -212,167 +263,13 @@ const Home: NextPage = () => {
                     >
                       ✍️ &nbsp;&nbsp;내 퀴즈 관리하기
                     </Button>
-                  </Group>
-                </Stack>
-              </Group>
-            </Stack>
-            {/* banner-end */}
+                  </Group> */
+}
 
-            {/* category-start */}
-            <Stack className="items-center h-[40vh] w-[100vw]">
-              <Group className="my-auto" spacing="xl" position="center">
-                <Stack>
-                  <Group
-                    onClick={() => {
-                      viewport.current.scrollTo({
-                        top: viewport.current.scrollHeight,
-                        // top: viewport.current.scrollHeight / 2,
-                        behavior: "smooth",
-                      });
-                    }}
-                    className="cursor-pointer w-36 h-36 rounded-full bg-gradient-to-r from-red-500 to-orange-500 ease-in-out duration-300 hover:scale-105 shadow-md"
-                  >
-                    <ActionIcon
-                      size={64}
-                      className="m-auto"
-                      variant="transparent"
-                    >
-                      <Pencil color="white"> </Pencil>
-                    </ActionIcon>
-                  </Group>
-                  <p className="m-auto font-bold text-xl text-black">
-                    문제 출제
-                  </p>
-                </Stack>
-                <Stack>
-                  <Group
-                    onClick={() => {
-                      viewport.current.scrollTo({
-                        top: "200vh",
-                        behavior: "smooth",
-                      });
-                    }}
-                    className="cursor-pointer w-36 h-36 mx-28 rounded-full bg-gradient-to-r from-blue-500 to-green-500 ease-in-out duration-300 hover:scale-105 shadow-md"
-                  >
-                    <ActionIcon
-                      size={64}
-                      className="m-auto"
-                      variant="transparent"
-                    >
-                      <BuildingSkyscraper color="white"> </BuildingSkyscraper>
-                    </ActionIcon>
-                  </Group>
-                  <p className="m-auto font-bold text-xl text-black">
-                    관리 배포
-                  </p>
-                </Stack>
-                <Stack>
-                  <Group
-                    onClick={() => {
-                      viewport.current.scrollTo({
-                        top: "300vh",
-                        behavior: "smooth",
-                      });
-                    }}
-                    // onClick={() => scrollIntoView({ alignment: "center" })}
-                    className="cursor-pointer w-36 h-36 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 ease-in-out duration-300 hover:scale-105 shadow-md"
-                  >
-                    <ActionIcon
-                      size={64}
-                      className="m-auto"
-                      variant="transparent"
-                    >
-                      <Puzzle color="white"> </Puzzle>
-                    </ActionIcon>
-                  </Group>
-                  <p className="m-auto font-bold text-xl text-black">
-                    참여 활동
-                  </p>
-                </Stack>
-              </Group>
-            </Stack>
-            {/* category-end */}
-          </Stack>
-        </section>
-        <section className="h-screen">
-          <IndexHero1></IndexHero1>
-        </section>
-        <section className="h-screen">
-          <IndexHero2></IndexHero2>
-        </section>
-        <section className="h-screen">
-          <IndexHero3></IndexHero3>
-        </section>
-        <FooterLinks
-          data={[
-            {
-              title: "서비스 정보",
-              links: [
-                {
-                  label: "기능 구성",
-                  link: "#",
-                },
-                {
-                  label: "가격 정책",
-                  link: "#",
-                },
-                {
-                  label: "고객 지원",
-                  link: "#",
-                },
-                {
-                  label: "패치 노트",
-                  link: "#",
-                },
-              ],
-            },
-            {
-              title: "회사 정보",
-              links: [
-                {
-                  label: "회사 소개",
-                  link: "#",
-                },
-                {
-                  label: "팀원 소개",
-                  link: "#",
-                },
-                {
-                  label: "자회사 소개",
-                  link: "#",
-                },
-                {
-                  label: "우리집 소개",
-                  link: "#",
-                },
-              ],
-            },
-            {
-              title: "개발자 연락처",
-              links: [
-                {
-                  label: "디스코드",
-                  link: "#",
-                },
-                {
-                  label: "카카오톡",
-                  link: "#",
-                },
-                {
-                  label: "인스타그램",
-                  link: "#",
-                },
-                {
-                  label: "G메일",
-                  link: "#",
-                },
-              ],
-            },
-          ]}
-        ></FooterLinks>
-      </ScrollArea>
-    </div>
-  );
-};
-
-export default Home;
+{
+  /* <ScrollArea
+style={{ width: "100vw", height: "100vh" }}
+viewportRef={viewport}
+scrollbarSize={0}
+> */
+}

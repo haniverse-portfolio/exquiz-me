@@ -6,8 +6,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRecoilState } from "recoil";
 
-import { Group, Switch, Tooltip } from "@mantine/core";
-import {} from "tabler-icons-react";
+import { ActionIcon, Group, Switch, ThemeIcon, Tooltip } from "@mantine/core";
+import { World } from "tabler-icons-react";
 
 import {
   indexIsLogined,
@@ -72,23 +72,12 @@ const IndexNavigation = () => {
 
   return (
     <header className="bg-white sticky top-0 z-50">
-      <Group
-        style={{
-          height: "60px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          boxShadow: "0 3px 4px -4px gray",
-        }}
-      >
+      <Group position="apart" className="h-[60px] px-4 shadow">
         <Link href="/">
-          <Image
-            className="cursor-pointer pl-8"
-            src="/favicon.ico"
-            alt="Picture of the author"
-            width={50}
-            height={50}
-          />
+          <Group className="cursor-pointer">
+            <Image src="/index/bulb_bg.png" alt="logo" width={50} height={50} />
+            <span className="font-semibold text-[24px]">exquiz.me</span>
+          </Group>
         </Link>
         <Group>
           {membershipComponent(membership)}
@@ -106,14 +95,14 @@ const IndexNavigation = () => {
               로그인
             </span>
           ) : (
-            <img
+            <Image
               alt=""
               onClick={() => {
                 router.push("/mypage");
               }}
               className="h-10 w-auto cursor-pointer rounded-full"
               src={userInfo.picture}
-            ></img>
+            ></Image>
           )}
           <Switch
             checked={langValue == "KO" ? true : false}
@@ -123,11 +112,13 @@ const IndexNavigation = () => {
             defaultChecked={true}
             onLabel="KO"
             offLabel="EN"
-            className="pr-4 text-lg font-bold cursor-pointer transition ease-in-out"
+            className="text-lg font-bold cursor-pointer transition ease-in-out"
             size="lg"
             color="orange"
-            label="언어"
           />
+          <ActionIcon size={40}>
+            <World color="gray" size={40}></World>
+          </ActionIcon>
         </Group>
       </Group>
     </header>
