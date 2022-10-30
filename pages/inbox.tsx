@@ -43,6 +43,8 @@ import {
   inboxProblemset,
   inboxProblemsetIdx,
   inboxRoom,
+  indexIsLogined,
+  indexUserInfo,
   playPin,
   playProblem,
 } from "../components/States";
@@ -59,16 +61,23 @@ const Home: NextPage = () => {
     { value: 75, label: "50명" },
     { value: 100, label: "100명" },
   ];
-
+  const router = useRouter();
   const theme = useMantineTheme();
 
   const secondaryColor =
     theme.colorScheme === "dark" ? theme.colors.dark[1] : theme.colors.gray[7];
-
+  // cur state
   const [problemsetIdx, setProblemsetIdx] = useRecoilState(inboxProblemsetIdx);
   const [modalOpened, setModalOpened] = useRecoilState(inboxIsModalOpened);
-
-  const [pin, setPin] = useRecoilState(playPin);
+  // login
+  const [isLogined, setIsLogined] = useRecoilState(indexIsLogined);
+  const [userInfo, setUserInfo] = useRecoilState(indexUserInfo);
+  // problem
+  const [problemsets, setProblemsets] = useRecoilState(inboxProblemset);
+  const [problem, setProblem] = useRecoilState(inboxProblem);
+  // room
+  const [maxpart, setMaxpart] = useRecoilState(inboxMaxpart);
+  const [room, setRoom] = useRecoilState(inboxRoom);
 
   const deleteProblemset = () => {
     alert(problemsets[problemsetIdx].id);
@@ -115,10 +124,6 @@ const Home: NextPage = () => {
     return;
   };
 
-  const setPinFunction = (p: string) => {
-    setPin((prevstate) => p);
-  };
-
   const postRoom = async () => {
     let rt = Infinity;
     await axios
@@ -128,7 +133,6 @@ const Home: NextPage = () => {
       })
       .then(async (result) => {
         setRoom(result.data);
-        setPin(result.data.pin);
         router.push(`/lobby/${result.data.pin}`);
       })
       .catch((error) => {
@@ -136,29 +140,43 @@ const Home: NextPage = () => {
       });
     return rt;
   };
-
-  const [problemsets, setProblemsets] = useRecoilState(inboxProblemset);
-  const [problem, setProblem] = useRecoilState(inboxProblem);
-  const [maxpart, setMaxpart] = useRecoilState(inboxMaxpart);
-  const [room, setRoom] = useRecoilState(inboxRoom);
-
   useEffect(() => {
-    if (localStorage.getItem("access_token") === null)
-      router.push("https://api.exquiz.me/api/google/login");
-    else getProblemsets();
-    // localStorage.setItem("pin", "333333");
-    // problemsets.sort((a, b) => {
-    //   return b.id - a.id;
-    // });
-  }, []);
+    // already logined
+    if (isLogined === true) {
+      getProblemsets();
+      return;
+    }
+    // not logined
+    if (localStorage.getItem("access_token") === null) router.push("/");
+    // auto login(access token validation)
+    login(localStorage.getItem("access_token") as string);
+  }, [router.isReady]);
+
+  const login = async (tk: string) => {
+    const config = {
+      headers: { Authorization: `Bearer ${tk}` },
+    };
+
+    axios
+      .get(connectMainServerApiAddress + "api/user", config)
+      .then((result) => {
+        setUserInfo(result.data);
+        setIsLogined(true);
+        getProblemsets();
+      })
+      .catch(() => {
+        // localStorage.removeItem("access_token");
+        // localStorage.removeItem("host_id");
+      });
+    // localStorage.removeItem("access_token");
+    // localStorage.removeItem("host_id");
+  };
 
   const totalTime = () => {
     let sum = 0;
     for (let i = 0; i < problem.length; i++) sum += problem[i].timelimit;
     return sum;
   };
-
-  const router = useRouter();
 
   return (
     <div>
@@ -229,7 +247,7 @@ const Home: NextPage = () => {
             <Grid.Col span={4}>
               <Stack className="relative bottom-32">
                 <InboxProfileMenu
-                  image={"/../../public/halla.png"}
+                  image={""}
                   name={"임준현"}
                   job={"인하대학교 컴퓨터공학과 교수"}
                   stats={[
@@ -240,8 +258,14 @@ const Home: NextPage = () => {
                 />
                 <InboxProblemsetMenu
                   image={"/../../public/halla.png"}
-                  name={problemsets[problemsetIdx].title}
-                  job={problemsets[problemsetIdx].description}
+                  name={
+                    problemsetIdx === -1 ? "" : problemsets[problemsetIdx].title
+                  }
+                  job={
+                    problemsetIdx === -1
+                      ? ""
+                      : problemsets[problemsetIdx].description
+                  }
                   stats={[
                     {
                       label: "전체 문제 개수",

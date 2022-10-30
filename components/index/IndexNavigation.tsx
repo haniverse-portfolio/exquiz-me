@@ -6,12 +6,23 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRecoilState } from "recoil";
 
-import { ActionIcon, Group, Switch, ThemeIcon, Tooltip } from "@mantine/core";
+import {
+  ActionIcon,
+  Button,
+  Center,
+  Container,
+  Divider,
+  Group,
+  HoverCard,
+  Stack,
+  Switch,
+  ThemeIcon,
+  Tooltip,
+} from "@mantine/core";
 import { World } from "tabler-icons-react";
 
 import {
   indexIsLogined,
-  indexIsModalOpened,
   indexMembership,
   indexUserInfo,
   language,
@@ -19,6 +30,7 @@ import {
 
 import {} from "../ConstValues";
 import axios from "axios";
+import { getRouteMatcher } from "next/dist/shared/lib/router/utils/route-matcher";
 
 const IndexNavigation = () => {
   const router = useRouter();
@@ -26,7 +38,6 @@ const IndexNavigation = () => {
   const [membership, setMembership] = useRecoilState(indexMembership);
   const [isLogined, setIsLogined] = useRecoilState(indexIsLogined);
   const [userInfo, setUserInfo] = useRecoilState(indexUserInfo);
-  const [modalOpened, setModalOpened] = useRecoilState(indexIsModalOpened);
 
   const googleLogin = () => {
     axios.get("https://api.exquiz.me/api/google/login");
@@ -87,28 +98,72 @@ const IndexNavigation = () => {
         </Link>
         <Group>
           {membershipComponent(membership)}
-          {isLogined === "0" ? (
+          {isLogined === false ? (
             <span
               onClick={() => {
-                setModalOpened("1");
-                // google auth2
-                // googleLogin();
-                // page convertion
-                // router.push("/signup");
+                router.push("/login");
               }}
               className="p-4 text-lg font-bold cursor-pointer transition ease-in-out"
             >
               로그인
             </span>
           ) : (
-            <Image
-              alt=""
-              onClick={() => {
-                router.push("/mypage");
-              }}
-              className="h-10 w-auto cursor-pointer rounded-full"
-              src={userInfo.picture}
-            ></Image>
+            <HoverCard transition="pop" offset={5} width={280} shadow="md">
+              <HoverCard.Target>
+                <span
+                  onClick={() => {
+                    router.push("/mypage");
+                  }}
+                  className="p-4 text-lg font-bold cursor-pointer transition ease-in-out"
+                >
+                  내 정보
+                </span>
+              </HoverCard.Target>
+              <HoverCard.Dropdown className="h-[25vh] !p-0 !m-0">
+                <Stack className="h-[60px] bg-[#FFD178]"></Stack>
+                <Container className="p-0 m-0 relative bottom-10">
+                  <Center>
+                    <Image
+                      width={60}
+                      height={60}
+                      alt="로그인"
+                      onClick={() => {
+                        router.push("/mypage");
+                      }}
+                      className="shadow-lg text-center relative bottom-32 -top-10 cursor-pointer rounded-full"
+                      src={userInfo.picture}
+                    ></Image>
+                  </Center>
+                </Container>
+                <h2 className="p-0 m-0 text-[#818181] text-[16px] text-center">
+                  <p className="text-black">{userInfo.nickname}</p>
+                  <p className="font-normal">{userInfo.email}</p>
+                </h2>
+                <Divider size="sm"></Divider>
+                <Group className="mt-4 justify-center" position="center">
+                  <Button
+                    onClick={() => {
+                      localStorage.removeItem("access_token");
+                      localStorage.removeItem("host_id");
+                      location.replace("/");
+                    }}
+                    variant="light"
+                    color="orange"
+                  >
+                    로그아웃
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      router.push("/mypage");
+                    }}
+                    variant="light"
+                    color="orange"
+                  >
+                    정보수정
+                  </Button>
+                </Group>
+              </HoverCard.Dropdown>
+            </HoverCard>
           )}
           <Switch
             checked={langValue == "KO" ? true : false}

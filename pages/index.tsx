@@ -12,36 +12,50 @@ import {
   useMantineTheme,
   Stack,
   ActionIcon,
-  Modal,
   ScrollArea,
   Container,
 } from "@mantine/core";
-import {
-  indexIsLogined,
-  indexIsModalOpened,
-  indexUserInfo,
-} from "../components/States";
+import { indexIsLogined, indexUserInfo } from "../components/States";
 import { useRecoilState } from "recoil";
 import { connectMainServerApiAddress } from "../components/ConstValues";
-import { AuthenticationForm } from "../components/googleLogin";
-import { IndexHero1 } from "../components/index/IndexHero1";
-import { IndexHero2 } from "../components/index/IndexHero2";
-import { IndexHero3 } from "../components/index/IndexHero3";
-import { FooterLinks } from "../components/index/indexFooter";
 import { GridDots, HandFinger, Photo } from "tabler-icons-react";
 
 const Home: NextPage = () => {
+  /* *** initialization start *** */
   const router = useRouter();
   const theme = useMantineTheme();
   const secondaryColor =
     theme.colorScheme === "dark" ? theme.colors.dark[1] : theme.colors.gray[7];
+  /* *** initialization end *** */
+
   /* *** states start *** */
   const [isLogined, setIsLogined] = useRecoilState(indexIsLogined);
-  const [token, setToken] = useState("");
   const [userInfo, setUserInfo] = useRecoilState(indexUserInfo);
-  const [modalOpened, setModalOpened] = useRecoilState(indexIsModalOpened);
   /* *** states end *** */
 
+  /* *** effect start *** */
+  useEffect(() => {
+    // mobile
+    if (navigator.userAgent.match(/iPhone|iPad|iPod|Android/i)) {
+      location.replace("/enter");
+    }
+    // already logined
+    if (isLogined === true) return;
+    // auto login
+    login(localStorage.getItem("access_token") as string);
+
+    // access_token validation
+    if (validateQueryString("host_id")) {
+      localStorage.setItem("host_id", router.query.host_id as string);
+    }
+    if (validateQueryString("access_token")) {
+      localStorage.setItem("access_token", router.query.access_token as string);
+      login(router.query.access_token as string);
+    }
+  }, [router.isReady]);
+  /* *** effect start *** */
+
+  /* *** function start *** */
   let validateQueryString = (p_string: string) => {
     var field = p_string;
     var url = window.location.href;
@@ -49,27 +63,10 @@ const Home: NextPage = () => {
     else if (url.indexOf("&" + field + "=") != -1) return true;
     return false;
   };
-
-  /* *** effect start *** */
-  useEffect(() => {
-    // break;
-    if (!router.isReady) return;
-
-    if (navigator.userAgent.match(/iPhone|iPad|iPod|Android/i)) {
-      location.replace("/enter");
-    }
-    if (validateQueryString("access_token")) {
-      getTest(router.query.access_token as string);
-      localStorage.setItem("access_token", router.query.access_token as string);
-    }
-    if (validateQueryString("host_id")) {
-      localStorage.setItem("host_id", router.query.host_id as string);
-    }
-  }, [router.query.access_token as string]);
-  /* *** effect start *** */
+  /* *** function end *** */
 
   /* *** axios start *** */
-  const getTest = async (tk: string) => {
+  const login = async (tk: string) => {
     const config = {
       headers: { Authorization: `Bearer ${tk}` },
     };
@@ -78,18 +75,21 @@ const Home: NextPage = () => {
       .get(connectMainServerApiAddress + "api/user", config)
       .then((result) => {
         setUserInfo(result.data);
-        setIsLogined("1");
+        setIsLogined(true);
         router.push("/inbox");
       })
-      .catch(() => {});
+      .catch(() => {
+        // localStorage.removeItem("access_token");
+        // localStorage.removeItem("host_id");
+      });
+    // localStorage.removeItem("access_token");
+    // localStorage.removeItem("host_id");
   };
-
+  /* *** axios end *** */
   const viewport = useRef<HTMLDivElement>() as any;
-
   const { scrollIntoView, targetRef } = useScrollIntoView<HTMLDivElement>({
     offset: 60,
   });
-  /* *** axios end *** */
   return (
     <div>
       <Head>
@@ -97,19 +97,19 @@ const Home: NextPage = () => {
         <meta name="description" content="exquiz.me" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {/* navigation bar */}
       <ScrollArea
         style={{ width: "100vw", height: "100vh" }}
         viewportRef={viewport}
         scrollbarSize={0}
       >
+        {/* navigation bar */}
         <IndexNavigation />
         <section
           className="bg-[#F9F5F4]"
           style={{ height: "calc(100vh - 60px)" }}
         >
           {/* original-160px */}
-          <Stack className="h-[120px]" />
+          <Stack className="h-[100px]" />
           <Stack spacing={0} className=" flex contents-between">
             {/* banner-start */}
             <Stack>
@@ -129,7 +129,7 @@ const Home: NextPage = () => {
               </Stack>
             </Stack>
             {/* banner-end */}
-            <Stack className="h-[100px]" />
+            <Stack className="h-[80px]" />
             {/* demo-image-start */}
             <Group position="center">
               <Image
@@ -334,14 +334,6 @@ const Home: NextPage = () => {
         </footer>
       </ScrollArea>
       {/* modal */}
-      <Modal
-        withCloseButton={false}
-        centered
-        opened={modalOpened === "0" ? false : true}
-        onClose={() => setModalOpened("0")}
-      >
-        <AuthenticationForm></AuthenticationForm>
-      </Modal>
     </div>
   );
 };

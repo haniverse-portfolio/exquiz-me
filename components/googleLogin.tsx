@@ -40,7 +40,7 @@ export function AuthenticationForm(props: PaperProps) {
   return (
     <Paper radius="md" p="xl" withBorder {...props}>
       <Text size="lg" weight={500}>
-        익스퀴즈미에 오신걸 환영합니다!
+        로그인
       </Text>
 
       <Group grow mb="md" mt="md">

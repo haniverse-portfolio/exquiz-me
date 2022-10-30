@@ -11,6 +11,7 @@ module.exports = {
       "encrypted-tbn0.gstatic.com",
       "exquiz.me",
       "www.exquiz.me",
+      "lh3.googleusercontent.com",
     ],
     // formats: ['image/avif', 'image/webp'],
   },

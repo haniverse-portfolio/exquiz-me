@@ -31,16 +31,11 @@ export const indexUserInfo = atom({
 /* *** index *** */
 export const indexIsLogined = atom({
   key: "indexIsLogined",
-  default: "0",
+  default: false,
 });
 
 export const indexMembership = atom({
   key: "indexMembership",
-  default: "0",
-});
-
-export const indexIsModalOpened = atom({
-  key: "indexIsModalOpened",
   default: "0",
 });
 
@@ -246,7 +241,7 @@ export const inboxIsModalOpened = atom({
 
 export const inboxProblemsetIdx = atom({
   key: "inboxProblemsetIdx",
-  default: 0,
+  default: -1,
 });
 
 export const inboxProblemset = atom({
