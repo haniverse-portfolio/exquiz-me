@@ -90,7 +90,7 @@ export function InboxProfileMenu({
       </Group>
       <Button
         onClick={() => {
-          Router.push("/create");
+          Router.push("/create_rf");
         }}
         leftIcon={
           <ThemeIcon size={32} radius="xl" color="orange" variant="filled">

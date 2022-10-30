@@ -30,7 +30,7 @@ import {
   ScrollArea,
 } from "@mantine/core";
 import { ArrowBigRightLines, Qrcode, Copy } from "tabler-icons-react";
-import LobbyNavigation from "../../components/lobby/LobbyNavigation";
+import IndexNavigation from "../../components/index/IndexNavigation";
 
 const Home: NextPage = () => {
   const [partlist, setPartlist] = useRecoilState(lobbyParticipants);
@@ -120,8 +120,8 @@ const Home: NextPage = () => {
         <meta name="description" content="exquiz.me" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <LobbyNavigation></LobbyNavigation>
       <section style={{ height: "calc(100vh - 70px)" }}>
+        <IndexNavigation></IndexNavigation>
         {/* 메인 배너 */}
         <Grid style={{ height: "calc(100vh - 70px)" }} gutter={0} columns={20}>
           <Grid.Col
