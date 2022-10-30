@@ -1,7 +1,5 @@
 import { atom } from "recoil";
 import {
-  connectMainServerApiAddress,
-  dtypeName,
   problemInput,
   optionInput,
   problemsetInput,
@@ -28,6 +26,43 @@ export const indexUserInfo = atom({
 });
 /* *** common *** */
 
+/* *** inbox *** */
+export const inboxIsModalOpened = atom({
+  key: "inboxIsModalOpened",
+  default: "0",
+});
+
+export const inboxProblemsetIdx = atom({
+  key: "inboxProblemsetIdx",
+  default: -1,
+});
+
+export const inboxProblemset = atom({
+  key: "inboxProblemset",
+  default: [{ ...problemsetInput }],
+});
+
+export const inboxProblem = atom({
+  key: "inboxProblem",
+  default: problemInput,
+});
+
+export const inboxOption = atom({
+  key: "inboxOption",
+  default: optionInput,
+});
+
+export const inboxMaxpart = atom({
+  key: "inboxMaxpart",
+  default: 30,
+});
+
+export const inboxRoom = atom({
+  key: "inboxRoom",
+  default: inboxRoomInput,
+});
+/* *** inbox *** */
+
 /* *** index *** */
 export const indexIsLogined = atom({
   key: "indexIsLogined",
@@ -38,14 +73,10 @@ export const indexMembership = atom({
   key: "indexMembership",
   default: "0",
 });
-
-export const indexToken = atom({
-  key: "indexToken",
-  default: "0",
-});
 /* *** index *** */
 
 /* *** create *** */
+/* *** user-location *** */
 export const createTargetIdx = atom({
   key: "createTargetIdx",
   default: 0,
@@ -66,6 +97,13 @@ export const createTabNextIdx = atom({
   default: 0,
 });
 
+export const createActive = atom({
+  key: "createActive",
+  default: 0,
+});
+/* *** user-location *** */
+
+/* *** slide, problemset, problem, option, score, timelimit *** */
 export const createSlideProblem = atom({
   key: "createSlideProblem",
   default: slideProblemInput,
@@ -95,7 +133,9 @@ export const createTimelimit = atom({
   key: "createTimelimit",
   default: 50,
 });
+/* *** slide, problemset, problem, option, score, timelimit *** */
 
+/* *** image-start *** */
 export const createImageWord = atom({
   key: "createImageWord",
   default: "",
@@ -116,11 +156,13 @@ export const createIsImageLoading = atom({
   default: false,
 });
 
+/* *** image-start *** */
+
 export const createStep = atom({
   key: "createStep",
   default: 0,
 });
-
+/* *** modal and drawer *** */
 export const createCompleteModal = atom({
   key: "createCompleteModal",
   default: "0",
@@ -135,11 +177,8 @@ export const createProblemsetDrawer = atom({
   key: "createProblemsetDrawer",
   default: "0",
 });
+/* *** modal and drawer *** */
 
-export const createActive = atom({
-  key: "createActive",
-  default: 0,
-});
 /* *** create *** */
 
 /* *** play *** */
@@ -210,7 +249,7 @@ export const playUserCurInfo = atom({
     colorNumber: 0, // 사용자 배경색
   },
 });
-
+/* *** lobby *** */
 export const lobbyParticipants = atom({
   key: "lobbyParticipants",
   default: [],
@@ -232,57 +271,3 @@ export const playIsDrawerOpened = atom({
 });
 
 /* *** play *** */
-
-/* *** inbox *** */
-export const inboxIsModalOpened = atom({
-  key: "inboxIsModalOpened",
-  default: "0",
-});
-
-export const inboxProblemsetIdx = atom({
-  key: "inboxProblemsetIdx",
-  default: -1,
-});
-
-export const inboxProblemset = atom({
-  key: "inboxProblemset",
-  default: [{ ...problemsetInput }],
-});
-
-export const inboxProblem = atom({
-  key: "inboxProblem",
-  default: problemInput,
-});
-
-export const inboxOption = atom({
-  key: "inboxOption",
-  default: optionInput,
-});
-
-export const inboxMaxpart = atom({
-  key: "inboxMaxpart",
-  default: 30,
-});
-
-export const inboxRoom = atom({
-  key: "inboxRoom",
-  default: inboxRoomInput,
-});
-/* *** inbox *** */
-
-export const signupTabIdx = atom({
-  key: "signupTabIdx",
-  default: "0",
-});
-
-export const mypageTabIdx = atom({
-  key: "mypageTabIdx",
-  default: "알림",
-});
-
-/* *** enter *** */
-export const enterNotificationInfo = atom({
-  key: "enterNotificationInfo",
-  default: "닉네임을 입력하고 아바타를 선택하세요",
-});
-/* *** enter *** */

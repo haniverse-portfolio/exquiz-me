@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
+import Image from "next/image";
 import { useRecoilState } from "recoil";
 import {
   createCompleteModal,
@@ -25,7 +26,14 @@ import {
   createImageWord,
 } from "../components/States";
 import { useDebouncedState } from "@mantine/hooks";
-import { Center, Stack, Grid, Notification } from "@mantine/core";
+import {
+  Center,
+  Stack,
+  Grid,
+  Notification,
+  Group,
+  ActionIcon,
+} from "@mantine/core";
 
 import { Main } from "../components/create/Main";
 import { CreateNavigation } from "../components/create/CreateNavigation";
@@ -42,6 +50,8 @@ import {
   Apps,
   Parentheses,
   MathAvg,
+  Copy,
+  Trash,
 } from "tabler-icons-react";
 import { TabChangeModal } from "../components/create/TabChangeModal";
 import { ImageSection } from "../components/create/ImageSection";
@@ -147,6 +157,19 @@ const Home: NextPage = () => {
     return rt;
   };
 
+  const getImage = async (word: string) => {
+    let rt = []!;
+    await axios
+      .get(connectMainServerApiAddress + "api/problem")
+      .then((result) => {
+        rt = result.data;
+      })
+      .catch((error) => {
+        alert("image_error");
+      });
+    return rt;
+  };
+
   const getProblemsetId = async () => {
     let rt = Infinity;
     await axios
@@ -160,19 +183,6 @@ const Home: NextPage = () => {
       })
       .catch((error) => {
         alert("problemset_error");
-      });
-    return rt;
-  };
-
-  const getImage = async (word: string) => {
-    let rt = []!;
-    await axios
-      .get(connectMainServerApiAddress + "api/problem")
-      .then((result) => {
-        rt = result.data;
-      })
-      .catch((error) => {
-        alert("image_error");
       });
     return rt;
   };
@@ -223,7 +233,7 @@ const Home: NextPage = () => {
       {/* 퀴즈 제작 */}
       <main>
         {step === 0 ? (
-          <Stack>
+          <Stack spacing={8}>
             {/* navigation bar */}
             <CreateNavigation />
             {/* slide + create + image */}
@@ -232,19 +242,66 @@ const Home: NextPage = () => {
             {/* <SearchSection /> */}
             {/* <Main></Main> */}
             {/* <ImageSection /> */}
-            <Grid columns={5} style={{ height: "calc(100vh - 120px)" }}>
-              <Grid.Col className="bg-[#273248]" span={1}>
-                {/* {imageList.map(() => {
-                  return (
-                    <Center
-                      className="cursor-pointer w-full rounded-xl shadow-lg"
-                      key={i}
-                    >
-                    </Center>
-                  );
-                })} */}
+            <Grid columns={20} style={{ height: "calc(100vh - 120px)" }}>
+              <Grid.Col className="bg-[#273248]" span={3}>
+                <Stack spacing={0}>
+                  {problem.map((cur, i) => {
+                    return (
+                      <Stack
+                        className="py-4 cursor-pointer hover:bg-[#85b6ff]/[0.15]"
+                        align="center"
+                        spacing={0}
+                        key={i}
+                      >
+                        <Group>
+                          <Stack justify="flex-end">
+                            <ActionIcon
+                              color="blue"
+                              variant="transparent"
+                            ></ActionIcon>
+                            <ActionIcon
+                              color="blue"
+                              variant="transparent"
+                            ></ActionIcon>
+                          </Stack>
+                          <Image
+                            className="rounded-xl"
+                            src="/halla_mountain.svg"
+                            width={180}
+                            height={120}
+                            alt="image"
+                          ></Image>
+                          <Stack>
+                            <ActionIcon color="blue" variant="light">
+                              <Copy></Copy>
+                            </ActionIcon>
+                            <ActionIcon color="blue" variant="light">
+                              <Trash></Trash>
+                            </ActionIcon>
+                          </Stack>
+                        </Group>
+                        <Group>
+                          <Stack>
+                            <ActionIcon variant="transparent"></ActionIcon>
+                          </Stack>
+                          <Stack spacing={0} className="w-[180px]">
+                            <p className="text-[#F9761E] text-[16px] ">
+                              {i + 1}
+                            </p>
+                            <p className="text-white text-[16px]">
+                              {cur.description}
+                            </p>
+                          </Stack>
+                          <Stack>
+                            <ActionIcon variant="transparent"></ActionIcon>
+                          </Stack>
+                        </Group>
+                      </Stack>
+                    );
+                  })}
+                </Stack>
               </Grid.Col>
-              <Grid.Col span={4}></Grid.Col>
+              <Grid.Col className="bg-[#EDF4F7]" span={17}></Grid.Col>
             </Grid>
           </Stack>
         ) : (

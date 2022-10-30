@@ -31,7 +31,7 @@ export const slideProblemInput = [
 export const problemInput = [
   {
     answer: "0",
-    description: "",
+    description: "우리나라에서 가장 높은 산은?",
     dtype: "MultipleChoiceProblem",
     idx: 0,
     picture: "",
@@ -42,7 +42,7 @@ export const problemInput = [
   },
   {
     answer: "0",
-    description: "",
+    description: "우리나라에서 가장 높은 산은?",
     dtype: "MultipleChoiceProblem",
     idx: 0,
     picture: "",
@@ -53,7 +53,7 @@ export const problemInput = [
   },
   {
     answer: "0",
-    description: "",
+    description: "우리나라에서 가장 높은 산은?",
     dtype: "MultipleChoiceProblem",
     idx: 0,
     picture: "",

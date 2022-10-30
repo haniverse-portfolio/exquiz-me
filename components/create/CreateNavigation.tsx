@@ -33,6 +33,7 @@ import {
   X,
   ArrowNarrowLeft,
   ChevronLeft,
+  ArrowRight,
 } from "tabler-icons-react";
 
 import {
@@ -97,30 +98,33 @@ export const CreateNavigation = () => {
       className="px-8 shadow-lg h-[120px] border-b-2 border-gray-300"
       position="apart"
     >
-      <Link href="/">
+      <Link href="/inbox">
         <ActionIcon size={60}>
           <ChevronLeft size={36}></ChevronLeft>
         </ActionIcon>
       </Link>
       <TextInput
+        onChange={(event) => {
+          let copy = JSON.parse(JSON.stringify(problemSet));
+          copy.title = event.currentTarget.value;
+          setProblemSet(copy);
+        }}
+        value={problemSet.title}
         size="xl"
-        placeholder="퀴즈방 이름을 입력해주세요"
+        placeholder="퀴즈 제목을 입력해주세요"
         variant="unstyled"
       ></TextInput>
 
-      <Group>
-        <Button variant="outline" color="orange" onClick={() => {}}>
-          미리보기
-        </Button>
-        <Button
-          variant="filled"
-          color="orange"
-          onClick={() => {
-            setCompleteModalOpened("1");
-          }}
-        >
-          완성하기
-        </Button>
+      <Group
+        position="center"
+        onClick={() => {
+          setCompleteModalOpened("1");
+        }}
+        className="cursor-pointer h-16 w-16 rounded-full bg-orange-500"
+      >
+        <ActionIcon variant="transparent">
+          <ArrowRight color="white"></ArrowRight>
+        </ActionIcon>
       </Group>
     </Group>
   );

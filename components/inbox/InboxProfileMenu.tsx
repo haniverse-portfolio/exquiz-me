@@ -58,7 +58,7 @@ export function InboxProfileMenu({
   ));
 
   return (
-    <Card withBorder p="xl" radius="md" className={classes.card}>
+    <Card withBorder p="xl" radius="xl" className="!shadow-lg !rounded-4xl">
       <Group position="right">
         <ActionIcon>
           <Pencil></Pencil>

@@ -185,6 +185,139 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <IndexNavigation />
+      <main style={{ height: "calc(100vh - 70px)" }}>
+        <section style={{ height: "calc(100vh - 70px)" }}>
+          <Stack className="h-[20vh] bg-gradient-to-r from-[#ffc069] to-[#fa751e] text-slow"></Stack>
+          <Grid
+            style={{ height: "calc(80vh - 70px)" }}
+            gutter="md"
+            columns={24}
+          >
+            <Grid.Col span={3} />
+            <Grid.Col span={4}>
+              <Stack className="relative bottom-32">
+                <InboxProfileMenu
+                  image={""}
+                  name={"이상빈"}
+                  job={"소마고등학교 정보 과목 교사입니다"}
+                  stats={[
+                    { label: "만든 문제", value: "100" },
+                    { label: "팔로잉", value: "150" },
+                    { label: "팔로워", value: "150" },
+                  ]}
+                />
+                <InboxProblemsetMenu
+                  image={"/../../public/halla.png"}
+                  name={
+                    problemsetIdx === -1 ? "" : problemsets[problemsetIdx].title
+                  }
+                  job={
+                    problemsetIdx === -1
+                      ? ""
+                      : problemsets[problemsetIdx].description
+                  }
+                  stats={[
+                    {
+                      label: "전체 문제 개수",
+                      value: problem.length.toString(),
+                    },
+                    {
+                      label: "예상 소요 시간",
+                      value: Math.trunc(totalTime() / 60).toString(),
+                    },
+                  ]}
+                />
+              </Stack>
+            </Grid.Col>
+            <Grid.Col span={14}>
+              <Stack className="ml-8 h-[80vh] relative bottom-32">
+                <MantineProvider
+                  inherit
+                  theme={{
+                    components: {
+                      InputWrapper: {
+                        styles: (theme) => ({
+                          label: {
+                            backgroundColor:
+                              theme.colorScheme === "dark"
+                                ? "rgba(255, 255, 255, .1)"
+                                : "rgba(0, 0, 0, .1)",
+                          },
+                        }),
+                      },
+
+                      Input: {
+                        styles: (theme) => ({
+                          input: {
+                            color: "white",
+                            fontSize: "32px",
+                            fontWeight: "bold",
+                          },
+                        }),
+                      },
+                    },
+                  }}
+                >
+                  <TextInput
+                    id="inbox_textinput"
+                    className="!placeholder-white py-12"
+                    icon={<IconSearch color="white" size={30} />}
+                    variant="unstyled"
+                    placeholder="찾으시는 퀴즈를 검색해보세요"
+                  ></TextInput>
+                </MantineProvider>
+                <Group position="right">
+                  <Select
+                    placeholder="정렬 필터"
+                    data={[
+                      { value: "시간 순", label: "시간 순" },
+                      { value: "인기 순", label: "인기 순" },
+                    ]}
+                  />
+                </Group>
+                <Divider size="sm"></Divider>
+                <ScrollArea scrollbarSize={0} className="80vh">
+                  <Grid style={{ height: 2500 }} gutter={0} columns={3}>
+                    {problemsets.map(
+                      ({ title, description, closingMent }, i) => {
+                        return (
+                          <Grid.Col
+                            span={1}
+                            key={i}
+                            className={`h-80 cursor-pointer`}
+                            onClick={async () => {
+                              if (problemsetIdx === -1) {
+                                await getProblem(i + 1);
+                                await setProblemsetIdx((prevState) => i);
+                              } else {
+                                await setProblemsetIdx(-1);
+                              }
+                            }}
+                            // className="border-solid border-2 border-amber-500"
+                          >
+                            <Image
+                              src={
+                                problemsetIdx === i
+                                  ? "/inbox/folder_highlight.svg"
+                                  : "/inbox/folder.svg"
+                              }
+                              alt="folder"
+                              height={208}
+                              width={298}
+                            ></Image>
+                          </Grid.Col>
+                        );
+                      }
+                    )}
+                  </Grid>
+                </ScrollArea>
+              </Stack>
+            </Grid.Col>
+            <Grid.Col span={3} />
+          </Grid>
+        </section>
+      </main>
       <Modal
         withCloseButton={false}
         centered
@@ -233,177 +366,6 @@ const Home: NextPage = () => {
           </Button>
         </Stack>
       </Modal>
-      <IndexNavigation />
-      <main style={{ height: "calc(100vh - 70px)" }}>
-        <section style={{ height: "calc(100vh - 70px)" }}>
-          <Stack className="h-[20vh] bg-gradient-to-r from-[#ffc069] to-[#fa751e]"></Stack>
-          <Grid
-            style={{ height: "calc(80vh - 70px)" }}
-            gutter="md"
-            columns={24}
-          >
-            <Grid.Col span={3} />
-            <Grid.Col span={4}>
-              <Stack className="relative bottom-32">
-                <InboxProfileMenu
-                  image={""}
-                  name={"임준현"}
-                  job={"인하대학교 컴퓨터공학과 교수"}
-                  stats={[
-                    { label: "전체 문제", value: "100" },
-                    { label: "팔로잉", value: "150" },
-                    { label: "팔로워", value: "150" },
-                  ]}
-                />
-                <InboxProblemsetMenu
-                  image={"/../../public/halla.png"}
-                  name={
-                    problemsetIdx === -1 ? "" : problemsets[problemsetIdx].title
-                  }
-                  job={
-                    problemsetIdx === -1
-                      ? ""
-                      : problemsets[problemsetIdx].description
-                  }
-                  stats={[
-                    {
-                      label: "전체 문제 개수",
-                      value: problem.length.toString(),
-                    },
-                    {
-                      label: "예상 소요 시간",
-                      value: Math.trunc(totalTime() / 60).toString(),
-                    },
-                  ]}
-                />
-              </Stack>
-            </Grid.Col>
-            <Grid.Col span={12}>
-              <Stack className="h-[80vh] relative bottom-32">
-                <MantineProvider
-                  inherit
-                  theme={{
-                    components: {
-                      InputWrapper: {
-                        styles: (theme) => ({
-                          label: {
-                            backgroundColor:
-                              theme.colorScheme === "dark"
-                                ? "rgba(255, 255, 255, .1)"
-                                : "rgba(0, 0, 0, .1)",
-                          },
-                        }),
-                      },
-
-                      Input: {
-                        styles: (theme) => ({
-                          input: {
-                            borderColor:
-                              theme.colors.violet[theme.fn.primaryShade()],
-                            color: "white",
-                            fontSize: "32px",
-                            fontWeight: "bold",
-                          },
-                        }),
-                      },
-                    },
-                  }}
-                >
-                  <TextInput
-                    id="inbox_textinput"
-                    className="!placeholder-white py-12"
-                    icon={<IconSearch color="white" size={26} />}
-                    variant="unstyled"
-                    placeholder="찾으시는 퀴즈를 검색해보세요"
-                  ></TextInput>
-                </MantineProvider>
-                <Group position="right">
-                  <Select
-                    placeholder="정렬 필터"
-                    data={[
-                      { value: "시간 순", label: "시간 순" },
-                      { value: "인기 순", label: "인기 순" },
-                    ]}
-                  />
-                </Group>
-                <ScrollArea scrollbarSize={0} className="80vh">
-                  <Grid style={{ height: 2500 }} gutter={0} columns={2}>
-                    {problemsets.map(
-                      ({ title, description, closingMent }, i) => {
-                        return (
-                          <Grid.Col
-                            span={1}
-                            key={i}
-                            className={`h-80 cursor-pointer`}
-                            onClick={async () => {
-                              await getProblem(i + 1);
-                              await setProblemsetIdx((prevState) => i);
-                            }}
-                            // className="border-solid border-2 border-amber-500"
-                          >
-                            <Stack className="m-4">
-                              <Stack spacing={0}>
-                                <Grid columns={10}>
-                                  <Grid.Col
-                                    className={`${
-                                      problemsetIdx === i
-                                        ? "border-x-2 border-t-2 border-solid border-blue-500"
-                                        : ""
-                                    } h-16 rounded-t-xl bg-[#FFD178]`}
-                                    span={6}
-                                  ></Grid.Col>
-                                  <Grid.Col
-                                    className={`${
-                                      problemsetIdx === i
-                                        ? "border-t-2 border-r-2 border-solid border-blue-500"
-                                        : ""
-                                    } shadow-xl mt-4 h-12 rounded-t-xl bg-[#F8D385]`}
-                                    span={4}
-                                  ></Grid.Col>
-                                </Grid>
-                                <Grid
-                                  className={`${
-                                    problemsetIdx === i
-                                      ? "shadow-xl border-x-2 border-t-0 border-b-2 border-solid border-blue-500"
-                                      : ""
-                                  } h-60 rounded-b-xl bg-[#FFD178]`}
-                                  columns={10}
-                                >
-                                  <Grid.Col span={10}>
-                                    <Stack
-                                      className="mx-4"
-                                      spacing={0}
-                                      justify="flex-end"
-                                    >
-                                      <p className="m-0 mt-28 text-lg text-left text-gray-500">
-                                        22년 10월 24일
-                                      </p>
-                                      <p className="mb-4 text-2xl font-bold text-left text-gray-600">
-                                        {title}
-                                      </p>
-                                    </Stack>
-                                  </Grid.Col>
-                                </Grid>
-                              </Stack>
-                              {/* <Image
-                                src="/../public/folder.png"
-                                width="700"
-                                height="500"
-                                alt="error"
-                              ></Image> */}
-                            </Stack>
-                          </Grid.Col>
-                        );
-                      }
-                    )}
-                  </Grid>
-                </ScrollArea>
-              </Stack>
-            </Grid.Col>
-            <Grid.Col span={5} />
-          </Grid>
-        </section>
-      </main>
     </div>
   );
 };
@@ -434,3 +396,10 @@ color="red"
 
 // {problemsets.map(({ title, description, closingMent }, i) => {
 //   return Math.trunc(i / 4) !== activePage - 1 ? (
+
+//   <p className="m-0 mt-28 text-lg text-left text-gray-500">
+//   22년 10월 24일
+// </p>
+// <p className="mb-4 text-2xl font-bold text-left text-gray-600">
+//   {title}
+// </p>

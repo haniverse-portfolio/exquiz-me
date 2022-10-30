@@ -1,7 +1,4 @@
 import { useRouter } from "next/router";
-import type { NextPage } from "next";
-import Head from "next/head";
-import styles from "../styles/Home.module.css";
 import Link from "next/link";
 import Image from "next/image";
 import { useRecoilState } from "recoil";
@@ -84,7 +81,7 @@ const IndexNavigation = () => {
   return (
     <header className="bg-white sticky top-0 z-50">
       <Group position="apart" className="h-[60px] px-4 shadow">
-        <Link href="/">
+        <Link href={isLogined === false ? "/" : "/inbox"}>
           <Group className="cursor-pointer">
             <Image
               className="rounded-full"

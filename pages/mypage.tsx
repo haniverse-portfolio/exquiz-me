@@ -19,15 +19,12 @@ import {
   Loader,
 } from "@mantine/core";
 
-import {
-  indexIsLogined,
-  indexUserInfo,
-  signupTabIdx,
-} from "../components/States";
+import { indexIsLogined, indexUserInfo } from "../components/States";
 
 import { Logout, Pencil, Plus } from "tabler-icons-react";
 import { NavbarSimpleColored } from "../components/mypage/MypageNavbar";
 import IndexNavigation from "../components/index/IndexNavigation";
+import { connectMainServerApiAddress } from "../components/ConstValues";
 
 const Home: NextPage = () => {
   const router = useRouter();
@@ -36,7 +33,36 @@ const Home: NextPage = () => {
 
   const [userInfo, setUserInfo] = useRecoilState(indexUserInfo);
   const [isLogined, setIsLogined] = useRecoilState(indexIsLogined);
-  const [tabIdx, setTabIdx] = useRecoilState(signupTabIdx);
+
+  useEffect(() => {
+    // already logined
+    if (isLogined === true) {
+      return;
+    }
+    // not logined
+    if (localStorage.getItem("access_token") === null) router.push("/");
+    // auto login(access token validation)
+    login(localStorage.getItem("access_token") as string);
+  }, [router.isReady]);
+
+  const login = async (tk: string) => {
+    const config = {
+      headers: { Authorization: `Bearer ${tk}` },
+    };
+
+    axios
+      .get(connectMainServerApiAddress + "api/user", config)
+      .then((result) => {
+        setUserInfo(result.data);
+        setIsLogined(true);
+      })
+      .catch(() => {
+        // localStorage.removeItem("access_token");
+        // localStorage.removeItem("host_id");
+      });
+    // localStorage.removeItem("access_token");
+    // localStorage.removeItem("host_id");
+  };
   return (
     <div>
       <Head>

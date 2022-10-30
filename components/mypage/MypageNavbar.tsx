@@ -1,3 +1,4 @@
+import { Router, useRouter } from "next/router";
 import { useState } from "react";
 import { createStyles, Navbar, Group, Code } from "@mantine/core";
 import {
@@ -11,12 +12,6 @@ import {
   IconSwitchHorizontal,
   IconLogout,
 } from "@tabler/icons";
-import { MantineLogo } from "@mantine/ds";
-import { useRecoilState } from "recoil";
-import { mypageTabIdx } from "../States";
-import Link from "next/link";
-import { userInfo } from "os";
-import { Router } from "tabler-icons-react";
 
 const useStyles = createStyles((theme, _params, getRef) => {
   const icon = getRef("icon");
@@ -106,8 +101,9 @@ const data = [
 ];
 
 export function NavbarSimpleColored() {
+  const router = useRouter();
   const { classes, cx } = useStyles();
-  const [active, setActive] = useRecoilState(mypageTabIdx);
+  const [active, setActive] = useState("알림");
 
   const links = data.map((item) => (
     <a
@@ -140,7 +136,9 @@ export function NavbarSimpleColored() {
         <a
           href="#"
           className={classes.link}
-          onClick={(event) => event.preventDefault()}
+          onClick={() => {
+            router.push("/login");
+          }}
         >
           <IconSwitchHorizontal className={classes.linkIcon} stroke={1.5} />
           <span>계정 전환</span>
@@ -149,6 +147,8 @@ export function NavbarSimpleColored() {
           href="#"
           className={classes.link}
           onClick={() => {
+            localStorage.removeItem("access_token");
+            localStorage.removeItem("host_id");
             location.replace("/");
           }}
         >
