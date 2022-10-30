@@ -6,7 +6,6 @@ import { useState } from "react";
 import axios from "axios";
 import React, { useEffect } from "react";
 import Image from "next/image";
-import InboxNavigation from "../components/inbox/InboxNavigation";
 import IndexNavigation from "../components/index/IndexNavigation";
 
 import { IconSearch } from "@tabler/icons";
