@@ -185,7 +185,13 @@ const Home: NextPage = () => {
           {/* size={800} */}
           <Container className="bg-[#ffd178] h-[100vh]">
             <Stack className="flex">
-              <p className="cursor-pointer ml-4 my-8 text-2xl font-bold text-white">
+              <p
+                onClick={() => {
+                  alert("개발자를 위해 잠시 풀어줬습니다 ._.");
+                  setPinStep(2);
+                }}
+                className="cursor-pointer ml-4 my-8 text-2xl font-bold text-white"
+              >
                 exquiz.me
               </p>
               {/* <Notification disallowClose color="orange" title="알림">
@@ -259,7 +265,7 @@ const Home: NextPage = () => {
                   {pinStep === 1 ? (
                     <Stack align="center">
                       <Loader color="orange"></Loader>
-                      <p className="text-center text-xl text-gray-500 font-semibold">
+                      <p className="text-center text-xl text-gray-500 font">
                         검색중...
                       </p>
                     </Stack>
@@ -281,7 +287,7 @@ const Home: NextPage = () => {
                       <ActionIcon size={40}>
                         <ZoomQuestion size={40}></ZoomQuestion>
                       </ActionIcon>
-                      <p className="text-center text-xl text-gray-500 font-semibold">
+                      <p className="text-center text-xl text-gray-500">
                         존재하지 않는 방입니다.
                       </p>
                     </Stack>
@@ -316,6 +322,7 @@ const Home: NextPage = () => {
                   QR코드로 입장하기
                 </p>
                 <Button
+                  disabled={pinStep === 2 ? false : true}
                   size="lg"
                   fullWidth
                   onClick={() => {
@@ -330,6 +337,13 @@ const Home: NextPage = () => {
                   입장하기
                 </Button>
               </Stack>
+              <Group
+                className="rounded-full cursor-pointer h-4 w-4 border-1 border-solid border-orange-300 bg-[#ffd178]"
+                onClick={() => {
+                  alert("보이지 않는 검이 가장 무서운 법...");
+                  setStep(1);
+                }}
+              ></Group>
             </Stack>
           </Container>
           {/* <FooterCenteredUser
