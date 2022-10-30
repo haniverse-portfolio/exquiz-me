@@ -27,6 +27,7 @@ import {
 
 import { Logout, Pencil, Plus } from "tabler-icons-react";
 import { NavbarSimpleColored } from "../components/mypage/MypageNavbar";
+import IndexNavigation from "../components/index/IndexNavigation";
 
 const Home: NextPage = () => {
   const router = useRouter();
@@ -43,8 +44,7 @@ const Home: NextPage = () => {
         <meta name="description" content="exquiz.me" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <MypageNavigation />
+      <IndexNavigation />
       <NavbarSimpleColored></NavbarSimpleColored>
     </div>
   );
