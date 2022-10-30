@@ -8,7 +8,6 @@ import Image from "next/image";
 import axios from "axios";
 import { useRecoilState } from "recoil";
 import {
-  enterNotificationInfo,
   playAnimal,
   playColor,
   playPin,
@@ -33,6 +32,7 @@ import {
   Notification,
   Divider,
   Tooltip,
+  Loader,
 } from "@mantine/core";
 
 import {
@@ -43,7 +43,13 @@ import {
   avatarColor,
 } from "../components/ConstValues";
 import { useScrollIntoView } from "@mantine/hooks";
-import { Refresh, ArrowNarrowLeft, StepInto, Dice2 } from "tabler-icons-react";
+import {
+  Refresh,
+  ArrowNarrowLeft,
+  StepInto,
+  Dice2,
+  ZoomQuestion,
+} from "tabler-icons-react";
 import { useRef } from "react";
 import { FooterCenteredUser } from "../components/footer_user";
 
@@ -58,7 +64,6 @@ const Home: NextPage = () => {
   const [animal, setAnimal] = useRecoilState(playAnimal);
   const [color, setColor] = useRecoilState(playColor);
 
-  const [notiInfo, setNotiInfo] = useRecoilState(enterNotificationInfo);
   useEffect(() => {
     if (!router.isReady) return;
     if (step !== 1) return;
@@ -97,6 +102,21 @@ const Home: NextPage = () => {
   let [problemsets, setProblemsets] = useState([
     { id: -1, title: "", description: "", closingMent: "" },
   ]);
+  const getPinValid = (pin: string) => {
+    axios
+      .get(connectMainServerApiAddress + `api/room/${pin.toString()}/open`)
+      .then((result) => {
+        // validation
+        if (result.data.currentState !== "READY") {
+          setPinStep(3);
+          return;
+        }
+        setPinStep((prevstate) => 2);
+      })
+      .catch((error) => {
+        setPinStep(3);
+      });
+  };
 
   const getRoomOpened = (pin: string) => {
     axios
@@ -114,8 +134,8 @@ const Home: NextPage = () => {
 
   const [nickname, setNickname] = useState("");
   const [userCurInfo, setUserCurInfo] = useRecoilState(playUserCurInfo);
-
   const [name, setName] = useState("");
+  const [pinStep, setPinStep] = useState(0);
   let createRand = () => {};
 
   let client: Stomp.Client;
@@ -165,7 +185,7 @@ const Home: NextPage = () => {
           {/* size={800} */}
           <Container className="bg-[#ffd178] h-[100vh]">
             <Stack className="flex">
-              <p className="cursor-pointer ml-4 text-2xl font-bold text-white">
+              <p className="cursor-pointer ml-4 my-8 text-2xl font-bold text-white">
                 exquiz.me
               </p>
               {/* <Notification disallowClose color="orange" title="알림">
@@ -178,18 +198,114 @@ const Home: NextPage = () => {
                 <p className="text-center text-lg font-semibold text-gray-500">
                   공유 받은 PIN 번호로 입장해주세요
                 </p>
+                <Stack
+                  align="center"
+                  className="flex items-center justify-center h-[208px]"
+                >
+                  {pinStep === 0 ? (
+                    <Stack align="flex-start">
+                      <Stack align="flex-start">
+                        <Group align="flex-start">
+                          <Image
+                            src="/index/rectangle_right.svg"
+                            alt="rectangle"
+                            width={100}
+                            height={100}
+                          ></Image>
+                          <Stack>
+                            <Image
+                              src="/index/circle.svg"
+                              alt="rectangle"
+                              width={15}
+                              height={15}
+                            ></Image>
+                            <Image
+                              src="/index/circle.svg"
+                              alt="rectangle"
+                              width={25}
+                              height={25}
+                            ></Image>
+                          </Stack>
+                        </Group>
+                      </Stack>
+                      <Stack>
+                        <Group align="flex-end">
+                          <Stack>
+                            <Image
+                              src="/index/circle.svg"
+                              alt="rectangle"
+                              width={15}
+                              height={15}
+                            ></Image>
+                            <Image
+                              src="/index/circle.svg"
+                              alt="rectangle"
+                              width={25}
+                              height={25}
+                            ></Image>
+                          </Stack>
+                          <Image
+                            src="/index/rectangle_left.svg"
+                            alt="rectangle"
+                            width={60}
+                            height={60}
+                          ></Image>
+                        </Group>
+                      </Stack>
+                    </Stack>
+                  ) : (
+                    <></>
+                  )}
+                  {pinStep === 1 ? (
+                    <Stack align="center">
+                      <Loader color="orange"></Loader>
+                      <p className="text-center text-xl text-gray-500 font-semibold">
+                        검색중...
+                      </p>
+                    </Stack>
+                  ) : (
+                    <></>
+                  )}
+                  {pinStep === 2 ? (
+                    <Image
+                      src="/inbox/folder.svg"
+                      alt="folder"
+                      width={298}
+                      height={208}
+                    ></Image>
+                  ) : (
+                    <></>
+                  )}
+                  {pinStep === 3 ? (
+                    <Stack align="center">
+                      <ActionIcon size={40}>
+                        <ZoomQuestion size={40}></ZoomQuestion>
+                      </ActionIcon>
+                      <p className="text-center text-xl text-gray-500 font-semibold">
+                        존재하지 않는 방입니다.
+                      </p>
+                    </Stack>
+                  ) : (
+                    <></>
+                  )}
+                </Stack>
                 <TextInput
                   maxLength={6}
                   size="xl"
                   value={pin}
                   onChange={(e) => {
                     /* validation */
-                    if (
-                      e.target.value !== "" &&
-                      parseInt(e.target.value).toString().length !==
-                        e.target.value.length
-                    ) {
-                      setNotiInfo("잘못된 입력값입니다.");
+                    // if (
+                    //   e.target.value !== "" &&
+                    //   parseInt(e.target.value).toString().length !==
+                    //     e.target.value.length
+                    // ) {
+                    // }
+                    let len = e.target.value.length;
+                    if (len === 0) setPinStep(0);
+                    else if (len >= 1 && len <= 5) setPinStep(1);
+                    else if (len === 6) {
+                      getPinValid(e.target.value);
                     }
                     setPin(e.target.value);
                   }}
@@ -243,7 +359,7 @@ const Home: NextPage = () => {
                 onClick={() => {
                   setStep((prevState) => 0);
                 }}
-                className="cursor-pointer ml-4 text-2xl font-bold text-white"
+                className="cursor-pointer ml-4 my-8 text-2xl font-bold text-white"
               >
                 exquiz.me
               </p>
@@ -267,7 +383,6 @@ const Home: NextPage = () => {
                         1;
                       setAnimal(randAnimal);
                       setColor(randAvatarColor);
-                      setNotiInfo("아바타가 생성되었습니다!");
                     }}
                   >
                     <Center
@@ -334,7 +449,6 @@ const Home: NextPage = () => {
                           setNickname(
                             randNum1 + randAdjective + randNoun + randNum2
                           );
-                          setNotiInfo("닉네임이 생성되었습니다!");
                         }}
                         variant="outline"
                         color="orange"
