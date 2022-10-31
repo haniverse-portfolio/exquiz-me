@@ -84,11 +84,6 @@ const Home: NextPage = () => {
       getProblemsets();
       return;
     }
-    // not logined
-    // if (localStorage.getItem("access_token") === null) router.push("/");
-    // auto login(access token validation)
-    login(localStorage.getItem("access_token") as string);
-
     // access_token validation
     if (validateQueryString("host_id")) {
       localStorage.setItem("host_id", router.query.host_id as string);
@@ -97,6 +92,11 @@ const Home: NextPage = () => {
       localStorage.setItem("access_token", router.query.access_token as string);
       login(router.query.access_token as string);
     }
+
+    // not logined
+    if (localStorage.getItem("access_token") === null) router.push("/");
+    // auto login(access token validation)
+    login(localStorage.getItem("access_token") as string);
   }, [router.isReady]);
 
   const deleteProblemset = () => {
