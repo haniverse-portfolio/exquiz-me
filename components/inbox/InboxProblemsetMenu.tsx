@@ -1,7 +1,6 @@
 import {
   createStyles,
   Card,
-  Text,
   Group,
   Button,
   ActionIcon,
@@ -9,16 +8,10 @@ import {
   Stack,
   Divider,
 } from "@mantine/core";
-import {
-  IconSearch,
-  IconArrowRight,
-  IconPencil,
-  IconBrandAsana,
-} from "@tabler/icons";
+import { IconBrandAsana } from "@tabler/icons";
 import { useRecoilState } from "recoil";
 import {
   Alarm,
-  BrandAsana,
   Click,
   Copy,
   ListCheck,
@@ -26,7 +19,12 @@ import {
   Trash,
   X,
 } from "tabler-icons-react";
-import { inboxIsModalOpened, inboxProblemsetIdx } from "../States";
+import {
+  inboxIsModalOpened,
+  inboxProblem,
+  inboxProblemset,
+  inboxProblemsetIdx,
+} from "../States";
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -35,34 +33,20 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export interface InboxProblemsetMenuProps {
-  image: string;
-  name: string;
-  job: string;
-  stats: { label: string; value: string }[];
-}
+export let InboxProblemsetMenu = () => {
+  // const totalTime = () => {
+  //   let sum = 0;
+  //   for (let i = 0; i < problem.length; i++) sum += problem[i].timelimit;
+  //   return sum;
+  // };
 
-export function InboxProblemsetMenu({
-  image,
-  name,
-  job,
-  stats,
-}: InboxProblemsetMenuProps) {
   const { classes, theme } = useStyles();
-
-  const items = stats.map((stat) => (
-    <div key={stat.label}>
-      <Text align="center" size="sm" color="dimmed">
-        {stat.label}
-      </Text>
-      <Text align="center" size="lg" weight={500}>
-        {stat.value}
-        {stat.label === "전체 문제 개수" ? "개" : "분"}
-      </Text>
-    </div>
-  ));
+  /* *** cur state *** */
   const [modalOpened, setModalOpened] = useRecoilState(inboxIsModalOpened);
   const [problemsetIdx, setProblemsetIdx] = useRecoilState(inboxProblemsetIdx);
+  /* *** problem *** */
+  const [problemsets, setProblemsets] = useRecoilState(inboxProblemset);
+  const [problem, setProblem] = useRecoilState(inboxProblem);
 
   return problemsetIdx === -1 ? (
     <Card
@@ -97,21 +81,23 @@ export function InboxProblemsetMenu({
       </Group>
       <Stack spacing={4} className="bg-white p-4 rounded-xl h-[230px]">
         <Stack className="h-[40px]">
-          <p className="text-left font-bold text-[24px]">
+          <p className="text-left font-bold text-[20px]">
             {/* {name} */}디자인 가이드 정리
           </p>
         </Stack>
         <Stack className="h-[120px]">
-          <Group mt="sm" position="center" spacing={20}>
+          <Group mt="sm" position="center" spacing={10}>
             <Stack spacing={0}>
               <p className="text-center text-[#447EFF] text-[14px]">
                 전체 문제 개수
               </p>
-              <Group spacing={7}>
+              <Group spacing={5}>
                 <ActionIcon variant="transparent" color="blue">
                   <ListCheck></ListCheck>
                 </ActionIcon>
-                <p className="text-center text-[#447EFF] text-[24px]">10</p>
+                <p className="text-center text-[#447EFF] text-[24px]">
+                  0{/* {problemsets[problemsetIdx].problemCount} */}
+                </p>
                 <p className="text-center text-[#85B6FF] text-[18px]">개</p>
               </Group>
             </Stack>
@@ -120,11 +106,13 @@ export function InboxProblemsetMenu({
               <p className="text-center text-[#447EFF] text-[14px]">
                 예상 소요 시간
               </p>
-              <Group spacing={7}>
+              <Group spacing={5}>
                 <ActionIcon variant="transparent" color="blue">
                   <Alarm></Alarm>
                 </ActionIcon>
-                <p className="text-center text-[#447EFF] text-[24px]">30</p>
+                <p className="text-center text-[#447EFF] text-[24px]">
+                  {(problemsets[problemsetIdx] as any).timeSetting}
+                </p>
                 <p className="text-center text-[#85B6FF] text-[18px]">분</p>
               </Group>
             </Stack>
@@ -164,4 +152,4 @@ export function InboxProblemsetMenu({
       </Button>
     </Card>
   );
-}
+};

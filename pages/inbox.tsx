@@ -73,18 +73,38 @@ const Home: NextPage = () => {
   const [userInfo, setUserInfo] = useRecoilState(indexUserInfo);
   // problem
   const [problemsets, setProblemsets] = useRecoilState(inboxProblemset);
-  const [problem, setProblem] = useRecoilState(inboxProblem);
+  // const [problem, setProblem] = useRecoilState(inboxProblem);
   // room
   const [maxpart, setMaxpart] = useRecoilState(inboxMaxpart);
   const [room, setRoom] = useRecoilState(inboxRoom);
 
+  useEffect(() => {
+    // already logined
+    if (isLogined === true) {
+      getProblemsets();
+      return;
+    }
+    // not logined
+    // if (localStorage.getItem("access_token") === null) router.push("/");
+    // auto login(access token validation)
+    login(localStorage.getItem("access_token") as string);
+
+    // access_token validation
+    if (validateQueryString("host_id")) {
+      localStorage.setItem("host_id", router.query.host_id as string);
+    }
+    if (validateQueryString("access_token")) {
+      localStorage.setItem("access_token", router.query.access_token as string);
+      login(router.query.access_token as string);
+    }
+  }, [router.isReady]);
+
   const deleteProblemset = () => {
-    alert(problemsets[problemsetIdx].id);
     axios
       .delete(
         connectMainServerApiAddress +
           "api/problemset/" +
-          problemsets[problemsetIdx].id
+          (problemsets[problemsetIdx] as any).id
       )
       .then((result) => {
         setProblemsets(result.data);
@@ -98,12 +118,11 @@ const Home: NextPage = () => {
   const getProblemsets = () => {
     axios
       .get(
-        connectMainServerApiAddress +
-          "api/problemsets/" +
-          localStorage.getItem("host_id")?.toString()
+        connectMainServerApiAddress + "api/problemsets/" + "1"
+        // localStorage.getItem("host_id")?.toString()
       )
       .then((result) => {
-        if (result.data.size > 0) setProblemsets(result.data);
+        setProblemsets(result.data);
       })
       .catch((error) => {
         alert(error);
@@ -111,24 +130,24 @@ const Home: NextPage = () => {
     return;
   };
 
-  const getProblem = (idx: number) => {
-    axios
-      .get("https:/api.exquiz.me/api/problems/" + idx)
-      .then((result) => {
-        setProblem(result.data);
-      })
-      .catch((error) => {
-        alert(error);
-      });
-    return;
-  };
+  // const getProblem = (idx: number) => {
+  //   axios
+  //     .get(connectMainServerApiAddress + "api/problems/" + idx)
+  //     .then((result) => {
+  //       setProblem(result.data);
+  //     })
+  //     .catch((error) => {
+  //       alert(error);
+  //     });
+  //   return;
+  // };
 
   const postRoom = async () => {
     let rt = Infinity;
     await axios
       .post(connectMainServerApiAddress + "api/room/newRoom", {
         maxParticipantCount: maxpart,
-        problemsetId: problemsets[problemsetIdx].id,
+        problemsetId: (problemsets[problemsetIdx] as any).id,
       })
       .then(async (result) => {
         setRoom(result.data);
@@ -139,17 +158,14 @@ const Home: NextPage = () => {
       });
     return rt;
   };
-  useEffect(() => {
-    // already logined
-    if (isLogined === true) {
-      getProblemsets();
-      return;
-    }
-    // not logined
-    if (localStorage.getItem("access_token") === null) router.push("/");
-    // auto login(access token validation)
-    login(localStorage.getItem("access_token") as string);
-  }, [router.isReady]);
+
+  let validateQueryString = (p_string: string) => {
+    var field = p_string;
+    var url = window.location.href;
+    if (url.indexOf("?" + field + "=") != -1) return true;
+    else if (url.indexOf("&" + field + "=") != -1) return true;
+    return false;
+  };
 
   const login = async (tk: string) => {
     const config = {
@@ -164,17 +180,10 @@ const Home: NextPage = () => {
         getProblemsets();
       })
       .catch(() => {
-        // localStorage.removeItem("access_token");
-        // localStorage.removeItem("host_id");
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("host_id");
+        return;
       });
-    // localStorage.removeItem("access_token");
-    // localStorage.removeItem("host_id");
-  };
-
-  const totalTime = () => {
-    let sum = 0;
-    for (let i = 0; i < problem.length; i++) sum += problem[i].timelimit;
-    return sum;
   };
 
   return (
@@ -197,37 +206,8 @@ const Home: NextPage = () => {
             <Grid.Col span={3} />
             <Grid.Col span={4}>
               <Stack className="relative bottom-32">
-                <InboxProfileMenu
-                  image={""}
-                  name={"이상빈"}
-                  job={"소마고등학교 정보 과목 교사입니다"}
-                  stats={[
-                    { label: "만든 문제", value: "100" },
-                    { label: "팔로잉", value: "150" },
-                    { label: "팔로워", value: "150" },
-                  ]}
-                />
-                <InboxProblemsetMenu
-                  image={"/../../public/halla.png"}
-                  name={
-                    problemsetIdx === -1 ? "" : problemsets[problemsetIdx].title
-                  }
-                  job={
-                    problemsetIdx === -1
-                      ? ""
-                      : problemsets[problemsetIdx].description
-                  }
-                  stats={[
-                    {
-                      label: "전체 문제 개수",
-                      value: problem.length.toString(),
-                    },
-                    {
-                      label: "예상 소요 시간",
-                      value: Math.trunc(totalTime() / 60).toString(),
-                    },
-                  ]}
-                />
+                <InboxProfileMenu />
+                <InboxProblemsetMenu />
               </Stack>
             </Grid.Col>
             <Grid.Col span={14}>
@@ -288,13 +268,12 @@ const Home: NextPage = () => {
                             className={`h-80 cursor-pointer`}
                             onClick={async () => {
                               if (problemsetIdx === -1) {
-                                await getProblem(i + 1);
+                                // await getProblem(i + 1);
                                 await setProblemsetIdx((prevState) => i);
                               } else {
                                 await setProblemsetIdx(-1);
                               }
                             }}
-                            // className="border-solid border-2 border-amber-500"
                           >
                             <Image
                               src={
@@ -403,3 +382,6 @@ color="red"
 // <p className="mb-4 text-2xl font-bold text-left text-gray-600">
 //   {title}
 // </p>
+
+// problem.length.toString()
+// Math.trunc(totalTime() / 60).toString()

@@ -27,7 +27,13 @@ const Home: NextPage = () => {
           className="flex items-center justify-center h-[100vh] w-[21vw] h-[61vh] shadow-xl rounded-xl"
         >
           <Stack>
-            <Group position="center" className="cursor-pointer">
+            <Group
+              onClick={() => {
+                router.push("/");
+              }}
+              position="center"
+              className="cursor-pointer"
+            >
               <Image
                 className="rounded-full"
                 src="/index/bulb_bg.png"
@@ -46,7 +52,8 @@ const Home: NextPage = () => {
               size="md"
               variant="outline"
               onClick={() => {
-                router.push("https://api.exquiz.me/api/google/login");
+                router.push("https://api.exquiz.me/api/google/login/local");
+                // 배포 시 : /prod
               }}
               color="orange"
               leftIcon={<BrandGoogle size={14} />}

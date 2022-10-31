@@ -40,18 +40,12 @@ const Home: NextPage = () => {
       location.replace("/enter");
     }
     // already logined
-    if (isLogined === true) return;
+    if (isLogined === true) {
+      router.push("/inbox");
+      return;
+    }
     // auto login
     login(localStorage.getItem("access_token") as string);
-
-    // access_token validation
-    if (validateQueryString("host_id")) {
-      localStorage.setItem("host_id", router.query.host_id as string);
-    }
-    if (validateQueryString("access_token")) {
-      localStorage.setItem("access_token", router.query.access_token as string);
-      login(router.query.access_token as string);
-    }
   }, [router.isReady]);
   /* *** effect start *** */
 
@@ -155,7 +149,11 @@ const Home: NextPage = () => {
           </Stack>
           <Stack className="h-[48px]" />
           <Container className="w-[20vw] text-center">
+            {/* *** play 동영상 띄우게 하기 *** */}
             <Button
+              onClick={() => {
+                router.push("/login");
+              }}
               fullWidth
               radius="xl"
               className="shadow"
@@ -276,6 +274,9 @@ const Home: NextPage = () => {
             <Stack className="h-[36px]"></Stack>
             <Container className="w-[20vw] text-center">
               <Button
+                onClick={() => {
+                  router.push("/login");
+                }}
                 fullWidth
                 radius="xl"
                 className="shadow"
@@ -289,7 +290,7 @@ const Home: NextPage = () => {
           </Stack>
         </section>
         <footer className="h-[313px]">
-          <Stack className="px-8 flex items-center justify-center bg-[#FFD178] h-[213px]">
+          <Stack className="px-8 flex justify-center bg-[#FFD178] h-[213px]">
             <Group>
               <p className="text-[18px]">서비스 정보</p>{" "}
               <Group position="center">
@@ -318,7 +319,7 @@ const Home: NextPage = () => {
               </Group>
             </Group>
           </Stack>
-          <Stack className="px-8 flex items-center justify-center bg-[#273248] h-[100px]">
+          <Stack className="px-8 flex justify-center bg-[#273248] h-[100px]">
             <Group position="apart">
               <p className="text-[16px] text-[#85B6FF]">
                 2022 Co.exquiz.me. All rights reserved.

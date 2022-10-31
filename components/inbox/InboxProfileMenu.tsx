@@ -7,21 +7,16 @@ import {
   Button,
   ActionIcon,
   Divider,
-  Avatar,
   Stack,
   ThemeIcon,
   Center,
 } from "@mantine/core";
 import Image from "next/image";
-import {
-  IconSearch,
-  IconArrowRight,
-  IconArrowLeft,
-  IconPlus,
-} from "@tabler/icons";
+import { IconPlus } from "@tabler/icons";
+import { avatarAnimal } from "../ConstValues";
 import { Pencil } from "tabler-icons-react";
-import { avatarAnimal, avatarColor } from "../ConstValues";
-import { inboxIsModalOpened } from "../States";
+import { useRecoilState } from "recoil";
+import { indexUserInfo } from "../States";
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -30,32 +25,10 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export interface InboxProfileMenuProps {
-  image: string;
-  name: string;
-  job: string;
-  stats: { label: string; value: string }[];
-}
-
-export function InboxProfileMenu({
-  image,
-  name,
-  job,
-  stats,
-}: InboxProfileMenuProps) {
+export let InboxProfileMenu = () => {
+  const [userInfo, setUserInfo] = useRecoilState(indexUserInfo);
   const { classes, theme } = useStyles();
   const router = useRouter();
-
-  const items = stats.map((stat) => (
-    <div key={stat.label}>
-      <Text weight={700} align="center" size="sm" color="dimmed">
-        {stat.label}
-      </Text>
-      <Text weight={700} color="orange" align="center" size="lg">
-        {stat.value}
-      </Text>
-    </div>
-  ));
 
   return (
     <Card withBorder p="xl" radius="xl" className="!shadow-lg !rounded-4xl">
@@ -77,16 +50,39 @@ export function InboxProfileMenu({
       <Group position="center">
         <Stack>
           <Text align="center" size="lg" weight={500} mt="sm">
-            {name}
+            {userInfo.nickname}
           </Text>
           <Text align="center" size="sm" color="dimmed">
-            {job}
+            소마고등학교 정보 과목 교사입니다.
           </Text>
         </Stack>
       </Group>
       <Divider labelPosition="center" my="lg" />
       <Group mt="md" position="center" spacing={30}>
-        {items}
+        <Stack>
+          <Text weight={700} align="center" size="sm" color="dimmed">
+            만든문제
+          </Text>
+          <Text weight={700} color="orange" align="center" size="lg">
+            0
+          </Text>
+        </Stack>
+        <Stack>
+          <Text weight={700} align="center" size="sm" color="dimmed">
+            팔로잉
+          </Text>
+          <Text weight={700} color="orange" align="center" size="lg">
+            0
+          </Text>
+        </Stack>
+        <Stack>
+          <Text weight={700} align="center" size="sm" color="dimmed">
+            팔로워
+          </Text>
+          <Text weight={700} color="orange" align="center" size="lg">
+            0
+          </Text>
+        </Stack>
       </Group>
       <Button
         onClick={() => {
@@ -107,4 +103,4 @@ export function InboxProfileMenu({
       </Button>
     </Card>
   );
-}
+};

@@ -17,9 +17,9 @@ export const dtypeName = [
   "객관식",
   "주관식",
   "O/X",
-  "넌센스",
-  "다이나믹",
-  "설명",
+  // "넌센스",
+  // "다이나믹",
+  // "설명",
 ];
 
 export const slideProblemInput = [

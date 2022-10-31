@@ -33,6 +33,9 @@ import {
   Notification,
   Group,
   ActionIcon,
+  Loader,
+  ScrollArea,
+  Button,
 } from "@mantine/core";
 
 import { Main } from "../components/create/Main";
@@ -52,11 +55,12 @@ import {
   MathAvg,
   Copy,
   Trash,
+  Plus,
 } from "tabler-icons-react";
 import { TabChangeModal } from "../components/create/TabChangeModal";
 import { ImageSection } from "../components/create/ImageSection";
 import { connectMainServerApiAddress } from "../components/ConstValues";
-import { NavbarMinimal } from "../components/create/slideProblemControlBar";
+import { SlideProblem } from "../components/create/SlideProblem";
 import { SearchSection } from "../components/create/SearchSection";
 
 const Home: NextPage = () => {
@@ -69,10 +73,6 @@ const Home: NextPage = () => {
   const [completeModalOpened, setCompleteModalOpened] =
     useRecoilState(createCompleteModal);
   const [tabModalOpened, setTabModalOpened] = useRecoilState(createTabModal);
-  /* drawer */
-  const [problemsetDrawer, setProblemsetDrawer] = useRecoilState(
-    createProblemsetDrawer
-  );
 
   /* ****** dropzone ****** */
   const [localImageUpload, setLocalImageUpload] = useState<File[]>([]);
@@ -93,11 +93,6 @@ const Home: NextPage = () => {
   /* score, time */
   const [scoreValue, setScoreValue] = useRecoilState(createScore);
   const [timelimit, setTimelimit] = useRecoilState(createTimelimit);
-  /* image */
-  const [imageURL, setImageURL] = useRecoilState(createImageURL);
-  const [imageList, setImageList] = useRecoilState(createImageList);
-  const [imageLoading, setImageLoading] = useRecoilState(createIsImageLoading);
-  const [imageWord, setImageWord] = useRecoilState(createImageWord);
 
   function replaceItemAtIndex(arr: any, index: number, newValue: any) {
     return [...arr.slice(0, index), newValue, ...arr.slice(index + 1)];
@@ -105,17 +100,6 @@ const Home: NextPage = () => {
   /* ****** state-end ****** */
 
   /* ****** effect-start ****** */
-
-  /* image */
-  useEffect(() => {
-    setProblemsetDrawer("1");
-  }, []);
-
-  useEffect(() => {
-    getImageList(imageWord);
-    setImageLoading(false);
-  }, [imageWord]);
-
   /* score */
   useEffect(() => {
     // setProblem((prevProblem) => {
@@ -150,7 +134,6 @@ const Home: NextPage = () => {
     await axios
       .get(connectMainServerApiAddress + "api/crawl/" + name)
       .then((result) => {
-        setImageList(result.data);
         console.log(result.data);
       })
       .catch((error) => {});
@@ -243,65 +226,10 @@ const Home: NextPage = () => {
             {/* <Main></Main> */}
             {/* <ImageSection /> */}
             <Grid columns={20} style={{ height: "calc(100vh - 120px)" }}>
-              <Grid.Col className="bg-[#273248]" span={3}>
-                <Stack spacing={0}>
-                  {problem.map((cur, i) => {
-                    return (
-                      <Stack
-                        className="py-4 cursor-pointer hover:bg-[#85b6ff]/[0.15]"
-                        align="center"
-                        spacing={0}
-                        key={i}
-                      >
-                        <Group>
-                          <Stack justify="flex-end">
-                            <ActionIcon
-                              color="blue"
-                              variant="transparent"
-                            ></ActionIcon>
-                            <ActionIcon
-                              color="blue"
-                              variant="transparent"
-                            ></ActionIcon>
-                          </Stack>
-                          <Image
-                            className="rounded-xl"
-                            src="/halla_mountain.svg"
-                            width={180}
-                            height={120}
-                            alt="image"
-                          ></Image>
-                          <Stack>
-                            <ActionIcon color="blue" variant="light">
-                              <Copy></Copy>
-                            </ActionIcon>
-                            <ActionIcon color="blue" variant="light">
-                              <Trash></Trash>
-                            </ActionIcon>
-                          </Stack>
-                        </Group>
-                        <Group>
-                          <Stack>
-                            <ActionIcon variant="transparent"></ActionIcon>
-                          </Stack>
-                          <Stack spacing={0} className="w-[180px]">
-                            <p className="text-[#F9761E] text-[16px] ">
-                              {i + 1}
-                            </p>
-                            <p className="text-white text-[16px]">
-                              {cur.description}
-                            </p>
-                          </Stack>
-                          <Stack>
-                            <ActionIcon variant="transparent"></ActionIcon>
-                          </Stack>
-                        </Group>
-                      </Stack>
-                    );
-                  })}
-                </Stack>
+              <SlideProblem />
+              <Grid.Col className="bg-[#EDF4F7]" span={17}>
+                <Main />
               </Grid.Col>
-              <Grid.Col className="bg-[#EDF4F7]" span={17}></Grid.Col>
             </Grid>
           </Stack>
         ) : (
@@ -309,39 +237,36 @@ const Home: NextPage = () => {
         )}
 
         {step === 1 ? (
-          <div
-            className={`w-[100vw] h-[100vh] bg-gradient-to-r from-orange-500 to-yellow-500`}
+          <Stack
+            align="center"
+            className="flex items-center justify-center bg-orange-400 h-[100vh]"
           >
-            <Center className="m-auto">
-              <Notification
-                loading
-                color="orange"
-                title="서버에 퀴즈 업로드 중..."
-                disallowClose
-              >
-                퀴즈 정보가 서버에 업로드 될 때까지 기다려주세요.
-              </Notification>
+            <Center>
+              <Loader color="yellow" size="xl" />
             </Center>
-          </div>
+            <p className="text-center text-xl text-white font-semibold">
+              서버에 퀴즈 업로드 중...
+            </p>
+            <p className="text-center text-xl text-white font-semibold">
+              exquiz.me 서버가 안전하게 퀴즈를 저장하고 있습니다.
+            </p>
+          </Stack>
         ) : (
           <></>
         )}
 
         {step === 2 ? (
-          <div
-            className={`w-[100vw] h-[100vh] bg-gradient-to-r from-orange-500 to-yellow-500`}
+          <Stack
+            align="center"
+            className="flex items-center justify-center bg-orange-400 h-[100vh]"
           >
-            <Center className="m-auto">
-              <Notification
-                icon={<Check size={20} />}
-                color="orange"
-                title="업로드 완료!"
-                disallowClose
-              >
-                퀴즈 정보가 서버에 안전하게 저장되었습니다.
-              </Notification>
-            </Center>
-          </div>
+            <p className="text-center text-xl text-white font-semibold">
+              퀴즈 정보가 서버에 안전하게 저장되었습니다.
+            </p>
+            <p className="text-center text-xl text-white font-semibold">
+              exquiz.me 서버가 안전하게 퀴즈를 저장하고 있습니다.
+            </p>
+          </Stack>
         ) : (
           <></>
         )}

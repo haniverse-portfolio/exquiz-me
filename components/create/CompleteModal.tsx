@@ -1,43 +1,19 @@
 import { useRouter } from "next/router";
-import type { NextPage } from "next";
-import Head from "next/head";
-import styles from "../styles/Home.module.css";
-import Link from "next/link";
-import Image from "next/image";
 import { useRecoilState } from "recoil";
 
 import { Stack, Group, Button, Modal } from "@mantine/core";
-import {} from "tabler-icons-react";
+import { AlertOctagon } from "tabler-icons-react";
 
 import {
   createOption,
   createProblem,
-  createProblemIdx,
-  createTabCurrentIdx,
-  createTabNextIdx,
-  createTargetIdx,
-  createTabModal,
-  createIsImageLoading,
   createProblemset,
-  createScore,
-  createTimelimit,
-  createImageURL,
-  createImageList,
-  createImageWord,
   createCompleteModal,
-  createProblemsetDrawer,
   createStep,
 } from "../States";
-import {
-  dtypeName,
-  tabTooltip,
-  MARKSCORE,
-  MARKSTIME,
-  connectMainServerApiAddress,
-} from "../ConstValues";
-import { ControlBar } from "./ControlBar";
-import { useDebouncedState } from "@mantine/hooks";
+import { connectMainServerApiAddress } from "../ConstValues";
 import axios from "axios";
+import { useState } from "react";
 
 export const CompleteModal = () => {
   /* ****** routes ****** */
@@ -47,82 +23,31 @@ export const CompleteModal = () => {
   /* modal */
   const [completeModalOpened, setCompleteModalOpened] =
     useRecoilState(createCompleteModal);
-  const [tabModalOpened, setTabModalOpened] = useRecoilState(createTabModal);
-  /* drawer */
-  const [problemsetDrawer, setProblemsetDrawer] = useRecoilState(
-    createProblemsetDrawer
-  );
-
-  /* *** slide *** */
-  const [cur, setCur] = useRecoilState(createTargetIdx);
-  const [curIdx, setCurIdx] = useRecoilState(createProblemIdx);
-  /* *** form *** */
-  const [tabIdx, setTabIdx] = useRecoilState(createTabCurrentIdx);
-  const [tabChangeIdx, setTabChangeIdx] = useRecoilState(createTabNextIdx);
 
   /* *** common *** */
   const [problemSet, setProblemSet] = useRecoilState(createProblemset);
   const [problem, setProblem] = useRecoilState(createProblem);
   const [option, setOption] = useRecoilState(createOption);
-  /* score, time */
-  const [scoreValue, setScoreValue] = useRecoilState(createScore);
-  const [timelimit, setTimelimit] = useRecoilState(createTimelimit);
-  /* image */
-  const [imageURL, setImageURL] = useRecoilState(createImageURL);
-  const [imageList, setImageList] = useRecoilState(createImageList);
-  const [imageLoading, setImageLoading] = useRecoilState(createIsImageLoading);
-  const [imageTmpWord, setImageTmpWord] = useDebouncedState("", 500);
-  const [imageWord, setImageWord] = useRecoilState(createImageWord);
 
-  const NextPlus = async () => {
-    await setProblem((prevstate) => [
-      ...prevstate,
-      {
-        answer: "-1",
-        description: "",
-        dtype: dtypeName[tabIdx],
-        idx: 0,
-        picture: "",
-        problemsetId: 0,
-        score: 300,
-        timelimit: 30,
-        title: "",
-      },
-    ]);
-
-    await setOption((prevstate) => [
-      ...prevstate,
-      [
-        {
-          description: "",
-          idx: 0,
-          picture: "",
-          problemId: 0,
-        },
-        {
-          description: "",
-          idx: 1,
-          picture: "",
-          problemId: 0,
-        },
-        {
-          description: "",
-          idx: 2,
-          picture: "",
-          problemId: 0,
-        },
-        {
-          description: "",
-          idx: 3,
-          picture: "",
-          problemId: 0,
-        },
-      ],
-    ]);
+  const postProblemsetId = async () => {
+    let rt = Infinity;
+    await axios
+      .post(
+        //const { data: result } =
+        connectMainServerApiAddress + "api/problemset",
+        problemSet
+      )
+      .then((result) => {
+        rt = result.data.id;
+      })
+      .catch((error) => {
+        alert("problemset_error");
+      });
+    return rt;
   };
 
-  const getProblemId = async (idx: number) => {
-    let rt = Infinity;
+  const postProblemId = async (idx: number) => {
+    let rt = Infinity as number;
     await axios
       .post(connectMainServerApiAddress + "api/problem", problem[idx])
       .then((result) => {
@@ -147,79 +72,73 @@ export const CompleteModal = () => {
     return;
   };
 
-  const getProblemsetId = async () => {
-    let rt = Infinity;
-    await axios
-      .post(
-        //const { data: result } =
-        connectMainServerApiAddress + "api/problemset",
-        problemSet
-      )
-      .then((result) => {
-        rt = result.data.id;
-      })
-      .catch((error) => {
-        alert("problemset_error");
-      });
-    return rt;
-  };
-
   const router = useRouter();
 
   return (
     <Modal
       centered
-      size="80%"
       opened={completeModalOpened === "0" ? false : true}
       onClose={() => setCompleteModalOpened("0")}
     >
-      <Button
-        onClick={() => {
-          console.log(problemSet);
-          getProblemsetId();
-        }}
-      >
-        테스트용
-      </Button>
       <Button
         variant="outline"
         color="orange"
         onClick={async () => {
           setCompleteModalOpened("0");
-          setStep((prevState) => step + 1);
 
-          let problemsetId = await getProblemsetId();
-          // await delay(1500);
-          let copyProblem = JSON.parse(JSON.stringify(problem));
-          let copyOption = JSON.parse(JSON.stringify(option));
-          {
-            /* problemset */
+          let problemsetId = await postProblemsetId();
+
+          // {
+          //   /* problemset */
+          // }
+          let copyProblem = [...problem];
+          let copyOption = [...option];
+          for (let i = 0; i < problem.length; i++) {
+            copyProblem.splice(i, 1, {
+              ...copyProblem[i],
+              idx: i,
+              problemsetId: problemsetId,
+            });
           }
-          for (let i = 0; i < copyProblem.length; i++) {
-            copyProblem[i].idx = i;
-            copyProblem[i].problemsetId = problemsetId;
-          }
-          setProblem((prevState) => copyProblem);
 
           for (let i = 0; i < copyProblem.length; i++) {
             {
               /* problem */
             }
-            let problemId = await getProblemId(i);
-            // await delay(1500);
+            let problemId = 0;
+            await axios
+              .post(connectMainServerApiAddress + "api/problem", copyProblem[i])
+              .then((result) => {
+                problemId = result.data.id;
+              })
+              .catch((error) => {
+                alert("problem_error");
+              });
             {
               /* problem_option */
             }
             for (let j = 0; j < copyOption.length; j++) {
-              copyOption[i][j].idx = j;
-              copyOption[i][j].problemId = problemId;
+              let copyOption2 = copyOption[i];
+              copyOption2.splice(j, 1, {
+                ...copyOption2[j],
+                idx: j,
+                problemId: problemId,
+              });
+
+              copyOption.splice(i, 1, copyOption2);
             }
-            setOption((prevState) => copyOption);
-            for (let j = 0; j < copyOption.length; j++) {
-              await postOption(i, j);
+            setOption((prevState) => option);
+            for (let j = 0; j < option.length; j++) {
+              axios
+                .post(
+                  connectMainServerApiAddress + "api/problem_option",
+                  copyOption[i][j]
+                )
+                .then((result) => {})
+                .catch((error) => {});
             }
           }
-          await setStep((prevState) => step + 1);
+          setStep((prevState) => step + 1);
           router.push("/inbox");
         }}
       >

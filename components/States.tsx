@@ -39,12 +39,12 @@ export const inboxProblemsetIdx = atom({
 
 export const inboxProblemset = atom({
   key: "inboxProblemset",
-  default: [{ ...problemsetInput }],
+  default: [],
 });
 
 export const inboxProblem = atom({
   key: "inboxProblem",
-  default: problemInput,
+  default: [],
 });
 
 export const inboxOption = atom({
