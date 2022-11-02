@@ -84,6 +84,7 @@ export const CompleteModal = () => {
         variant="outline"
         color="orange"
         onClick={async () => {
+          setStep(1);
           setCompleteModalOpened("0");
 
           let problemsetId = await postProblemsetId();
@@ -138,7 +139,9 @@ export const CompleteModal = () => {
                 .catch((error) => {});
             }
           }
-          setStep((prevState) => step + 1);
+          setTimeout(() => {
+            setStep(2);
+          }, 300);
           router.push("/inbox");
         }}
       >

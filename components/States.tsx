@@ -19,7 +19,7 @@ export const indexUserInfo = atom({
     accessToken: null,
     email: "",
     nickname: "",
-    picture: "",
+    picture: "https://exquiz.me/fox.png",
     role: "",
     username: "",
   },

@@ -169,7 +169,7 @@ const Home: NextPage = () => {
       <audio
         ref={bgAudio}
         className="invisible"
-        src="/background_music.mp3"
+        src="/sounds/background_music.mp3"
       ></audio>
       <main className="h-[100vh]">
         <section

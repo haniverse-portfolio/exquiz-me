@@ -85,16 +85,19 @@ const Home: NextPage = () => {
       return;
     }
     // access_token validation
-    if (validateQueryString("host_id")) {
-      localStorage.setItem("host_id", router.query.host_id as string);
-    }
     if (validateQueryString("access_token")) {
       localStorage.setItem("access_token", router.query.access_token as string);
-      login(router.query.access_token as string);
+      localStorage.setItem("host_id", router.query.host_id as string);
+      setTimeout(() => {
+        router.push("/inbox");
+      }, 100);
     }
 
     // not logined
-    if (localStorage.getItem("access_token") === null) router.push("/");
+    if (localStorage.getItem("access_token") === null) {
+      router.push("/");
+      return;
+    }
     // auto login(access token validation)
     login(localStorage.getItem("access_token") as string);
   }, [router.isReady]);
@@ -118,8 +121,9 @@ const Home: NextPage = () => {
   const getProblemsets = () => {
     axios
       .get(
-        connectMainServerApiAddress + "api/problemsets/" + "1"
-        // localStorage.getItem("host_id")?.toString()
+        connectMainServerApiAddress +
+          "api/problemsets/" +
+          localStorage.getItem("host_id")?.toString()
       )
       .then((result) => {
         setProblemsets(result.data);
@@ -180,9 +184,9 @@ const Home: NextPage = () => {
         getProblemsets();
       })
       .catch(() => {
-        localStorage.removeItem("access_token");
-        localStorage.removeItem("host_id");
-        return;
+        // alert("login failed");
+        // localStorage.removeItem("access_token");
+        // localStorage.removeItem("host_id");
       });
   };
 
@@ -285,6 +289,7 @@ const Home: NextPage = () => {
                               height={208}
                               width={298}
                             ></Image>
+                            <Group className="h-[208px] w-["></Group>
                           </Grid.Col>
                         );
                       }

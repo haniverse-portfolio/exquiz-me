@@ -59,7 +59,10 @@ import {
 } from "tabler-icons-react";
 import { TabChangeModal } from "../components/create/TabChangeModal";
 import { ImageSection } from "../components/create/ImageSection";
-import { connectMainServerApiAddress } from "../components/ConstValues";
+import {
+  connectMainServerApiAddress,
+  problemsetInput,
+} from "../components/ConstValues";
 import { SlideProblem } from "../components/create/SlideProblem";
 import { SearchSection } from "../components/create/SearchSection";
 
@@ -126,6 +129,14 @@ const Home: NextPage = () => {
     copy[curIdx].timelimit = Math.trunc(10 + (timelimit / 25) * 10);
     setProblem((prevstate) => copy);
   }, [timelimit]);
+
+  useEffect(() => {
+    let copyProblemSet = {
+      ...problemSet,
+      hostId: parseInt(localStorage.getItem("host_id") as string),
+    };
+    setProblemSet(copyProblemSet);
+  }, []);
 
   /* ****** effect-end****** */
 

@@ -140,6 +140,7 @@ const IndexNavigation = () => {
                 <Group className="mt-4 justify-center" position="center">
                   <Button
                     onClick={() => {
+                      setIsLogined(false);
                       localStorage.removeItem("access_token");
                       localStorage.removeItem("host_id");
                       location.replace("/");

@@ -41,7 +41,7 @@ export let InboxProfileMenu = () => {
         <Image
           alt="hello"
           className={`cursor-pointer rounded-full`}
-          src={avatarAnimal[0]}
+          src={userInfo.picture}
           width={"80px"}
           height={"80px"}
         ></Image>

@@ -25,6 +25,8 @@ import {
   inboxProblemset,
   inboxProblemsetIdx,
 } from "../States";
+import axios from "axios";
+import { connectMainServerApiAddress } from "../ConstValues";
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -47,6 +49,22 @@ export let InboxProblemsetMenu = () => {
   /* *** problem *** */
   const [problemsets, setProblemsets] = useRecoilState(inboxProblemset);
   const [problem, setProblem] = useRecoilState(inboxProblem);
+
+  const deleteProblemset = () => {
+    axios
+      .delete(
+        connectMainServerApiAddress +
+          "api/problemset/" +
+          (problemsets[problemsetIdx] as any).id
+      )
+      .then((result) => {
+        setProblemsets(result.data);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+    return;
+  };
 
   return problemsetIdx === -1 ? (
     <Card
@@ -82,7 +100,7 @@ export let InboxProblemsetMenu = () => {
       <Stack spacing={4} className="bg-white p-4 rounded-xl h-[230px]">
         <Stack className="h-[40px]">
           <p className="text-left font-bold text-[20px]">
-            {/* {name} */}디자인 가이드 정리
+            {(problemsets[problemsetIdx] as any).title}
           </p>
         </Stack>
         <Stack className="h-[120px]">
@@ -96,7 +114,7 @@ export let InboxProblemsetMenu = () => {
                   <ListCheck></ListCheck>
                 </ActionIcon>
                 <p className="text-center text-[#447EFF] text-[24px]">
-                  0{/* {problemsets[problemsetIdx].problemCount} */}
+                  {(problemsets[problemsetIdx] as any).problemCount}
                 </p>
                 <p className="text-center text-[#85B6FF] text-[18px]">개</p>
               </Group>
@@ -126,7 +144,11 @@ export let InboxProblemsetMenu = () => {
                 <Copy />
               </ActionIcon>
               <ActionIcon radius="md" color="blue" variant="light">
-                <Trash />
+                <Trash
+                  onClick={() => {
+                    deleteProblemset();
+                  }}
+                />
               </ActionIcon>
             </Group>
           </Group>

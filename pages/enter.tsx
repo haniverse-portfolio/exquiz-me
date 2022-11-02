@@ -264,7 +264,7 @@ const Home: NextPage = () => {
                   )}
                   {pinStep === 1 ? (
                     <Stack align="center">
-                      <Loader color="orange"></Loader>
+                      <Loader color="orange" />
                       <p className="text-center text-xl text-gray-500 font">
                         검색중...
                       </p>

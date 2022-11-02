@@ -15,6 +15,13 @@
     "jsx": "preserve",
     "incremental": true
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "pages/stomp.js"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "pages/stomp.js",
+    "public/service-worker.js",
+    "public/service-worker.js"
+  ],
   "exclude": ["node_modules"]
 }
