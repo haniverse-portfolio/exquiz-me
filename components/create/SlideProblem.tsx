@@ -115,6 +115,12 @@ export let SlideProblem = () => {
             return (
               <Stack
                 onClick={() => {
+                  //   viewport.current.scrollTo({
+                  //     top: viewport.current.scrollHeight,
+                  //     // top: viewport.current.scrollHeight / 2,
+                  //     behavior: "smooth",
+                  //   });
+                  // }}
                   setCurIdx(i);
                 }}
                 className={`${
@@ -134,10 +140,16 @@ export let SlideProblem = () => {
                     alt="image"
                   ></Image>
                   <Stack>
-                    <ActionIcon color="blue" variant="light">
+                    <ActionIcon
+                      color="blue"
+                      variant={curIdx === i ? "light" : "transparent"}
+                    >
                       <Copy></Copy>
                     </ActionIcon>
-                    <ActionIcon color="blue" variant="light">
+                    <ActionIcon
+                      color="blue"
+                      variant={curIdx === i ? "light" : "transparent"}
+                    >
                       <Trash
                         onClick={() => {
                           problemDelete();

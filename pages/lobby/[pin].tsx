@@ -108,6 +108,7 @@ const Home: NextPage = () => {
         );
       },
       function (error) {
+        alert("error!!");
         // connect();
       }
     );

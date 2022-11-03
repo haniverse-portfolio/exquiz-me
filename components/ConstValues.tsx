@@ -17,7 +17,7 @@ export const dtypeName = [
   "객관식",
   "주관식",
   "O/X",
-  // "넌센스",
+  "넌센스",
   // "다이나믹",
   // "설명",
 ];
@@ -31,8 +31,8 @@ export const slideProblemInput = [
 export const problemInput = [
   {
     answer: "0",
-    description: "우리나라에서 가장 높은 산은?",
-    dtype: "MultipleChoiceProblem",
+    description: "",
+    dtype: "0",
     idx: 0,
     picture: "",
     problemsetId: 0,
@@ -42,8 +42,8 @@ export const problemInput = [
   },
   {
     answer: "0",
-    description: "우리나라에서 가장 높은 산은?",
-    dtype: "MultipleChoiceProblem",
+    description: "",
+    dtype: "0",
     idx: 0,
     picture: "",
     problemsetId: 0,
@@ -53,8 +53,8 @@ export const problemInput = [
   },
   {
     answer: "0",
-    description: "우리나라에서 가장 높은 산은?",
-    dtype: "MultipleChoiceProblem",
+    description: "",
+    dtype: "0",
     idx: 0,
     picture: "",
     problemsetId: 0,

@@ -169,7 +169,7 @@ const Home: NextPage = () => {
       <audio
         ref={bgAudio}
         className="invisible"
-        src="/sounds/background_music.mp3"
+        src="/sounds/play_music.wav"
       ></audio>
       <main className="h-[100vh]">
         <section
@@ -207,7 +207,7 @@ const Home: NextPage = () => {
           <Stack className="items-center flex contents-between">
             {/* 메인 배너 */}
             {step === 0 ? (
-              <>
+              <Stack spacing={0}>
                 <header className="h-[140px] bg-[#273248]">
                   <Group
                     position="center"
@@ -310,7 +310,7 @@ const Home: NextPage = () => {
                     </Grid>
                   </Stack>
                 </Stack>
-              </>
+              </Stack>
             ) : (
               <></>
             )}

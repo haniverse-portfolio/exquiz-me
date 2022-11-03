@@ -104,27 +104,6 @@ export const ImageSection = () => {
 
   return (
     <Stack className="w-[20vw] h-[80px]">
-      {/* <Dropzone accept={IMAGE_MIME_TYPE} onDrop={setFiles}>
-                    <Text color="gray" align="center">
-                      이미지나 동영상을 첨부하세요
-                    </Text>
-                  </Dropzone> */}
-      {/* <TextInput
-        size="lg"
-        label=""
-        placeholder="검색어를 입력하세요"
-        rightSection={
-          <ActionIcon>
-            <AdjustmentsHorizontal size="md" />
-          </ActionIcon>
-        }
-        onChange={(event) => {
-          let copy = event.currentTarget.value;
-          setImageLoading(true);
-          setImageTmpWord(copy);
-        }}
-        value={imageWord}
-      /> */}
       {imageLoading === true ? (
         <Stack>
           <Stack>

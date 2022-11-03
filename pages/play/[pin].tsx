@@ -165,11 +165,10 @@ const Home: NextPage = () => {
           </Stack>
           <Button
             onClick={() => {
-              var cat = localStorage.getItem("fromSession");
-              alert(cat);
+              setStep(1);
             }}
           >
-            세션 값 확인
+            다음 스텝으로
           </Button>
         </Stack>
       ) : (

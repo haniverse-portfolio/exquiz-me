@@ -170,7 +170,12 @@ export const createCompleteModal = atom({
 
 export const createTabModal = atom({
   key: "createTabModal",
-  default: "0",
+  default: false,
+});
+
+export const createImageModal = atom({
+  key: "createImageModal",
+  default: false,
 });
 
 export const createProblemsetDrawer = atom({

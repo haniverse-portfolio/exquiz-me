@@ -65,6 +65,7 @@ import {
 } from "../components/ConstValues";
 import { SlideProblem } from "../components/create/SlideProblem";
 import { SearchSection } from "../components/create/SearchSection";
+import { ImageModal } from "../components/create/ImageModal";
 
 const Home: NextPage = () => {
   // const [files, setFiles] = useState<FileWithPath[]>([]);
@@ -222,12 +223,13 @@ const Home: NextPage = () => {
       {/* modal */}
       <CompleteModal />
       <TabChangeModal />
+      <ImageModal />
       {/* title */}
 
       {/* 퀴즈 제작 */}
       <main>
         {step === 0 ? (
-          <Stack spacing={8}>
+          <Stack className="h-[100vh]" spacing={0}>
             {/* navigation bar */}
             <CreateNavigation />
             {/* slide + create + image */}
@@ -236,12 +238,7 @@ const Home: NextPage = () => {
             {/* <SearchSection /> */}
             {/* <Main></Main> */}
             {/* <ImageSection /> */}
-            <Grid columns={20} style={{ height: "calc(100vh - 120px)" }}>
-              <SlideProblem />
-              <Grid.Col className="bg-[#EDF4F7]" span={17}>
-                <Main />
-              </Grid.Col>
-            </Grid>
+            <Main />
           </Stack>
         ) : (
           <></>

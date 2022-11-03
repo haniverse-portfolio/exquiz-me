@@ -21,7 +21,7 @@ export const ControlBar = (size: number) => {
     await setProblem((prevstate) => [
       ...prevstate,
       {
-        answer: "-1",
+        answer: "0",
         description: "",
         dtype: dtypeName[tabIdx],
         idx: 0,

@@ -104,8 +104,8 @@ export const TabChangeModal = () => {
       transitionDuration={600}
       transitionTimingFunction="ease"
       centered
-      opened={tabModalOpened === "0" ? false : true}
-      onClose={() => setTabModalOpened("0")}
+      opened={tabModalOpened}
+      onClose={() => setTabModalOpened(false)}
     >
       <Stack>
         <p>퀴즈 유형을 변경하시겠습니까?</p>
@@ -116,9 +116,20 @@ export const TabChangeModal = () => {
             variant="filled"
             color="orange"
             onClick={() => {
-              let nxt = tabChangeIdx;
-              problem[curIdx].description = "";
-              option[curIdx] = [
+              let copyProblem = [...problem];
+              copyProblem.splice(curIdx, 1, {
+                answer: "0",
+                description: "",
+                dtype: tabChangeIdx.toString(),
+                idx: 0,
+                picture: "",
+                problemsetId: 0,
+                score: 300,
+                timelimit: 30,
+                title: "",
+              });
+              let copyOption = [...option];
+              copyOption.splice(curIdx, 1, [
                 {
                   description: "",
                   idx: 0,
@@ -143,12 +154,10 @@ export const TabChangeModal = () => {
                   picture: "",
                   problemId: 0,
                 },
-              ];
-              if (tabIdx !== nxt) setTabIdx((prevState) => nxt);
-              problem[curIdx].dtype = dtypeName[nxt];
-              setTabModalOpened("0");
-              setImageWord("");
-              setImageList([]);
+              ]);
+              setProblem(copyProblem);
+              setOption(copyOption);
+              setTabModalOpened(false);
             }}
           >
             네
@@ -158,7 +167,7 @@ export const TabChangeModal = () => {
             variant="outline"
             color="orange"
             onClick={() => {
-              setCompleteModalOpened("0");
+              setTabModalOpened(false);
             }}
           >
             아니오
