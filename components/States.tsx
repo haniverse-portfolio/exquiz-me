@@ -182,6 +182,11 @@ export const createProblemsetDrawer = atom({
   key: "createProblemsetDrawer",
   default: "0",
 });
+
+export const createImageStep = atom({
+  key: "createImageStep",
+  default: 0,
+});
 /* *** modal and drawer *** */
 
 /* *** create *** */

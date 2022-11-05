@@ -18,6 +18,7 @@ import {
   Skeleton,
   ScrollArea,
   Grid,
+  Container,
 } from "@mantine/core";
 import {
   Plus,
@@ -103,61 +104,49 @@ export const ImageSection = () => {
   };
 
   return (
-    <Stack className="w-[20vw] h-[80px]">
+    <Stack className=" h-[80px]">
       {imageLoading === true ? (
-        <Stack>
-          <Stack>
-            <Grid columns={6}>
-              <Grid.Col span={2}>
-                <Skeleton height={100} radius="sm" />
-              </Grid.Col>
-              <Grid.Col span={2}>
-                <Skeleton height={100} radius="sm" />
-              </Grid.Col>
-              <Grid.Col span={2}>
-                <Skeleton height={100} radius="sm" />
-              </Grid.Col>
-            </Grid>
-            <Grid columns={6}>
-              <Grid.Col span={3}>
-                <Skeleton height={100} radius="sm" />
-              </Grid.Col>
-              <Grid.Col span={3}>
-                <Skeleton height={100} radius="sm" />
-              </Grid.Col>
-            </Grid>
-          </Stack>
-          <Center>
-            <p className="text-gray-500"> 이미지 검색 중...</p>
-          </Center>
-          <Stack>
-            <Grid columns={6}>
-              <Grid.Col span={2}>
-                <Skeleton height={100} radius="sm" />
-              </Grid.Col>
-              <Grid.Col span={2}>
-                <Skeleton height={100} radius="sm" />
-              </Grid.Col>
-              <Grid.Col span={2}>
-                <Skeleton height={100} radius="sm" />
-              </Grid.Col>
-            </Grid>
-            <Grid columns={6}>
-              <Grid.Col span={3}>
-                <Skeleton height={100} radius="sm" />
-              </Grid.Col>
-              <Grid.Col span={3}>
-                <Skeleton height={100} radius="sm" />
-              </Grid.Col>
-            </Grid>
-          </Stack>
+        <Stack className="!h-[500px]">
+          <Grid columns={6}>
+            <Grid.Col span={2}>
+              <Skeleton height={150} radius="md" />
+            </Grid.Col>
+            <Grid.Col span={2}>
+              <Skeleton height={150} radius="md" />
+            </Grid.Col>
+            <Grid.Col span={2}>
+              <Skeleton height={150} radius="md" />
+            </Grid.Col>
+          </Grid>
+          <Grid columns={6}>
+            <Grid.Col span={2}>
+              <Skeleton height={150} radius="md" />
+            </Grid.Col>
+            <Grid.Col span={2}>
+              <Skeleton height={150} radius="md" />
+            </Grid.Col>
+            <Grid.Col span={2}>
+              <Skeleton height={150} radius="md" />
+            </Grid.Col>
+          </Grid>
+          <Grid columns={6}>
+            <Grid.Col span={2}>
+              <Skeleton height={150} radius="md" />
+            </Grid.Col>
+            <Grid.Col span={2}>
+              <Skeleton height={150} radius="md" />
+            </Grid.Col>
+            <Grid.Col span={2}>
+              <Skeleton height={150} radius="md" />
+            </Grid.Col>
+          </Grid>
         </Stack>
       ) : (
         <Center>
           {imageList.length === 0 ? (
             <p className="text-gray-500">검색결과 없음.</p>
           ) : (
-            <ScrollArea style={{ height: "calc(100vh - 70px)" }}>
+            <ScrollArea className="h-[50vh]">
               <Stack className="h-[1500vh]">
                 {imageList.map((link, i) => {
                   return (

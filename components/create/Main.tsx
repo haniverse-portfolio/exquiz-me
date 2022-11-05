@@ -22,6 +22,7 @@ import {
   SimpleGrid,
   Divider,
   ActionIcon,
+  Container,
 } from "@mantine/core";
 import { Circle, Copy, Photo, Plus, Trash, X } from "tabler-icons-react";
 
@@ -161,9 +162,7 @@ export const Main = () => {
                 <Stack
                   onClick={() => {
                     viewport.current.scrollTo({
-                      top:
-                        (viewport.current.scrollHeight * curIdx) /
-                        problem.length,
+                      top: (viewport.current.scrollHeight * i) / problem.length,
                       behavior: "smooth",
                     });
                     setCurIdx(i);
@@ -171,39 +170,51 @@ export const Main = () => {
                   className={`${
                     curIdx === i ? "bg-[#85b6ff]/[0.15]" : ""
                   } cursor-pointer hover:bg-[#85b6ff]/[0.15]`}
-                  align="right"
-                  spacing={0}
                   key={i}
                 >
-                  <Group position="center">
-                    <span className="text-[#F9761E] text-[16px] ">{i + 1}</span>
-                    <Image
-                      className="rounded-xl"
-                      src="/halla_mountain.svg"
-                      width={160}
-                      height={120}
-                      alt="image"
-                    ></Image>
-                    <Stack>
-                      <ActionIcon
-                        color="blue"
-                        variant={curIdx === i ? "light" : "transparent"}
-                      >
-                        <Copy></Copy>
-                      </ActionIcon>
-                      <ActionIcon
-                        color="blue"
-                        variant={curIdx === i ? "light" : "transparent"}
-                      >
-                        <Trash
-                          onClick={() => {
-                            problemDelete();
-                          }}
-                        ></Trash>
-                      </ActionIcon>
+                  <Grid columns={20}>
+                    <Grid.Col span={3}>
+                      <span className="text-[#F9761E] text-[16px] ">
+                        {i + 1}
+                      </span>
+                    </Grid.Col>
+                    <Grid.Col span={14}>
+                      <Image
+                        layout="responsive"
+                        className="rounded-xl"
+                        src="/halla_mountain.svg"
+                        width={"200px"}
+                        height="100px"
+                        alt="image"
+                      ></Image>
+                    </Grid.Col>
+                    <Grid.Col span={3}>
+                      <Stack>
+                        <ActionIcon
+                          color="blue"
+                          variant={curIdx === i ? "light" : "transparent"}
+                        >
+                          <Copy></Copy>
+                        </ActionIcon>
+                        <ActionIcon
+                          color="blue"
+                          variant={curIdx === i ? "light" : "transparent"}
+                        >
+                          <Trash
+                            onClick={() => {
+                              problemDelete();
+                            }}
+                          ></Trash>
+                        </ActionIcon>
+                      </Stack>
+                    </Grid.Col>
+                    <Stack spacing={0} className="h-[20px] w-[180px]">
+                      <p className="text-white text-[16px]">
+                        {cur.description}
+                      </p>
                     </Stack>
-                  </Group>
-                  <Stack spacing={0} className="w-[180px]">
+                  </Grid>
+                  <Stack spacing={0} className="h-[20px] w-[180px]">
                     <p className="text-white text-[16px]">{cur.description}</p>
                   </Stack>
                 </Stack>
@@ -361,8 +372,12 @@ export const Main = () => {
                                           color="blue"
                                           size="xl"
                                         />
-                                        <ActionIcon size={30}>
-                                          <Photo size={30} color="blue"></Photo>
+                                        <ActionIcon
+                                          variant="transparent"
+                                          color="indigo.8"
+                                          size={30}
+                                        >
+                                          <Photo size={30}></Photo>
                                         </ActionIcon>
                                       </Group>
                                       <Textarea

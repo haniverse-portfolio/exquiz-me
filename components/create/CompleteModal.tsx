@@ -87,62 +87,50 @@ export const CompleteModal = () => {
           setStep(1);
           setCompleteModalOpened("0");
 
-          let problemsetId = await postProblemsetId();
+          let psId = await postProblemsetId();
 
-          // {
-          //   /* problemset */
-          // }
-          let copyProblem = [...problem];
-          let copyOption = [...option];
-          for (let i = 0; i < problem.length; i++) {
-            copyProblem.splice(i, 1, {
-              ...copyProblem[i],
-              idx: i,
-              problemsetId: problemsetId,
-            });
-          }
+          /* *** problem loop start *** */
+          problem.forEach(async (curProblem, problemIdx) => {
+            const slicedProblem = { ...curProblem } as any;
 
-          for (let i = 0; i < copyProblem.length; i++) {
-            {
-              /* problem */
-            }
-            let problemId = 0;
-            await axios
-              .post(connectMainServerApiAddress + "api/problem", copyProblem[i])
+            slicedProblem["idx"] = problemIdx;
+            slicedProblem["problemsetId"] = psId;
+            slicedProblem["dtype"] = "MultipleChoiceProblem";
+            console.log(problemIdx + " : " + slicedProblem);
+
+            /* *** problem axios *** */
+            const prId = await axios
+              .post(connectMainServerApiAddress + "api/problem", slicedProblem)
               .then((result) => {
-                problemId = result.data.id;
+                return result.data.id;
               })
               .catch((error) => {
                 alert("problem_error");
               });
-            {
-              /* problem_option */
-            }
-            for (let j = 0; j < copyOption.length; j++) {
-              let copyOption2 = copyOption[i];
-              copyOption2.splice(j, 1, {
-                ...copyOption2[j],
-                idx: j,
-                problemId: problemId,
-              });
 
-              copyOption.splice(i, 1, copyOption2);
-            }
-            setOption((prevState) => option);
-            for (let j = 0; j < option.length; j++) {
+            /* *** option loop start *** */
+            option[problemIdx].forEach((curOption, optionIdx) => {
+              const slicedOption = { ...curOption } as any;
+              slicedOption["idx"] = optionIdx;
+              slicedOption["problemId"] = prId;
+
+              console.log(optionIdx + " : " + slicedOption);
+              /* *** option axios *** */
               axios
                 .post(
                   connectMainServerApiAddress + "api/problem_option",
-                  copyOption[i][j]
+                  slicedOption
                 )
-                .then((result) => {})
-                .catch((error) => {});
-            }
-          }
-          setTimeout(() => {
-            setStep(2);
-          }, 300);
-          router.push("/inbox");
+                .then((result) => {
+                  setStep(2);
+                  console.log(problemSet);
+                  // router.push("/inbox");
+                })
+                .catch((error) => {
+                  // setError()
+                });
+            });
+          });
         }}
       >
         배포하기

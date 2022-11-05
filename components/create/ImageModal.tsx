@@ -10,10 +10,8 @@ import {
   ActionIcon,
   Divider,
   TextInput,
-  Grid,
-  Skeleton,
-  ScrollArea,
-  Center,
+  FileButton,
+  Space,
 } from "@mantine/core";
 import { AlertOctagon, X } from "tabler-icons-react";
 
@@ -28,16 +26,26 @@ import {
   createImageList,
   createIsImageLoading,
   createImageWord,
+  createImageStep,
 } from "../States";
 import { connectMainServerApiAddress } from "../ConstValues";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useDebouncedState } from "@mantine/hooks";
 import { ImageSection } from "./ImageSection";
 
 export const ImageModal = () => {
+  const [file, setFile] = useState<File | null>(null);
+  const resetRef = useRef<() => void>(null);
+
+  const clearFile = () => {
+    setFile(null);
+    resetRef.current?.();
+  };
+
   /* ****** routes ****** */
   const [step, setStep] = useRecoilState(createStep);
+  const [imageStep, setImageStep] = useRecoilState(createImageStep);
 
   /* ****** pop-over ****** */
   /* modal */
@@ -76,7 +84,7 @@ export const ImageModal = () => {
 
   return (
     <Modal
-      className="h-[80vh]"
+      className="h-full"
       size="xl"
       withCloseButton={false}
       centered
@@ -85,9 +93,39 @@ export const ImageModal = () => {
     >
       <Group position="apart">
         <Group position="center">
-          <span>사진 검색</span>
+          <Button
+            size="lg"
+            onClick={() => {
+              setImageStep(0);
+            }}
+            variant="subtle"
+            color={imageStep === 0 ? "blue" : "gray"}
+          >
+            사진 검색
+          </Button>
           <Divider orientation="vertical"></Divider>
-          <span>내 컴퓨터에서</span>
+          <Group
+            onClick={() => {
+              setImageStep(1);
+            }}
+          >
+            <FileButton
+              resetRef={resetRef}
+              onChange={setFile}
+              accept="image/png,image/jpeg"
+            >
+              {(props) => (
+                <Button
+                  {...props}
+                  variant="subtle"
+                  color={imageStep === 1 ? "blue" : "gray"}
+                  size="lg"
+                >
+                  내 컴퓨터에서
+                </Button>
+              )}
+            </FileButton>
+          </Group>
         </Group>
         <ActionIcon
           onClick={() => {
@@ -97,18 +135,35 @@ export const ImageModal = () => {
           <X></X>
         </ActionIcon>
       </Group>
-      <TextInput
-        onChange={(event) => {
-          setImageLoading(true);
-          setImageTmpWord(event.currentTarget.value);
-        }}
-        value={imageWord}
-        size="lg"
-        placeholder="검색어를 입력해주세요"
-      >
-        {/* <Grid columns={3}></Grid> */}
-      </TextInput>
-      <ImageSection />
+      <Space h="xs" />
+      <Divider size="xs" />
+      {imageStep === 0 ? (
+        <Stack>
+          <Space h="xs" />
+          <TextInput
+            onChange={(event) => {
+              setImageLoading(true);
+              setImageTmpWord(event.currentTarget.value);
+            }}
+            value={imageTmpWord}
+            size="lg"
+            placeholder="검색어를 입력해주세요"
+          />
+          <ImageSection />
+        </Stack>
+      ) : (
+        <></>
+      )}
+      {imageStep === 1 ? (
+        <>
+          <Button disabled={!file} color="red" onClick={clearFile}>
+            Reset
+          </Button>
+          {file && <p>Picked file: {file.name}</p>}
+        </>
+      ) : (
+        <></>
+      )}
     </Modal>
   );
 };

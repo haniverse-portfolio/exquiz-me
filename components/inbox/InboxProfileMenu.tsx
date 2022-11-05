@@ -31,7 +31,12 @@ export let InboxProfileMenu = () => {
   const router = useRouter();
 
   return (
-    <Card withBorder p="xl" radius="xl" className="!shadow-lg !rounded-4xl">
+    <Card
+      withBorder
+      p="xl"
+      radius="xl"
+      className="h-[410px] !shadow-lg !rounded-4xl"
+    >
       <Group position="right">
         <ActionIcon>
           <Pencil></Pencil>

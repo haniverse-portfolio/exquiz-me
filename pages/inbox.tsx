@@ -199,11 +199,11 @@ const Home: NextPage = () => {
       </Head>
 
       <IndexNavigation />
-      <main style={{ height: "calc(100vh - 70px)" }}>
-        <section style={{ height: "calc(100vh - 70px)" }}>
+      <main style={{ height: "calc(100vh - 60px)" }}>
+        <section style={{ height: "calc(100vh - 60px)" }}>
           <Stack className="h-[20vh] bg-gradient-to-r from-[#ffc069] to-[#fa751e] text-slow"></Stack>
           <Grid
-            style={{ height: "calc(80vh - 70px)" }}
+            style={{ height: "calc(80vh - 60px)" }}
             gutter="md"
             columns={24}
           >
@@ -215,7 +215,10 @@ const Home: NextPage = () => {
               </Stack>
             </Grid.Col>
             <Grid.Col span={14}>
-              <Stack className="ml-8 h-[80vh] relative bottom-32">
+              <Stack
+                style={{ height: "calc(80vh - 60px)" }}
+                className="ml-8 relative bottom-32"
+              >
                 <MantineProvider
                   inherit
                   theme={{
@@ -261,8 +264,8 @@ const Home: NextPage = () => {
                   />
                 </Group>
                 <Divider size="sm"></Divider>
-                <ScrollArea scrollbarSize={0} className="80vh">
-                  <Grid style={{ height: 2500 }} gutter={0} columns={3}>
+                <ScrollArea scrollbarSize={0}>
+                  <Grid gutter={0} columns={3}>
                     {problemsets.map(
                       ({ title, description, closingMent }, i) => {
                         return (
@@ -279,16 +282,45 @@ const Home: NextPage = () => {
                               }
                             }}
                           >
-                            <Image
-                              src={
+                            {/* 208 298 */}
+                            <Stack
+                              className={`px-4 h-[220px] w-[310px] bg-no-repeat bg-center ${
                                 problemsetIdx === i
-                                  ? "/inbox/folder_highlight.svg"
-                                  : "/inbox/folder.svg"
-                              }
-                              alt="folder"
-                              height={208}
-                              width={298}
-                            ></Image>
+                                  ? "bg-[url('/inbox/folder_highlight.svg')]"
+                                  : "bg-[url('/inbox/folder.svg')]"
+                              } `}
+                            >
+                              <Stack className="h-[3px]"></Stack>
+                              <Group position="right">
+                                <ActionIcon
+                                  size={20}
+                                  color="green"
+                                  radius="xl"
+                                  variant="filled"
+                                ></ActionIcon>
+                                <ActionIcon
+                                  size={20}
+                                  color="yellow"
+                                  radius="xl"
+                                  variant="filled"
+                                ></ActionIcon>
+                                <ActionIcon
+                                  size={20}
+                                  color="red"
+                                  radius="xl"
+                                  variant="filled"
+                                ></ActionIcon>
+                              </Group>
+                              <Stack className="h-[40px]"></Stack>
+                              <Stack className="ml-2">
+                                <p className="text-[14px] text-[#818181]">
+                                  2022/11/25
+                                </p>
+                                <p className="text-[24px] text-[#5E5E5E]">
+                                  {(problemsets[i] as any)?.title}
+                                </p>
+                              </Stack>
+                            </Stack>
                             <Group className="h-[208px] w-["></Group>
                           </Grid.Col>
                         );

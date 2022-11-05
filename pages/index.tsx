@@ -112,7 +112,7 @@ const Home: NextPage = () => {
                   퀴즈의 새로운 경험을 제시하다
                 </h2>
                 <Stack className="h-[34px]" />
-                <h3 className="text-[#818181] text-[24px] text-center">
+                <h3 className="text-[#818181] font-normal text-[24px] text-center">
                   <p>
                     <span className="text-[#F9761E]">학교 선생님</span>,&nbsp;
                     <span className="text-[#85B6FF]">회사 팀장님</span>,&nbsp;
@@ -175,7 +175,7 @@ const Home: NextPage = () => {
             퀴즈의 출제를 편리하게
           </h2>
           <Stack className="h-[42px]" />
-          <h3 className="text-[#818181] text-[24px] text-center">
+          <h3 className="text-[#818181] font-normal text-[24px] text-center">
             <p>이제까지 없었던 편리하고 직관적인 퀴즈 출제를 만나보세요!</p>
             <p>다양한 퀴즈 유형과 편리한 조작, 그리고 이미지 크롤링까지</p>
             <p>퀴즈 제작의 모든 기능이 갖추어져 있습니다.</p>
@@ -266,7 +266,7 @@ const Home: NextPage = () => {
               퀴즈의 참여를 더 재미있게
             </h2>
             <Stack className="h-[42px]" />
-            <h3 className="text-[#818181] text-[24px] text-center">
+            <h3 className="text-[#818181] font-normal text-[24px] text-center">
               <p>이제까지 없었던 편리하고 직관적인 퀴즈 출제를 만나보세요!</p>
               <p>다양한 퀴즈 유형과 편리한 조작, 그리고 이미지 크롤링까지</p>
               <p>퀴즈 제작의 모든 기능이 갖추어져 있습니다.</p>
