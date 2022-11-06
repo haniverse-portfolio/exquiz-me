@@ -36,8 +36,6 @@ import {
   createTabModal,
   createIsImageLoading,
   createProblemset,
-  createScore,
-  createTimelimit,
   createImageURL,
   createImageList,
   createImageWord,
@@ -90,8 +88,6 @@ export const Main = () => {
   const [problem, setProblem] = useRecoilState(createProblem);
   const [option, setOption] = useRecoilState(createOption);
   /* score, time */
-  const [scoreValue, setScoreValue] = useRecoilState(createScore);
-  const [timelimit, setTimelimit] = useRecoilState(createTimelimit);
   /* image */
   // const [imageTmpWord, setImageTmpWord] = useDebouncedState("", 500);
 
@@ -151,6 +147,12 @@ export const Main = () => {
     setOption(copyOption);
     setCurIdx(curIdx + 1);
   };
+
+  useEffect(() => {
+    console.log("problem" + problem);
+    console.log("score: " + problem[0].score);
+    console.log("timelimit: " + problem[0].timelimit);
+  }, [problem]);
 
   return (
     <Grid gutter={0} columns={20} style={{ height: "calc(100vh - 120px)" }}>
@@ -248,7 +250,7 @@ export const Main = () => {
             className="bg-[#F7F9FB]"
             style={{ height: "calc(100vh - 120px)" }}
           >
-            {problem.map(({ dtype, description }, i) => {
+            {problem.map((slicedProblem, i) => {
               return (
                 <Center key={i}>
                   <Stack
@@ -471,12 +473,18 @@ export const Main = () => {
                           <span className="text-gray-500">문제 배점</span>
                           <Slider
                             className="w-[10vw]"
-                            onChangeEnd={(event) => {
-                              let copy = JSON.parse(
-                                JSON.stringify([...problem])
+                            onChangeEnd={(value) => {
+                              const changedProblem = problem.map(
+                                (curProblem, problemIdx) => {
+                                  let copyProblem = { ...curProblem };
+                                  if (i === problemIdx) {
+                                    copyProblem.score = 100 + value * 4;
+                                    console.log(100 + value * 4);
+                                  }
+                                  return copyProblem;
+                                }
                               );
-                              copy[i].score = 50;
-                              setProblem(copy);
+                              setProblem(changedProblem);
                             }}
                             color="blue"
                             label={(val) =>
@@ -497,12 +505,19 @@ export const Main = () => {
                           <Slider
                             defaultValue={50}
                             className="w-[10vw]"
-                            onChangeEnd={() => {
-                              let copy = JSON.parse(
-                                JSON.stringify([...problem])
+                            onChangeEnd={(value) => {
+                              const changedProblem = problem.map(
+                                (curProblem, problemIdx) => {
+                                  let copyProblem = { ...curProblem };
+                                  if (i === problemIdx) {
+                                    copyProblem.timelimit =
+                                      10 + (value / 25) * 10;
+                                    console.log(10 + (value / 25) * 10);
+                                  }
+                                  return copyProblem;
+                                }
                               );
-                              copy[i].timelimit = 50;
-                              setProblem(copy);
+                              setProblem(changedProblem);
                             }}
                             color="blue"
                             label={(val) =>

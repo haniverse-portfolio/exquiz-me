@@ -48,7 +48,6 @@ import {
   playProblem,
 } from "../components/States";
 import { connectMainServerApiAddress } from "../components/ConstValues";
-import { FooterCentered } from "../components/footer";
 import { InboxProblemsetMenu } from "../components/inbox/InboxProblemsetMenu";
 import { InboxProfileMenu } from "../components/inbox/InboxProfileMenu";
 
@@ -202,23 +201,23 @@ const Home: NextPage = () => {
       <main style={{ height: "calc(100vh - 60px)" }}>
         <section style={{ height: "calc(100vh - 60px)" }}>
           <Stack className="h-[20vh] bg-gradient-to-r from-[#ffc069] to-[#fa751e] text-slow"></Stack>
-          <Grid
-            style={{ height: "calc(80vh - 60px)" }}
-            gutter="md"
-            columns={24}
-          >
+          <Grid gutter={0} columns={24}>
+            {/* left margin */}
             <Grid.Col span={3} />
+            {/* profile, problemSet vertical */}
             <Grid.Col span={4}>
               <Stack className="relative bottom-32">
                 <InboxProfileMenu />
                 <InboxProblemsetMenu />
               </Stack>
             </Grid.Col>
+            {/* main */}
             <Grid.Col span={14}>
               <Stack
                 style={{ height: "calc(80vh - 60px)" }}
                 className="ml-8 relative bottom-32"
               >
+                {/* search textinput */}
                 <MantineProvider
                   inherit
                   theme={{
@@ -254,6 +253,7 @@ const Home: NextPage = () => {
                     placeholder="찾으시는 퀴즈를 검색해보세요"
                   ></TextInput>
                 </MantineProvider>
+                {/* filter select */}
                 <Group position="right">
                   <Select
                     placeholder="정렬 필터"
@@ -264,7 +264,8 @@ const Home: NextPage = () => {
                   />
                 </Group>
                 <Divider size="sm"></Divider>
-                <ScrollArea scrollbarSize={0}>
+                {/* problemset grid */}
+                <ScrollArea style={{ height: 1000 }} scrollbarSize={0}>
                   <Grid gutter={0} columns={3}>
                     {problemsets.map(
                       ({ title, description, closingMent }, i) => {
@@ -272,27 +273,29 @@ const Home: NextPage = () => {
                           <Grid.Col
                             span={1}
                             key={i}
-                            className={`h-80 cursor-pointer`}
+                            className="h-[240px] cursor-pointer"
                             onClick={async () => {
-                              if (problemsetIdx === -1) {
-                                // await getProblem(i + 1);
-                                await setProblemsetIdx((prevState) => i);
-                              } else {
+                              if (problemsetIdx === i && problemsetIdx !== -1) {
                                 await setProblemsetIdx(-1);
+                              } else {
+                                await setProblemsetIdx(i);
                               }
                             }}
                           >
                             {/* 208 298 */}
                             <Stack
-                              className={`px-4 h-[220px] w-[310px] bg-no-repeat bg-center ${
+                              className={`px-4 rounded-3xl h-[220px] w-[310px] bg-no-repeat bg-center ${
                                 problemsetIdx === i
-                                  ? "bg-[url('/inbox/folder_highlight.svg')]"
+                                  ? "bg-[url('/inbox/folder_highlight.svg')] "
                                   : "bg-[url('/inbox/folder.svg')]"
-                              } `}
+                              } hover:bg-[url('/inbox/folder_highlight.svg')]`}
                             >
                               <Stack className="h-[3px]"></Stack>
                               <Group position="right">
                                 <ActionIcon
+                                  onClick={() => {
+                                    setModalOpened(true);
+                                  }}
                                   size={20}
                                   color="green"
                                   radius="xl"
@@ -305,6 +308,9 @@ const Home: NextPage = () => {
                                   variant="filled"
                                 ></ActionIcon>
                                 <ActionIcon
+                                  onClick={() => {
+                                    deleteProblemset();
+                                  }}
                                   size={20}
                                   color="red"
                                   radius="xl"
@@ -330,15 +336,17 @@ const Home: NextPage = () => {
                 </ScrollArea>
               </Stack>
             </Grid.Col>
+            {/* margin right */}
             <Grid.Col span={3} />
           </Grid>
         </section>
       </main>
+      {/* postRoom modal */}
       <Modal
         withCloseButton={false}
         centered
-        opened={modalOpened === "0" ? false : true}
-        onClose={() => setModalOpened("0")}
+        opened={modalOpened}
+        onClose={() => setModalOpened(false)}
       >
         <Stack>
           <Group position="apart">
@@ -348,7 +356,7 @@ const Home: NextPage = () => {
             <p className="m-0 text-xl text-center">퀴즈방 생성하기</p>
             <ActionIcon
               onClick={() => {
-                setModalOpened("0");
+                setModalOpened(false);
               }}
             >
               <X></X>
@@ -371,7 +379,7 @@ const Home: NextPage = () => {
             size="lg"
             className="mx-12"
             onClick={async () => {
-              setModalOpened("0");
+              setModalOpened(false);
               await postRoom();
             }}
             color="orange"
@@ -387,38 +395,3 @@ const Home: NextPage = () => {
 };
 
 export default Home;
-
-// new Promise((resolve, reject) => {
-//   resolve(true);
-// }).then(() => {
-//   alert(pin);
-// });
-
-// relative bottom-24
-
-{
-  /* <Button
-leftIcon={<X></X>}
-onClick={() => {
-  deleteProblemset();
-}}
-variant="outline"
-className="shadow-md"
-color="red"
->
-삭제하기
-</Button> */
-}
-
-// {problemsets.map(({ title, description, closingMent }, i) => {
-//   return Math.trunc(i / 4) !== activePage - 1 ? (
-
-//   <p className="m-0 mt-28 text-lg text-left text-gray-500">
-//   22년 10월 24일
-// </p>
-// <p className="mb-4 text-2xl font-bold text-left text-gray-600">
-//   {title}
-// </p>
-
-// problem.length.toString()
-// Math.trunc(totalTime() / 60).toString()

@@ -23,7 +23,7 @@ import {
 
 import { ArrowBigLeft } from "tabler-icons-react";
 import { indexMembership } from "../components/States";
-import { HeroImageRight } from "../components/membershipHero";
+import { HeroImageRight } from "../components/membership/membershipHero";
 
 const Home: NextPage = () => {
   const router = useRouter();

@@ -6,6 +6,8 @@ import IndexNavigation from "../components/index/IndexNavigation";
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useScrollIntoView } from "@mantine/hooks";
+import { Carousel } from "@mantine/carousel";
+import Autoplay from "embla-carousel-autoplay";
 import {
   Button,
   Group,
@@ -14,6 +16,7 @@ import {
   ActionIcon,
   ScrollArea,
   Container,
+  Center,
 } from "@mantine/core";
 import { indexIsLogined, indexUserInfo } from "../components/States";
 import { useRecoilState } from "recoil";
@@ -21,6 +24,7 @@ import { connectMainServerApiAddress } from "../components/ConstValues";
 import { GridDots, HandFinger, Photo } from "tabler-icons-react";
 
 const Home: NextPage = () => {
+  const autoplay = useRef(Autoplay({ delay: 2000 }));
   /* *** initialization start *** */
   const router = useRouter();
   const theme = useMantineTheme();
@@ -123,29 +127,58 @@ const Home: NextPage = () => {
               </Stack>
             </Stack>
             {/* banner-end */}
-            <Stack className="h-[80px]" />
+            <Stack align="center" className="h-[80px]" />
             {/* demo-image-start */}
-            <Group position="center">
-              <Image
-                className="hover:scale-125"
-                src="/index/demo1.svg"
-                alt="demo1"
-                width={477}
+            <Center>
+              <Carousel
+                plugins={[autoplay.current]}
+                onMouseEnter={autoplay.current.stop}
+                onMouseLeave={autoplay.current.reset}
+                dragFree
+                withIndicators
                 height={339}
-              ></Image>
-              <Image
-                src="/index/demo2.svg"
-                alt="demo2"
-                width={476}
-                height={338}
-              ></Image>
-              <Image
-                src="/index/demo3.svg"
-                alt="demo3"
-                width={477}
-                height={339}
-              ></Image>
-            </Group>
+                slideSize="33.333333%"
+                slideGap="md"
+                loop
+                align="center"
+                slidesToScroll={1}
+              >
+                <Carousel.Slide>
+                  <Image
+                    className="hover:scale-125"
+                    src="/index/demo1.svg"
+                    alt="demo1"
+                    width={477}
+                    height={339}
+                  ></Image>
+                </Carousel.Slide>
+                <Carousel.Slide>
+                  <Image
+                    src="/index/demo2.svg"
+                    alt="demo2"
+                    width={476}
+                    height={338}
+                  ></Image>
+                </Carousel.Slide>
+                <Carousel.Slide>
+                  <Image
+                    src="/index/demo3.svg"
+                    alt="demo3"
+                    width={477}
+                    height={339}
+                  ></Image>
+                </Carousel.Slide>
+                <Carousel.Slide>
+                  <Image
+                    src="/index/demo3.svg"
+                    alt="demo3"
+                    width={477}
+                    height={339}
+                  ></Image>
+                </Carousel.Slide>
+                {/* ...other slides */}
+              </Carousel>
+            </Center>
           </Stack>
           <Stack className="h-[48px]" />
           <Container className="w-[20vw] text-center">

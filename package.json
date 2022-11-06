@@ -32,6 +32,7 @@
     "axios": "^0.27.2",
     "css-scroll-snap-polyfill": "^0.1.2",
     "dayjs": "^1.11.5",
+    "embla-carousel-autoplay": "^7.0.4",
     "embla-carousel-react": "^7.0.3",
     "framer-motion": "^6.5.0",
     "net": "^1.0.2",

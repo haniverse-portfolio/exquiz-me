@@ -156,7 +156,7 @@ export let InboxProblemsetMenu = () => {
       </Stack>
       <Button
         onClick={() => {
-          setModalOpened("1");
+          setModalOpened(true);
         }}
         variant="filled"
         leftIcon={

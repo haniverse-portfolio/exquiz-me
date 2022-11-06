@@ -29,7 +29,7 @@ export const indexUserInfo = atom({
 /* *** inbox *** */
 export const inboxIsModalOpened = atom({
   key: "inboxIsModalOpened",
-  default: "0",
+  default: false,
 });
 
 export const inboxProblemsetIdx = atom({
@@ -50,12 +50,12 @@ export const inboxProblem = atom({
 export const inboxOption = atom({
   key: "inboxOption",
   default: optionInput,
-});
+}); // usestate
 
 export const inboxMaxpart = atom({
   key: "inboxMaxpart",
   default: 30,
-});
+}); // usestate
 
 export const inboxRoom = atom({
   key: "inboxRoom",
@@ -124,15 +124,6 @@ export const createOption = atom({
   default: optionInput,
 });
 
-export const createScore = atom({
-  key: "createScore",
-  default: 50,
-});
-
-export const createTimelimit = atom({
-  key: "createTimelimit",
-  default: 50,
-});
 /* *** slide, problemset, problem, option, score, timelimit *** */
 
 /* *** image-start *** */

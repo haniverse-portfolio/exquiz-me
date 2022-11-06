@@ -43,8 +43,6 @@ import {
   createTabModal,
   createIsImageLoading,
   createProblemset,
-  createScore,
-  createTimelimit,
   createImageURL,
   createImageList,
   createImageWord,
@@ -53,7 +51,6 @@ import {
   createProblemsetDrawer,
 } from "../States";
 import { dtypeName, tabTooltip, MARKSCORE, MARKSTIME } from "../ConstValues";
-import { ControlBar } from "./ControlBar";
 import { useDebouncedState } from "@mantine/hooks";
 
 export const TabChangeModal = () => {
@@ -80,9 +77,6 @@ export const TabChangeModal = () => {
   const [problemSet, setProblemSet] = useRecoilState(createProblemset);
   const [problem, setProblem] = useRecoilState(createProblem);
   const [option, setOption] = useRecoilState(createOption);
-  /* score, time */
-  const [scoreValue, setScoreValue] = useRecoilState(createScore);
-  const [timelimit, setTimelimit] = useRecoilState(createTimelimit);
   /* image */
   const [imageURL, setImageURL] = useRecoilState(createImageURL);
   const [imageList, setImageList] = useRecoilState(createImageList);

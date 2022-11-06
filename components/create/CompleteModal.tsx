@@ -124,7 +124,8 @@ export const CompleteModal = () => {
                 .then((result) => {
                   setStep(2);
                   console.log(problemSet);
-                  // router.push("/inbox");
+                  router.push("/inbox");
+                  setStep(0);
                 })
                 .catch((error) => {
                   // setError()

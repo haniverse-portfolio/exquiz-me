@@ -15,13 +15,11 @@ import {
   createProblem,
   createProblemIdx,
   createProblemset,
-  createScore,
   createStep,
   createTabCurrentIdx,
   createTabModal,
   createTabNextIdx,
   createTargetIdx,
-  createTimelimit,
   createProblemsetDrawer,
   createImageWord,
 } from "../components/States";
@@ -63,7 +61,6 @@ import {
   connectMainServerApiAddress,
   problemsetInput,
 } from "../components/ConstValues";
-import { SlideProblem } from "../components/create/SlideProblem";
 import { SearchSection } from "../components/create/SearchSection";
 import { ImageModal } from "../components/create/ImageModal";
 
@@ -94,9 +91,6 @@ const Home: NextPage = () => {
   const [problemSet, setProblemSet] = useRecoilState(createProblemset);
   const [problem, setProblem] = useRecoilState(createProblem);
   const [option, setOption] = useRecoilState(createOption);
-  /* score, time */
-  const [scoreValue, setScoreValue] = useRecoilState(createScore);
-  const [timelimit, setTimelimit] = useRecoilState(createTimelimit);
 
   function replaceItemAtIndex(arr: any, index: number, newValue: any) {
     return [...arr.slice(0, index), newValue, ...arr.slice(index + 1)];
@@ -104,32 +98,6 @@ const Home: NextPage = () => {
   /* ****** state-end ****** */
 
   /* ****** effect-start ****** */
-  /* score */
-  useEffect(() => {
-    // setProblem((prevProblem) => {
-    //   const copy = [...prevProblem];
-    //   copy[curIdx].score = Math.trunc(100 + (scoreValue / 25) * 100);
-    //   return copy;
-    // });
-    const value = Math.trunc(100 + (scoreValue / 25) * 100);
-    const newProblem = replaceItemAtIndex(problem, curIdx, {
-      ...problem[curIdx],
-      score: value,
-    });
-    setProblem(newProblem);
-    // let copy = [...problem];
-    // // let copy = JSON.parse(JSON.stringify(problem));
-    // // copy[curIdx].score = Math.trunc(100 + (scoreValue / 25) * 100);
-    // copy[curIdx].score = Math.trunc(100 + (scoreValue / 25) * 100);
-    // setProblem(copy);
-  }, [scoreValue]);
-
-  /* time */
-  useEffect(() => {
-    let copy = JSON.parse(JSON.stringify(problem));
-    copy[curIdx].timelimit = Math.trunc(10 + (timelimit / 25) * 10);
-    setProblem((prevstate) => copy);
-  }, [timelimit]);
 
   useEffect(() => {
     let copyProblemSet = {

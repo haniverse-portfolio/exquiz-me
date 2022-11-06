@@ -38,8 +38,6 @@ import {
   createTabModal,
   createIsImageLoading,
   createProblemset,
-  createScore,
-  createTimelimit,
   createImageURL,
   createImageList,
   createImageWord,
@@ -76,9 +74,6 @@ export const ImageSection = () => {
   const [problemSet, setProblemSet] = useRecoilState(createProblemset);
   const [problem, setProblem] = useRecoilState(createProblem);
   const [option, setOption] = useRecoilState(createOption);
-  /* score, time */
-  const [scoreValue, setScoreValue] = useRecoilState(createScore);
-  const [timelimit, setTimelimit] = useRecoilState(createTimelimit);
   /* image */
   const [imageURL, setImageURL] = useRecoilState(createImageURL);
   const [imageList, setImageList] = useRecoilState(createImageList);

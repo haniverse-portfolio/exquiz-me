@@ -52,7 +52,7 @@ const Home: NextPage = () => {
               size="md"
               variant="outline"
               onClick={() => {
-                router.push("https://api.exquiz.me/api/google/login/prod");
+                router.push("https://api.exquiz.me/api/google/login/local");
                 // 배포 시 : /prod
               }}
               color="orange"
