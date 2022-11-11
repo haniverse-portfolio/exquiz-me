@@ -16,7 +16,7 @@ import { IconPlus } from "@tabler/icons";
 import { avatarAnimal } from "../ConstValues";
 import { Pencil } from "tabler-icons-react";
 import { useRecoilState } from "recoil";
-import { indexUserInfo } from "../States";
+import { inboxProblemset, indexUserInfo } from "../States";
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -27,6 +27,7 @@ const useStyles = createStyles((theme) => ({
 
 export let InboxProfileMenu = () => {
   const [userInfo, setUserInfo] = useRecoilState(indexUserInfo);
+  const [problemsets, setProblemsets] = useRecoilState(inboxProblemset);
   const { classes, theme } = useStyles();
   const router = useRouter();
 
@@ -58,7 +59,7 @@ export let InboxProfileMenu = () => {
             {userInfo.nickname}
           </Text>
           <Text align="center" size="sm" color="dimmed">
-            소마고등학교 정보 과목 교사입니다.
+            익스퀴즈미 스탠다드 플랜 사용자
           </Text>
         </Stack>
       </Group>
@@ -69,7 +70,7 @@ export let InboxProfileMenu = () => {
             만든문제
           </Text>
           <Text weight={700} color="orange" align="center" size="lg">
-            0
+            {problemsets.length}
           </Text>
         </Stack>
         <Stack>
@@ -91,7 +92,7 @@ export let InboxProfileMenu = () => {
       </Group>
       <Button
         onClick={() => {
-          Router.push("/create_rf");
+          Router.push("/create");
         }}
         leftIcon={
           <ThemeIcon size={32} radius="xl" color="orange" variant="filled">

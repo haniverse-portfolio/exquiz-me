@@ -39,8 +39,6 @@ import {
   createTabModal,
   createIsImageLoading,
   createProblemset,
-  createScore,
-  createTimelimit,
   createImageURL,
   createImageList,
   createImageWord,

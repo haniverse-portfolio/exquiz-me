@@ -11,7 +11,7 @@ import axios from "axios";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 import { useRecoilState } from "recoil";
-import { lobbyParticipants } from "../../components/States";
+import { inboxRoom, lobbyParticipants } from "../../components/States";
 
 import { avatarAnimal, avatarColor } from "../../components/ConstValues";
 
@@ -79,6 +79,7 @@ const Home: NextPage = () => {
     theme.colorScheme === "dark" ? theme.colors.dark[1] : theme.colors.gray[7];
 
   const [active, setActive] = useState(0);
+  const [room, setRoom] = useRecoilState(inboxRoom);
 
   {
     /* webSocket */
@@ -109,6 +110,9 @@ const Home: NextPage = () => {
       },
       function (error) {
         alert("error!!");
+        setTimeout(() => {
+          connect();
+        }, 500);
         // connect();
       }
     );
@@ -133,45 +137,47 @@ const Home: NextPage = () => {
             <Center>
               <Stack spacing={0}>
                 <p className="py-16 m-0 font-semibold text-3xl text-center">
-                  퀴즈 입장 로비 방
+                  퀴즈 입장 로비
                 </p>
                 <Center>
-                  <Stack className="w-64 h-12 shadow-lg rounded-t-2xl bg-orange-500">
-                    <p className="text-center text-white">
-                      QR코드를 공유해보세요!
+                  <Stack className="flex items-center justify-center w-64 h-12 shadow-lg rounded-t-2xl bg-orange-500">
+                    <p className="text-2xl font-extrabold text-center text-white">
+                      QR CODE
                     </p>
                   </Stack>
                 </Center>
                 <Stack
                   align="center"
-                  className=" w-80 h-80 shadow-lg rounded-2xl bg-white border-8 border-orange-500 border-solid"
+                  className="flex items-center justify-center w-80 h-80 shadow-lg rounded-2xl bg-white border-8 border-orange-500 border-solid"
                 >
                   <Image
-                    src="https://www.exquiz.me/qrcode.png"
-                    width={150}
-                    height={150}
+                    src="/qr_code_enter.png"
+                    width={280}
+                    height={280}
                     alt="QR CODE"
                   />
                 </Stack>
-                <Group position="center">
+                <Group className="mt-4" position="center">
                   <p className="font-bold text-orange-500 text-2xl text-center">
                     PIN 번호
                   </p>
                 </Group>
                 <Group position="center">
-                  <p className="font-bold text-4xl text-center">
-                    #{router.query.pin}
+                  <p className="text-white font-bold text-6xl text-center">
+                    <strong className="text-[#273248]">
+                      {router.query.pin}
+                    </strong>
                   </p>
-                  <CopyButton value={pin as string}>
+                  {/* <CopyButton value={pin as string}>
                     {({ copied, copy }) => (
                       <ActionIcon color="orange" variant="light" onClick={copy}>
                         <Copy></Copy>
                       </ActionIcon>
                     )}
-                  </CopyButton>
+                  </CopyButton> */}
                 </Group>
                 <Button
-                  className="cursor-pointer"
+                  className="mt-32 cursor-pointer"
                   onClick={() => {
                     client.send("/pub/room/" + pin + "/start", {});
                   }}
@@ -193,7 +199,7 @@ const Home: NextPage = () => {
           >
             <Stack className="px-8">
               <Group position="apart">
-                <p className="font-semibold text-3xl">삼삼고등학교 3학년 2반</p>{" "}
+                <p className="font-semibold text-3xl">{room.roomName}</p>
                 <p className="font-bold text-2xl text-center">
                   입장 인원 &nbsp;
                   <strong className="text-blue-500">{partlist.length}</strong>

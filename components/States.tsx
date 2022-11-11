@@ -27,6 +27,12 @@ export const indexUserInfo = atom({
 /* *** common *** */
 
 /* *** inbox *** */
+
+export const inboxIsDeleteAlertModalOpened = atom({
+  key: "inboxIsDeleteAlertModalOpened",
+  default: false,
+});
+
 export const inboxIsModalOpened = atom({
   key: "inboxIsModalOpened",
   default: false,
@@ -77,6 +83,11 @@ export const indexMembership = atom({
 
 /* *** create *** */
 /* *** user-location *** */
+export const createNonsense = atom({
+  key: "createNonsense",
+  default: {},
+});
+
 export const createTargetIdx = atom({
   key: "createTargetIdx",
   default: 0,
@@ -117,6 +128,7 @@ export const createProblemset = atom({
 export const createProblem = atom({
   key: "createProblem",
   default: problemInput,
+  dangerouslyAllowMutability: true,
 });
 
 export const createOption = atom({
@@ -124,11 +136,26 @@ export const createOption = atom({
   default: optionInput,
 });
 
+// export const createLastText = atom({
+//   key: "createLastText",
+//   default: "",
+// });
+
 /* *** slide, problemset, problem, option, score, timelimit *** */
 
 /* *** image-start *** */
 export const createImageWord = atom({
   key: "createImageWord",
+  default: "",
+});
+
+export const createLastSearchedWord = atom({
+  key: "createLastSearchedWord",
+  default: "",
+});
+
+export const createImageWord2 = atom({
+  key: "createImageWord2",
   default: "",
 });
 

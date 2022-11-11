@@ -30,29 +30,7 @@ export const slideProblemInput = [
 
 export const problemInput = [
   {
-    answer: "0",
-    description: "",
-    dtype: "0",
-    idx: 0,
-    picture: "",
-    problemsetId: 0,
-    score: 300,
-    timelimit: 30,
-    title: "",
-  },
-  {
-    answer: "0",
-    description: "",
-    dtype: "0",
-    idx: 0,
-    picture: "",
-    problemsetId: 0,
-    score: 300,
-    timelimit: 30,
-    title: "",
-  },
-  {
-    answer: "0",
+    answer: "",
     description: "",
     dtype: "0",
     idx: 0,
@@ -65,58 +43,6 @@ export const problemInput = [
 ];
 
 export const optionInput = [
-  [
-    {
-      description: "",
-      idx: 0,
-      picture: "",
-      problemId: 0,
-    },
-    {
-      description: "",
-      idx: 1,
-      picture: "",
-      problemId: 0,
-    },
-    {
-      description: "",
-      idx: 2,
-      picture: "",
-      problemId: 0,
-    },
-    {
-      description: "",
-      idx: 3,
-      picture: "",
-      problemId: 0,
-    },
-  ],
-  [
-    {
-      description: "",
-      idx: 0,
-      picture: "",
-      problemId: 0,
-    },
-    {
-      description: "",
-      idx: 1,
-      picture: "",
-      problemId: 0,
-    },
-    {
-      description: "",
-      idx: 2,
-      picture: "",
-      problemId: 0,
-    },
-    {
-      description: "",
-      idx: 3,
-      picture: "",
-      problemId: 0,
-    },
-  ],
   [
     {
       description: "",
@@ -633,6 +559,7 @@ export const testPlayOption = [
 ];
 
 export const inboxRoomInput = {
+  roomName: "",
   id: -1,
   pin: "0",
   maxParticipantCount: -1,

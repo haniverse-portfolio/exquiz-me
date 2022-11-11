@@ -52,7 +52,7 @@ export let InboxProblemsetMenu = () => {
 
   const deleteProblemset = () => {
     axios
-      .delete(
+      .post(
         connectMainServerApiAddress +
           "api/problemset/" +
           (problemsets[problemsetIdx] as any).id
@@ -88,7 +88,7 @@ export let InboxProblemsetMenu = () => {
       withBorder
       p="xl"
       radius="xl"
-      className="h-[390px] !rounded-4xl !shadow-lg !bg-indigo-100"
+      className="h-[350px] !rounded-4xl !shadow-lg !bg-indigo-100"
     >
       <Group className="px-2 pb-4" position="apart">
         <p className="text-lg text-left">퀴즈 정보</p>
@@ -97,13 +97,13 @@ export let InboxProblemsetMenu = () => {
           <X size={18} color="indigo"></X>
         </ActionIcon>
       </Group>
-      <Stack spacing={4} className="bg-white p-4 rounded-xl h-[230px]">
+      <Stack spacing={4} className="bg-white p-4 rounded-xl h-[200px]">
         <Stack className="h-[40px]">
           <p className="text-left font-bold text-[20px]">
-            {(problemsets[problemsetIdx] as any).title}
+            {(problemsets[problemsetIdx] as any).title || ""}
           </p>
         </Stack>
-        <Stack className="h-[120px]">
+        <Stack className="h-[40px]">
           <Group mt="sm" position="center" spacing={10}>
             <Stack spacing={0}>
               <p className="text-center text-[#447EFF] text-[14px]">
@@ -129,13 +129,13 @@ export let InboxProblemsetMenu = () => {
                   <Alarm></Alarm>
                 </ActionIcon>
                 <p className="text-center text-[#447EFF] text-[24px]">
-                  {(problemsets[problemsetIdx] as any).timeSetting}
+                  {(problemsets[problemsetIdx] as any).problemCount * 2}
                 </p>
                 <p className="text-center text-[#85B6FF] text-[18px]">분</p>
               </Group>
             </Stack>
           </Group>
-          <Group className="mt-10" position="apart">
+          <Group className="" position="apart">
             <ActionIcon radius="md" color="blue" variant="light">
               <Pencil></Pencil>
             </ActionIcon>

@@ -30,11 +30,13 @@ import {
   Divider,
   MantineProvider,
   Select,
+  Tooltip,
 } from "@mantine/core";
-import { BrandAsana, Pencil, Plus, X } from "tabler-icons-react";
+import { AlertTriangle, BrandAsana, Pencil, Plus, X } from "tabler-icons-react";
 
 import { useRecoilState } from "recoil";
 import {
+  inboxIsDeleteAlertModalOpened,
   inboxIsModalOpened,
   inboxMaxpart,
   inboxOption,
@@ -67,6 +69,9 @@ const Home: NextPage = () => {
   // cur state
   const [problemsetIdx, setProblemsetIdx] = useRecoilState(inboxProblemsetIdx);
   const [modalOpened, setModalOpened] = useRecoilState(inboxIsModalOpened);
+  const [deleteAlertModalOpened, setDeleteAlertModalOpened] = useRecoilState(
+    inboxIsDeleteAlertModalOpened
+  );
   // login
   const [isLogined, setIsLogined] = useRecoilState(indexIsLogined);
   const [userInfo, setUserInfo] = useRecoilState(indexUserInfo);
@@ -74,7 +79,6 @@ const Home: NextPage = () => {
   const [problemsets, setProblemsets] = useRecoilState(inboxProblemset);
   // const [problem, setProblem] = useRecoilState(inboxProblem);
   // room
-  const [maxpart, setMaxpart] = useRecoilState(inboxMaxpart);
   const [room, setRoom] = useRecoilState(inboxRoom);
 
   useEffect(() => {
@@ -103,13 +107,14 @@ const Home: NextPage = () => {
 
   const deleteProblemset = () => {
     axios
-      .delete(
+      .post(
         connectMainServerApiAddress +
           "api/problemset/" +
           (problemsets[problemsetIdx] as any).id
       )
       .then((result) => {
-        setProblemsets(result.data);
+        setProblemsetIdx(-1);
+        getProblemsets();
       })
       .catch((error) => {
         alert(error);
@@ -149,8 +154,9 @@ const Home: NextPage = () => {
     let rt = Infinity;
     await axios
       .post(connectMainServerApiAddress + "api/room/newRoom", {
-        maxParticipantCount: maxpart,
+        maxParticipantCount: room.maxParticipantCount,
         problemsetId: (problemsets[problemsetIdx] as any).id,
+        roomName: room.roomName,
       })
       .then(async (result) => {
         setRoom(result.data);
@@ -274,16 +280,12 @@ const Home: NextPage = () => {
                             span={1}
                             key={i}
                             className="h-[240px] cursor-pointer"
-                            onClick={async () => {
-                              if (problemsetIdx === i && problemsetIdx !== -1) {
-                                await setProblemsetIdx(-1);
-                              } else {
-                                await setProblemsetIdx(i);
-                              }
-                            }}
                           >
                             {/* 208 298 */}
                             <Stack
+                              onClick={async () => {
+                                setProblemsetIdx(i);
+                              }}
                               className={`px-4 rounded-3xl h-[220px] w-[310px] bg-no-repeat bg-center ${
                                 problemsetIdx === i
                                   ? "bg-[url('/inbox/folder_highlight.svg')] "
@@ -292,30 +294,41 @@ const Home: NextPage = () => {
                             >
                               <Stack className="h-[3px]"></Stack>
                               <Group position="right">
-                                <ActionIcon
-                                  onClick={() => {
-                                    setModalOpened(true);
-                                  }}
-                                  size={20}
-                                  color="green"
-                                  radius="xl"
-                                  variant="filled"
-                                ></ActionIcon>
-                                <ActionIcon
-                                  size={20}
-                                  color="yellow"
-                                  radius="xl"
-                                  variant="filled"
-                                ></ActionIcon>
-                                <ActionIcon
-                                  onClick={() => {
-                                    deleteProblemset();
-                                  }}
-                                  size={20}
-                                  color="red"
-                                  radius="xl"
-                                  variant="filled"
-                                ></ActionIcon>
+                                <Tooltip label="삭제하기">
+                                  <ActionIcon
+                                    onClick={() => {
+                                      setProblemsetIdx(i);
+                                      setDeleteAlertModalOpened(true);
+                                    }}
+                                    size={20}
+                                    color="red"
+                                    radius="xl"
+                                    variant="filled"
+                                  ></ActionIcon>
+                                </Tooltip>
+                                <Tooltip label="수정하기">
+                                  <ActionIcon
+                                    onClick={() => {
+                                      setProblemsetIdx(i);
+                                    }}
+                                    size={20}
+                                    color="yellow"
+                                    radius="xl"
+                                    variant="filled"
+                                  ></ActionIcon>
+                                </Tooltip>
+                                <Tooltip label="방 만들기">
+                                  <ActionIcon
+                                    onClick={() => {
+                                      setProblemsetIdx(i);
+                                      setModalOpened(true);
+                                    }}
+                                    size={20}
+                                    color="green"
+                                    radius="xl"
+                                    variant="filled"
+                                  ></ActionIcon>
+                                </Tooltip>
                               </Group>
                               <Stack className="h-[40px]"></Stack>
                               <Stack className="ml-2">
@@ -327,7 +340,6 @@ const Home: NextPage = () => {
                                 </p>
                               </Stack>
                             </Stack>
-                            <Group className="h-[208px] w-["></Group>
                           </Grid.Col>
                         );
                       }
@@ -363,12 +375,21 @@ const Home: NextPage = () => {
             </ActionIcon>
           </Group>
           <p className="m-0 font-bold">추가 정보</p>
-          <Textarea placeholder="A학년 B반의 퀴즈방입니다."></Textarea>
+          <Textarea
+            onChange={(event) => {
+              let copy = { ...room, roomName: event.currentTarget.value };
+              setRoom(copy);
+            }}
+            placeholder={`${userInfo.nickname}님의 퀴즈`}
+          ></Textarea>
 
           <p className="m-0 font-bold">참가 인원</p>
           <Slider
             showLabelOnHover={false}
-            onChangeEnd={setMaxpart}
+            onChangeEnd={(event) => {
+              let copy = { ...room, maxParticipantCount: event };
+              setRoom(copy);
+            }}
             color="orange"
             defaultValue={50}
             step={25}
@@ -380,13 +401,52 @@ const Home: NextPage = () => {
             className="mx-12"
             onClick={async () => {
               setModalOpened(false);
-              await postRoom();
+              // if (room.roomName === "") {
+              //   let copy = {
+              //     ...room,
+              //     roomName: `${userInfo.nickname}님의 퀴즈`,
+              //   };
+              //   setRoom(JSON.parse(JSON.stringify(copy)));
+              // }
+              setTimeout(() => {
+                alert(room.roomName);
+                postRoom();
+              }, 500);
             }}
             color="orange"
             variant="outline"
             leftIcon={<BrandAsana size={38} />}
           >
             방 만들기
+          </Button>
+        </Stack>
+      </Modal>
+      {/* deleteAlert modal */}
+      <Modal
+        title={
+          <ActionIcon>
+            <AlertTriangle color="red"></AlertTriangle>
+          </ActionIcon>
+        }
+        withCloseButton={true}
+        centered
+        opened={deleteAlertModalOpened}
+        onClose={() => setDeleteAlertModalOpened(false)}
+      >
+        <Stack>
+          <p className="m-0 text-xl text-center">
+            정말 삭제하시겠습니까?<br></br>퀴즈를 삭제하면 다시 복구할 수
+            없습니다.
+          </p>
+          <Button
+            color="red"
+            onClick={() => {
+              setModalOpened(false);
+              deleteProblemset();
+              setDeleteAlertModalOpened(false);
+            }}
+          >
+            삭제하기
           </Button>
         </Stack>
       </Modal>

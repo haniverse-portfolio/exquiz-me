@@ -44,6 +44,7 @@ import {
   createStep,
   createCompleteModal,
   createProblemsetDrawer,
+  createImageModal,
 } from "../States";
 import { connectMainServerApiAddress, dtypeName } from "../ConstValues";
 import { useDebouncedState } from "@mantine/hooks";
@@ -59,6 +60,8 @@ export const ImageSection = () => {
   const [completeModalOpened, setCompleteModalOpened] =
     useRecoilState(createCompleteModal);
   const [tabModalOpened, setTabModalOpened] = useRecoilState(createTabModal);
+  const [imageModalOpened, setImageModalOpened] =
+    useRecoilState(createImageModal);
   /* drawer */
   const [problemsetDrawer, setProblemsetDrawer] = useRecoilState(
     createProblemsetDrawer
@@ -75,9 +78,9 @@ export const ImageSection = () => {
   const [problem, setProblem] = useRecoilState(createProblem);
   const [option, setOption] = useRecoilState(createOption);
   /* image */
-  const [imageURL, setImageURL] = useRecoilState(createImageURL);
   const [imageList, setImageList] = useRecoilState(createImageList);
   const [imageLoading, setImageLoading] = useRecoilState(createIsImageLoading);
+
   const [imageTmpWord, setImageTmpWord] = useDebouncedState("", 500);
   const [imageWord, setImageWord] = useRecoilState(createImageWord);
 
@@ -85,17 +88,22 @@ export const ImageSection = () => {
   const getColor = (color: string) =>
     theme.colors[color][theme.colorScheme === "dark" ? 5 : 7];
 
-  const postImage = async () => {
-    console.log(imageURL);
-    let rt = Infinity;
-    await axios
-      .post(connectMainServerApiAddress + "api/image/upload", imageURL)
-      .then((result) => {})
-      .catch((error) => {
-        // alert(error.response.messages);
-        alert("imagePost_error");
+  const postImage = async (url: string, idx: number) => {
+    try {
+      const result = await axios.post(
+        connectMainServerApiAddress + "api/image/upload?url=" + url
+      );
+
+      const copyProblem = problem.map((curProblem, problemIdx) => {
+        const slicedProblem = { ...curProblem } as any;
+        if (curIdx === problemIdx) slicedProblem["picture"] = result.data;
+        return slicedProblem;
       });
-    return rt;
+
+      setProblem(copyProblem as any);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -141,30 +149,28 @@ export const ImageSection = () => {
           {imageList.length === 0 ? (
             <p className="text-gray-500">검색결과 없음.</p>
           ) : (
-            <ScrollArea className="h-[50vh]">
-              <Stack className="h-[1500vh]">
-                {imageList.map((link, i) => {
-                  return (
-                    <Center
-                      className="cursor-pointer w-full rounded-xl shadow-lg"
-                      key={i}
-                    >
-                      <img
-                        className="max-w-full h-auto cursor-pointer"
-                        onClick={async () => {
-                          if (cur == 0) problem[curIdx].picture = link;
-                          else option[curIdx][cur].picture = link;
-                          let copy = imageURL;
-                          copy.url = link;
-                          setImageURL((prevstate) => copy);
-                          await postImage();
-                        }}
-                        src={link}
-                        alt="alt"
-                      ></img>
-                    </Center>
-                  );
-                })}
+            <ScrollArea className="h-[300vh]">
+              <Stack className="h-[300px]">
+                <Grid
+                  columns={3}
+                  className="cursor-pointer w-full rounded-xl shadow-lg"
+                >
+                  {imageList.map((link, i) => {
+                    return (
+                      <Grid.Col key={i} span={1}>
+                        <img
+                          className="max-w-full h-auto cursor-pointer"
+                          onClick={async () => {
+                            await postImage(imageList[i], i);
+                            setImageModalOpened(false);
+                          }}
+                          src={link}
+                          alt="alt"
+                        ></img>
+                      </Grid.Col>
+                    );
+                  })}
+                </Grid>
               </Stack>
             </ScrollArea>
           )}

@@ -123,9 +123,10 @@ export const CompleteModal = () => {
                 )
                 .then((result) => {
                   setStep(2);
-                  console.log(problemSet);
-                  router.push("/inbox");
-                  setStep(0);
+                  setTimeout(() => {
+                    setStep(0);
+                    router.push("/inbox");
+                  }, 500);
                 })
                 .catch((error) => {
                   // setError()

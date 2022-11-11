@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
 import Image from "next/image";
 
+import { useEffect } from "react";
 import {
   Stack,
   Group,
@@ -27,6 +28,8 @@ import {
   createIsImageLoading,
   createImageWord,
   createImageStep,
+  createImageWord2,
+  createLastSearchedWord,
 } from "../States";
 import { connectMainServerApiAddress } from "../ConstValues";
 import axios from "axios";
@@ -61,26 +64,41 @@ export const ImageModal = () => {
     useRecoilState(createImageModal);
 
   /* image */
-  const [imageURL, setImageURL] = useRecoilState(createImageURL);
   const [imageList, setImageList] = useRecoilState(createImageList);
   const [imageLoading, setImageLoading] = useRecoilState(createIsImageLoading);
-  const [imageTmpWord, setImageTmpWord] = useDebouncedState("", 500);
+  const [imageRealWord, setImageRealWord] = useDebouncedState("", 500);
   const [imageWord, setImageWord] = useRecoilState(createImageWord);
+  const [imageWord2, setImageWord2] = useRecoilState(createImageWord2);
+  const [lastSearchedWord, setLastSearchedWord] = useRecoilState(
+    createLastSearchedWord
+  );
 
-  const router = useRouter();
-
-  const postImage = async () => {
-    console.log(imageURL);
+  const getImageList = async (name: string) => {
     let rt = Infinity;
     await axios
-      .post(connectMainServerApiAddress + "api/image/upload", imageURL)
-      .then((result) => {})
-      .catch((error) => {
-        // alert(error.response.messages);
-        alert("imagePost_error");
-      });
+      .get(connectMainServerApiAddress + "api/crawl/" + name)
+      .then((result) => {
+        // alert("imageRealWord: " + imageRealWord);
+        // alert(lastSearchedWord);
+        if (imageRealWord == lastSearchedWord) return;
+        //alert("searching");
+        setLastSearchedWord(imageRealWord);
+        setImageList(result.data);
+      })
+      .catch((error) => {});
     return rt;
   };
+
+  useEffect(() => {
+    setImageRealWord(imageWord);
+  }, [imageWord]);
+
+  useEffect(() => {
+    setImageLoading(false);
+    getImageList(imageRealWord);
+  }, [setImageRealWord]);
+
+  const router = useRouter();
 
   return (
     <Modal
@@ -143,9 +161,9 @@ export const ImageModal = () => {
           <TextInput
             onChange={(event) => {
               setImageLoading(true);
-              setImageTmpWord(event.currentTarget.value);
+              setImageWord(event.currentTarget.value);
             }}
-            value={imageTmpWord}
+            value={imageWord}
             size="lg"
             placeholder="검색어를 입력해주세요"
           />

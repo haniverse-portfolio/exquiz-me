@@ -112,7 +112,7 @@ export const TabChangeModal = () => {
             onClick={() => {
               let copyProblem = [...problem];
               copyProblem.splice(curIdx, 1, {
-                answer: "0",
+                answer: "",
                 description: "",
                 dtype: tabChangeIdx.toString(),
                 idx: 0,

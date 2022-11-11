@@ -214,22 +214,25 @@ const Home: NextPage = () => {
             <p>퀴즈 제작의 모든 기능이 갖추어져 있습니다.</p>
           </h3>
           <Stack className="h-[107px]" />
-          <Group spacing={0} className=" relative m-0 p-0" position="center">
-            <Image
-              className="m-0 p-0 !z-0 !absolute"
+          <Container
+            style={{ overflow: "inherit" }}
+            className="h-[300px] w-full relative m-0 p-0"
+          >
+            <img
+              className="m-0 p-0 !z-0  !absolute"
               src="/index/section2_create.svg"
               alt="section2_create"
               width={437}
               height={311}
-            ></Image>
-            <Image
-              className="m-0 p-0 !z-10 !absolute !top-[140px] !-left-[80px]"
+            />
+            <img
+              className="m-0 p-0 !z-10 !absolute !top-[65px] !left-[350px]"
               src="/index/section2_play.svg"
               alt="section2_play"
               width={435}
               height={310}
-            ></Image>
-          </Group>
+            />
+          </Container>
         </section>
         <section className="h-screen">
           <Stack className="bg-[#EDF4F7] h-[363px]">

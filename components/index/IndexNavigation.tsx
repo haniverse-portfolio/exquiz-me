@@ -83,14 +83,7 @@ const IndexNavigation = () => {
       <Group position="apart" className="h-[60px] px-4 shadow">
         <Link href={isLogined === false ? "/" : "/inbox"}>
           <Group className="cursor-pointer">
-            <Image
-              className="rounded-full"
-              src="/index/bulb_bg.png"
-              alt="logo"
-              width={50}
-              height={50}
-            />
-            <span className="font-semibold text-[24px]">exquiz.me</span>
+            <Image src="/logo_orange.png" alt="logo" width={150} height={30} />
           </Group>
         </Link>
         <Group>
@@ -163,7 +156,7 @@ const IndexNavigation = () => {
               </HoverCard.Dropdown>
             </HoverCard>
           )}
-          <Switch
+          {/* <Switch
             checked={langValue == "KO" ? true : false}
             onChange={(event) => {
               setLangValue(event.currentTarget.checked == true ? "KO" : "EN");
@@ -174,7 +167,7 @@ const IndexNavigation = () => {
             className="text-lg font-bold cursor-pointer transition ease-in-out"
             size="lg"
             color="orange"
-          />
+          /> */}
           <ActionIcon size={40}>
             <World color="gray" size={40}></World>
           </ActionIcon>
@@ -185,3 +178,18 @@ const IndexNavigation = () => {
 };
 
 export default IndexNavigation;
+
+{
+  /* <Link href={isLogined === false ? "/" : "/inbox"}>
+          <Group className="cursor-pointer">
+            <Image
+              className="rounded-full"
+              src="/index/bulb_bg.png"
+              alt="logo"
+              width={50}
+              height={50}
+            />
+            <span className="font-semibold text-[24px]">exquiz.me</span>
+          </Group>
+        </Link> */
+}

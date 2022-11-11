@@ -51,7 +51,6 @@ import {
   ZoomQuestion,
 } from "tabler-icons-react";
 import { useRef } from "react";
-import { FooterCenteredUser } from "../components/footer_user";
 
 const Home: NextPage = () => {
   const router = useRouter();
@@ -273,13 +272,16 @@ const Home: NextPage = () => {
                     <></>
                   )}
                   {pinStep === 2 ? (
-                    <Image
-                      src="/inbox/folder.svg"
-                      alt="folder"
-                      width={298}
-                      height={208}
-                    ></Image>
+                    <Stack className="bg-[url('/inbox/folder.svg')] ">
+                      <p></p>
+                    </Stack>
                   ) : (
+                    // <Image
+                    //   src="/inbox/folder.svg"
+                    //   alt="folder"
+                    //   width={298}
+                    //   height={208}
+                    // ></Image>
                     <></>
                   )}
                   {pinStep === 3 ? (
@@ -318,9 +320,9 @@ const Home: NextPage = () => {
                   ref={ref}
                   placeholder="6자리 숫자를 입력하세요"
                 ></TextInput>
-                <p className="text-center text-lg font-semibold cursor-pointer text-orange-500 underline">
+                {/* <p className="text-center text-lg font-semibold cursor-pointer text-orange-500 underline">
                   QR코드로 입장하기
-                </p>
+                </p> */}
                 <Button
                   disabled={pinStep === 2 ? false : true}
                   size="lg"

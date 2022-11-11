@@ -4,8 +4,11 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import Link from "next/link";
 import Image from "next/image";
-import { useScrollLock, useScrollIntoView } from "@mantine/hooks";
+import { RichTextEditor } from "@mantine/rte";
+import { useScrollIntoView } from "@mantine/hooks";
 import { useRecoilState } from "recoil";
+import { Editor } from "@tinymce/tinymce-react";
+import axios from "axios";
 
 import {
   Stack,
@@ -23,8 +26,26 @@ import {
   Divider,
   ActionIcon,
   Container,
+  HoverCard,
+  Menu,
+  Select,
+  BackgroundImage,
 } from "@mantine/core";
-import { Circle, Copy, Photo, Plus, Trash, X } from "tabler-icons-react";
+import {
+  AB,
+  BrandYoutube,
+  Circle,
+  Copy,
+  HandClick,
+  ListCheck,
+  Photo,
+  Plus,
+  QuestionMark,
+  Refresh,
+  SquareCheck,
+  Trash,
+  X,
+} from "tabler-icons-react";
 
 import {
   createOption,
@@ -45,6 +66,7 @@ import {
   createSlideProblem,
   createActive,
   createImageModal,
+  createNonsense,
 } from "../States";
 import {
   dtypeName,
@@ -53,6 +75,7 @@ import {
   MARKSTIME,
   tabColor,
   tabIcon,
+  connectMainServerApiAddress,
 } from "../ConstValues";
 import { useDebouncedState } from "@mantine/hooks";
 import { useEffect, useRef, useState } from "react";
@@ -83,6 +106,9 @@ export const Main = () => {
   const [tabIdx, setTabIdx] = useRecoilState(createTabCurrentIdx);
   const [tabChangeIdx, setTabChangeIdx] = useRecoilState(createTabNextIdx);
 
+  /* *** non-sense *** */
+  const [nonsense, setNonsense] = useRecoilState(createNonsense);
+
   /* *** common *** */
   const [problemSet, setProblemSet] = useRecoilState(createProblemset);
   const [problem, setProblem] = useRecoilState(createProblem);
@@ -91,9 +117,26 @@ export const Main = () => {
   /* image */
   // const [imageTmpWord, setImageTmpWord] = useDebouncedState("", 500);
 
+  const getNonsense = (idx: number) => {
+    axios
+      .get(connectMainServerApiAddress + "api/nonsense")
+      .then((result) => {
+        let copy = [...problem];
+        copy.splice(curIdx, 1, {
+          ...copy[curIdx],
+          description: result.data.statement,
+          answer: result.data.answer,
+        });
+        setProblem(copy);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  };
+
   const problemDelete = () => {
     if (problem.length === 1) return;
-    if (problem.length - 1 === curIdx) setCurIdx((prevState) => curIdx - 1);
+    setCurIdx((prevState) => curIdx - 1);
     let problemCopy = [...problem];
     problemCopy.splice(curIdx, 1);
     setProblem(problemCopy);
@@ -149,20 +192,37 @@ export const Main = () => {
   };
 
   useEffect(() => {
-    console.log("problem" + problem);
-    console.log("score: " + problem[0].score);
-    console.log("timelimit: " + problem[0].timelimit);
+    console.log(problem[0].score);
+
+    // alert(problem[curIdx].picture);
   }, [problem]);
 
+  const changeSliderValue = (value: any, idx: number) => {
+    console.log(problem[idx].score);
+    const changedProblem = problem.map((curProblem, problemIdx) => {
+      let copyProblem = { ...curProblem };
+      if (idx === problemIdx) {
+        copyProblem.score = 100 + value * 4;
+      }
+      return copyProblem;
+    });
+    setProblem(changedProblem);
+  };
+
   return (
-    <Grid gutter={0} columns={20} style={{ height: "calc(100vh - 120px)" }}>
-      <Grid.Col className="shadow-xl bg-[#273248]" span={3}>
+    <Grid gutter={0} columns={18} style={{ height: "calc(100vh - 120px)" }}>
+      {/* *** left slide *** */}
+      <Grid.Col className="z-50 shadow-xl bg-[#273248]" span={3}>
         <ScrollArea scrollbarSize={10} className="80vh">
           <Stack style={{ height: "80vh" }} spacing={0}>
             {problem.map((cur, i) => {
               return (
                 <Stack
                   onClick={() => {
+                    console.log(
+                      "겉에거: " +
+                        (viewport.current.scrollHeight * i) / problem.length
+                    );
                     viewport.current.scrollTo({
                       top: (viewport.current.scrollHeight * i) / problem.length,
                       behavior: "smooth",
@@ -171,54 +231,84 @@ export const Main = () => {
                   }}
                   className={`${
                     curIdx === i ? "bg-[#85b6ff]/[0.15]" : ""
-                  } cursor-pointer hover:bg-[#85b6ff]/[0.15]`}
+                  } cursor-pointer border-0 border-b-2 border-gray-500 border-dotted hover:bg-[#85b6ff]/[0.15]`}
                   key={i}
                 >
-                  <Grid columns={20}>
-                    <Grid.Col span={3}>
-                      <span className="text-[#F9761E] text-[16px] ">
-                        {i + 1}
-                      </span>
-                    </Grid.Col>
-                    <Grid.Col span={14}>
-                      <Image
-                        layout="responsive"
-                        className="rounded-xl"
-                        src="/halla_mountain.svg"
-                        width={"200px"}
-                        height="100px"
-                        alt="image"
-                      ></Image>
-                    </Grid.Col>
-                    <Grid.Col span={3}>
-                      <Stack>
-                        <ActionIcon
-                          color="blue"
-                          variant={curIdx === i ? "light" : "transparent"}
-                        >
-                          <Copy></Copy>
-                        </ActionIcon>
-                        <ActionIcon
-                          color="blue"
-                          variant={curIdx === i ? "light" : "transparent"}
-                        >
-                          <Trash
-                            onClick={() => {
-                              problemDelete();
-                            }}
-                          ></Trash>
-                        </ActionIcon>
+                  <Grid gutter={0} columns={10}>
+                    <Grid.Col span={8}>
+                      <Stack className="m-4">
+                        <p className="m-0 p-0 text-white text-[20px]">
+                          <span className="mr-2 text-[#F9761E] text-[24px]">
+                            {i + 1}
+                          </span>
+                          {problem[i].description}
+                        </p>
+                      </Stack>
+                      <Stack className="m-4">
+                        {problem[i].picture === "" ? (
+                          <Stack className="bg-[#FBFBFB] flex items-center justify-center h-[100px] rounded-xl">
+                            <Center>
+                              <ActionIcon>
+                                <Photo></Photo>
+                              </ActionIcon>
+                            </Center>
+                          </Stack>
+                        ) : (
+                          <Image
+                            layout="responsive"
+                            className="rounded-xl"
+                            src={problem[i].picture}
+                            width={"180px"}
+                            height="100px"
+                            alt="image"
+                          ></Image>
+                        )}
                       </Stack>
                     </Grid.Col>
-                    <Stack spacing={0} className="h-[20px] w-[180px]">
-                      <p className="text-white text-[16px]">
-                        {cur.description}
-                      </p>
-                    </Stack>
+                    <Grid.Col
+                      className="!flex items-end justify-center"
+                      span={2}
+                    >
+                      {curIdx === i ? (
+                        <Stack className="mb-4">
+                          <ActionIcon
+                            color="blue"
+                            variant={curIdx === i ? "light" : "transparent"}
+                          >
+                            <Copy></Copy>
+                          </ActionIcon>
+                          <ActionIcon
+                            color="blue"
+                            variant={curIdx === i ? "light" : "transparent"}
+                          >
+                            <Trash
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                console.log(
+                                  "안에거: " +
+                                    (viewport.current.scrollHeight *
+                                      (curIdx - 1)) /
+                                      problem.length
+                                );
+                                viewport.current.scrollTo({
+                                  top:
+                                    (viewport.current.scrollHeight *
+                                      (curIdx - 1)) /
+                                    problem.length,
+                                  behavior: "smooth",
+                                });
+                                setTimeout(() => {
+                                  problemDelete();
+                                }, 700);
+                              }}
+                            ></Trash>
+                          </ActionIcon>
+                        </Stack>
+                      ) : (
+                        <></>
+                      )}
+                    </Grid.Col>
                   </Grid>
-                  <Stack spacing={0} className="h-[20px] w-[180px]">
-                    <p className="text-white text-[16px]">{cur.description}</p>
-                  </Stack>
                 </Stack>
               );
             })}
@@ -228,8 +318,14 @@ export const Main = () => {
           <Button
             onClick={() => {
               problemPlus();
+              setTimeout(() => {
+                viewport.current.scrollTo({
+                  top: viewport.current.scrollHeight,
+                  behavior: "smooth",
+                });
+              }, 100);
             }}
-            size="xl"
+            size={"xl"}
             leftIcon={<Plus></Plus>}
             radius="md"
             color="orange"
@@ -239,7 +335,8 @@ export const Main = () => {
           </Button>
         </Center>
       </Grid.Col>
-      <Grid.Col className="bg-[#EDF4F7]" span={17}>
+      {/* *** main problem option slider *** */}
+      <Grid.Col className="bg-[#EDF4F7]" span={15}>
         <Stack
           style={{ height: "calc(100vh - 120px)" }}
           justify="space-between"
@@ -252,298 +349,464 @@ export const Main = () => {
           >
             {problem.map((slicedProblem, i) => {
               return (
-                <Center key={i}>
-                  <Stack
-                    spacing="xl"
-                    style={{ height: "calc(100vh - 120px)" }}
-                    className="w-full mx-60"
-                  >
-                    <Stack className="py-8" spacing={0}>
-                      {/* *** 퀴즈 종류 고르는 곳 *** */}
-                      <Group
-                        position="right"
-                        classNames="shadow-xl bg-amber-500"
-                        spacing={12}
-                      >
-                        {dtypeName.map((name, j) => {
-                          return (
-                            <Group
-                              key={j}
-                              onClick={() => {
-                                setTabChangeIdx((prevstate) => j);
-                                setTabModalOpened(true);
-                              }}
-                              className={`${
-                                j.toString() === problem[i].dtype
-                                  ? "bg-orange-500 shadow-[inset_0_-2px_4px_rgba(128,128,128,0.8)]"
-                                  : "bg-white text-gray-500"
-                              }
-        hover:shadow-none cursor-pointer rounded-t-xl h-12 w-24`}
-                            >
-                              <p
-                                className={` m-auto text-center ${
-                                  j.toString() === problem[i].dtype
-                                    ? "text-white"
-                                    : "text-gray-500"
-                                } font-semibold`}
-                              >
-                                {name}
-                              </p>
-                            </Group>
-                          );
-                        })}
-                      </Group>
-                      {/* *** white bg zone *** */}
+                <Grid columns={15} key={i}>
+                  <Grid.Col span={12}>
+                    <Center>
                       <Stack
-                        className={`p-8 shadow-lg rounded-xl bg-white items-center shadow-lg`}
+                        spacing={0}
+                        style={{ height: "calc(100vh - 120px)" }}
+                        className="w-full mx-12"
                       >
-                        <Group className="ml-2 rounded-full h-8 w-16 bg-orange-500">
+                        <Stack className="py-8" spacing={0}>
+                          {/* *** white bg zone *** */}
+                          <Stack className="p-8 shadow-lg rounded-xl bg-white items-center shadow-lg">
+                            {/* <Group className="ml-2 rounded-full h-8 w-16 bg-orange-500">
                           <p className=" m-auto text-center text-white font-semibold">
                             퀴즈 {i + 1}
                           </p>
-                        </Group>
-                        <Grid columns={8}>
-                          <Grid.Col span={5}>
-                            <Stack spacing={0}>
-                              <TextInput
-                                variant="unstyled"
-                                className="!border-2 !border-amber-500"
-                                size="xl"
-                                onChange={(event) => {
-                                  let copy = JSON.parse(
-                                    JSON.stringify(problem)
-                                  );
-                                  copy[i].description =
-                                    event.currentTarget.value;
-                                  setProblem(copy);
-                                }}
-                                value={problem[i].description}
-                                color="orange"
-                                placeholder="퀴즈를 입력해주세요."
-                              ></TextInput>
-                            </Stack>
-                          </Grid.Col>
-                          <Grid.Col span={3}>
-                            <Stack
-                              onClick={() => {
-                                setImageModalOpened(true);
+                        </Group> */}
+                            {/* <Editor
+                              // onChange={(event) => {
+                              //   const copyProblem = problem.map(
+                              //     (curProblem, optionIdx) => {
+                              //       const slicedProblem = { ...curProblem } as any;
+                              //       slicedProblem["description"] = event;
+                              //       return slicedProblem;
+                              //     }
+                              //   );
+                              //   setProblem(copyProblem);
+                              // }}
+                              // onInit={(evt, editor) => editorRef.current = editor}
+                              initialValue="<p></p>"
+                              init={{
+                                resize: false,
+                                language: "ko_KR",
+                                height: 350,
+                                menubar: false,
+                                plugins: [
+                                  "a11ychecker",
+                                  "advlist",
+                                  "advcode",
+                                  "advtable",
+                                  "autolink",
+                                  "checklist",
+                                  "export",
+                                  "lists",
+                                  "link",
+                                  "image",
+                                  "charmap",
+                                  "preview",
+                                  "anchor",
+                                  "searchreplace",
+                                  "visualblocks",
+                                  "powerpaste",
+                                  "fullscreen",
+                                  "formatpainter",
+                                  "insertdatetime",
+                                  "media",
+                                  "table",
+                                  "help",
+                                  "wordcount",
+                                ],
+                                toolbar:
+                                  "undo redo | casechange blocks | bold italic backcolor | " +
+                                  "alignleft aligncenter alignright alignjustify | " +
+                                  "bullist numlist checklist outdent indent | removeformat | a11ycheck code table help",
+                                content_style:
+                                  "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
                               }}
-                              className="flex items-center justify-center cursor-pointer border-2 border-dotted border-gray-300 rounded-xl bg-[#FBFBFB] w-[20vw] h-[20vh]"
+                            /> */}
+                            <TextInput
+                              rightSection={
+                                problem[i].dtype === "3" ? (
+                                  <ActionIcon
+                                    onClick={() => {
+                                      getNonsense(i);
+                                    }}
+                                    size="xl"
+                                  >
+                                    <Refresh color="orange" size="xl" />
+                                  </ActionIcon>
+                                ) : (
+                                  <></>
+                                )
+                              }
+                              variant="unstyled"
+                              className="!border-2 !border-amber-500"
+                              size="xl"
+                              onChange={(event) => {
+                                if (problem[i].dtype === "3") return;
+                                let copy = JSON.parse(JSON.stringify(problem));
+                                copy[i].description = event.currentTarget.value;
+                                setProblem(copy);
+                              }}
+                              value={problem[i].description}
+                              color="orange"
+                              placeholder="문제 내용을 입력해주세요."
+                            ></TextInput>
+                            <Group
+                              className={`h-[300px] border-2 border-dotted border-gray-300 bg-no-repeat bg-center
+                              `}
+                              style={{
+                                backgroundImage: `url(${problem[i].picture})`,
+                              }}
+                              position="center"
                             >
-                              <Group position="center">
-                                <ActionIcon>
+                              <Group
+                                onClick={() => {
+                                  setImageModalOpened(true);
+                                }}
+                                className=" cursor-pointer border-2 border-dotted border-gray-300 rounded-xl bg-[#FBFBFB] hover:bg-[#85B6FF] h-[5vh]"
+                              >
+                                <ActionIcon variant="transparent">
                                   <Photo color="gray"></Photo>
                                 </ActionIcon>
                                 <p className="text-gray-500">사진 업로드</p>
+                                <ActionIcon variant="transparent">
+                                  <Photo color="gray"></Photo>
+                                </ActionIcon>
                               </Group>
-                            </Stack>
-                          </Grid.Col>
-                        </Grid>
-                        {/* 입력 - 선지 정보 */}
-                        {problem[i].dtype === "0" ? (
-                          <Grid columns={4}>
-                            {option[i].map(
-                              ({ description, idx, picture, problemId }, j) => {
-                                const ans = problem[i].answer;
-                                return (
-                                  <Grid.Col
-                                    className=" h-[20vh]"
-                                    key={j}
-                                    span={1}
-                                  >
-                                    <Stack className="p-4 bg-blue-100 rounded-lg border-solid border-2 border-blue-500">
-                                      <Group position="apart">
-                                        <Checkbox
-                                          className="pl-2"
-                                          defaultChecked={false}
-                                          onClick={(event) => {
-                                            //alert(JSON.stringify(problem));
-                                            let copy = JSON.parse(
-                                              JSON.stringify(problem)
-                                            );
-                                            copy[i].answer =
-                                              problem[i].answer ===
-                                              j.toString();
-                                            setProblem(copy);
-                                          }}
-                                          checked={
-                                            problem[i].answer === j.toString()
-                                              ? true
-                                              : false
-                                          }
-                                          color="blue"
-                                          size="xl"
-                                        />
-                                        <ActionIcon
-                                          variant="transparent"
-                                          color="indigo.8"
-                                          size={30}
-                                        >
-                                          <Photo size={30}></Photo>
-                                        </ActionIcon>
-                                      </Group>
-                                      <Textarea
-                                        className=""
-                                        variant="unstyled"
-                                        onChange={(event) => {
-                                          let copy = JSON.parse(
-                                            JSON.stringify(option)
-                                          );
-                                          copy[i][j].description =
-                                            event.currentTarget.value;
-                                          setOption(copy);
-                                        }}
-                                        value={description}
-                                        placeholder={`선지 ${i + 1}`}
-                                        autosize
-                                        minRows={4}
-                                        maxRows={4}
-                                      />
-                                    </Stack>
-                                  </Grid.Col>
-                                );
+                              <Group
+                                onClick={() => {
+                                  alert(problem[i].picture);
+                                }}
+                                className="cursor-pointer border-2 border-dotted border-gray-300 rounded-xl bg-[#FBFBFB] hover:bg-[#ffc0cb] h-[5vh]"
+                              >
+                                <ActionIcon variant="transparent">
+                                  <BrandYoutube color="gray"></BrandYoutube>
+                                </ActionIcon>
+                                <p className="text-gray-500">영상 업로드</p>
+                                <ActionIcon variant="transparent">
+                                  <BrandYoutube color="gray"></BrandYoutube>
+                                </ActionIcon>
+                              </Group>
+                            </Group>
+
+                            <Divider size="sm"></Divider>
+                            {/* 입력 - 선지 정보 */}
+                            {optionContents(problem[i].dtype, i)}
+                          </Stack>
+                        </Stack>
+                        <Group spacing={50} className="mt-16" position="left">
+                          <Group>
+                            <span className="text-gray-500">문제 배점</span>
+                            {/* <Slider
+                              className="w-[10vw]"
+                              onChange={(value) => {
+                                // changeSliderValue(value, i);
+                                console.log(problem);
+                              }}
+                              // onClick={(value) => {
+                              //   console.log(value);
+                              //   console.log(problem);
+                              // }}
+                              color="blue"
+                              label={(val) =>
+                                MARKSCORE.find((mark) => mark.value === val)
+                                  ?.label
                               }
-                            )}
-                          </Grid>
-                        ) : (
-                          <></>
-                        )}
-
-                        {problem[i].dtype === "1" ? (
-                          <TextInput
-                            className=""
-                            variant="unstyled"
-                            onChange={(event) => {
-                              alert(event.currentTarget.value);
-                              let copy = [...problem];
-                              copy.splice(curIdx, 1, {
-                                ...copy[curIdx],
-                                answer: event.currentTarget.value,
-                              });
-                              setProblem(copy);
-                            }}
-                            value={problem[i].answer}
-                            placeholder={"정답을 입력해주세요"}
-                          />
-                        ) : (
-                          <></>
-                        )}
-
-                        {problem[i].dtype === "2" ? (
-                          <Grid columns={2}>
-                            <Grid.Col className=" h-[20vh]" span={1}>
-                              <Stack
-                                align="center"
-                                className="p-4 h-[20vh] bg-blue-100 rounded-lg border-solid border-2 border-blue-500"
-                              >
-                                <Group position="apart">
-                                  <ActionIcon size={30}>
-                                    <Photo size={30} color="blue"></Photo>
-                                  </ActionIcon>
-                                </Group>
-                                <ActionIcon variant="transparent" size={60}>
-                                  <Circle color="blue" size={60}></Circle>
-                                </ActionIcon>
-                              </Stack>
-                            </Grid.Col>
-                            <Grid.Col className=" h-[20vh]" span={1}>
-                              <Stack
-                                align="center"
-                                className="p-4 h-[20vh] bg-blue-100 rounded-lg border-solid border-2 border-blue-500"
-                              >
-                                <Group position="left">
-                                  <ActionIcon variant="transparent" size={30}>
-                                    <Photo size={30} color="blue"></Photo>
-                                  </ActionIcon>
-                                </Group>
-                                <ActionIcon size={60}>
-                                  <X color="blue" size={60}></X>
-                                </ActionIcon>
-                              </Stack>
-                            </Grid.Col>
-                          </Grid>
-                        ) : (
-                          <></>
-                        )}
-
-                        {problem[i].dtype === "3" ? <p>적을거</p> : <></>}
+                              defaultValue={50}
+                              value={Math.trunc(
+                                ((problem[i].score - 100) / 100) * 25
+                              )}
+                              step={25}
+                              marks={MARKSCORE}
+                              styles={{ markLabel: { display: "none" } }}
+                            /> */}
+                            <Select
+                              defaultValue={"300점"}
+                              placeholder="문제 배점을 선택하세요"
+                              data={[
+                                { value: "100점", label: "100점" },
+                                { value: "200점", label: "200점" },
+                                { value: "300점", label: "300점" },
+                                { value: "400점", label: "400점" },
+                                { value: "500점", label: "500점" },
+                              ]}
+                            />
+                          </Group>
+                          <Group>
+                            <span className="text-gray-500">시간 배점</span>
+                            {/* <Slider
+                              defaultValue={50}
+                              className="w-[10vw]"
+                              onChangeEnd={(value) => {
+                                const changedProblem = problem.map(
+                                  (curProblem, problemIdx) => {
+                                    let copyProblem = { ...curProblem };
+                                    if (i === problemIdx) {
+                                      copyProblem.timelimit =
+                                        10 + (value / 25) * 10;
+                                    }
+                                    return copyProblem;
+                                  }
+                                );
+                                setProblem(changedProblem);
+                              }}
+                              color="blue"
+                              label={(val) =>
+                                MARKSTIME.find((mark) => mark.value === val)
+                                  ?.label
+                              }
+                              value={Math.trunc(
+                                ((problem[i].timelimit - 10) / 10) * 25
+                              )}
+                              step={25}
+                              marks={MARKSTIME}
+                              styles={{ markLabel: { display: "none" } }}
+                            /> */}
+                            <Select
+                              defaultValue={"30초"}
+                              placeholder="제한 시간을 선택하세요"
+                              data={[
+                                { value: "10초", label: "10초" },
+                                { value: "20초", label: "20초" },
+                                { value: "30초", label: "30초" },
+                                { value: "40초", label: "40초" },
+                                { value: "50초", label: "50초" },
+                              ]}
+                            />
+                          </Group>
+                        </Group>
                       </Stack>
-                      <Group spacing={50} className="mt-16" position="left">
-                        <Group>
-                          <span className="text-gray-500">문제 배점</span>
-                          <Slider
-                            className="w-[10vw]"
-                            onChangeEnd={(value) => {
-                              const changedProblem = problem.map(
-                                (curProblem, problemIdx) => {
-                                  let copyProblem = { ...curProblem };
-                                  if (i === problemIdx) {
-                                    copyProblem.score = 100 + value * 4;
-                                    console.log(100 + value * 4);
+                    </Center>
+                  </Grid.Col>
+                  <Grid.Col span={3} className="flex items-center justify-left">
+                    {/* *** 퀴즈 종류 고르는 곳 *** */}
+                    <Stack
+                      classNames="bg-black w-28 h-32  shadow-xl"
+                      spacing={12}
+                    >
+                      {dtypeName.map((name, j) => {
+                        let rtIcon = () => {
+                          if (j === 0)
+                            return (
+                              <ActionIcon variant="transparent">
+                                <SquareCheck
+                                  color={
+                                    problem[i].dtype === "0" ? "white" : "black"
                                   }
-                                  return copyProblem;
-                                }
-                              );
-                              setProblem(changedProblem);
-                            }}
-                            color="blue"
-                            label={(val) =>
-                              MARKSCORE.find((mark) => mark.value === val)
-                                ?.label
-                            }
-                            defaultValue={50}
-                            value={Math.trunc(
-                              ((problem[i].score - 100) / 100) * 25
-                            )}
-                            step={25}
-                            marks={MARKSCORE}
-                            styles={{ markLabel: { display: "none" } }}
-                          />
-                        </Group>
-                        <Group>
-                          <span className="text-gray-500">시간 배점</span>
-                          <Slider
-                            defaultValue={50}
-                            className="w-[10vw]"
-                            onChangeEnd={(value) => {
-                              const changedProblem = problem.map(
-                                (curProblem, problemIdx) => {
-                                  let copyProblem = { ...curProblem };
-                                  if (i === problemIdx) {
-                                    copyProblem.timelimit =
-                                      10 + (value / 25) * 10;
-                                    console.log(10 + (value / 25) * 10);
+                                />
+                              </ActionIcon>
+                            );
+                          if (j === 1)
+                            return (
+                              <ActionIcon variant="transparent">
+                                <HandClick
+                                  color={
+                                    problem[i].dtype === "1" ? "white" : "black"
                                   }
-                                  return copyProblem;
-                                }
-                              );
-                              setProblem(changedProblem);
+                                />
+                              </ActionIcon>
+                            );
+                          if (j === 2)
+                            return (
+                              <Group position="center" spacing={0}>
+                                <ActionIcon>
+                                  {" "}
+                                  <AB
+                                    color={
+                                      problem[i].dtype === "2"
+                                        ? "white"
+                                        : "black"
+                                    }
+                                  ></AB>
+                                </ActionIcon>
+                              </Group>
+                            );
+                          if (j === 3)
+                            return (
+                              <ActionIcon variant="transparent">
+                                <QuestionMark
+                                  color={
+                                    problem[i].dtype === "3" ? "white" : "black"
+                                  }
+                                ></QuestionMark>
+                              </ActionIcon>
+                            );
+                        };
+                        return (
+                          <Group
+                            position="center"
+                            key={j}
+                            onClick={() => {
+                              setTabChangeIdx((prevstate) => j);
+                              setTabModalOpened(true);
                             }}
-                            color="blue"
-                            label={(val) =>
-                              MARKSTIME.find((mark) => mark.value === val)
-                                ?.label
+                            className={`${
+                              j.toString() === problem[i].dtype
+                                ? "bg-orange-500 shadow-[inset_0_-2px_4px_rgba(128,128,128,0.8)]"
+                                : "bg-white text-gray-500 shadow-lg"
                             }
-                            value={Math.trunc(
-                              ((problem[i].timelimit - 10) / 10) * 25
-                            )}
-                            step={25}
-                            marks={MARKSTIME}
-                            styles={{ markLabel: { display: "none" } }}
-                          />
-                        </Group>
-                      </Group>
+        hover:shadow-none cursor-pointer rounded-xl h-16 w-16`}
+                          >
+                            {rtIcon()}
+                          </Group>
+                        );
+                      })}
                     </Stack>
-                  </Stack>
-                  {/* {ControlBar(30)} */}
-                </Center>
+                  </Grid.Col>
+                </Grid>
               );
             })}
           </ScrollArea>
         </Stack>
       </Grid.Col>
+      {/* *** right dtype button *** */}
     </Grid>
   );
+  {
+    /* *** option *** */
+  }
+  function optionContents(optionType: string, pi: number) {
+    if (optionType === "0")
+      return (
+        <Grid columns={4}>
+          {option[pi].map(({ description, idx, picture, problemId }, j) => {
+            const ans = problem[pi].answer;
+            return (
+              <Grid.Col className=" h-[20vh]" key={j} span={1}>
+                <Stack className="h-[19vh] p-4 bg-blue-100 rounded-lg border-solid border-2 border-blue-500">
+                  <Group position="apart">
+                    <Checkbox
+                      className="pl-2"
+                      defaultChecked={false}
+                      onClick={(event) => {
+                        // const changedOption = problem.map(
+                        //   (curProblem, problemIdx) => {
+                        //     let copyProblem = { ...curProblem };
+                        //     if (i === problemIdx) {
+                        //       copyProblem.score = 100 + value * 4;
+                        //       console.log(100 + value * 4);
+                        //     }
+                        //     return copyProblem;
+                        //   }
+                        // );
+                        //alert(JSON.stringify(problem));
+                        let copy = JSON.parse(JSON.stringify(problem));
+                        copy[pi].answer =
+                          problem[pi].answer === j.toString()
+                            ? ""
+                            : j.toString();
+                        setProblem(copy);
+                      }}
+                      checked={
+                        problem[pi].answer === j.toString() ? true : false
+                      }
+                      color="blue"
+                      size="xl"
+                    />
+                    <ActionIcon
+                      variant="transparent"
+                      color="indigo.8"
+                      size={30}
+                    >
+                      <Photo size={30}></Photo>
+                    </ActionIcon>
+                  </Group>
+                  <Textarea
+                    size="xl"
+                    variant="unstyled"
+                    onChange={(event) => {
+                      let copy = JSON.parse(JSON.stringify(option));
+                      copy[pi][j].description = event.currentTarget.value;
+                      setOption(copy);
+                    }}
+                    value={description}
+                    placeholder={`선지 ${j + 1}`}
+                    autosize
+                    minRows={4}
+                    maxRows={4}
+                  />
+                </Stack>
+              </Grid.Col>
+            );
+          })}
+        </Grid>
+      );
+    if (optionType === "1")
+      return (
+        <TextInput
+          size="xl"
+          className="h-[200px] bg-blue-100 rounded-lg border-solid border-2 border-blue-500"
+          variant="unstyled"
+          onChange={(event) => {
+            let copy = [...problem];
+            copy.splice(curIdx, 1, {
+              ...copy[curIdx],
+              answer: event.currentTarget.value,
+            });
+            setProblem(copy);
+          }}
+          value={problem[pi].answer}
+          placeholder={"문제 정답을 입력해주세요"}
+        />
+      );
+    if (optionType === "2")
+      return (
+        <Grid columns={2}>
+          <Grid.Col
+            onClick={() => {
+              let copy = [...problem];
+              copy.splice(pi, 1, {
+                ...copy[pi],
+                answer: "0",
+              });
+              setProblem(copy);
+            }}
+            className=" h-[20vh] cursor-pointer"
+            span={1}
+          >
+            <Stack
+              align="center"
+              className={`flex items-center justify-center p-4 h-[20vh] ${
+                problem[pi].answer === "0" ? "bg-blue-100" : "bg-gray-100"
+              } rounded-lg border-solid border-2 border-blue-500`}
+            >
+              <ActionIcon variant="transparent" size={60}>
+                <Circle color="blue" size={60}></Circle>
+              </ActionIcon>
+            </Stack>
+          </Grid.Col>
+          <Grid.Col
+            onClick={() => {
+              let copy = [...problem];
+              copy.splice(pi, 1, {
+                ...copy[pi],
+                answer: "1",
+              });
+              setProblem(copy);
+            }}
+            className=" h-[20vh] cursor-pointer"
+            span={1}
+          >
+            <Stack
+              align="center"
+              className={`flex items-center justify-center p-4 h-[20vh] ${
+                problem[pi].answer === "1" ? "bg-blue-100" : "bg-gray-100"
+              } rounded-lg border-solid border-2 border-blue-500`}
+            >
+              <ActionIcon size={60}>
+                <X color="blue" size={60}></X>
+              </ActionIcon>
+            </Stack>
+          </Grid.Col>
+        </Grid>
+      );
+    if (optionType === "3")
+      return (
+        <Stack className="h-[180px]">
+          <TextInput
+            size="xl"
+            className="h-[200px] bg-blue-100 rounded-lg border-solid border-2 border-blue-500"
+            variant="unstyled"
+            value={problem[pi].answer}
+            placeholder={"넌센스 정답"}
+          />
+        </Stack>
+      );
+    return <></>;
+  }
 };
 
 {
@@ -564,4 +827,136 @@ onDrop={setFiles}
   </Text>
 </Stack>
 </Dropzone> */
+}
+
+{
+  /* <Stack classNames="bg-black w-28 h-32  shadow-xl" spacing={12}>
+          {dtypeName.map((name, j) => {
+            let rtIcon = () => {
+              if (j === 0)
+                return (
+                  <ActionIcon variant="transparent">
+                    <SquareCheck
+                      color={problem[curIdx].dtype === "0" ? "white" : "black"}
+                    />
+                  </ActionIcon>
+                );
+              if (j === 1)
+                return (
+                  <ActionIcon variant="transparent">
+                    <HandClick
+                      color={problem[curIdx].dtype === "1" ? "white" : "black"}
+                    />
+                  </ActionIcon>
+                );
+              if (j === 2)
+                return (
+                  <Group position="center" spacing={0}>
+                    <ActionIcon>
+                      {" "}
+                      <AB
+                        color={
+                          problem[curIdx].dtype === "2" ? "white" : "black"
+                        }
+                      ></AB>
+                    </ActionIcon>
+                  </Group>
+                );
+              if (j === 3)
+                return (
+                  <ActionIcon variant="transparent">
+                    <QuestionMark
+                      color={problem[curIdx].dtype === "3" ? "white" : "black"}
+                    ></QuestionMark>
+                  </ActionIcon>
+                );
+            };
+            return (
+              <Group
+                position="center"
+                key={j}
+                onClick={() => {
+                  setTabChangeIdx((prevstate) => j);
+                  setTabModalOpened(true);
+                }}
+                className={`${
+                  j.toString() === problem[curIdx].dtype
+                    ? "bg-orange-500 shadow-[inset_0_-2px_4px_rgba(128,128,128,0.8)]"
+                    : "bg-white text-gray-500 shadow-lg"
+                }
+        hover:shadow-none cursor-pointer rounded-xl h-16 w-16`}
+              >
+                {rtIcon()}
+              </Group>
+            );
+          })}
+        </Stack> */
+}
+
+{
+  /* <Group spacing={50} className="mt-16" position="left">
+<Group>
+  <span className="text-gray-500">문제 배점</span>
+  <Slider
+    className="w-[10vw]"
+    onChangeEnd={(value) => {
+      const changedProblem = problem.map(
+        (curProblem, problemIdx) => {
+          let copyProblem = { ...curProblem };
+          if (i === problemIdx) {
+            copyProblem.score = 100 + value * 4;
+            console.log(100 + value * 4);
+          }
+          return copyProblem;
+        }
+      );
+      setProblem(changedProblem);
+    }}
+    color="blue"
+    label={(val) =>
+      MARKSCORE.find((mark) => mark.value === val)
+        ?.label
+    }
+    defaultValue={50}
+    value={Math.trunc(
+      ((problem[i].score - 100) / 100) * 25
+    )}
+    step={25}
+    marks={MARKSCORE}
+    styles={{ markLabel: { display: "none" } }}
+  />
+</Group>
+<Group>
+  <span className="text-gray-500">시간 배점</span>
+  <Slider
+    defaultValue={50}
+    className="w-[10vw]"
+    onChangeEnd={(value) => {
+      const changedProblem = problem.map(
+        (curProblem, problemIdx) => {
+          let copyProblem = { ...curProblem };
+          if (i === problemIdx) {
+            copyProblem.timelimit =
+              10 + (value / 25) * 10;
+            console.log(10 + (value / 25) * 10);
+          }
+          return copyProblem;
+        }
+      );
+      setProblem(changedProblem);
+    }}
+    color="blue"
+    label={(val) =>
+      MARKSTIME.find((mark) => mark.value === val)
+        ?.label
+    }
+    value={Math.trunc(
+      ((problem[i].timelimit - 10) / 10) * 25
+    )}
+    step={25}
+    marks={MARKSTIME}
+    styles={{ markLabel: { display: "none" } }}
+  />
+</Group>
+</Group> */
 }

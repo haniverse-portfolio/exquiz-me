@@ -89,7 +89,7 @@ export const CreateNavigation = () => {
 
   return (
     <Group
-      className="px-8 shadow-xl h-[120px] border-b-2 border-gray-300"
+      className="z-50 px-8 shadow-xl h-[120px] border-b-2 border-gray-300"
       position="apart"
     >
       <Link href="/inbox">
