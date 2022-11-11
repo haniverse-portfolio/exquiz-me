@@ -40,9 +40,9 @@ const Home: NextPage = () => {
   /* *** effect start *** */
   useEffect(() => {
     // mobile
-    // if (navigator.userAgent.match(/iPhone|iPad|iPod|Android/i)) {
-    //   location.replace("/enter");
-    // }
+    if (navigator.userAgent.match(/iPhone|iPad|iPod|Android/i)) {
+      location.replace("/enter");
+    }
     // already logined
     if (isLogined === true) {
       router.push("/inbox");
