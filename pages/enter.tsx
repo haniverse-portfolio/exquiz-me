@@ -211,7 +211,7 @@ const Home: NextPage = () => {
                       <Stack align="flex-start">
                         <Group spacing={8} align="flex-start">
                           <Image
-                            className=" animate-[spin_3s_ease-in-out_infinite]"
+                            className=" animate-[spin_4s_ease-in-out_infinite]"
                             src="/index/rectangle_right.svg"
                             alt="rectangle"
                             width={100}
@@ -226,7 +226,7 @@ const Home: NextPage = () => {
                               height={15}
                             ></Image>
                             <Image
-                              className="animate-[bounce_2s_ease-in-out_infinite]"
+                              className="animate-[bounce_3s_ease-in-out_infinite]"
                               src="/index/circle.svg"
                               alt="rectangle"
                               width={25}
@@ -246,7 +246,7 @@ const Home: NextPage = () => {
                               height={15}
                             ></Image>
                             <Image
-                              className="animate-[bounce_2s_ease-in-out_infinite]"
+                              className="animate-[bounce_3s_ease-in-out_infinite]"
                               src="/index/circle.svg"
                               alt="rectangle"
                               width={25}
@@ -254,7 +254,7 @@ const Home: NextPage = () => {
                             ></Image>
                           </Stack>
                           <Image
-                            className="animate-[spin_3s_ease-in-out_infinite]"
+                            className=" animate-[spin_3s_ease-in-out_infinite]"
                             src="/index/rectangle_left.svg"
                             alt="rectangle"
                             width={60}

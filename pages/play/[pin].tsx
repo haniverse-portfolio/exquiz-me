@@ -17,6 +17,9 @@ import {
   Divider,
   Loader,
   Center,
+  ActionIcon,
+  MantineProvider,
+  Progress,
 } from "@mantine/core";
 
 import { useScrollIntoView } from "@mantine/hooks";
@@ -27,6 +30,7 @@ import {
   testPlayOption,
   testPlayProblem,
 } from "../../components/ConstValues";
+import { Alarm } from "tabler-icons-react";
 
 const Home: NextPage = () => {
   const router = useRouter();
@@ -176,101 +180,133 @@ const Home: NextPage = () => {
       )}
 
       {step === 1 ? (
-        <Container size={1200}>
-          <Stack className="mt-32 flex ">
-            <Group position="apart">
-              <Group>
-                <Image
-                  alt="hello"
-                  className={`cursor-pointer rounded-full`}
-                  src={avatarAnimal[0]}
-                  width={"80px"}
-                  height={"80px"}
-                ></Image>
-                <Stack spacing={0}>
-                  <p>정직한 데카르트</p>
-                  {/* <p>2350 / 1위</p> */}
-                </Stack>
+        <>
+          <Stack className="bg-[#ffd178]">
+            <Stack spacing={0} className="rounded-b-xl bg-[#273248] h-[10vh]">
+              <Group className="my-2" position="center">
+                <ActionIcon variant="transparent" size={40}>
+                  <Alarm size={40} color="orange"></Alarm>
+                </ActionIcon>
+
+                <p className="font-semibold text-amber-500 text-3xl">30</p>
               </Group>
-              <p className="text-lg font-semibold">PIN : {pin}</p>
-            </Group>
-            <Divider size="xs"></Divider>
-            <p className="text-lg font-semibold"> 문제 {curIdx + 1 + "번"}</p>
-            <Grid className="" justify="center" gutter="sm">
-              {option[curIdx].map(
-                ({ description, idx, picture, problemId }, i) => {
-                  let color = ["red", "blue", "green", "orange"];
-                  let bgColor = "hover:bg-" + color[i] + "-500";
-                  return (
-                    <Grid.Col
-                      className="!max-w-[50%] !basis-2/4"
-                      key={i}
-                      span={5}
-                      offset={0}
-                    >
-                      <Button
-                        fullWidth
-                        style={{ height: "200px" }}
-                        onClick={() => {
-                          setAnswer(answer === i ? -1 : i);
-                        }}
-                        color={color[i]}
-                        className={`${
-                          answer === i ? "shadow-inner text-white" : ""
-                        } shadow-md ${answer === i ? bgColor : ""} ${
-                          answer === i ? bgColor : ""
-                        }`}
-                        variant={answer === i ? "filled" : "outline"}
+              <Center>
+                <MantineProvider
+                  inherit
+                  theme={{
+                    defaultGradient: { from: "red", to: "orange", deg: 45 },
+                  }}
+                >
+                  <Progress
+                    className="w-[70vw]"
+                    size="xl"
+                    color="orange"
+                    // color={theme.fn.gradient({
+                    //   from: "red",
+                    //   to: "orange",
+                    //   deg: 45,
+                    // })}
+                    value={50}
+                  />
+                </MantineProvider>
+              </Center>
+            </Stack>
+          </Stack>
+          <Container className="bg-[#ffd178] h-[100vh]" size={1200}>
+            <Stack className="h-8"></Stack>
+            <Stack className="relative p-8 rounded-xl shadow-lg bg-white">
+              <Stack
+                align="center"
+                className=" absolute -top-6 rounded-full bg-orange-500 h-12 w-40"
+              >
+                <p className="m-auto text-center text-2xl text-white font-semibold">
+                  문제 1/5
+                </p>
+              </Stack>
+              <p className=" text-4xl text-orange-500 font-bold">Q. </p>
+              <p className="m-auto text-center text-2xl font-semibold">
+                우리나라에서 가장 높은 산은?
+              </p>
+              <Image
+                src="/halla_mountain.svg"
+                alt="logo"
+                width={232}
+                height={145}
+              />
+              <Grid className="" justify="center" gutter="sm">
+                {option[curIdx].map(
+                  ({ description, idx, picture, problemId }, i) => {
+                    let color = ["red", "blue", "green", "orange"];
+                    let bgColor = "hover:bg-" + color[i] + "-500";
+                    return (
+                      <Grid.Col
+                        className="!max-w-[50%] !basis-2/4"
+                        key={i}
+                        span={5}
+                        offset={0}
                       >
-                        <p className="text-lg"> {description}</p>
-                      </Button>
-                    </Grid.Col>
-                  );
-                }
-              )}
-            </Grid>
-            <Button
-              onClick={() => {
-                //connect();
-                setTimeout(() => {
-                  var cat = localStorage.getItem("fromSession");
-                  client.send(
-                    "/pub/room/" + pin + "/submit",
-                    {},
-                    JSON.stringify({
-                      messageType: "ANSWER", // 반드시 "ANSWER"
-                      fromSession: cat, // 사용자 session id - google login시 발급
-                      problemIdx: 0, // 제출한 문제의 번호
-                      answerText: answer.toString(),
-                    })
-                  );
-                }, 500);
-                // client.send(
-                //   "/pub/room/" + pin + "/submit",
-                //   {},
-                //   JSON.stringify({
-                //     messageType: "ANSWER", // 반드시 "ANSWER"
-                //     fromSession: "", // 사용자 session id - google login시 발급
-                //     problemIdx: 0, // 제출한 문제의 번호
-                //     answerText: answer.toString,
-                //   })
-                // );
-              }}
-              size="lg"
-              color="orange"
-            >
-              제출하기
-            </Button>
-            <Button
+                        <Button
+                          fullWidth
+                          style={{ height: "200px" }}
+                          onClick={() => {
+                            setAnswer(answer === i ? -1 : i);
+                          }}
+                          color="blue"
+                          className={`${
+                            answer === i ? "shadow-inner text-white" : ""
+                          } shadow-md`}
+                          variant={answer === i ? "light" : "outline"}
+                        >
+                          <p className="text-lg"> {description}</p>
+                        </Button>
+                      </Grid.Col>
+                    );
+                  }
+                )}
+              </Grid>
+              <Button
+                onClick={() => {
+                  //connect();
+                  setTimeout(() => {
+                    var cat = localStorage.getItem("fromSession");
+                    client.send(
+                      "/pub/room/" + pin + "/submit",
+                      {},
+                      JSON.stringify({
+                        messageType: "ANSWER", // 반드시 "ANSWER"
+                        fromSession: cat, // 사용자 session id - google login시 발급
+                        problemIdx: 0, // 제출한 문제의 번호
+                        answerText: answer.toString(),
+                      })
+                    );
+                  }, 500);
+                  // client.send(
+                  //   "/pub/room/" + pin + "/submit",
+                  //   {},
+                  //   JSON.stringify({
+                  //     messageType: "ANSWER", // 반드시 "ANSWER"
+                  //     fromSession: "", // 사용자 session id - google login시 발급
+                  //     problemIdx: 0, // 제출한 문제의 번호
+                  //     answerText: answer.toString,
+                  //   })
+                  // );
+                }}
+                size="lg"
+                color="blue"
+              >
+                제출하기
+              </Button>
+              {/* <Button
               onClick={() => {
                 var cat = localStorage.getItem("fromSession");
                 alert(cat);
               }}
             >
               세션 값 확인
-            </Button>
-          </Stack>
-        </Container>
+            </Button> */}
+            </Stack>
+          </Container>
+        </>
       ) : (
         <></>
       )}

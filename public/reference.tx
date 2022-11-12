@@ -1,0 +1,266 @@
+[create.tsx]
+{
+  /* <Dropzone
+className="cursor-default"
+accept={IMAGE_MIME_TYPE}
+onDrop={setFiles}
+>
+<Stack>
+  <Center>
+    <Group>
+      <Button color="orange">이미지 검색</Button>
+      <Button color="orange">이미지 업로드</Button>
+    </Group>
+  </Center>
+  <Text color="gray" align="center">
+    이미지를 검색하거나 직접 업로드할 수 있어요
+  </Text>
+</Stack>
+</Dropzone> */
+}
+
+{
+  /* <Stack classNames="bg-black w-28 h-32  shadow-xl" spacing={12}>
+          {dtypeName.map((name, j) => {
+            let rtIcon = () => {
+              if (j === 0)
+                return (
+                  <ActionIcon variant="transparent">
+                    <SquareCheck
+                      color={problem[curIdx].dtype === "0" ? "white" : "black"}
+                    />
+                  </ActionIcon>
+                );
+              if (j === 1)
+                return (
+                  <ActionIcon variant="transparent">
+                    <HandClick
+                      color={problem[curIdx].dtype === "1" ? "white" : "black"}
+                    />
+                  </ActionIcon>
+                );
+              if (j === 2)
+                return (
+                  <Group position="center" spacing={0}>
+                    <ActionIcon>
+                      {" "}
+                      <AB
+                        color={
+                          problem[curIdx].dtype === "2" ? "white" : "black"
+                        }
+                      ></AB>
+                    </ActionIcon>
+                  </Group>
+                );
+              if (j === 3)
+                return (
+                  <ActionIcon variant="transparent">
+                    <QuestionMark
+                      color={problem[curIdx].dtype === "3" ? "white" : "black"}
+                    ></QuestionMark>
+                  </ActionIcon>
+                );
+            };
+            return (
+              <Group
+                position="center"
+                key={j}
+                onClick={() => {
+                  setTabChangeIdx((prevstate) => j);
+                  setTabModalOpened(true);
+                }}
+                className={`${
+                  j.toString() === problem[curIdx].dtype
+                    ? "bg-orange-500 shadow-[inset_0_-2px_4px_rgba(128,128,128,0.8)]"
+                    : "bg-white text-gray-500 shadow-lg"
+                }
+        hover:shadow-none cursor-pointer rounded-xl h-16 w-16`}
+              >
+                {rtIcon()}
+              </Group>
+            );
+          })}
+        </Stack> */
+}
+
+{
+  /* <Group spacing={50} className="mt-16" position="left">
+<Group>
+  <span className="text-gray-500">문제 배점</span>
+  <Slider
+    className="w-[10vw]"
+    onChangeEnd={(value) => {
+      const changedProblem = problem.map(
+        (curProblem, problemIdx) => {
+          let copyProblem = { ...curProblem };
+          if (i === problemIdx) {
+            copyProblem.score = 100 + value * 4;
+            console.log(100 + value * 4);
+          }
+          return copyProblem;
+        }
+      );
+      setProblem(changedProblem);
+    }}
+    color="blue"
+    label={(val) =>
+      MARKSCORE.find((mark) => mark.value === val)
+        ?.label
+    }
+    defaultValue={50}
+    value={Math.trunc(
+      ((problem[i].score - 100) / 100) * 25
+    )}
+    step={25}
+    marks={MARKSCORE}
+    styles={{ markLabel: { display: "none" } }}
+  />
+</Group>
+<Group>
+  <span className="text-gray-500">시간 배점</span>
+  <Slider
+    defaultValue={50}
+    className="w-[10vw]"
+    onChangeEnd={(value) => {
+      const changedProblem = problem.map(
+        (curProblem, problemIdx) => {
+          let copyProblem = { ...curProblem };
+          if (i === problemIdx) {
+            copyProblem.timelimit =
+              10 + (value / 25) * 10;
+            console.log(10 + (value / 25) * 10);
+          }
+          return copyProblem;
+        }
+      );
+      setProblem(changedProblem);
+    }}
+    color="blue"
+    label={(val) =>
+      MARKSTIME.find((mark) => mark.value === val)
+        ?.label
+    }
+    value={Math.trunc(
+      ((problem[i].timelimit - 10) / 10) * 25
+    )}
+    step={25}
+    marks={MARKSTIME}
+    styles={{ markLabel: { display: "none" } }}
+  />
+</Group>
+</Group> */
+}
+
+
+
+                            {/* <Slider
+                              defaultValue={50}
+                              className="w-[10vw]"
+                              onChangeEnd={(value) => {
+                                const changedProblem = problem.map(
+                                  (curProblem, problemIdx) => {
+                                    let copyProblem = { ...curProblem };
+                                    if (i === problemIdx) {
+                                      copyProblem.timelimit =
+                                        10 + (value / 25) * 10;
+                                    }
+                                    return copyProblem;
+                                  }
+                                );
+                                setProblem(changedProblem);
+                              }}
+                              color="blue"
+                              label={(val) =>
+                                MARKSTIME.find((mark) => mark.value === val)
+                                  ?.label
+                              }
+                              value={Math.trunc(
+                                ((problem[i].timelimit - 10) / 10) * 25
+                              )}
+                              step={25}
+                              marks={MARKSTIME}
+                              styles={{ markLabel: { display: "none" } }}
+                            /> */}
+
+
+                            {/* <Slider
+                              className="w-[10vw]"
+                              onChange={(value) => {
+                                // changeSliderValue(value, i);
+                                console.log(problem);
+                              }}
+                              // onClick={(value) => {
+                              //   console.log(value);
+                              //   console.log(problem);
+                              // }}
+                              color="blue"
+                              label={(val) =>
+                                MARKSCORE.find((mark) => mark.value === val)
+                                  ?.label
+                              }
+                              defaultValue={50}
+                              value={Math.trunc(
+                                ((problem[i].score - 100) / 100) * 25
+                              )}
+                              step={25}
+                              marks={MARKSCORE}
+                              styles={{ markLabel: { display: "none" } }}
+                            /> */}
+
+
+                            {/* <Group className="ml-2 rounded-full h-8 w-16 bg-orange-500">
+                          <p className=" m-auto text-center text-white font-semibold">
+                            퀴즈 {i + 1}
+                          </p>
+                        </Group> */}
+                            {/* <Editor
+                              // onChange={(event) => {
+                              //   const copyProblem = problem.map(
+                              //     (curProblem, optionIdx) => {
+                              //       const slicedProblem = { ...curProblem } as any;
+                              //       slicedProblem["description"] = event;
+                              //       return slicedProblem;
+                              //     }
+                              //   );
+                              //   setProblem(copyProblem);
+                              // }}
+                              // onInit={(evt, editor) => editorRef.current = editor}
+                              initialValue="<p></p>"
+                              init={{
+                                resize: false,
+                                language: "ko_KR",
+                                height: 350,
+                                menubar: false,
+                                plugins: [
+                                  "a11ychecker",
+                                  "advlist",
+                                  "advcode",
+                                  "advtable",
+                                  "autolink",
+                                  "checklist",
+                                  "export",
+                                  "lists",
+                                  "link",
+                                  "image",
+                                  "charmap",
+                                  "preview",
+                                  "anchor",
+                                  "searchreplace",
+                                  "visualblocks",
+                                  "powerpaste",
+                                  "fullscreen",
+                                  "formatpainter",
+                                  "insertdatetime",
+                                  "media",
+                                  "table",
+                                  "help",
+                                  "wordcount",
+                                ],
+                                toolbar:
+                                  "undo redo | casechange blocks | bold italic backcolor | " +
+                                  "alignleft aligncenter alignright alignjustify | " +
+                                  "bullist numlist checklist outdent indent | removeformat | a11ycheck code table help",
+                                content_style:
+                                  "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+                              }}
+                            /> */}
