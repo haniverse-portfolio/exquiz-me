@@ -409,7 +409,6 @@ const Home: NextPage = () => {
               //   setRoom(JSON.parse(JSON.stringify(copy)));
               // }
               setTimeout(() => {
-                alert(room.roomName);
                 postRoom();
               }, 500);
             }}

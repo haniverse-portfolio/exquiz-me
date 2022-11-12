@@ -30,6 +30,7 @@ import {
   Menu,
   Select,
   BackgroundImage,
+  Popover,
 } from "@mantine/core";
 import {
   AB,
@@ -191,6 +192,18 @@ export const Main = () => {
     setCurIdx(curIdx + 1);
   };
 
+  const problemCopy = () => {
+    let slicedProblem = problem[curIdx];
+    let slicedOption = option[curIdx];
+    let copyProblem = [...problem];
+    copyProblem.splice(curIdx + 1, 0, slicedProblem);
+    let copyOption = [...option];
+    copyOption.splice(curIdx + 1, 0, slicedOption);
+    setProblem(copyProblem);
+    setOption(copyOption);
+    setCurIdx(curIdx + 1);
+  };
+
   useEffect(() => {
     console.log(problem[0].score);
 
@@ -213,7 +226,7 @@ export const Main = () => {
     <Grid gutter={0} columns={18} style={{ height: "calc(100vh - 120px)" }}>
       {/* *** left slide *** */}
       <Grid.Col className="z-50 shadow-xl bg-[#273248]" span={3}>
-        <ScrollArea scrollbarSize={10} className="80vh">
+        <ScrollArea scrollbarSize={0} className="80vh">
           <Stack style={{ height: "80vh" }} spacing={0}>
             {problem.map((cur, i) => {
               return (
@@ -275,7 +288,12 @@ export const Main = () => {
                             color="blue"
                             variant={curIdx === i ? "light" : "transparent"}
                           >
-                            <Copy></Copy>
+                            <Copy
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                problemCopy();
+                              }}
+                            ></Copy>
                           </ActionIcon>
                           <ActionIcon
                             color="blue"
@@ -284,12 +302,6 @@ export const Main = () => {
                             <Trash
                               onClick={(event) => {
                                 event.stopPropagation();
-                                console.log(
-                                  "안에거: " +
-                                    (viewport.current.scrollHeight *
-                                      (curIdx - 1)) /
-                                      problem.length
-                                );
                                 viewport.current.scrollTo({
                                   top:
                                     (viewport.current.scrollHeight *
@@ -320,10 +332,11 @@ export const Main = () => {
               problemPlus();
               setTimeout(() => {
                 viewport.current.scrollTo({
-                  top: viewport.current.scrollHeight,
+                  top:
+                    (viewport.current.scrollHeight * curIdx) / problem.length,
                   behavior: "smooth",
                 });
-              }, 100);
+              }, 200);
             }}
             size={"xl"}
             leftIcon={<Plus></Plus>}
@@ -452,7 +465,52 @@ export const Main = () => {
                               }}
                               position="center"
                             >
-                              <Group
+                              <Button
+                                onClick={() => {
+                                  setImageModalOpened(true);
+                                }}
+                                size="md"
+                                color="orange"
+                                leftIcon={<Photo></Photo>}
+                              >
+                                사진 업로드
+                              </Button>
+                              <Popover
+                                width={300}
+                                trapFocus
+                                position="bottom"
+                                withArrow
+                                shadow="md"
+                              >
+                                <Popover.Target>
+                                  <Button
+                                    size="md"
+                                    color="orange"
+                                    leftIcon={<BrandYoutube></BrandYoutube>}
+                                  >
+                                    영상 업로드
+                                  </Button>
+                                </Popover.Target>
+                                <Popover.Dropdown
+                                  sx={(theme) => ({
+                                    background:
+                                      theme.colorScheme === "dark"
+                                        ? theme.colors.dark[7]
+                                        : theme.white,
+                                  })}
+                                >
+                                  <Stack>
+                                    <TextInput
+                                      label="유튜브 URL"
+                                      placeholder="링크를 입력해주세요"
+                                      size="md"
+                                    />
+                                    <Button fullWidth>업로드</Button>
+                                  </Stack>
+                                </Popover.Dropdown>
+                              </Popover>
+
+                              {/* <Group
                                 onClick={() => {
                                   setImageModalOpened(true);
                                 }}
@@ -465,10 +523,9 @@ export const Main = () => {
                                 <ActionIcon variant="transparent">
                                   <Photo color="gray"></Photo>
                                 </ActionIcon>
-                              </Group>
-                              <Group
+                              </Group> */}
+                              {/* <Group
                                 onClick={() => {
-                                  alert(problem[i].picture);
                                 }}
                                 className="cursor-pointer border-2 border-dotted border-gray-300 rounded-xl bg-[#FBFBFB] hover:bg-[#ffc0cb] h-[5vh]"
                               >
@@ -479,7 +536,7 @@ export const Main = () => {
                                 <ActionIcon variant="transparent">
                                   <BrandYoutube color="gray"></BrandYoutube>
                                 </ActionIcon>
-                              </Group>
+                              </Group> */}
                             </Group>
 
                             <Divider size="sm"></Divider>
@@ -571,10 +628,13 @@ export const Main = () => {
                       </Stack>
                     </Center>
                   </Grid.Col>
-                  <Grid.Col span={3} className="flex items-center justify-left">
+                  <Grid.Col
+                    span={3}
+                    className="flex items-center justify-center"
+                  >
                     {/* *** 퀴즈 종류 고르는 곳 *** */}
                     <Stack
-                      classNames="bg-black w-28 h-32  shadow-xl"
+                      classNames="p-4 m-4 bg-black w-60 h-60  shadow-xl"
                       spacing={12}
                     >
                       {dtypeName.map((name, j) => {

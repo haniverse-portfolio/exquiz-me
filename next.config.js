@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+const { theme } = require("@chakra-ui/react");
 const withPlugins = require("next-compose-plugins");
 const withPWA = require("next-pwa");
 const nextConfig = {
@@ -66,6 +67,13 @@ module.exports = withPlugins(
           "lh3.googleusercontent.com",
         ],
         // formats: ['image/avif', 'image/webp'],
+      },
+      theme: {
+        extends: {
+          animation: {
+            "spin-slow": "spin 3s linear infinite",
+          },
+        },
       },
     },
 

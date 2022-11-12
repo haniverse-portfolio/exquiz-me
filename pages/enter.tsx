@@ -184,15 +184,14 @@ const Home: NextPage = () => {
           {/* size={800} */}
           <Container className="bg-[#ffd178] h-[100vh]">
             <Stack className="flex">
-              <p
-                onClick={() => {
-                  alert("개발자를 위해 잠시 풀어줬습니다 ._.");
-                  setPinStep(2);
-                }}
-                className="cursor-pointer ml-4 my-8 text-2xl font-bold text-white"
-              >
-                exquiz.me
-              </p>
+              <Group className="my-8 cursor-pointer">
+                <Image
+                  src="/logo_orange.png"
+                  alt="logo"
+                  width={150}
+                  height={30}
+                />
+              </Group>
               {/* <Notification disallowClose color="orange" title="알림">
                 6자리의 숫자로 된 핀 번호를 입력하세요.
               </Notification> */}
@@ -210,21 +209,24 @@ const Home: NextPage = () => {
                   {pinStep === 0 ? (
                     <Stack align="flex-start">
                       <Stack align="flex-start">
-                        <Group align="flex-start">
+                        <Group spacing={8} align="flex-start">
                           <Image
+                            className=" animate-[spin_3s_ease-in-out_infinite]"
                             src="/index/rectangle_right.svg"
                             alt="rectangle"
                             width={100}
                             height={100}
                           ></Image>
-                          <Stack>
+                          <Stack spacing={8}>
                             <Image
+                              className="animate-[bounce_2s_ease-in-out_infinite]"
                               src="/index/circle.svg"
                               alt="rectangle"
                               width={15}
                               height={15}
                             ></Image>
                             <Image
+                              className="animate-[bounce_2s_ease-in-out_infinite]"
                               src="/index/circle.svg"
                               alt="rectangle"
                               width={25}
@@ -237,12 +239,14 @@ const Home: NextPage = () => {
                         <Group align="flex-end">
                           <Stack>
                             <Image
+                              className="animate-[bounce_2s_ease-in-out_infinite]"
                               src="/index/circle.svg"
                               alt="rectangle"
                               width={15}
                               height={15}
                             ></Image>
                             <Image
+                              className="animate-[bounce_2s_ease-in-out_infinite]"
                               src="/index/circle.svg"
                               alt="rectangle"
                               width={25}
@@ -250,6 +254,7 @@ const Home: NextPage = () => {
                             ></Image>
                           </Stack>
                           <Image
+                            className="animate-[spin_3s_ease-in-out_infinite]"
                             src="/index/rectangle_left.svg"
                             alt="rectangle"
                             width={60}
@@ -272,16 +277,16 @@ const Home: NextPage = () => {
                     <></>
                   )}
                   {pinStep === 2 ? (
-                    <Stack className="bg-[url('/inbox/folder.svg')] ">
-                      <p></p>
+                    <Stack className="px-4 rounded-3xl h-[220px] w-[310px] bg-no-repeat bg-center bg-[url('/inbox/folder.svg')]">
+                      <Stack className="h-[3px]"></Stack>
+                      <Stack className="h-[100px]"></Stack>
+                      <Stack className="ml-2">
+                        <p className="text-[24px] text-[#5E5E5E]">
+                          디자인 가이드 정리
+                        </p>
+                      </Stack>
                     </Stack>
                   ) : (
-                    // <Image
-                    //   src="/inbox/folder.svg"
-                    //   alt="folder"
-                    //   width={298}
-                    //   height={208}
-                    // ></Image>
                     <></>
                   )}
                   {pinStep === 3 ? (
@@ -339,24 +344,8 @@ const Home: NextPage = () => {
                   입장하기
                 </Button>
               </Stack>
-              <Group
-                className="rounded-full cursor-pointer h-4 w-4 border-1 border-solid border-orange-300 bg-[#ffd178]"
-                onClick={() => {
-                  alert("보이지 않는 검이 가장 무서운 법...");
-                  setStep(1);
-                }}
-              ></Group>
             </Stack>
           </Container>
-          {/* <FooterCenteredUser
-            links={[
-              {
-                link: "https://retro5pect.tistory.com",
-                label: "2022 exquiz.me | Team MUMOMU",
-              },
-              // { link: "https://www.naver.com", label: "네이버" },
-            ]}
-          /> */}
         </>
       ) : (
         <></>
@@ -367,18 +356,14 @@ const Home: NextPage = () => {
         <>
           <Container className="h-[100vh] bg-[#ffd178]" size={800}>
             <Stack>
-              {/* <Notification disallowClose color="orange" title="알림">
-                {notiInfo}
-              </Notification> */}
-              {/* Navigation Bar */}
-              <p
-                onClick={() => {
-                  setStep((prevState) => 0);
-                }}
-                className="cursor-pointer ml-4 my-8 text-2xl font-bold text-white"
-              >
-                exquiz.me
-              </p>
+              <Group className="my-8 cursor-pointer">
+                <Image
+                  src="/logo_orange.png"
+                  alt="logo"
+                  width={150}
+                  height={30}
+                />
+              </Group>
               <Stack className="p-8 rounded-xl shadow-lg bg-white">
                 <p className="font-bold text-2xl text-md text-center">
                   프로필 설정
@@ -414,20 +399,6 @@ const Home: NextPage = () => {
                     </Center>
                   </Tooltip>
                 </Center>
-                {/* <p
-                className="cursor-pointer text-center text-lg text-orange-500 font-semibold"
-                onClick={() => {
-                  let randAnimal =
-                    Math.floor(Math.random() * (avatarAnimal.length - 1)) + 1;
-                  let randAvatarColor =
-                    Math.floor(Math.random() * (avatarColor.length - 1)) + 1;
-                  setAnimal(randAnimal);
-                  setColor(randAvatarColor);
-                  setNotiInfo("아바타가 생성되었습니다!");
-                }}
-              >
-                이미지를 클릭해 랜덤 프로필을 생성하세요!
-              </p> */}
                 <p className="m-0 mt-16 font-bold text-md text-left text-gray-400">
                   이름
                 </p>

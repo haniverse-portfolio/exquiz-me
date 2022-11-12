@@ -35,13 +35,19 @@ const Home: NextPage = () => {
               className="cursor-pointer"
             >
               <Image
+                src="/logo_orange.png"
+                alt="logo"
+                width={150}
+                height={30}
+              />
+              {/* <Image
                 className="rounded-full"
                 src="/index/bulb_bg.png"
                 alt="logo"
                 width={50}
                 height={50}
               />
-              <span className="font-semibold text-[24px]">exquiz.me</span>
+              <span className="font-semibold text-[24px]">exquiz.me</span> */}
             </Group>
             <h3 className="font-normal text-[#818181] text-[20px] text-center">
               <p>퀴즈에 새로운 경험을 더하다</p>
@@ -58,7 +64,7 @@ const Home: NextPage = () => {
               color="orange"
               leftIcon={<BrandGoogle size={14} />}
             >
-              구글 아이디로 시작하기
+              구글 계정으로 시작하기
             </Button>
           </Container>
         </Stack>

@@ -17,6 +17,11 @@ import {
   ScrollArea,
   Container,
   Center,
+  Grid,
+  Divider,
+  Tooltip,
+  HoverCard,
+  CopyButton,
 } from "@mantine/core";
 import { indexIsLogined, indexUserInfo } from "../components/States";
 import { useRecoilState } from "recoil";
@@ -191,7 +196,7 @@ const Home: NextPage = () => {
               radius="xl"
               className="shadow"
               size="xl"
-              variant="outline"
+              variant="filled"
               color="orange.6"
             >
               퀴즈 맛보기
@@ -243,9 +248,10 @@ const Home: NextPage = () => {
                   position="center"
                   className="bg-white rounded-full h-[96px] w-[96px]"
                 >
-                  <ActionIcon variant="transparent" size={48}>
+                  <p className="text-5xl">👆</p>
+                  {/* <ActionIcon variant="transparent" size={48}>
                     <HandFinger color="orange" size={48}></HandFinger>
-                  </ActionIcon>
+                  </ActionIcon> */}
                 </Group>
                 <h2 className="text-[#5E5E5E] text-[24px] text-center">
                   원터치 UI
@@ -260,9 +266,10 @@ const Home: NextPage = () => {
                   position="center"
                   className="bg-white rounded-full h-[96px] w-[96px]"
                 >
-                  <ActionIcon variant="transparent" size={48}>
+                  <p className="text-5xl">🌄</p>
+                  {/* <ActionIcon variant="transparent" size={48}>
                     <Photo color="orange" size={48}></Photo>
-                  </ActionIcon>
+                  </ActionIcon> */}
                 </Group>
                 <h2 className="text-[#5E5E5E] text-[24px] text-center">
                   강력한 이미지 크롤링
@@ -277,9 +284,10 @@ const Home: NextPage = () => {
                   position="center"
                   className="bg-white rounded-full h-[96px] w-[96px]"
                 >
-                  <ActionIcon variant="transparent" size={48}>
+                  <p className="text-5xl">✏️</p>
+                  {/* <ActionIcon variant="transparent" size={48}>
                     <GridDots color="orange" size={48}></GridDots>
-                  </ActionIcon>
+                  </ActionIcon> */}
                 </Group>
                 <h2 className="text-[#5E5E5E] text-[24px] text-center">
                   드래그 앤 드롭 UX
@@ -317,7 +325,7 @@ const Home: NextPage = () => {
                 radius="xl"
                 className="shadow"
                 size="xl"
-                variant="outline"
+                variant="filled"
                 color="orange.6"
               >
                 퀴즈 만들어보기
@@ -327,33 +335,174 @@ const Home: NextPage = () => {
         </section>
         <footer className="h-[313px]">
           <Stack className="px-8 flex justify-center bg-[#FFD178] h-[213px]">
-            <Group>
-              <p className="text-[18px]">서비스 정보</p>{" "}
-              <Group position="center">
-                <p className="text-[#DA662C] text-[16px]">기능 구성</p>
-                <p className="text-[#DA662C] text-[16px]">가격 정책</p>
-                <p className="text-[#DA662C] text-[16px]">고객 지원</p>
-                <p className="text-[#DA662C] text-[16px]">패치 노트</p>
-              </Group>
-            </Group>
-            <Group>
-              <p className="text-[18px]">회사 정보</p>{" "}
-              <Group position="center">
-                <p className="text-[#DA662C] text-[16px]">회사 소개</p>
-                <p className="text-[#DA662C] text-[16px]">팀원 소개</p>
-                <p className="text-[#DA662C] text-[16px]">자회사 소개</p>
-                <p className="text-[#DA662C] text-[16px]">우리집 소개</p>
-              </Group>
-            </Group>
-            <Group>
-              <p className="text-[18px]">개발자 정보</p>{" "}
-              <Group position="center">
-                <p className="text-[#DA662C] text-[16px]">디스코드</p>
-                <p className="text-[#DA662C] text-[16px]">카카오톡</p>
-                <p className="text-[#DA662C] text-[16px]">인스타그램</p>
-                <p className="text-[#DA662C] text-[16px]">지메일</p>
-              </Group>
-            </Group>
+            <Grid columns={20}>
+              <Grid.Col span={2}>
+                <Stack>
+                  <p className="text-[18px]">서비스 정보</p>
+                  <p className="text-[18px]">회사 정보</p>
+                  <p className="text-[18px]">개발자 연락처</p>
+                </Stack>
+              </Grid.Col>
+              <Grid.Col span={5}>
+                <Stack align="flex-start">
+                  <Group position="center">
+                    <p className="text-[#DA662C] text-[18px] cursor-pointer">
+                      기능 구성
+                    </p>
+                    <Divider color="orange" orientation="vertical" />
+                    <p className="text-[#DA662C] text-[18px] cursor-pointer">
+                      가격 정책
+                    </p>
+                    <Divider color="orange" orientation="vertical" />
+                    <p className="text-[#DA662C] text-[18px] cursor-pointer">
+                      고객 지원
+                    </p>
+                    <Divider color="orange" orientation="vertical" />
+                    <p className="text-[#DA662C] text-[18px] cursor-pointer">
+                      패치 노트
+                    </p>
+                  </Group>
+                  <Group position="center">
+                    <p className="text-[#DA662C] text-[18px] cursor-pointer">
+                      회사 소개
+                    </p>
+                    <Divider color="orange" orientation="vertical" />
+                    <p className="text-[#DA662C] text-[18px] cursor-pointer">
+                      팀원 소개
+                    </p>
+                    <Divider color="orange" orientation="vertical" />
+                    <a
+                      className="no-underline"
+                      href="https://www.swmaestro.org/sw/main/main.do"
+                      target="blank"
+                    >
+                      <p className="text-[#DA662C] text-[18px] cursor-pointer">
+                        자회사 소개
+                      </p>
+                    </a>
+                    <Divider color="orange" orientation="vertical" />
+                    <p className="text-[#DA662C] text-[18px] cursor-pointer">
+                      우리집 소개
+                    </p>
+                  </Group>
+                  <Group position="center">
+                    <HoverCard shadow="md">
+                      <HoverCard.Target>
+                        <p className="text-[#DA662C] text-[18px] cursor-pointer">
+                          디스코드
+                        </p>
+                      </HoverCard.Target>
+                      <HoverCard.Dropdown>
+                        <Group>
+                          <p>retro5pect#1000</p>
+                          <CopyButton value="retro5pect#1000">
+                            {({ copied, copy }) => (
+                              <Button
+                                color={copied ? "teal" : "blue"}
+                                onClick={copy}
+                              >
+                                {copied ? "복사됨!" : "복사하기"}
+                              </Button>
+                            )}
+                          </CopyButton>
+                        </Group>
+                      </HoverCard.Dropdown>
+                    </HoverCard>
+                    <Divider color="orange" orientation="vertical" />
+                    <HoverCard shadow="md">
+                      <HoverCard.Target>
+                        <p className="text-[#DA662C] text-[18px] cursor-pointer">
+                          카카오톡
+                        </p>
+                      </HoverCard.Target>
+                      <HoverCard.Dropdown>
+                        <Group>
+                          <p>wnsgus821</p>
+                          <CopyButton value="wnsgus821">
+                            {({ copied, copy }) => (
+                              <Button
+                                color={copied ? "teal" : "blue"}
+                                onClick={copy}
+                              >
+                                {copied ? "복사됨!" : "복사하기"}
+                              </Button>
+                            )}
+                          </CopyButton>
+                        </Group>
+                      </HoverCard.Dropdown>
+                    </HoverCard>
+                    <Divider color="orange" orientation="vertical" />
+                    <HoverCard shadow="md">
+                      <HoverCard.Target>
+                        <p className="text-[#DA662C] text-[18px] cursor-pointer">
+                          인스타그램
+                        </p>
+                      </HoverCard.Target>
+                      <HoverCard.Dropdown>
+                        <Group>
+                          <p>aim_higher77</p>
+                          <CopyButton value="aim_higher77">
+                            {({ copied, copy }) => (
+                              <Button
+                                color={copied ? "teal" : "blue"}
+                                onClick={copy}
+                              >
+                                {copied ? "복사됨!" : "복사하기"}
+                              </Button>
+                            )}
+                          </CopyButton>
+                        </Group>
+                      </HoverCard.Dropdown>
+                    </HoverCard>
+                    <Divider color="orange" orientation="vertical" />
+                    <HoverCard shadow="md">
+                      <HoverCard.Target>
+                        <p className="text-[#DA662C] text-[18px] cursor-pointer">
+                          지메일
+                        </p>
+                      </HoverCard.Target>
+                      <HoverCard.Dropdown>
+                        <Group>
+                          <p>wnsgus821@gmail.com</p>
+                          <CopyButton value="wnsgus821@gmail.com">
+                            {({ copied, copy }) => (
+                              <Button
+                                color={copied ? "teal" : "blue"}
+                                onClick={copy}
+                              >
+                                {copied ? "복사됨!" : "복사하기"}
+                              </Button>
+                            )}
+                          </CopyButton>
+                        </Group>
+                      </HoverCard.Dropdown>
+                    </HoverCard>
+                  </Group>
+                </Stack>
+              </Grid.Col>
+              <Grid.Col className="flex items-end justify-end" span={13}>
+                <Group position="right">
+                  <Image
+                    src="/ict.png"
+                    alt="ict"
+                    width={200}
+                    height={60}
+                  ></Image>
+                  <Image
+                    src="/iitp.png"
+                    alt="iitp"
+                    width={200}
+                    height={60}
+                  ></Image>
+                  <Image
+                    src="/kfii.png"
+                    alt="kfii"
+                    width={200}
+                    height={60}
+                  ></Image>
+                </Group>
+              </Grid.Col>
+            </Grid>
           </Stack>
           <Stack className="px-8 flex justify-center bg-[#273248] h-[100px]">
             <Group position="apart">
