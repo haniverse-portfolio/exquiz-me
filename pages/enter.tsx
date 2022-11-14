@@ -182,7 +182,7 @@ const Home: NextPage = () => {
       {step === 0 ? (
         <>
           {/* size={800} */}
-          <Container className="animate-textSlow bg-gradient-to-r from-[#DA662C] to-[#ffd178] h-[100vh]">
+          <Container className="animate-textSlow bg-gradient-to-r from-[#FF9B3F] to-[#ffd178] h-[100vh]">
             <Stack className="flex">
               <Group className="my-8 cursor-pointer">
                 <Image
@@ -354,7 +354,10 @@ const Home: NextPage = () => {
       {/* main */}
       {step === 1 ? (
         <>
-          <Container className="h-[100vh] bg-[#ffd178]" size={800}>
+          <Container
+            className="h-[100vh] animate-textSlow bg-gradient-to-r from-[#FF9B3F] to-[#ffd178]"
+            size={800}
+          >
             <Stack>
               <Group className="my-8 cursor-pointer">
                 <Image

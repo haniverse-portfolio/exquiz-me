@@ -364,101 +364,143 @@ export const Main = () => {
             {problem.map((slicedProblem, i) => {
               return (
                 <Grid columns={15} key={i}>
-                  <Grid.Col span={13}>
-                    <Center>
-                      <Stack
-                        spacing={0}
-                        style={{ height: "calc(100vh - 120px)" }}
-                        className="w-full mx-24"
-                      >
-                        <Stack className="py-8" spacing={0}>
-                          {/* *** white bg zone *** */}
-                          <Stack className="p-8 shadow-lg rounded-xl bg-white items-center shadow-lg">
-                            <TextInput
-                              rightSection={
-                                problem[i].dtype === "3" ? (
-                                  <ActionIcon
-                                    onClick={() => {
-                                      getNonsense(i);
-                                    }}
-                                    size="xl"
-                                  >
-                                    <Refresh color="orange" size="xl" />
-                                  </ActionIcon>
-                                ) : (
-                                  <></>
-                                )
-                              }
-                              variant="unstyled"
-                              className="!border-2 !border-amber-500"
-                              size="xl"
-                              onChange={(event) => {
-                                if (problem[i].dtype === "3") return;
-                                let copy = JSON.parse(JSON.stringify(problem));
-                                copy[i].description = event.currentTarget.value;
-                                setProblem(copy);
-                              }}
-                              value={problem[i].description}
-                              color="orange"
-                              placeholder="문제 내용을 입력해주세요."
-                            ></TextInput>
-                            <Divider size="sm" />
-                            <Group
-                              className={`h-[300px] border-2 border-dotted border-gray-300 bg-no-repeat bg-center
-                              `}
-                              style={{
-                                backgroundImage: `url(${problem[i].picture})`,
-                              }}
-                              position="center"
-                            >
-                              <Button
-                                variant="outline"
-                                onClick={() => {
-                                  setImageModalOpened(true);
-                                }}
-                                size="md"
-                                color="orange"
-                                leftIcon={<Photo></Photo>}
-                              >
-                                사진 업로드
-                              </Button>
-                              <Popover
-                                width={300}
-                                trapFocus
-                                position="bottom"
-                                withArrow
-                                shadow="md"
-                              >
-                                <Popover.Target>
-                                  <Button
-                                    variant="outline"
-                                    size="md"
-                                    color="orange"
-                                    leftIcon={<BrandYoutube></BrandYoutube>}
-                                  >
-                                    영상 업로드
-                                  </Button>
-                                </Popover.Target>
-                                <Popover.Dropdown
-                                  sx={(theme) => ({
-                                    background:
-                                      theme.colorScheme === "dark"
-                                        ? theme.colors.dark[7]
-                                        : theme.white,
-                                  })}
-                                >
-                                  <Stack>
-                                    <TextInput
-                                      label="유튜브 URL"
-                                      placeholder="링크를 입력해주세요"
-                                      size="md"
-                                    />
-                                    <Button fullWidth>업로드</Button>
-                                  </Stack>
-                                </Popover.Dropdown>
-                              </Popover>
+                  <Center>
+                    <Stack
+                      spacing={0}
+                      style={{ height: "calc(100vh - 120px)" }}
+                      className="w-full mx-24"
+                    >
+                      <Stack className="py-8" spacing={0}>
+                        {/* *** white bg zone *** */}
+                        {/* *** 퀴즈 종류 고르는 곳 *** */}
+                        <Group
+                          classNames="shadow-xl"
+                          position="right"
+                          spacing={12}
+                        >
+                          {dtypeName.map((name, j) => {
+                            let toolTipLabel = [
+                              "객관식",
+                              "주관식",
+                              "OX",
+                              "넌센스",
+                            ];
 
-                              {/* <Group
+                            return (
+                              <Group
+                                position="center"
+                                key={j}
+                                onClick={() => {
+                                  setTabChangeIdx((prevstate) => j);
+                                  setTabModalOpened(true);
+                                }}
+                                className={`${
+                                  j.toString() === problem[i].dtype
+                                    ? "bg-orange-500 shadow-[inset_0_-2px_4px_rgba(128,128,128,0.8)]"
+                                    : "bg-white text-gray-500 shadow-lg"
+                                }
+        hover:shadow-none cursor-pointer rounded-t-xl h-12 w-24`}
+                              >
+                                <p
+                                  className={`font-semibold text-${
+                                    j.toString() === problem[i].dtype
+                                      ? "white"
+                                      : "black"
+                                  }`}
+                                >
+                                  {" "}
+                                  {toolTipLabel[j]}
+                                </p>
+                              </Group>
+                            );
+                          })}
+                        </Group>
+                        <Stack className="p-8 shadow-lg rounded-xl bg-white items-center shadow-lg">
+                          <TextInput
+                            rightSection={
+                              problem[i].dtype === "3" ? (
+                                <ActionIcon
+                                  onClick={() => {
+                                    getNonsense(i);
+                                  }}
+                                  size="xl"
+                                >
+                                  <Refresh color="orange" size="xl" />
+                                </ActionIcon>
+                              ) : (
+                                <></>
+                              )
+                            }
+                            variant="unstyled"
+                            className="!border-2 !border-amber-500"
+                            size="xl"
+                            onChange={(event) => {
+                              if (problem[i].dtype === "3") return;
+                              let copy = JSON.parse(JSON.stringify(problem));
+                              copy[i].description = event.currentTarget.value;
+                              setProblem(copy);
+                            }}
+                            value={problem[i].description}
+                            color="orange"
+                            placeholder="문제 내용을 입력해주세요."
+                          ></TextInput>
+                          <Divider size="sm" />
+                          <Group
+                            className={`h-[300px] border-2 border-dotted border-gray-300 bg-no-repeat bg-center
+                              `}
+                            style={{
+                              backgroundImage: `url(${problem[i].picture})`,
+                            }}
+                            position="center"
+                          >
+                            <Button
+                              variant="outline"
+                              onClick={() => {
+                                setImageModalOpened(true);
+                              }}
+                              size="md"
+                              color="orange"
+                              leftIcon={<Photo></Photo>}
+                            >
+                              사진 업로드
+                            </Button>
+                            <Popover
+                              width={300}
+                              trapFocus
+                              position="bottom"
+                              withArrow
+                              shadow="md"
+                            >
+                              <Popover.Target>
+                                <Button
+                                  variant="outline"
+                                  size="md"
+                                  color="orange"
+                                  leftIcon={<BrandYoutube></BrandYoutube>}
+                                >
+                                  영상 업로드
+                                </Button>
+                              </Popover.Target>
+                              <Popover.Dropdown
+                                sx={(theme) => ({
+                                  background:
+                                    theme.colorScheme === "dark"
+                                      ? theme.colors.dark[7]
+                                      : theme.white,
+                                })}
+                              >
+                                <Stack>
+                                  <TextInput
+                                    label="유튜브 URL"
+                                    placeholder="링크를 입력해주세요"
+                                    size="md"
+                                  />
+                                  <Button fullWidth>업로드</Button>
+                                </Stack>
+                              </Popover.Dropdown>
+                            </Popover>
+
+                            {/* <Group
                                 onClick={() => {
                                   setImageModalOpened(true);
                                 }}
@@ -472,7 +514,7 @@ export const Main = () => {
                                   <Photo color="gray"></Photo>
                                 </ActionIcon>
                               </Group> */}
-                              {/* <Group
+                            {/* <Group
                                 onClick={() => {
                                 }}
                                 className="cursor-pointer border-2 border-dotted border-gray-300 rounded-xl bg-[#FBFBFB] hover:bg-[#ffc0cb] h-[5vh]"
@@ -485,125 +527,45 @@ export const Main = () => {
                                   <BrandYoutube color="gray"></BrandYoutube>
                                 </ActionIcon>
                               </Group> */}
-                            </Group>
+                          </Group>
 
-                            <Divider size="sm" />
-                            {/* 입력 - 선지 정보 */}
-                            {optionContents(problem[i].dtype, i)}
-                          </Stack>
+                          <Divider size="sm" />
+                          {/* 입력 - 선지 정보 */}
+                          {optionContents(problem[i].dtype, i)}
                         </Stack>
-                        <Group spacing={50} className="mt-16" position="left">
-                          <Group>
-                            <span className="text-gray-500">문제 배점</span>
-                            <Select
-                              defaultValue={"300점"}
-                              placeholder="문제 배점을 선택하세요"
-                              data={[
-                                { value: "100점", label: "100점" },
-                                { value: "200점", label: "200점" },
-                                { value: "300점", label: "300점" },
-                                { value: "400점", label: "400점" },
-                                { value: "500점", label: "500점" },
-                              ]}
-                            />
-                          </Group>
-                          <Group>
-                            <span className="text-gray-500">시간 배점</span>
-                            <Select
-                              defaultValue={"30초"}
-                              placeholder="제한 시간을 선택하세요"
-                              data={[
-                                { value: "10초", label: "10초" },
-                                { value: "20초", label: "20초" },
-                                { value: "30초", label: "30초" },
-                                { value: "40초", label: "40초" },
-                                { value: "50초", label: "50초" },
-                              ]}
-                            />
-                          </Group>
-                        </Group>
                       </Stack>
-                    </Center>
-                  </Grid.Col>
-                  <Grid.Col span={2} className="flex items-center justify-left">
-                    {/* *** 퀴즈 종류 고르는 곳 *** */}
-                    <Stack
-                      classNames="p-4 m-4 bg-black w-60 h-60  shadow-xl"
-                      spacing={12}
-                    >
-                      {dtypeName.map((name, j) => {
-                        let toolTipLabel = ["객관식", "주관식", "OX", "넌센스"];
-
-                        let rtIcon = () => {
-                          if (j === 0)
-                            return (
-                              <ActionIcon variant="transparent">
-                                <SquareCheck
-                                  color={
-                                    problem[i].dtype === "0" ? "white" : "black"
-                                  }
-                                />
-                              </ActionIcon>
-                            );
-                          if (j === 1)
-                            return (
-                              <ActionIcon variant="transparent">
-                                <HandClick
-                                  color={
-                                    problem[i].dtype === "1" ? "white" : "black"
-                                  }
-                                />
-                              </ActionIcon>
-                            );
-                          if (j === 2)
-                            return (
-                              <ActionIcon>
-                                {" "}
-                                <AB
-                                  color={
-                                    problem[i].dtype === "2" ? "white" : "black"
-                                  }
-                                ></AB>
-                              </ActionIcon>
-                            );
-                          if (j === 3)
-                            return (
-                              <ActionIcon variant="transparent">
-                                <QuestionMark
-                                  color={
-                                    problem[i].dtype === "3" ? "white" : "black"
-                                  }
-                                ></QuestionMark>
-                              </ActionIcon>
-                            );
-                        };
-                        return (
-                          <Tooltip
-                            position="right"
-                            key={j}
-                            label={toolTipLabel[j]}
-                          >
-                            <Group
-                              position="center"
-                              key={j}
-                              onClick={() => {
-                                setTabChangeIdx((prevstate) => j);
-                                setTabModalOpened(true);
-                              }}
-                              className={`${
-                                j.toString() === problem[i].dtype
-                                  ? "bg-orange-500 shadow-[inset_0_-2px_4px_rgba(128,128,128,0.8)]"
-                                  : "bg-white text-gray-500 shadow-lg"
-                              }
-        hover:shadow-none cursor-pointer rounded-xl h-16 w-16`}
-                            >
-                              {rtIcon()}
-                            </Group>
-                          </Tooltip>
-                        );
-                      })}
+                      <Group spacing={50} position="left">
+                        <Group>
+                          <span className="text-gray-500">문제 배점</span>
+                          <Select
+                            defaultValue={"300점"}
+                            placeholder="문제 배점을 선택하세요"
+                            data={[
+                              { value: "100점", label: "100점" },
+                              { value: "200점", label: "200점" },
+                              { value: "300점", label: "300점" },
+                              { value: "400점", label: "400점" },
+                              { value: "500점", label: "500점" },
+                            ]}
+                          />
+                        </Group>
+                        <Group>
+                          <span className="text-gray-500">시간 배점</span>
+                          <Select
+                            defaultValue={"30초"}
+                            placeholder="제한 시간을 선택하세요"
+                            data={[
+                              { value: "10초", label: "10초" },
+                              { value: "20초", label: "20초" },
+                              { value: "30초", label: "30초" },
+                              { value: "40초", label: "40초" },
+                              { value: "50초", label: "50초" },
+                            ]}
+                          />
+                        </Group>
+                      </Group>
                     </Stack>
-                  </Grid.Col>
+                  </Center>
                 </Grid>
               );
             })}

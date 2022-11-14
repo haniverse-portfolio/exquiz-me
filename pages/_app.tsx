@@ -27,10 +27,6 @@ export default function App(props: AppProps) {
           .catch((e) => {});
       });
     }
-    // mobile
-    if (navigator.userAgent.match(/iPhone|iPad|iPod|Android/i)) {
-      location.replace("/enter");
-    }
   }, []);
   const { Component, pageProps } = props;
 
