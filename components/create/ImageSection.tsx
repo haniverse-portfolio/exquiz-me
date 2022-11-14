@@ -80,8 +80,6 @@ export const ImageSection = () => {
   /* image */
   const [imageList, setImageList] = useRecoilState(createImageList);
   const [imageLoading, setImageLoading] = useRecoilState(createIsImageLoading);
-
-  const [imageTmpWord, setImageTmpWord] = useDebouncedState("", 500);
   const [imageWord, setImageWord] = useRecoilState(createImageWord);
 
   const theme = useMantineTheme();
@@ -107,9 +105,9 @@ export const ImageSection = () => {
   };
 
   return (
-    <Stack className=" h-[80px]">
+    <Stack className="h-[80vh]">
       {imageLoading === true ? (
-        <Stack className="!h-[500px]">
+        <Stack className="!h-[300px]">
           <Grid columns={6}>
             <Grid.Col span={2}>
               <Skeleton height={150} radius="md" />
@@ -146,33 +144,32 @@ export const ImageSection = () => {
         </Stack>
       ) : (
         <Center>
-          {imageList.length === 0 ? (
-            <p className="text-gray-500">검색결과 없음.</p>
+          {imageWord === "" || imageList.length === 0 ? (
+            <p className="text-gray-500">이미지를 검색하세요.</p>
           ) : (
-            <ScrollArea className="h-[300vh]">
-              <Stack className="h-[300px]">
-                <Grid
-                  columns={3}
-                  className="cursor-pointer w-full rounded-xl shadow-lg"
-                >
-                  {imageList.map((link, i) => {
-                    return (
-                      <Grid.Col key={i} span={1}>
-                        <img
-                          className="max-w-full h-auto cursor-pointer"
-                          onClick={async () => {
-                            await postImage(imageList[i], i);
-                            setImageModalOpened(false);
-                          }}
-                          src={link}
-                          alt="alt"
-                        ></img>
-                      </Grid.Col>
-                    );
-                  })}
-                </Grid>
-              </Stack>
-            </ScrollArea>
+            <Stack className="h-[300px]">
+              <Grid
+                columns={3}
+                className="cursor-pointer w-full rounded-xl shadow-lg"
+              >
+                {imageList.map((link, i) => {
+                  return (
+                    <Grid.Col key={i} span={1}>
+                      <img
+                        height={"200px"}
+                        className="max-w-full cursor-pointer"
+                        onClick={async () => {
+                          await postImage(imageList[i], i);
+                          setImageModalOpened(false);
+                        }}
+                        src={link}
+                        alt="alt"
+                      ></img>
+                    </Grid.Col>
+                  );
+                })}
+              </Grid>
+            </Stack>
           )}
         </Center>
       )}

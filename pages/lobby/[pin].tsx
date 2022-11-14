@@ -125,12 +125,12 @@ const Home: NextPage = () => {
         <meta name="description" content="exquiz.me" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <section style={{ height: "calc(100vh - 70px)" }}>
+      <section className="h-[100vh]">
         <IndexNavigation></IndexNavigation>
         {/* 메인 배너 */}
-        <Grid style={{ height: "calc(100vh - 70px)" }} gutter={0} columns={20}>
+        <Grid style={{ height: "calc(100vh - 60px)" }} gutter={0} columns={20}>
           <Grid.Col
-            style={{ height: "calc(100vh - 70px)" }}
+            style={{ height: "calc(100vh - 60px)" }}
             className="bg-[#FFD178]"
             span={6}
           >
@@ -157,25 +157,27 @@ const Home: NextPage = () => {
                     alt="QR CODE"
                   />
                 </Stack>
-                <Group className="mt-4" position="center">
-                  <p className="font-bold text-orange-500 text-2xl text-center">
-                    PIN 번호
-                  </p>
-                </Group>
-                <Group position="center">
-                  <p className="text-white font-bold text-6xl text-center">
-                    <strong className="text-[#273248]">
-                      {router.query.pin}
-                    </strong>
-                  </p>
-                  {/* <CopyButton value={pin as string}>
+                <Stack className="rounded-xl p-4 mt-4 bg-[#FFE2A6]">
+                  <Group position="center">
+                    <p className="font-bold text-orange-500 text-2xl text-center">
+                      PIN 번호
+                    </p>
+                  </Group>
+                  <Group position="center">
+                    <p className="text-white font-bold text-6xl text-center">
+                      <strong className="text-[#273248]">
+                        {router.query.pin}
+                      </strong>
+                    </p>
+                    {/* <CopyButton value={pin as string}>
                     {({ copied, copy }) => (
                       <ActionIcon color="orange" variant="light" onClick={copy}>
                         <Copy></Copy>
                       </ActionIcon>
                     )}
                   </CopyButton> */}
-                </Group>
+                  </Group>
+                </Stack>
                 <Button
                   className="mt-32 cursor-pointer"
                   onClick={() => {
@@ -193,14 +195,14 @@ const Home: NextPage = () => {
             </Center>
           </Grid.Col>
           <Grid.Col
-            style={{ height: "calc(100vh - 70px)" }}
+            style={{ height: "calc(100vh - 60px)" }}
             className="bg-[#F9F5F4]"
             span={14}
           >
             <Stack className="px-8">
               <Group position="apart">
                 <p className="font-semibold text-3xl">{room.roomName}</p>
-                <p className="font-bold text-2xl text-center">
+                <p className="pt-8 font-bold text-2xl text-center">
                   입장 인원 &nbsp;
                   <strong className="text-blue-500">{partlist.length}</strong>
                   /30명
@@ -208,8 +210,8 @@ const Home: NextPage = () => {
               </Group>
               <Divider size="sm"></Divider>
               {
-                <ScrollArea style={{ height: "calc(100vh - 70px)" }}>
-                  <Stack style={{ height: "400vh" }}>
+                <ScrollArea style={{ height: "calc(100vh - 60px)" }}>
+                  <Stack>
                     <Grid columns={6}>
                       {partlist.map((cur: any, i) => {
                         return (

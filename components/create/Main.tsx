@@ -31,6 +31,7 @@ import {
   Select,
   BackgroundImage,
   Popover,
+  Tooltip,
 } from "@mantine/core";
 import {
   AB,
@@ -363,12 +364,12 @@ export const Main = () => {
             {problem.map((slicedProblem, i) => {
               return (
                 <Grid columns={15} key={i}>
-                  <Grid.Col span={12}>
+                  <Grid.Col span={13}>
                     <Center>
                       <Stack
                         spacing={0}
                         style={{ height: "calc(100vh - 120px)" }}
-                        className="w-full mx-12"
+                        className="w-full mx-24"
                       >
                         <Stack className="py-8" spacing={0}>
                           {/* *** white bg zone *** */}
@@ -401,6 +402,7 @@ export const Main = () => {
                               color="orange"
                               placeholder="문제 내용을 입력해주세요."
                             ></TextInput>
+                            <Divider size="sm" />
                             <Group
                               className={`h-[300px] border-2 border-dotted border-gray-300 bg-no-repeat bg-center
                               `}
@@ -410,6 +412,7 @@ export const Main = () => {
                               position="center"
                             >
                               <Button
+                                variant="outline"
                                 onClick={() => {
                                   setImageModalOpened(true);
                                 }}
@@ -428,6 +431,7 @@ export const Main = () => {
                               >
                                 <Popover.Target>
                                   <Button
+                                    variant="outline"
                                     size="md"
                                     color="orange"
                                     leftIcon={<BrandYoutube></BrandYoutube>}
@@ -483,7 +487,7 @@ export const Main = () => {
                               </Group> */}
                             </Group>
 
-                            <Divider size="sm"></Divider>
+                            <Divider size="sm" />
                             {/* 입력 - 선지 정보 */}
                             {optionContents(problem[i].dtype, i)}
                           </Stack>
@@ -521,16 +525,15 @@ export const Main = () => {
                       </Stack>
                     </Center>
                   </Grid.Col>
-                  <Grid.Col
-                    span={3}
-                    className="flex items-center justify-center"
-                  >
+                  <Grid.Col span={2} className="flex items-center justify-left">
                     {/* *** 퀴즈 종류 고르는 곳 *** */}
                     <Stack
                       classNames="p-4 m-4 bg-black w-60 h-60  shadow-xl"
                       spacing={12}
                     >
                       {dtypeName.map((name, j) => {
+                        let toolTipLabel = ["객관식", "주관식", "OX", "넌센스"];
+
                         let rtIcon = () => {
                           if (j === 0)
                             return (
@@ -554,18 +557,14 @@ export const Main = () => {
                             );
                           if (j === 2)
                             return (
-                              <Group position="center" spacing={0}>
-                                <ActionIcon>
-                                  {" "}
-                                  <AB
-                                    color={
-                                      problem[i].dtype === "2"
-                                        ? "white"
-                                        : "black"
-                                    }
-                                  ></AB>
-                                </ActionIcon>
-                              </Group>
+                              <ActionIcon>
+                                {" "}
+                                <AB
+                                  color={
+                                    problem[i].dtype === "2" ? "white" : "black"
+                                  }
+                                ></AB>
+                              </ActionIcon>
                             );
                           if (j === 3)
                             return (
@@ -579,22 +578,28 @@ export const Main = () => {
                             );
                         };
                         return (
-                          <Group
-                            position="center"
+                          <Tooltip
+                            position="right"
                             key={j}
-                            onClick={() => {
-                              setTabChangeIdx((prevstate) => j);
-                              setTabModalOpened(true);
-                            }}
-                            className={`${
-                              j.toString() === problem[i].dtype
-                                ? "bg-orange-500 shadow-[inset_0_-2px_4px_rgba(128,128,128,0.8)]"
-                                : "bg-white text-gray-500 shadow-lg"
-                            }
-        hover:shadow-none cursor-pointer rounded-xl h-16 w-16`}
+                            label={toolTipLabel[j]}
                           >
-                            {rtIcon()}
-                          </Group>
+                            <Group
+                              position="center"
+                              key={j}
+                              onClick={() => {
+                                setTabChangeIdx((prevstate) => j);
+                                setTabModalOpened(true);
+                              }}
+                              className={`${
+                                j.toString() === problem[i].dtype
+                                  ? "bg-orange-500 shadow-[inset_0_-2px_4px_rgba(128,128,128,0.8)]"
+                                  : "bg-white text-gray-500 shadow-lg"
+                              }
+        hover:shadow-none cursor-pointer rounded-xl h-16 w-16`}
+                            >
+                              {rtIcon()}
+                            </Group>
+                          </Tooltip>
                         );
                       })}
                     </Stack>

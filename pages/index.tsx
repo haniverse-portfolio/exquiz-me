@@ -343,7 +343,7 @@ const Home: NextPage = () => {
                   <p className="text-[18px]">개발자 연락처</p>
                 </Stack>
               </Grid.Col>
-              <Grid.Col span={5}>
+              <Grid.Col span={7}>
                 <Stack align="flex-start">
                   <Group position="center">
                     <p className="text-[#DA662C] text-[18px] cursor-pointer">
@@ -382,7 +382,7 @@ const Home: NextPage = () => {
                     </a>
                     <Divider color="orange" orientation="vertical" />
                     <p className="text-[#DA662C] text-[18px] cursor-pointer">
-                      우리집 소개
+                      프로그램 소개
                     </p>
                   </Group>
                   <Group position="center">
@@ -480,28 +480,10 @@ const Home: NextPage = () => {
                   </Group>
                 </Stack>
               </Grid.Col>
-              <Grid.Col className="flex items-end justify-end" span={13}>
-                <Group position="right">
-                  <Image
-                    src="/ict.png"
-                    alt="ict"
-                    width={200}
-                    height={60}
-                  ></Image>
-                  <Image
-                    src="/iitp.png"
-                    alt="iitp"
-                    width={200}
-                    height={60}
-                  ></Image>
-                  <Image
-                    src="/kfii.png"
-                    alt="kfii"
-                    width={200}
-                    height={60}
-                  ></Image>
-                </Group>
-              </Grid.Col>
+              <Grid.Col
+                className="flex items-end justify-end"
+                span={11}
+              ></Grid.Col>
             </Grid>
           </Stack>
           <Stack className="px-8 flex justify-center bg-[#273248] h-[100px]">

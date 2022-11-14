@@ -171,11 +171,8 @@ const Home: NextPage = () => {
         className="invisible"
         src="/sounds/play_music.wav"
       ></audio>
-      <main className="h-[100vh]">
-        <section
-          style={{ height: "calc(100vh - 140px)" }}
-          className="bg-[#EDF4F7]"
-        >
+      <main className="h-[100vh] bg-[#EDF4F7]">
+        <section style={{ height: "calc(100vh - 140px)" }} className="">
           <Group className="bg-[#273248]" position="right">
             <Button
               variant="outline"

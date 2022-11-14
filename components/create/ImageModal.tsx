@@ -66,11 +66,10 @@ export const ImageModal = () => {
   /* image */
   const [imageList, setImageList] = useRecoilState(createImageList);
   const [imageLoading, setImageLoading] = useRecoilState(createIsImageLoading);
-  const [imageRealWord, setImageRealWord] = useDebouncedState("", 500);
   const [imageWord, setImageWord] = useRecoilState(createImageWord);
-  const [imageWord2, setImageWord2] = useRecoilState(createImageWord2);
-  const [lastSearchedWord, setLastSearchedWord] = useRecoilState(
-    createLastSearchedWord
+  const [imageDebouncedWord, setImageDebouncedWord] = useDebouncedState(
+    "",
+    1000
   );
 
   const getImageList = async (name: string) => {
@@ -78,11 +77,6 @@ export const ImageModal = () => {
     await axios
       .get(connectMainServerApiAddress + "api/crawl/" + name)
       .then((result) => {
-        // alert("imageRealWord: " + imageRealWord);
-        // alert(lastSearchedWord);
-        if (imageRealWord == lastSearchedWord) return;
-        //alert("searching");
-        setLastSearchedWord(imageRealWord);
         setImageList(result.data);
       })
       .catch((error) => {});
@@ -90,18 +84,15 @@ export const ImageModal = () => {
   };
 
   useEffect(() => {
-    setImageRealWord(imageWord);
-  }, [imageWord]);
-
-  useEffect(() => {
+    getImageList(imageDebouncedWord);
     setImageLoading(false);
-    getImageList(imageRealWord);
-  }, [setImageRealWord]);
+  }, [imageDebouncedWord]);
 
   const router = useRouter();
 
   return (
     <Modal
+      overflow="inside"
       className="h-full"
       size="xl"
       withCloseButton={false}
@@ -162,6 +153,7 @@ export const ImageModal = () => {
             onChange={(event) => {
               setImageLoading(true);
               setImageWord(event.currentTarget.value);
+              setImageDebouncedWord(event.currentTarget.value);
             }}
             value={imageWord}
             size="lg"

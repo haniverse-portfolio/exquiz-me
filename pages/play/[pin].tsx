@@ -255,7 +255,7 @@ const Home: NextPage = () => {
                           className={`${
                             answer === i ? "shadow-inner text-white" : ""
                           } shadow-md`}
-                          variant={answer === i ? "light" : "outline"}
+                          variant={answer === i ? "filled" : "outline"}
                         >
                           <p className="text-lg"> {description}</p>
                         </Button>

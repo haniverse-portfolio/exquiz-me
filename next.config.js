@@ -65,6 +65,7 @@ module.exports = withPlugins(
           "exquiz.me",
           "www.exquiz.me",
           "lh3.googleusercontent.com",
+          "encrypted-tbn2.gstatic.com",
         ],
         // formats: ['image/avif', 'image/webp'],
       },

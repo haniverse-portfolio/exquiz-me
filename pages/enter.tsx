@@ -182,11 +182,11 @@ const Home: NextPage = () => {
       {step === 0 ? (
         <>
           {/* size={800} */}
-          <Container className="bg-[#ffd178] h-[100vh]">
+          <Container className="animate-textSlow bg-gradient-to-r from-[#DA662C] to-[#ffd178] h-[100vh]">
             <Stack className="flex">
               <Group className="my-8 cursor-pointer">
                 <Image
-                  src="/logo_orange.png"
+                  src="/logo_all_white.png"
                   alt="logo"
                   width={150}
                   height={30}
