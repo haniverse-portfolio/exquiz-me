@@ -17,6 +17,7 @@ body {
 }
 
 * {
+  transition: 500ms all ease;
   padding: 0;
   margin: 0;
   font-family: "SUIT-Medium";
@@ -37,3 +38,8 @@ body {
 /* * {
   font-family: "IBM Plex Sans KR", sans-serif !important;
 } */
+
+#scroll-wrapper {
+  /* overflow: auto; */
+  scroll-snap-type: y mandatory;
+}

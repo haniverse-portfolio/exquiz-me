@@ -247,7 +247,7 @@ const Home: NextPage = () => {
                       >
                         <Button
                           fullWidth
-                          style={{ height: "200px" }}
+                          style={{ height: "150px" }}
                           onClick={() => {
                             setAnswer(answer === i ? -1 : i);
                           }}

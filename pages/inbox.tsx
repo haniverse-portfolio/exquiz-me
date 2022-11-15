@@ -46,7 +46,7 @@ import {
   inboxRoom,
   indexIsLogined,
   indexUserInfo,
-  playPin,
+  playOption,
   playProblem,
 } from "../components/States";
 import { connectMainServerApiAddress } from "../components/ConstValues";
@@ -54,13 +54,6 @@ import { InboxProblemsetMenu } from "../components/inbox/InboxProblemsetMenu";
 import { InboxProfileMenu } from "../components/inbox/InboxProfileMenu";
 
 const Home: NextPage = () => {
-  const MARKS = [
-    { value: 0, label: "10명" },
-    { value: 25, label: "20명" },
-    { value: 50, label: "30명" },
-    { value: 75, label: "50명" },
-    { value: 100, label: "100명" },
-  ];
   const router = useRouter();
   const theme = useMantineTheme();
 
@@ -77,7 +70,8 @@ const Home: NextPage = () => {
   const [userInfo, setUserInfo] = useRecoilState(indexUserInfo);
   // problem
   const [problemsets, setProblemsets] = useRecoilState(inboxProblemset);
-  // const [problem, setProblem] = useRecoilState(inboxProblem);
+  const [problem, setProblem] = useRecoilState(playProblem);
+  const [option, setOption] = useRecoilState(playOption);
   // room
   const [room, setRoom] = useRecoilState(inboxRoom);
 
@@ -138,6 +132,36 @@ const Home: NextPage = () => {
     return;
   };
 
+  const getProblem = (id: number) => {
+    alert(connectMainServerApiAddress + "api/problems/" + id?.toString());
+    axios
+      .get(connectMainServerApiAddress + "api/problems/" + id?.toString())
+      .then((result) => {
+        setProblem(result.data);
+        getOption(result.data[0].id);
+        // setOption
+      })
+      .catch((error) => {
+        alert(error.data);
+      });
+    return;
+  };
+
+  const getOption = (id: number) => {
+    axios
+      .get(
+        connectMainServerApiAddress + "api/problem_options/" + id?.toString()
+      )
+      .then((result) => {
+        setOption(result.data);
+        // setOption
+      })
+      .catch((error) => {
+        alert(error.data);
+      });
+    return;
+  };
+
   // const getProblem = (idx: number) => {
   //   axios
   //     .get(connectMainServerApiAddress + "api/problems/" + idx)
@@ -154,13 +178,21 @@ const Home: NextPage = () => {
     let rt = Infinity;
     await axios
       .post(connectMainServerApiAddress + "api/room/newRoom", {
-        maxParticipantCount: room.maxParticipantCount,
+        maxParticipantCount: 30,
         problemsetId: (problemsets[problemsetIdx] as any).id,
         roomName: room.roomName,
       })
-      .then(async (result) => {
+      .then((result) => {
         setRoom(result.data);
-        router.push(`/lobby/${result.data.pin}`);
+        setTimeout(() => {
+          alert(JSON.stringify(result.data));
+          // alert(room.problemsetDto.id);
+          getProblem(result.data.problemsetDto.id);
+        }, 500);
+
+        setTimeout(() => {
+          router.push(`/lobby/${result.data.pin}`);
+        }, 1500);
       })
       .catch((error) => {
         alert("newRoom_error");
@@ -384,17 +416,26 @@ const Home: NextPage = () => {
           ></Textarea>
 
           <p className="m-0 font-bold">참가 인원</p>
-          <Slider
-            showLabelOnHover={false}
-            onChangeEnd={(event) => {
-              let copy = { ...room, maxParticipantCount: event };
+          {/* <Select
+            onChange={(event) => {
+              let num = [10, 20, 30, 40, 50];
+              let nxt = num[parseInt(event || "") / 25];
+              let copy = JSON.parse(JSON.stringify(room));
+              copy.maxParticipantCount = nxt;
               setRoom(copy);
+              alert(room.maxParticipantCount);
             }}
-            color="orange"
-            defaultValue={50}
-            step={25}
-            marks={MARKS}
-          />
+            label="참가 인원"
+            placeholder="참가 인원을 선택하세요"
+            value={room.maxParticipantCount.toString()}
+            data={[
+              { value: "10", label: "10명" },
+              { value: "20", label: "20명" },
+              { value: "30", label: "30명" },
+              { value: "40", label: "40명" },
+              { value: "50", label: "50명" },
+            ]}
+          /> */}
           <br></br>
           <Button
             size="lg"

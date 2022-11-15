@@ -11,7 +11,11 @@ import axios from "axios";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 import { useRecoilState } from "recoil";
-import { inboxRoom, lobbyParticipants } from "../../components/States";
+import {
+  inboxRoom,
+  lobbyParticipants,
+  playProblem,
+} from "../../components/States";
 
 import { avatarAnimal, avatarColor } from "../../components/ConstValues";
 
@@ -34,6 +38,7 @@ import IndexNavigation from "../../components/index/IndexNavigation";
 
 const Home: NextPage = () => {
   const [partlist, setPartlist] = useRecoilState(lobbyParticipants);
+  const [problem, setProblem] = useRecoilState(playProblem);
   // const addParticipant = (cur: object) => {
   //   // console.log("추가전 직전 참가자 정보");
   //   // console.log(partlist);
@@ -54,6 +59,19 @@ const Home: NextPage = () => {
       });
     return;
   };
+
+  const getPartlist = () => {
+    axios
+      .get(
+        connectMainServerApiAddress +
+          `api/room/${router.query.pin}/participants`
+      )
+      .then((result) => {
+        setPartlist(result.data);
+      })
+      .catch((error) => {});
+    return;
+  };
   const router = useRouter();
 
   const pin = router.query.pin;
@@ -62,6 +80,7 @@ const Home: NextPage = () => {
   useEffect(() => {
     if (!router.isReady) return;
     connect();
+    getPartlist();
   }, [router.isReady]);
 
   const [curParticipant, setCurParticipant] = useState({
@@ -84,14 +103,13 @@ const Home: NextPage = () => {
   {
     /* webSocket */
   }
-  let client: Stomp.Client;
 
   var socket = new SockJS(connectMainServerApiAddress + "stomp");
+  let client: Stomp.Client;
   client = Stomp.over(socket);
 
   let connect = () => {
     const headers = {};
-
     var reconnect = 0;
     client.connect(
       {},
@@ -110,12 +128,19 @@ const Home: NextPage = () => {
       },
       function (error) {
         alert("error!!");
-        setTimeout(() => {
-          connect();
-        }, 500);
         // connect();
       }
     );
+
+    socket.onclose = function () {
+      setTimeout(() => {
+        getPartlist();
+        socket = connect();
+        partlist;
+      }, 1000);
+    };
+
+    return socket;
   };
 
   return (
@@ -182,15 +207,16 @@ const Home: NextPage = () => {
                   className="mt-32 cursor-pointer"
                   onClick={() => {
                     client.send("/pub/room/" + pin + "/start", {});
+                    router.push(`/display/${pin}`);
                   }}
                   size="xl"
                   color="orange"
                   variant="filled"
                   component="a"
-                  href={`/display/${pin}`}
                 >
                   퀴즈 시작하기!
                 </Button>
+                {/* // 이거 없애 */}
               </Stack>
             </Center>
           </Grid.Col>

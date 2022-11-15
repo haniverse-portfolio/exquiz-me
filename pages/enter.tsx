@@ -8,9 +8,11 @@ import Image from "next/image";
 import axios from "axios";
 import { useRecoilState } from "recoil";
 import {
+  inboxRoom,
   playAnimal,
   playColor,
   playPin,
+  playRoomInfo,
   playUserCurInfo,
 } from "../components/States";
 
@@ -106,13 +108,16 @@ const Home: NextPage = () => {
       .get(connectMainServerApiAddress + `api/room/${pin.toString()}/open`)
       .then((result) => {
         // validation
-        if (result.data.currentState !== "READY") {
-          setPinStep(3);
+        if (result.data.currentState === "READY") {
+          setPlayRoom(result.data);
+          setPinStep(2);
           return;
+        } else {
+          setPinStep((prevstate) => 3);
         }
-        setPinStep((prevstate) => 2);
       })
       .catch((error) => {
+        alert("fail");
         setPinStep(3);
       });
   };
@@ -121,11 +126,13 @@ const Home: NextPage = () => {
     axios
       .get(connectMainServerApiAddress + `api/room/${pin.toString()}/open`)
       .then((result) => {
+        setPlayRoom(result.data);
         // validation
         if (result.data.currentState !== "READY") return;
         setStep((prevstate) => step + 1);
       })
       .catch((error) => {
+        alert("fail");
         alert("핀 번호를 다시 확인해보세요");
       });
     return;
@@ -135,6 +142,8 @@ const Home: NextPage = () => {
   const [userCurInfo, setUserCurInfo] = useRecoilState(playUserCurInfo);
   const [name, setName] = useState("");
   const [pinStep, setPinStep] = useState(0);
+
+  const [playRoom, setPlayRoom] = useRecoilState(playRoomInfo);
   let createRand = () => {};
 
   let client: Stomp.Client;
@@ -282,7 +291,10 @@ const Home: NextPage = () => {
                       <Stack className="h-[100px]"></Stack>
                       <Stack className="ml-2">
                         <p className="text-[24px] text-[#5E5E5E]">
-                          디자인 가이드 정리
+                          {(playRoom as any).problemsetDto.title || ""}
+                          {/* {playRoom === undefined
+                            ? ""
+                            : (playRoom as any).problemsetDto.title} */}
                         </p>
                       </Stack>
                     </Stack>
@@ -342,6 +354,13 @@ const Home: NextPage = () => {
                   variant="light"
                 >
                   입장하기
+                </Button>
+                <Button
+                  onClick={() => {
+                    console.log(playRoom);
+                  }}
+                >
+                  테스트
                 </Button>
               </Stack>
             </Stack>

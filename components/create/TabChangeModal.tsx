@@ -117,6 +117,7 @@ export const TabChangeModal = () => {
                 dtype: tabChangeIdx.toString(),
                 idx: 0,
                 picture: "",
+                videoUrl: "",
                 problemsetId: 0,
                 score: 300,
                 timelimit: 30,

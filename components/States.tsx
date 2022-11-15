@@ -210,6 +210,11 @@ export const createImageStep = atom({
 /* *** create *** */
 
 /* *** play *** */
+export const playRoomInfo = atom({
+  key: "playRoomInfo",
+  default: {},
+});
+
 export const playProblemset = atom({
   key: "playProblemset",
   default: {},
@@ -217,29 +222,27 @@ export const playProblemset = atom({
 
 export const playProblem = atom({
   key: "playProblem",
-  default: [
-    {
-      answer: "0",
-      description: "",
-      dtype: "MultipleChoiceProblem",
-      idx: 0,
-      picture: "",
-      problemsetId: 0,
-      score: 125,
-      timelimit: 30,
-      title: "",
-    },
-  ],
+  default: [],
 });
 
 export const playOption = atom({
   key: "playOption",
-  default: [{}],
+  default: [],
 });
 
 export const playPin = atom({
   key: "playPin",
   default: "",
+});
+
+export const playIdx = atom({
+  key: "playIdx",
+  default: 0,
+});
+
+export const playIdx2 = atom({
+  key: "playIdx2",
+  default: 0,
 });
 
 export const playMessagetype = atom({

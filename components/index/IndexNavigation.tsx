@@ -12,9 +12,6 @@ import {
   Group,
   HoverCard,
   Stack,
-  Switch,
-  ThemeIcon,
-  Tooltip,
 } from "@mantine/core";
 import { World } from "tabler-icons-react";
 
@@ -87,7 +84,6 @@ const IndexNavigation = () => {
           </Group>
         </Link>
         <Group>
-          {membershipComponent(membership)}
           {isLogined === false ? (
             <span
               onClick={() => {
@@ -156,6 +152,7 @@ const IndexNavigation = () => {
               </HoverCard.Dropdown>
             </HoverCard>
           )}
+          {membershipComponent(membership)}
           {/* <Switch
             checked={langValue == "KO" ? true : false}
             onChange={(event) => {

@@ -18,34 +18,22 @@ import {
   Grid,
   Progress,
   Center,
-  Divider,
-  Drawer,
   ActionIcon,
   ScrollArea,
   MantineProvider,
 } from "@mantine/core";
-import {
-  Alarm,
-  BellRinging,
-  Pencil,
-  ArrowBigRightLines,
-  Router,
-  IdOff,
-} from "tabler-icons-react";
+import { Alarm, Pencil } from "tabler-icons-react";
 
 import { useRecoilState } from "recoil";
-import { useDebouncedState, useInterval } from "@mantine/hooks";
+import { useInterval } from "@mantine/hooks";
+import { connectMainServerApiAddress } from "../../components/ConstValues";
 import {
-  avatarAnimal,
-  connectMainServerApiAddress,
-  testPlayOption,
-  testPlayProblem,
-  testUserData,
-} from "../../components/ConstValues";
-import {
-  playIsDrawerOpened,
+  playIdx,
+  playIdx2,
   playMessagetype,
+  playOption,
   playParticipants,
+  playProblem,
 } from "../../components/States";
 import axios from "axios";
 
@@ -63,15 +51,11 @@ const Home: NextPage = () => {
   const secondaryColor =
     theme.colorScheme === "dark" ? theme.colors.dark[1] : theme.colors.gray[7];
 
-  const [active, setActive] = useState(0);
-  let [image, setImage] = useState("https://www.exquiz.me/panda.png");
+  const [step, setStep] = useState(0);
 
-  let [step, setStep] = useState(0);
-  let [curIdx, setCurIdx] = useState(0);
-  let [answer, setAnswer] = useState(-1);
-
-  const [problem, setProblem] = useState(testPlayProblem);
-  const [option, setOption] = useState(testPlayOption);
+  const [curIdx, setCurIdx] = useRecoilState(playIdx);
+  const [problem, setProblem] = useRecoilState(playProblem);
+  const [option, setOption] = useRecoilState(playOption);
   const [participants, setParticipants] = useState(playParticipants);
 
   let stompClient: Stomp.Client;
@@ -102,17 +86,33 @@ const Home: NextPage = () => {
   // let [problem, setProblem] = useRecoilState(playProblem);
   // let [option, setOption] = useRecoilState(playOption);
 
-  useEffect(() => {
-    const promise = bgAudio.current.play();
-    if (promise !== undefined) {
-      alert("audio_not_play");
-    }
-  }, []);
+  const getOption = (id: number) => {
+    axios
+      .get(
+        connectMainServerApiAddress + "api/problem_options/" + id?.toString()
+      )
+      .then((result) => {
+        setOption(result.data);
+        // setOption
+      })
+      .catch((error) => {
+        alert(error.data);
+      });
+    return;
+  };
 
   useEffect(() => {
     if (!router.isReady) return;
     connect();
+
+    const promise = bgAudio.current.play();
+    if (promise !== undefined) {
+    }
   }, [router.isReady]);
+
+  useEffect(() => {
+    // getOption((problem[curIdx] as any).id);
+  }, [curIdx]);
 
   useEffect(() => {
     if (messagetypestate === "NEWPROBLEM") {
@@ -128,10 +128,6 @@ const Home: NextPage = () => {
       setStep(1);
     }
   }, [seconds]);
-
-  useEffect(() => {
-    setImage("https://exquiz.me/dino_env.png");
-  }, []);
 
   const getParticipantList = () => {
     axios
@@ -174,6 +170,15 @@ const Home: NextPage = () => {
       <main className="h-[100vh] bg-[#EDF4F7]">
         <section style={{ height: "calc(100vh - 140px)" }} className="">
           <Group className="bg-[#273248]" position="right">
+            <Button
+              variant="outline"
+              color="purple"
+              onClick={() => {
+                console.log(problem);
+              }}
+            >
+              문제를 보자
+            </Button>
             <Button
               variant="outline"
               color="orange"
@@ -232,7 +237,11 @@ const Home: NextPage = () => {
                         //   to: "orange",
                         //   deg: 45,
                         // })}
-                        value={(seconds / problem[curIdx].timelimit) * 100.0}
+                        value={
+                          // (seconds / (problem[curIdx] as any).timelimit || 0) *
+                          // 100.0
+                          100
+                        }
                       />
                     </MantineProvider>
                     <p className="font-semibold text-amber-500 text-3xl">
@@ -252,7 +261,7 @@ const Home: NextPage = () => {
                         <Pencil></Pencil>
                       </ActionIcon>
                       <p className="font-bold text-center">
-                        <strong className="text-orange-500">19</strong>
+                        <strong className="text-orange-500">0</strong>
                         /30명
                       </p>
                     </Group>
@@ -265,7 +274,7 @@ const Home: NextPage = () => {
                       className="ml-16 absolute -top-8 rounded-full bg-orange-500 h-12 w-40"
                     >
                       <p className="m-auto text-center text-2xl text-white font-semibold">
-                        문제 1/5
+                        문제 {curIdx + 1}/{problem.length}
                       </p>
                     </Stack>
                     <Group>
@@ -273,37 +282,29 @@ const Home: NextPage = () => {
                         Q.{" "}
                       </p>
                       <p className="font-bold text-4xl text-left mt-10">
-                        {problem[curIdx].description}
+                        {/* {(problem[curIdx] as any).description} */}
                       </p>
                     </Group>
                   </Stack>
-                  {/* <Image
-                    alt="hello"
-                    src="/../public/halla4.jpeg"
-                    width={600}
-                    height={400}
-                  ></Image> */}
                   <Stack className=" mx-16">
                     <Grid columns={4} gutter="xl">
-                      {option[curIdx].map(
-                        ({ description, idx, picture, problemId }, i) => {
-                          return (
-                            <Grid.Col key={i} span={1}>
-                              <Button
-                                variant="white"
-                                color="gray.5"
-                                fullWidth
-                                className="!h-60 bg-white rounded-xl"
-                              >
-                                <p className="text-2xl text-left">{i + 1}. </p>
-                                <p className="text-2xl text-center">
-                                  {description}
-                                </p>
-                              </Button>
-                            </Grid.Col>
-                          );
-                        }
-                      )}
+                      {option.map(({ description }, i) => {
+                        return (
+                          <Grid.Col key={i} span={1}>
+                            <Button
+                              variant="white"
+                              color="gray.5"
+                              fullWidth
+                              className="!h-60 bg-white rounded-xl"
+                            >
+                              <p className="text-2xl text-left">{i + 1}. </p>
+                              <p className="text-2xl text-center">
+                                {description}
+                              </p>
+                            </Button>
+                          </Grid.Col>
+                        );
+                      })}
                     </Grid>
                   </Stack>
                 </Stack>
@@ -422,7 +423,7 @@ const Home: NextPage = () => {
                         Q.{" "}
                       </p>
                       <p className="font-bold text-4xl text-left mt-10">
-                        {problem[curIdx].description}
+                        {(problem[curIdx] as any).description}
                       </p>
                     </Group>
                   </Stack>
@@ -434,8 +435,8 @@ const Home: NextPage = () => {
                 ></Image> */}
                   <Stack className=" mx-16">
                     <Grid columns={4} gutter="xl">
-                      {option[curIdx].map(
-                        ({ description, idx, picture, problemId }, i) => {
+                      {/* {(option[curIdx] as any).map(
+                        ( cur , i) => {
                           return (
                             <Grid.Col key={i} span={1}>
                               <Button
@@ -452,7 +453,7 @@ const Home: NextPage = () => {
                             </Grid.Col>
                           );
                         }
-                      )}
+                      )} */}
                     </Grid>
                   </Stack>
                 </Stack>

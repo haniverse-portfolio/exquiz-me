@@ -35,6 +35,7 @@ export const problemInput = [
     dtype: "0",
     idx: 0,
     picture: "",
+    videoUrl: "",
     problemsetId: 0,
     score: 300,
     timelimit: 30,
@@ -562,7 +563,7 @@ export const inboxRoomInput = {
   roomName: "",
   id: -1,
   pin: "0",
-  maxParticipantCount: -1,
+  maxParticipantCount: 30,
   startDate: "-1",
   endDate: null,
   problemsetDto: {

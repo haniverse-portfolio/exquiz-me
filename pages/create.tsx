@@ -39,7 +39,6 @@ import {
 import { Main } from "../components/create/Main";
 import { CreateNavigation } from "../components/create/CreateNavigation";
 import { CompleteModal } from "../components/create/CompleteModal";
-import { ProblemsetModal } from "../components/create/ProblemsetModal";
 
 import { Dropzone, IMAGE_MIME_TYPE } from "@mantine/dropzone";
 
