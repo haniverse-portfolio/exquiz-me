@@ -286,7 +286,7 @@ const Home: NextPage = () => {
                       {/* h-[220px] w-[310px] */}
                       <Stack className="h-[3px]"></Stack>
                       <Stack className="h-[100px]"></Stack>
-                      <Stack className="ml-2">
+                      <Stack className="ml-4 mb-4">
                         <p className="text-[24px] text-[#5E5E5E]">
                           {(playRoom as any).problemsetDto.title || ""}
                           {/* {playRoom === undefined

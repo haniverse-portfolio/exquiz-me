@@ -133,19 +133,19 @@ export const CreateNavigation = () => {
         placeholder="퀴즈 제목을 입력해주세요"
         variant="unstyled"
       ></TextInput>
-      {totalValidation() === true ? (
-        <Group
-          position="center"
-          onClick={() => {
-            setCompleteModalOpened("1");
-          }}
-          className="cursor-pointer h-16 w-16 rounded-full bg-orange-500"
-        >
-          <ActionIcon variant="transparent">
-            <ArrowRight color="white"></ArrowRight>
-          </ActionIcon>
-        </Group>
-      ) : (
+      {/* {totalValidation() === true ? ( */}
+      <Group
+        position="center"
+        onClick={() => {
+          setCompleteModalOpened("1");
+        }}
+        className="cursor-pointer h-16 w-16 rounded-full bg-orange-500"
+      >
+        <ActionIcon variant="transparent">
+          <ArrowRight color="white"></ArrowRight>
+        </ActionIcon>
+      </Group>
+      {/* ) : (
         <Tooltip label="문제가 다 완성되지 않았어요">
           <Group
             position="center"
@@ -159,7 +159,7 @@ export const CreateNavigation = () => {
             </ActionIcon>
           </Group>
         </Tooltip>
-      )}
+      )} */}
     </Group>
   );
 };
