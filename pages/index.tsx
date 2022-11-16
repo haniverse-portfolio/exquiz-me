@@ -152,7 +152,7 @@ const Home: NextPage = () => {
               >
                 <Carousel.Slide>
                   <Image
-                    className="hover:scale-125"
+                    className="shadow-xl rounded-xl"
                     src="/index/demo1.svg"
                     alt="demo1"
                     width={477}
@@ -177,8 +177,8 @@ const Home: NextPage = () => {
                 </Carousel.Slide>
                 <Carousel.Slide>
                   <Image
-                    src="/index/demo3.svg"
-                    alt="demo3"
+                    src="/index/demo4.svg"
+                    alt="demo4"
                     width={477}
                     height={339}
                   ></Image>

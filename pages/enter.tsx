@@ -117,7 +117,6 @@ const Home: NextPage = () => {
         }
       })
       .catch((error) => {
-        alert("fail");
         setPinStep(3);
       });
   };
@@ -131,10 +130,7 @@ const Home: NextPage = () => {
         if (result.data.currentState !== "READY") return;
         setStep((prevstate) => step + 1);
       })
-      .catch((error) => {
-        alert("fail");
-        alert("핀 번호를 다시 확인해보세요");
-      });
+      .catch((error) => {});
     return;
   };
 
