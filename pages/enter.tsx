@@ -205,10 +205,10 @@ const Home: NextPage = () => {
                 6자리의 숫자로 된 핀 번호를 입력하세요.
               </Notification> */}
               <Stack className="p-8 rounded-xl shadow-lg bg-white">
-                <p className="text-center text-2xl font-bold text-black">
+                <p className="animate-fadeIn text-center text-2xl font-bold text-black">
                   퀴즈방 입장하기
                 </p>
-                <p className="text-center text-lg font-semibold text-gray-500">
+                <p className="animate-fadeIn text-center text-lg font-semibold text-gray-500">
                   공유 받은 PIN 번호로 입장해주세요
                 </p>
                 <Stack
@@ -276,7 +276,7 @@ const Home: NextPage = () => {
                     <></>
                   )}
                   {pinStep === 1 ? (
-                    <Stack align="center">
+                    <Stack className="animate-fadeIn" align="center">
                       <Loader color="orange" />
                       <p className="text-center text-xl text-gray-500 font">
                         검색중...
@@ -286,7 +286,8 @@ const Home: NextPage = () => {
                     <></>
                   )}
                   {pinStep === 2 ? (
-                    <Stack className="px-4 rounded-3xl h-[220px] w-[310px] bg-no-repeat bg-center bg-[url('/inbox/folder.svg')]">
+                    <Stack className="animate-fadeIn px-4 rounded-3xl h-[160px] w-[260px] bg-contain bg-no-repeat bg-center bg-[url('/inbox/folder.svg')]">
+                      {/* h-[220px] w-[310px] */}
                       <Stack className="h-[3px]"></Stack>
                       <Stack className="h-[100px]"></Stack>
                       <Stack className="ml-2">
@@ -306,7 +307,7 @@ const Home: NextPage = () => {
                       <ActionIcon size={40}>
                         <ZoomQuestion size={40}></ZoomQuestion>
                       </ActionIcon>
-                      <p className="text-center text-xl text-gray-500">
+                      <p className="animate-fadeIn text-center text-xl text-gray-500">
                         존재하지 않는 방입니다.
                       </p>
                     </Stack>
@@ -370,18 +371,22 @@ const Home: NextPage = () => {
             <Stack>
               <Group className="my-8 cursor-pointer">
                 <Image
-                  src="/logo_orange.png"
+                  onClick={() => {
+                    location.replace("/enter");
+                  }}
+                  src="/logo_all_white.png"
                   alt="logo"
                   width={150}
                   height={30}
                 />
               </Group>
               <Stack className="p-8 rounded-xl shadow-lg bg-white">
-                <p className="font-bold text-2xl text-md text-center">
+                <p className="animate-fadeIn font-bold text-2xl text-md text-center">
                   프로필 설정
                 </p>
                 <Center>
                   <Tooltip
+                    className="animate-fadeIn"
                     position="bottom"
                     offset={20}
                     opened={true}
