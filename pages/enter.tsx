@@ -219,56 +219,56 @@ const Home: NextPage = () => {
                     <Stack align="flex-start">
                       <Stack align="flex-start">
                         <Group spacing={8} align="flex-start">
-                          <Image
-                            className=" animate-[spin_4s_ease-in-out_infinite]"
+                          <img
+                            className="!overflow-visible animate-[spin_4s_ease-in-out_infinite]"
                             src="/index/rectangle_right.svg"
                             alt="rectangle"
                             width={100}
                             height={100}
-                          ></Image>
+                          ></img>
                           <Stack spacing={8}>
-                            <Image
-                              className="animate-[bounce_2s_ease-in-out_infinite]"
+                            <img
+                              className="!overflow-visible animate-[bounce_2s_ease-in-out_infinite]"
                               src="/index/circle.svg"
-                              alt="rectangle"
+                              alt="circle"
                               width={15}
                               height={15}
-                            ></Image>
-                            <Image
-                              className="animate-[bounce_3s_ease-in-out_infinite]"
+                            ></img>
+                            <img
+                              className="!overflow-visible animate-[bounce_3s_ease-in-out_infinite]"
                               src="/index/circle.svg"
-                              alt="rectangle"
+                              alt="circle"
                               width={25}
                               height={25}
-                            ></Image>
+                            ></img>
                           </Stack>
                         </Group>
                       </Stack>
                       <Stack>
                         <Group align="flex-end">
                           <Stack>
-                            <Image
-                              className="animate-[bounce_2s_ease-in-out_infinite]"
+                            <img
+                              className="!overflow-visible animate-[bounce_2s_ease-in-out_infinite]"
                               src="/index/circle.svg"
                               alt="rectangle"
                               width={15}
                               height={15}
-                            ></Image>
-                            <Image
-                              className="animate-[bounce_3s_ease-in-out_infinite]"
+                            ></img>
+                            <img
+                              className="!overflow-visible animate-[bounce_3s_ease-in-out_infinite]"
                               src="/index/circle.svg"
                               alt="rectangle"
                               width={25}
                               height={25}
-                            ></Image>
+                            ></img>
                           </Stack>
-                          <Image
-                            className=" animate-[spin_3s_ease-in-out_infinite]"
+                          <img
+                            className="!overflow-visible animate-[spin_3s_ease-in-out_infinite]"
                             src="/index/rectangle_left.svg"
                             alt="rectangle"
                             width={60}
                             height={60}
-                          ></Image>
+                          ></img>
                         </Group>
                       </Stack>
                     </Stack>
@@ -355,13 +355,6 @@ const Home: NextPage = () => {
                 >
                   입장하기
                 </Button>
-                <Button
-                  onClick={() => {
-                    console.log(playRoom);
-                  }}
-                >
-                  테스트
-                </Button>
               </Stack>
             </Stack>
           </Container>
@@ -373,10 +366,7 @@ const Home: NextPage = () => {
       {/* main */}
       {step === 1 ? (
         <>
-          <Container
-            className="h-[100vh] animate-textSlow bg-gradient-to-r from-[#FF9B3F] to-[#ffd178]"
-            size={800}
-          >
+          <Container className="h-[100vh] animate-textSlow bg-gradient-to-r from-[#FF9B3F] to-[#ffd178]">
             <Stack>
               <Group className="my-8 cursor-pointer">
                 <Image

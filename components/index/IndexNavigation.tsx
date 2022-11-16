@@ -116,14 +116,16 @@ const IndexNavigation = () => {
                       onClick={() => {
                         router.push("/mypage");
                       }}
-                      className="shadow-lg text-center relative bottom-32 -top-10 cursor-pointer rounded-full"
+                      className="animate-fadeIn shadow-lg text-center relative bottom-32 -top-10 cursor-pointer rounded-full"
                       src={userInfo.picture}
                     ></Image>
                   </Center>
                 </Container>
                 <h2 className="p-0 m-0 text-[#818181] text-[16px] text-center">
-                  <p className="text-black">{userInfo.nickname}</p>
-                  <p className="font-normal">{userInfo.email}</p>
+                  <p className="animate-fadeIn text-black">
+                    {userInfo.nickname}
+                  </p>
+                  <p className="animate-fadeIn font-normal">{userInfo.email}</p>
                 </h2>
                 <Divider size="sm"></Divider>
                 <Group className="mt-4 justify-center" position="center">

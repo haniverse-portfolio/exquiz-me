@@ -133,7 +133,6 @@ const Home: NextPage = () => {
   };
 
   const getProblem = (id: number) => {
-    alert(connectMainServerApiAddress + "api/problems/" + id?.toString());
     axios
       .get(connectMainServerApiAddress + "api/problems/" + id?.toString())
       .then((result) => {
@@ -185,7 +184,6 @@ const Home: NextPage = () => {
       .then((result) => {
         setRoom(result.data);
         setTimeout(() => {
-          alert(JSON.stringify(result.data));
           // alert(room.problemsetDto.id);
           getProblem(result.data.problemsetDto.id);
         }, 500);
@@ -311,7 +309,7 @@ const Home: NextPage = () => {
                           <Grid.Col
                             span={1}
                             key={i}
-                            className="h-[240px] cursor-pointer"
+                            className="animate-fadeUp h-[240px] cursor-pointer"
                           >
                             {/* 208 298 */}
                             <Stack

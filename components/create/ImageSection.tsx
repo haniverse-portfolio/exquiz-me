@@ -94,7 +94,10 @@ export const ImageSection = () => {
 
       const copyProblem = problem.map((curProblem, problemIdx) => {
         const slicedProblem = { ...curProblem } as any;
-        if (curIdx === problemIdx) slicedProblem["picture"] = result.data;
+        if (curIdx === problemIdx) {
+          slicedProblem["videoUrl"] = "";
+          slicedProblem["picture"] = result.data;
+        }
         return slicedProblem;
       });
 

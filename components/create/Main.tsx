@@ -35,8 +35,10 @@ import {
 } from "@mantine/core";
 import {
   AB,
+  AlertCircle,
   BrandYoutube,
   Circle,
+  CircleCheck,
   Copy,
   HandClick,
   ListCheck,
@@ -206,6 +208,29 @@ export const Main = () => {
     setCurIdx(curIdx + 1);
   };
 
+  let problemVailidation = (idx: number) => {
+    let flag = true;
+    if (problem[idx].description === "") flag = false;
+    if (problem[idx].answer === "") flag = false;
+    if (problem[idx].dtype === "0") {
+      if (option[idx][0].description === "") flag = false;
+      if (option[idx][1].description === "") flag = false;
+      if (option[idx][2].description === "") flag = false;
+      if (option[idx][3].description === "") flag = false;
+    }
+    return flag;
+  };
+
+  let videoRefine = (idx: number) => {
+    let pivot = problem[idx].videoUrl;
+    let rt = "";
+    for (let k = pivot.length - 1; k >= pivot.length - 11; k--) {
+      rt += pivot[k];
+    }
+    rt = rt.split("").reverse().join("");
+    return rt;
+  };
+
   useEffect(() => {
     console.log(problem[0].score);
 
@@ -252,27 +277,42 @@ export const Main = () => {
                   <Grid gutter={0} columns={10}>
                     <Grid.Col span={8}>
                       <Stack className="m-4">
-                        <p className="m-0 p-0 text-white text-[20px]">
+                        <p className="text-ellipsis overflow-hidden m-0 p-0 text-white text-[20px]">
                           <span className="mr-2 text-[#F9761E] text-[24px]">
                             {i + 1}
                           </span>
-                          {problem[i].description}
+                          <span>{problem[i].description}</span>
                         </p>
                       </Stack>
                       <Stack className="m-4">
-                        {problem[i].picture === "" ? (
-                          <Stack className="bg-[#FBFBFB] flex items-center justify-center h-[100px] rounded-xl">
-                            <Center>
-                              <ActionIcon>
-                                <Photo></Photo>
-                              </ActionIcon>
-                            </Center>
-                          </Stack>
+                        {problem[i].videoUrl === "" ? (
+                          problem[i].picture === "" ? (
+                            <Stack className="bg-[#FBFBFB] flex items-center justify-center h-[100px] rounded-xl">
+                              <Center>
+                                <ActionIcon>
+                                  <Photo></Photo>
+                                </ActionIcon>
+                              </Center>
+                            </Stack>
+                          ) : (
+                            <Image
+                              layout="responsive"
+                              className="rounded-xl"
+                              src={problem[i].picture}
+                              width={"180px"}
+                              height="100px"
+                              alt="image"
+                            ></Image>
+                          )
                         ) : (
                           <Image
                             layout="responsive"
                             className="rounded-xl"
-                            src={problem[i].picture}
+                            src={
+                              "https://img.youtube.com/vi/" +
+                              videoRefine(i) +
+                              "/maxresdefault.jpg"
+                            }
                             width={"180px"}
                             height="100px"
                             alt="image"
@@ -280,46 +320,113 @@ export const Main = () => {
                         )}
                       </Stack>
                     </Grid.Col>
-                    <Grid.Col
-                      className="!flex items-end justify-center"
-                      span={2}
-                    >
+                    <Grid.Col className="!flex justify-center" span={2}>
                       {curIdx === i ? (
-                        <Stack className="mb-4">
-                          <ActionIcon
-                            color="blue"
-                            variant={curIdx === i ? "light" : "transparent"}
-                          >
-                            <Copy
-                              onClick={(event) => {
-                                event.stopPropagation();
-                                problemCopy();
-                              }}
-                            ></Copy>
-                          </ActionIcon>
-                          <ActionIcon
-                            color="blue"
-                            variant={curIdx === i ? "light" : "transparent"}
-                          >
-                            <Trash
-                              onClick={(event) => {
-                                event.stopPropagation();
-                                viewport.current.scrollTo({
-                                  top:
-                                    (viewport.current.scrollHeight *
-                                      (curIdx - 1)) /
-                                    problem.length,
-                                  behavior: "smooth",
-                                });
-                                setTimeout(() => {
-                                  problemDelete();
-                                }, 700);
-                              }}
-                            ></Trash>
-                          </ActionIcon>
+                        <Stack justify="space-between" className="mb-4">
+                          {problemVailidation(i) === true ? (
+                            <Tooltip
+                              position="left"
+                              label="문제가 완성되었습니다"
+                            >
+                              <ActionIcon
+                                size={32}
+                                className="mt-6"
+                                variant="transparent"
+                              >
+                                <CircleCheck
+                                  size={32}
+                                  color="green"
+                                ></CircleCheck>
+                              </ActionIcon>
+                            </Tooltip>
+                          ) : (
+                            <Tooltip
+                              position="left"
+                              label="문제가 완성되지 않았습니다"
+                            >
+                              <ActionIcon
+                                size={32}
+                                className="mt-6"
+                                variant="transparent"
+                              >
+                                <AlertCircle
+                                  size={32}
+                                  color="red"
+                                ></AlertCircle>
+                              </ActionIcon>
+                            </Tooltip>
+                          )}
+
+                          <Stack>
+                            <ActionIcon
+                              color="blue"
+                              variant={curIdx === i ? "light" : "transparent"}
+                            >
+                              <Copy
+                                onClick={(event) => {
+                                  event.stopPropagation();
+                                  problemCopy();
+                                }}
+                              ></Copy>
+                            </ActionIcon>
+                            <ActionIcon
+                              color="blue"
+                              variant={curIdx === i ? "light" : "transparent"}
+                            >
+                              <Trash
+                                onClick={(event) => {
+                                  event.stopPropagation();
+                                  viewport.current.scrollTo({
+                                    top:
+                                      (viewport.current.scrollHeight *
+                                        (curIdx - 1)) /
+                                      problem.length,
+                                    behavior: "smooth",
+                                  });
+                                  setTimeout(() => {
+                                    problemDelete();
+                                  }, 700);
+                                }}
+                              ></Trash>
+                            </ActionIcon>
+                          </Stack>
                         </Stack>
                       ) : (
-                        <></>
+                        <>
+                          {problemVailidation(i) === true ? (
+                            <Tooltip
+                              position="left"
+                              label="문제가 완성되었습니다"
+                            >
+                              <ActionIcon
+                                size={32}
+                                className="mt-6"
+                                variant="transparent"
+                              >
+                                <CircleCheck
+                                  size={32}
+                                  color="green"
+                                ></CircleCheck>
+                              </ActionIcon>
+                            </Tooltip>
+                          ) : (
+                            <Tooltip
+                              position="left"
+                              label="문제가 완성되지 않았습니다"
+                            >
+                              <ActionIcon
+                                size={32}
+                                className="mt-6"
+                                variant="transparent"
+                              >
+                                <AlertCircle
+                                  size={32}
+                                  color="red"
+                                ></AlertCircle>
+                              </ActionIcon>
+                            </Tooltip>
+                          )}
+                        </>
                       )}
                     </Grid.Col>
                   </Grid>
@@ -413,7 +520,7 @@ export const Main = () => {
                                   ? "bg-orange-500 shadow-[inset_0_-2px_4px_rgba(128,128,128,0.8)]"
                                   : "bg-white text-gray-500 shadow-lg"
                               }
-        hover:shadow-none cursor-pointer rounded-t-xl h-12 w-24`}
+         cursor-pointer overflow-visible rounded-t-xl h-12 w-24 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-110 duration-300`}
                             >
                               <p
                                 className={`font-semibold text-${
@@ -460,7 +567,7 @@ export const Main = () => {
                         ></TextInput>
                         <Divider size="sm" />
                         <Group
-                          className={`h-[300px] border-2 border-dotted border-gray-300 bg-no-repeat bg-center
+                          className={`h-[300px] mx-36 border-2 border-dotted border-gray-300 bg-no-repeat bg-center
                               `}
                           style={{
                             backgroundImage: `url(${problem[i].picture})`,
@@ -508,8 +615,25 @@ export const Main = () => {
                                   label="유튜브 URL"
                                   placeholder="링크를 입력해주세요"
                                   size="md"
+                                  onChange={(event) => {
+                                    const copyProblem = problem.map(
+                                      (curProblem, problemIdx) => {
+                                        const slicedProblem = {
+                                          ...curProblem,
+                                        } as any;
+                                        if (curIdx === problemIdx) {
+                                          slicedProblem["videoUrl"] =
+                                            event.target.value;
+                                          slicedProblem["picture"] = "";
+                                        }
+                                        return slicedProblem;
+                                      }
+                                    );
+
+                                    setProblem(copyProblem as any);
+                                  }}
+                                  value={problem[i].videoUrl}
                                 />
-                                <Button fullWidth>업로드</Button>
                               </Stack>
                             </Popover.Dropdown>
                           </Popover>

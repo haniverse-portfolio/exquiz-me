@@ -87,6 +87,31 @@ export const CreateNavigation = () => {
   const [imageTmpWord, setImageTmpWord] = useDebouncedState("", 500);
   const [imageWord, setImageWord] = useRecoilState(createImageWord);
 
+  let problemVailidation = (idx: number) => {
+    let flag = true;
+    if (problem[idx].description === "") flag = false;
+    if (problem[idx].answer === "") flag = false;
+    if (problem[idx].dtype === "0") {
+      if (option[idx][0].description === "") flag = false;
+      if (option[idx][1].description === "") flag = false;
+      if (option[idx][2].description === "") flag = false;
+      if (option[idx][3].description === "") flag = false;
+    }
+    return flag;
+  };
+
+  let totalValidation = () => {
+    let flag = true;
+    for (let k = 0; k < problem.length; k++) {
+      if (problemVailidation(k) === false) {
+        flag = false;
+        break;
+      }
+    }
+    if (problemSet.description === "") flag = false;
+    return flag;
+  };
+
   return (
     <Group
       className="z-50 px-8 shadow-xl h-[120px] border-b-2 border-gray-300"
@@ -108,18 +133,33 @@ export const CreateNavigation = () => {
         placeholder="퀴즈 제목을 입력해주세요"
         variant="unstyled"
       ></TextInput>
-
-      <Group
-        position="center"
-        onClick={() => {
-          setCompleteModalOpened("1");
-        }}
-        className="cursor-pointer h-16 w-16 rounded-full bg-orange-500"
-      >
-        <ActionIcon variant="transparent">
-          <ArrowRight color="white"></ArrowRight>
-        </ActionIcon>
-      </Group>
+      {totalValidation() === true ? (
+        <Group
+          position="center"
+          onClick={() => {
+            setCompleteModalOpened("1");
+          }}
+          className="cursor-pointer h-16 w-16 rounded-full bg-orange-500"
+        >
+          <ActionIcon variant="transparent">
+            <ArrowRight color="white"></ArrowRight>
+          </ActionIcon>
+        </Group>
+      ) : (
+        <Tooltip label="문제가 다 완성되지 않았어요">
+          <Group
+            position="center"
+            className="cursor-not-allowed h-16 w-16 rounded-full bg-gray-500"
+          >
+            <ActionIcon className="cursor-not-allowed" variant="transparent">
+              <ArrowRight
+                className="cursor-not-allowed"
+                color="white"
+              ></ArrowRight>
+            </ActionIcon>
+          </Group>
+        </Tooltip>
+      )}
     </Group>
   );
 };

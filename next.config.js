@@ -66,6 +66,7 @@ module.exports = withPlugins(
           "www.exquiz.me",
           "lh3.googleusercontent.com",
           "encrypted-tbn2.gstatic.com",
+          "img.youtube.com",
         ],
         // formats: ['image/avif', 'image/webp'],
       },

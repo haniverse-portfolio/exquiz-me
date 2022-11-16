@@ -46,7 +46,7 @@ export let InboxProfileMenu = () => {
       <Center>
         <Image
           alt="hello"
-          className={`cursor-pointer rounded-full`}
+          className="cursor-pointer rounded-full animate-fadeIn"
           src={userInfo.picture}
           width={"80px"}
           height={"80px"}
@@ -55,10 +55,21 @@ export let InboxProfileMenu = () => {
 
       <Group position="center">
         <Stack>
-          <Text align="center" size="lg" weight={500} mt="sm">
+          <Text
+            className="animate-fadeIn"
+            align="center"
+            size="lg"
+            weight={500}
+            mt="sm"
+          >
             {userInfo.nickname}
           </Text>
-          <Text align="center" size="sm" color="dimmed">
+          <Text
+            className="animate-fadeIn"
+            align="center"
+            size="sm"
+            color="dimmed"
+          >
             익스퀴즈미 스탠다드 플랜 사용자
           </Text>
         </Stack>
@@ -69,7 +80,13 @@ export let InboxProfileMenu = () => {
           <Text weight={700} align="center" size="sm" color="dimmed">
             만든문제
           </Text>
-          <Text weight={700} color="orange" align="center" size="lg">
+          <Text
+            className="animate-fadeIn"
+            weight={700}
+            color="orange"
+            align="center"
+            size="lg"
+          >
             {problemsets.length}
           </Text>
         </Stack>
@@ -77,7 +94,13 @@ export let InboxProfileMenu = () => {
           <Text weight={700} align="center" size="sm" color="dimmed">
             팔로잉
           </Text>
-          <Text weight={700} color="orange" align="center" size="lg">
+          <Text
+            className="animate-fadeIn"
+            weight={700}
+            color="orange"
+            align="center"
+            size="lg"
+          >
             0
           </Text>
         </Stack>
@@ -85,7 +108,13 @@ export let InboxProfileMenu = () => {
           <Text weight={700} align="center" size="sm" color="dimmed">
             팔로워
           </Text>
-          <Text weight={700} color="orange" align="center" size="lg">
+          <Text
+            className="animate-fadeIn"
+            weight={700}
+            color="orange"
+            align="center"
+            size="lg"
+          >
             0
           </Text>
         </Stack>

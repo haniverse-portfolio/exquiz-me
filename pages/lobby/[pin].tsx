@@ -127,7 +127,6 @@ const Home: NextPage = () => {
         );
       },
       function (error) {
-        alert("error!!");
         // connect();
       }
     );
@@ -190,7 +189,7 @@ const Home: NextPage = () => {
                   </Group>
                   <Group position="center">
                     <p className="text-white font-bold text-6xl text-center">
-                      <strong className="text-[#273248]">
+                      <strong className="tracking-wider text-[#273248]">
                         {router.query.pin}
                       </strong>
                     </p>
@@ -216,7 +215,6 @@ const Home: NextPage = () => {
                 >
                   퀴즈 시작하기!
                 </Button>
-                {/* // 이거 없애 */}
               </Stack>
             </Center>
           </Grid.Col>
@@ -225,24 +223,26 @@ const Home: NextPage = () => {
             className="bg-[#F9F5F4]"
             span={14}
           >
-            <Stack className="px-8">
-              <Group position="apart">
+            <Stack>
+              <Group className="shadow-lg px-8" position="apart">
                 <p className="font-semibold text-3xl">{room.roomName}</p>
-                <p className="pt-8 font-bold text-2xl text-center">
+                <p className="p-8 font-bold text-2xl text-center">
                   입장 인원 &nbsp;
                   <strong className="text-blue-500">{partlist.length}</strong>
                   /30명
                 </p>
               </Group>
-              <Divider size="sm"></Divider>
               {
-                <ScrollArea style={{ height: "calc(100vh - 60px)" }}>
+                <ScrollArea
+                  className="px-8"
+                  style={{ height: "calc(100vh - 60px)" }}
+                >
                   <Stack>
                     <Grid columns={6}>
                       {partlist.map((cur: any, i) => {
                         return (
                           <Grid.Col
-                            className="p-8 h-42 w-36 rounded-xl bg-white shadow-lg"
+                            className="flex items-center justify-center h-60 rounded-xl bg-white shadow-lg"
                             span={1}
                             key={i}
                           >

@@ -112,16 +112,18 @@ const Home: NextPage = () => {
           style={{ height: "calc(100vh - 60px)" }}
         >
           {/* original-160px */}
-          <Stack className="h-[100px]" />
           <Stack spacing={0} className=" flex contents-between">
             {/* banner-start */}
             <Stack>
-              <Stack spacing={0}>
-                <h2 className="text-[#121212] text-center font-bold text-[40px]">
+              <Stack
+                className="mt-[50px] h-[280px] bg-[url('/index/index_circle.svg')] bg-no-repeat bg-center bg-contain"
+                spacing={0}
+              >
+                <h2 className="mt-[50px] text-[#121212] text-center font-bold text-[40px] animate-fadeUp">
                   퀴즈의 새로운 경험을 제시하다
                 </h2>
                 <Stack className="h-[34px]" />
-                <h3 className="text-[#818181] font-normal text-[24px] text-center">
+                <h3 className="text-[#818181] font-normal text-[24px] text-center animate-fadeUp">
                   <p>
                     <span className="text-[#F9761E]">학교 선생님</span>,&nbsp;
                     <span className="text-[#85B6FF]">회사 팀장님</span>,&nbsp;
@@ -194,7 +196,7 @@ const Home: NextPage = () => {
               }}
               fullWidth
               radius="xl"
-              className="shadow"
+              className="shadow animate-fadeUp"
               size="xl"
               variant="filled"
               color="orange.6"

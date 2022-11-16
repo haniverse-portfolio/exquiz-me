@@ -9,8 +9,31 @@ module.exports = {
       animation: {
         text: "text 5s ease infinite",
         textSlow: "textSlow 8s ease infinite",
+        fadeUp: "fadeUp 1s ease",
+        fadeIn: "fadeIn 1s ease",
       },
       keyframes: {
+        fadeUp: {
+          "0%": {
+            transform: "translateY(50px)",
+            opacity: "0",
+          },
+
+          "100%": {
+            transform: "translateY(0)",
+            opacity: "1",
+          },
+        },
+        fadeIn: {
+          "0%": {
+            opacity: "0",
+          },
+
+          "100%": {
+            opacity: "1",
+          },
+        },
+
         text: {
           "0%, 100%": {
             "background-size": "200% 200%",
