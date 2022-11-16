@@ -167,13 +167,13 @@ const Home: NextPage = () => {
               퀴즈 시작 대기 중...
             </p>
           </Stack>
-          <Button
+          {/* <Button
             onClick={() => {
               setStep(1);
             }}
           >
             다음 스텝으로
-          </Button>
+          </Button> */}
         </Stack>
       ) : (
         <></>
