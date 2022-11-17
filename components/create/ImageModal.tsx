@@ -13,6 +13,7 @@ import {
   TextInput,
   FileButton,
   Space,
+  Center,
 } from "@mantine/core";
 import { AlertOctagon, X } from "tabler-icons-react";
 
@@ -165,12 +166,16 @@ export const ImageModal = () => {
         <></>
       )}
       {imageStep === 1 ? (
-        <>
+        <Stack className="h-[70vh]">
+          <Center>
+            <Image src={"/halla_mountain.svg"} width={500} height={600}></Image>
+          </Center>
+          <hr></hr>
           <Button disabled={!file} color="red" onClick={clearFile}>
-            Reset
+            삭제하기
           </Button>
-          {file && <p>Picked file: {file.name}</p>}
-        </>
+          {/* {file && <p>업로드 된 파일 {file.name}</p>} */}
+        </Stack>
       ) : (
         <></>
       )}

@@ -141,9 +141,6 @@ export let InboxProblemsetMenu = () => {
             </ActionIcon>
             <Group>
               <ActionIcon radius="md" color="blue" variant="light">
-                <Copy />
-              </ActionIcon>
-              <ActionIcon radius="md" color="blue" variant="light">
                 <Trash
                   onClick={() => {
                     deleteProblemset();

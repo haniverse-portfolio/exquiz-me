@@ -102,6 +102,7 @@ export const ImageSection = () => {
       });
 
       setProblem(copyProblem as any);
+      localStorage.setItem("problem", copyProblem as any);
     } catch (err) {
       console.log(err);
     }

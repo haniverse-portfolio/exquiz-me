@@ -132,6 +132,7 @@ export const Main = () => {
           answer: result.data.answer,
         });
         setProblem(copy);
+        localStorage.setItem("problem", copy as any);
       })
       .catch((error) => {
         alert(error);
@@ -144,10 +145,12 @@ export const Main = () => {
     let problemCopy = [...problem];
     problemCopy.splice(curIdx, 1);
     setProblem(problemCopy);
+    localStorage.setItem("problem", problemCopy as any);
 
     let optionCopy = [...option];
     optionCopy.splice(curIdx, 1);
     setOption(optionCopy);
+    localStorage.setItem("option", optionCopy as any);
   };
 
   const problemPlus = () => {
@@ -192,7 +195,9 @@ export const Main = () => {
       },
     ]);
     setProblem(copyProblem);
+    localStorage.setItem("problem", copyProblem as any);
     setOption(copyOption);
+    localStorage.setItem("option", copyOption as any);
     setCurIdx(curIdx + 1);
   };
 
@@ -204,7 +209,9 @@ export const Main = () => {
     let copyOption = [...option];
     copyOption.splice(curIdx + 1, 0, slicedOption);
     setProblem(copyProblem);
+    localStorage.setItem("problem", copyProblem as any);
     setOption(copyOption);
+    localStorage.setItem("option", copyOption as any);
     setCurIdx(curIdx + 1);
   };
 
@@ -259,10 +266,6 @@ export const Main = () => {
               return (
                 <Stack
                   onClick={() => {
-                    console.log(
-                      "겉에거: " +
-                        (viewport.current.scrollHeight * i) / problem.length
-                    );
                     viewport.current.scrollTo({
                       top: (viewport.current.scrollHeight * i) / problem.length,
                       behavior: "smooth",
@@ -442,7 +445,8 @@ export const Main = () => {
               setTimeout(() => {
                 viewport.current.scrollTo({
                   top:
-                    (viewport.current.scrollHeight * curIdx) / problem.length,
+                    (viewport.current.scrollHeight * (curIdx + 1)) /
+                    problem.length,
                   behavior: "smooth",
                 });
               }, 200);
@@ -631,6 +635,10 @@ export const Main = () => {
                                     );
 
                                     setProblem(copyProblem as any);
+                                    localStorage.setItem(
+                                      "problem",
+                                      copyProblem as any
+                                    );
                                   }}
                                   value={problem[i].videoUrl}
                                 />
@@ -680,6 +688,7 @@ export const Main = () => {
                             let copy = JSON.parse(JSON.stringify(problem));
                             copy[i].score = event;
                             setProblem(copy);
+                            localStorage.setItem("problem", copy);
                           }}
                           defaultValue={"300"}
                           value={problem[curIdx].score.toString()}
@@ -700,6 +709,7 @@ export const Main = () => {
                             let copy = JSON.parse(JSON.stringify(problem));
                             copy[i].timelimit = event;
                             setProblem(copy);
+                            localStorage.setItem("problem", copy);
                           }}
                           defaultValue={"30"}
                           placeholder="제한 시간을 선택하세요"
@@ -747,6 +757,7 @@ export const Main = () => {
                             ? ""
                             : j.toString();
                         setProblem(copy);
+                        localStorage.setItem("problem", copy as any);
                       }}
                       checked={
                         problem[pi].answer === j.toString() ? true : false
@@ -769,6 +780,7 @@ export const Main = () => {
                       let copy = JSON.parse(JSON.stringify(option));
                       copy[pi][j].description = event.currentTarget.value;
                       setOption(copy);
+                      localStorage.setItem("option", copy as any);
                     }}
                     value={description}
                     placeholder={`선지 ${j + 1}`}
@@ -795,6 +807,7 @@ export const Main = () => {
               answer: event.currentTarget.value,
             });
             setProblem(copy);
+            localStorage.setItem("problem", copy as any);
           }}
           value={problem[pi].answer}
           placeholder={"문제 정답을 입력해주세요"}
@@ -811,6 +824,7 @@ export const Main = () => {
                 answer: "0",
               });
               setProblem(copy);
+              localStorage.setItem("problem", copy as any);
             }}
             className=" h-[20vh] cursor-pointer"
             span={1}
@@ -834,6 +848,7 @@ export const Main = () => {
                 answer: "1",
               });
               setProblem(copy);
+              localStorage.setItem("problem", copy as any);
             }}
             className=" h-[20vh] cursor-pointer"
             span={1}

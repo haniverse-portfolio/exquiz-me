@@ -133,6 +133,9 @@ export const CompleteModal = () => {
                 });
             });
           });
+          localStorage.removeItem("problemSet");
+          localStorage.removeItem("problem");
+          localStorage.removeItem("option");
         }}
       >
         배포하기

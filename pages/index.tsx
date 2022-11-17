@@ -134,7 +134,10 @@ const Home: NextPage = () => {
               </Stack>
             </Stack>
             {/* banner-end */}
-            <Stack align="center" className="h-[80px]" />
+            <Stack
+              align="center"
+              className="flex items-center justify-center h-[80px]"
+            />
             {/* demo-image-start */}
             <Center>
               <Carousel

@@ -151,7 +151,9 @@ export const TabChangeModal = () => {
                 },
               ]);
               setProblem(copyProblem);
+              localStorage.setItem("problem", copyProblem as any);
               setOption(copyOption);
+              localStorage.setItem("option", copyOption as any);
               setTabModalOpened(false);
             }}
           >

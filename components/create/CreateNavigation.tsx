@@ -108,7 +108,8 @@ export const CreateNavigation = () => {
         break;
       }
     }
-    if (problemSet.description === "") flag = false;
+
+    if (problemSet.title === "") flag = false;
     return flag;
   };
 
@@ -127,25 +128,26 @@ export const CreateNavigation = () => {
           let copy = JSON.parse(JSON.stringify(problemSet));
           copy.title = event.currentTarget.value;
           setProblemSet(copy);
+          localStorage.setItem("problemSet", copy);
         }}
         value={problemSet.title}
         size="xl"
         placeholder="퀴즈 제목을 입력해주세요"
         variant="unstyled"
       ></TextInput>
-      {/* {totalValidation() === true ? ( */}
-      <Group
-        position="center"
-        onClick={() => {
-          setCompleteModalOpened("1");
-        }}
-        className="cursor-pointer h-16 w-16 rounded-full bg-orange-500"
-      >
-        <ActionIcon variant="transparent">
-          <ArrowRight color="white"></ArrowRight>
-        </ActionIcon>
-      </Group>
-      {/* ) : (
+      {totalValidation() === true ? (
+        <Group
+          position="center"
+          onClick={() => {
+            setCompleteModalOpened("1");
+          }}
+          className="cursor-pointer h-16 w-16 rounded-full bg-orange-500"
+        >
+          <ActionIcon variant="transparent">
+            <ArrowRight color="white"></ArrowRight>
+          </ActionIcon>
+        </Group>
+      ) : (
         <Tooltip label="문제가 다 완성되지 않았어요">
           <Group
             position="center"
@@ -159,7 +161,7 @@ export const CreateNavigation = () => {
             </ActionIcon>
           </Group>
         </Tooltip>
-      )} */}
+      )}
     </Group>
   );
 };

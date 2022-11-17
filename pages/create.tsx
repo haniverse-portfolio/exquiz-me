@@ -99,6 +99,12 @@ const Home: NextPage = () => {
   /* ****** effect-start ****** */
 
   useEffect(() => {
+    // if ((localStorage.getItem("problemSet") as any) !== null)
+    //   setProblemSet(localStorage.getItem("problemSet") as any);
+    // if ((localStorage.getItem("problem") as any) !== null)
+    //   setProblem(localStorage.getItem("problem") as any);
+    // if ((localStorage.getItem("option") as any) !== null)
+    //   setOption(localStorage.getItem("option") as any);
     let copyProblemSet = {
       ...problemSet,
       hostId: parseInt(localStorage.getItem("host_id") as string),

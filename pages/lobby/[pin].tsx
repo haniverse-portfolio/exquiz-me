@@ -51,6 +51,7 @@ const Home: NextPage = () => {
     axios
       .get(connectMainServerApiAddress + `api/room/${router.query.pin}/open`)
       .then((result) => {
+        setRoom(result.data);
         // validation
         if (result.data.currentState !== "READY") return;
       })
@@ -81,6 +82,7 @@ const Home: NextPage = () => {
     if (!router.isReady) return;
     connect();
     getPartlist();
+    getRoomOpened(router.query.pin as string);
   }, [router.isReady]);
 
   const [curParticipant, setCurParticipant] = useState({

@@ -267,47 +267,115 @@ const Home: NextPage = () => {
                     </Group>
                   </Group>
                 </Group>
-                <Stack>
-                  <Stack className="relative bg-white mx-16 rounded-xl shadow-xl">
-                    <Stack
-                      align="center"
-                      className="ml-16 absolute -top-8 rounded-full bg-orange-500 h-12 w-40"
-                    >
-                      <p className="m-auto text-center text-2xl text-white font-semibold">
-                        문제 {curIdx + 1}/{problem.length}
-                      </p>
+                <Grid columns={2}>
+                  <Grid.Col span={1}>
+                    <Stack className="h-[70vh] relative bg-white mx-16 rounded-xl shadow-xl">
+                      <Stack
+                        align="center"
+                        className="ml-16 absolute -top-8 rounded-full bg-orange-500 h-12 w-40"
+                      >
+                        <p className="m-auto text-center text-2xl text-white font-semibold">
+                          문제 {curIdx + 1}/{problem.length}
+                        </p>
+                      </Stack>
+                      <Group>
+                        <p className="ml-16 text-4xl text-orange-500 font-bold">
+                          Q.{" "}
+                        </p>
+                        <p className="font-bold text-4xl text-left mt-10">
+                          {(problem[curIdx] as any).description}
+                        </p>
+                      </Group>
+                      <Image
+                        className="rounded-xl"
+                        src={(problem[curIdx] as any).picture}
+                        width={300}
+                        height={500}
+                      ></Image>
                     </Stack>
-                    <Group>
-                      <p className="ml-16 text-4xl text-orange-500 font-bold">
-                        Q.{" "}
-                      </p>
-                      <p className="font-bold text-4xl text-left mt-10">
-                        {/* {(problem[curIdx] as any).description} */}
-                      </p>
-                    </Group>
-                  </Stack>
-                  <Stack className=" mx-16">
-                    <Grid columns={4} gutter="xl">
-                      {option.map(({ description }, i) => {
-                        return (
-                          <Grid.Col key={i} span={1}>
-                            <Button
-                              variant="white"
-                              color="gray.5"
-                              fullWidth
-                              className="!h-60 bg-white rounded-xl"
-                            >
-                              <p className="text-2xl text-left">{i + 1}. </p>
-                              <p className="text-2xl text-center">
-                                {description}
-                              </p>
-                            </Button>
+                  </Grid.Col>
+                  <Grid.Col span={1}>
+                    <Stack className="h-[70vh] mx-16">
+                      {(problem[curIdx] as any).dtype ===
+                      "MultipleChoiceProblem" ? (
+                        <Grid columns={2} gutter="xl">
+                          {option.map(({ description }, i) => {
+                            return (
+                              <Grid.Col className="h-[35vh]" key={i} span={1}>
+                                <Group className="!h-60 bg-white rounded-xl">
+                                  <p className="text-2xl text-left">
+                                    {i + 1}.{" "}
+                                  </p>
+                                  <p className="text-2xl text-center">
+                                    {description}
+                                  </p>
+                                </Group>
+                              </Grid.Col>
+                            );
+                          })}
+                        </Grid>
+                      ) : (
+                        <></>
+                      )}
+                      {(problem[curIdx] as any).dtype === "objective" ? (
+                        <Grid columns={2} gutter="xl">
+                          {option.map(({ description }, i) => {
+                            return (
+                              <Grid.Col className="h-[35vh]" key={i} span={1}>
+                                <Group className="!h-60 bg-white rounded-xl">
+                                  <p className="text-2xl text-left">
+                                    {i + 1}.{" "}
+                                  </p>
+                                  <p className="text-2xl text-center">
+                                    {description}
+                                  </p>
+                                </Group>
+                              </Grid.Col>
+                            );
+                          })}
+                        </Grid>
+                      ) : (
+                        <></>
+                      )}
+                      {(problem[curIdx] as any).dtype === "ox" ? (
+                        <Grid columns={2} gutter="xl">
+                          <Grid.Col className="h-[70vh]" span={1}>
+                            <Group className="!h-60 bg-white rounded-xl">
+                              <p className="text-2xl text-left">O</p>
+                            </Group>
                           </Grid.Col>
-                        );
-                      })}
-                    </Grid>
-                  </Stack>
-                </Stack>
+                          <Grid.Col className="h-[70vh]" span={1}>
+                            <Group className="!h-60 bg-white rounded-xl">
+                              <p className="text-2xl text-left">X</p>
+                            </Group>
+                          </Grid.Col>
+                        </Grid>
+                      ) : (
+                        <></>
+                      )}
+                      {(problem[curIdx] as any).dtype === "nonsense" ? (
+                        <Grid columns={2} gutter="xl">
+                          {option.map(({ description }, i) => {
+                            return (
+                              <Grid.Col className="h-[35vh]" key={i} span={1}>
+                                <Group className="!h-60 bg-white rounded-xl">
+                                  <p className="text-2xl text-left">
+                                    {i + 1}.{" "}
+                                  </p>
+                                  <p className="text-2xl text-center">
+                                    {description}
+                                  </p>
+                                </Group>
+                              </Grid.Col>
+                            );
+                          })}
+                        </Grid>
+                      ) : (
+                        <></>
+                      )}
+                    </Stack>
+                  </Grid.Col>
+                </Grid>
               </Stack>
             ) : (
               <></>
@@ -408,53 +476,28 @@ const Home: NextPage = () => {
 
             {step === 2 ? (
               <>
-                <Stack>
-                  <Stack className="bg-white mx-16 rounded-xl shadow-xl">
-                    <Stack
-                      align="center"
-                      className="ml-16 relative bottom-8 rounded-full bg-orange-500 h-12 w-40"
+                <Stack spacing={0}>
+                  <header className="h-[140px] bg-[#273248]">
+                    <Group
+                      position="center"
+                      style={{
+                        height: "140px",
+                        display: "flex",
+                        alignItems: "center",
+                      }}
                     >
-                      <p className="m-auto text-center text-2xl text-white font-semibold">
-                        문제 1/5
-                      </p>
-                    </Stack>
-                    <Group>
-                      <p className="ml-16 text-4xl text-orange-500 font-bold">
-                        Q.{" "}
-                      </p>
-                      <p className="font-bold text-4xl text-left mt-10">
-                        {(problem[curIdx] as any).description}
+                      <p className="text-4xl text-white font-semibold">
+                        퀴즈 결과
                       </p>
                     </Group>
-                  </Stack>
-                  {/* <Image
-                  alt="hello"
-                  src="/../public/halla4.jpeg"
-                  width={600}
-                  height={400}
-                ></Image> */}
-                  <Stack className=" mx-16">
-                    <Grid columns={4} gutter="xl">
-                      {/* {(option[curIdx] as any).map(
-                        ( cur , i) => {
-                          return (
-                            <Grid.Col key={i} span={1}>
-                              <Button
-                                variant="white"
-                                color="gray.5"
-                                fullWidth
-                                className="!h-60 bg-white rounded-xl"
-                              >
-                                <p className="text-2xl text-left">{i + 1}. </p>
-                                <p className="text-2xl text-center">
-                                  {description}
-                                </p>
-                              </Button>
-                            </Grid.Col>
-                          );
-                        }
-                      )} */}
-                    </Grid>
+                  </header>
+                  <Stack
+                    style={{
+                      height: "calc(100vh - 140px)",
+                    }}
+                    className=" bg-[#FFD178]"
+                  >
+                    <Stack className="h-[50vh] bg-opacity-50">e</Stack>
                   </Stack>
                 </Stack>
               </>
