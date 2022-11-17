@@ -283,12 +283,12 @@ const Home: NextPage = () => {
                           Q.{" "}
                         </p>
                         <p className="font-bold text-4xl text-left mt-10">
-                          {(problem[curIdx] as any).description}
+                          {(problem[curIdx] as any).description || ""}
                         </p>
                       </Group>
                       <Image
                         className="rounded-xl"
-                        src={(problem[curIdx] as any).picture}
+                        src={(problem[curIdx] as any).picture || "/white.png"}
                         width={300}
                         height={500}
                       ></Image>
@@ -317,7 +317,8 @@ const Home: NextPage = () => {
                       ) : (
                         <></>
                       )}
-                      {(problem[curIdx] as any).dtype === "objective" ? (
+                      {(problem[curIdx] as any).dtype ===
+                      "SubjectiveProblem" ? (
                         <Grid columns={2} gutter="xl">
                           {option.map(({ description }, i) => {
                             return (
@@ -337,7 +338,7 @@ const Home: NextPage = () => {
                       ) : (
                         <></>
                       )}
-                      {(problem[curIdx] as any).dtype === "ox" ? (
+                      {(problem[curIdx] as any).dtype === "OXProblem" ? (
                         <Grid columns={2} gutter="xl">
                           <Grid.Col className="h-[70vh]" span={1}>
                             <Group className="!h-60 bg-white rounded-xl">
@@ -353,7 +354,8 @@ const Home: NextPage = () => {
                       ) : (
                         <></>
                       )}
-                      {(problem[curIdx] as any).dtype === "nonsense" ? (
+                      {(problem[curIdx] as any).dtype ===
+                      "SubjectiveProblem" ? (
                         <Grid columns={2} gutter="xl">
                           {option.map(({ description }, i) => {
                             return (

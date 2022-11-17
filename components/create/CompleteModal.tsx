@@ -11,7 +11,7 @@ import {
   createCompleteModal,
   createStep,
 } from "../States";
-import { connectMainServerApiAddress } from "../ConstValues";
+import { connectMainServerApiAddress, dtypeFullName } from "../ConstValues";
 import axios from "axios";
 import { useState } from "react";
 
@@ -95,7 +95,8 @@ export const CompleteModal = () => {
 
             slicedProblem["idx"] = problemIdx;
             slicedProblem["problemsetId"] = psId;
-            slicedProblem["dtype"] = "MultipleChoiceProblem";
+            slicedProblem["dtype"] =
+              dtypeFullName[parseInt(slicedProblem.dtype)];
             console.log(problemIdx + " : " + slicedProblem);
 
             /* *** problem axios *** */

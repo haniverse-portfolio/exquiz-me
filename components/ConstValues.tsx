@@ -22,6 +22,12 @@ export const dtypeName = [
   // "설명",
 ];
 
+export const dtypeFullName = [
+  "MultipleChoiceProblem",
+  "SubjectiveProblem",
+  "OXProblem",
+];
+
 export const slideProblemInput = [
   { icon: IconSquareCheck, label: "" },
   { icon: IconSquareCheck, label: "" },

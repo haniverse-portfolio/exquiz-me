@@ -222,12 +222,54 @@ export const playProblemset = atom({
 
 export const playProblem = atom({
   key: "playProblem",
-  default: [],
+  default: [
+    {
+      id: 0,
+      title: "",
+      description: "",
+      dtype: "MultipleChoiceProblem",
+      timelimit: 30,
+      score: 0,
+      picture: null,
+      videoUrl: null,
+      answer: "0",
+      idx: 1,
+    },
+  ],
 });
 
 export const playOption = atom({
   key: "playOption",
-  default: [],
+  default: [
+    {
+      id: 0,
+      idx: 0,
+      description: "",
+      picture: null,
+      pickCount: 0,
+    },
+    {
+      id: 0,
+      idx: 0,
+      description: "",
+      picture: null,
+      pickCount: 0,
+    },
+    {
+      id: 0,
+      idx: 0,
+      description: "",
+      picture: null,
+      pickCount: 0,
+    },
+    {
+      id: 0,
+      idx: 0,
+      description: "",
+      picture: null,
+      pickCount: 0,
+    },
+  ],
 });
 
 export const playPin = atom({

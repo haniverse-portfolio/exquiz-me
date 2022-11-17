@@ -58,6 +58,23 @@ export let InboxProblemsetMenu = () => {
           (problemsets[problemsetIdx] as any).id
       )
       .then((result) => {
+        setProblemsetIdx(-1);
+        getProblemsets();
+      })
+      .catch((error) => {
+        alert(error);
+      });
+    return;
+  };
+
+  const getProblemsets = () => {
+    axios
+      .get(
+        connectMainServerApiAddress +
+          "api/problemsets/" +
+          localStorage.getItem("host_id")?.toString()
+      )
+      .then((result) => {
         setProblemsets(result.data);
       })
       .catch((error) => {
@@ -90,12 +107,8 @@ export let InboxProblemsetMenu = () => {
       radius="xl"
       className="h-[350px] !rounded-4xl !shadow-lg !bg-indigo-100"
     >
-      <Group className="px-2 pb-4" position="apart">
+      <Group className="px-2 pb-4" position="left">
         <p className="text-lg text-left">퀴즈 정보</p>
-
-        <ActionIcon radius="xl" variant="default">
-          <X size={18} color="indigo"></X>
-        </ActionIcon>
       </Group>
       <Stack spacing={4} className="bg-white p-4 rounded-xl h-[200px]">
         <Stack className="h-[40px]">
