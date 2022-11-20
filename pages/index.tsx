@@ -41,9 +41,11 @@ const Home: NextPage = () => {
   const [isLogined, setIsLogined] = useRecoilState(indexIsLogined);
   const [userInfo, setUserInfo] = useRecoilState(indexUserInfo);
   /* *** states end *** */
-
+  console.log(router.query);
   /* *** effect start *** */
   useEffect(() => {
+    console.log(router.query);
+
     // mobile
     if (navigator.userAgent.match(/iPhone|iPad|iPod|Android/i)) {
       location.replace("/enter");
@@ -155,7 +157,6 @@ const Home: NextPage = () => {
               >
                 <Carousel.Slide>
                   <Image
-                    className="shadow-xl rounded-xl"
                     src="/index/demo1.svg"
                     alt="demo1"
                     width={477}

@@ -221,55 +221,8 @@ export const playProblemset = atom({
 });
 
 export const playProblem = atom({
-  key: "playProblem",
-  default: [
-    {
-      id: 0,
-      title: "",
-      description: "",
-      dtype: "MultipleChoiceProblem",
-      timelimit: 30,
-      score: 0,
-      picture: null,
-      videoUrl: null,
-      answer: "0",
-      idx: 1,
-    },
-  ],
-});
-
-export const playOption = atom({
-  key: "playOption",
-  default: [
-    {
-      id: 0,
-      idx: 0,
-      description: "",
-      picture: null,
-      pickCount: 0,
-    },
-    {
-      id: 0,
-      idx: 0,
-      description: "",
-      picture: null,
-      pickCount: 0,
-    },
-    {
-      id: 0,
-      idx: 0,
-      description: "",
-      picture: null,
-      pickCount: 0,
-    },
-    {
-      id: 0,
-      idx: 0,
-      description: "",
-      picture: null,
-      pickCount: 0,
-    },
-  ],
+  key: "playProblemset",
+  default: [],
 });
 
 export const playPin = atom({
@@ -277,35 +230,14 @@ export const playPin = atom({
   default: "",
 });
 
-export const playIdx = atom({
-  key: "playIdx",
-  default: 0,
-});
-
-export const playIdx2 = atom({
-  key: "playIdx2",
-  default: 0,
+export const playOption = atom({
+  key: "playProblemset",
+  default: [],
 });
 
 export const playMessagetype = atom({
   key: "playMessagetype",
   default: "o",
-});
-
-export const playParticipants = atom({
-  key: "playParticipants",
-  default: [
-    {
-      colorNumber: 0,
-      currentScore: 0,
-      entryDate: "",
-      id: 0,
-      imageNumber: 0,
-      name: "",
-      nickname: "",
-      sessionId: "",
-    },
-  ],
 });
 
 export const playUserCurInfo = atom({

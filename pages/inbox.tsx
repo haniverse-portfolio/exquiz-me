@@ -82,7 +82,7 @@ const Home: NextPage = () => {
       return;
     }
     // access_token validation
-    if (validateQueryString("access_token")) {
+    if (router.query.access_token) {
       localStorage.setItem("access_token", router.query.access_token as string);
       localStorage.setItem("host_id", router.query.host_id as string);
       setTimeout(() => {
@@ -187,7 +187,8 @@ const Home: NextPage = () => {
           // alert(room.problemsetDto.id);
           getProblem(result.data.problemsetDto.id);
         }, 500);
-
+        console.log(`/lobby/${result.data.pin}`);
+        console.log(result);
         setTimeout(() => {
           router.push(`/lobby/${result.data.pin}`);
         }, 1500);
@@ -253,8 +254,9 @@ const Home: NextPage = () => {
                 style={{ height: "calc(80vh - 60px)" }}
                 className="ml-8 relative bottom-32"
               >
+                <Stack className="h-[260px]"></Stack>
                 {/* search textinput */}
-                <MantineProvider
+                {/* <MantineProvider
                   inherit
                   theme={{
                     components: {
@@ -288,7 +290,7 @@ const Home: NextPage = () => {
                     variant="unstyled"
                     placeholder="찾으시는 퀴즈를 검색해보세요"
                   ></TextInput>
-                </MantineProvider>
+                </MantineProvider> */}
                 {/* filter select */}
                 <Group position="right">
                   <Select

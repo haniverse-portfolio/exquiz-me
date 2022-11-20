@@ -39,8 +39,8 @@ export let InboxProfileMenu = () => {
       className="h-[410px] !shadow-lg !rounded-4xl"
     >
       <Group position="right">
-        <ActionIcon>
-          <Pencil></Pencil>
+        <ActionIcon variant="transparent">
+          <Pencil color="white"></Pencil>
         </ActionIcon>
       </Group>
       <Center>

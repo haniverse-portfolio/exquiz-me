@@ -15,7 +15,7 @@ import {
   Space,
   Center,
 } from "@mantine/core";
-import { AlertOctagon, X } from "tabler-icons-react";
+import { AlertOctagon, Trash, X } from "tabler-icons-react";
 
 import {
   createOption,
@@ -151,6 +151,11 @@ export const ImageModal = () => {
         <Stack>
           <Space h="xs" />
           <TextInput
+            rightSection={
+              <ActionIcon>
+                <Trash></Trash>
+              </ActionIcon>
+            }
             onChange={(event) => {
               setImageLoading(true);
               setImageWord(event.currentTarget.value);

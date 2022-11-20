@@ -85,17 +85,6 @@ const Home: NextPage = () => {
     getRoomOpened(router.query.pin as string);
   }, [router.isReady]);
 
-  const [curParticipant, setCurParticipant] = useState({
-    colorNumber: 0,
-    imageNumber: 0,
-    flag: "",
-    fromSession: "",
-    id: 0,
-    name: "test_index_0",
-    nickname: "",
-    entryDate: 0,
-    currentScore: 0,
-  });
   const secondaryColor =
     theme.colorScheme === "dark" ? theme.colors.dark[1] : theme.colors.gray[7];
 
@@ -105,7 +94,7 @@ const Home: NextPage = () => {
   {
     /* webSocket */
   }
-
+  console.log("로비 소켓 생성 위치");
   var socket = new SockJS(connectMainServerApiAddress + "stomp");
   let client: Stomp.Client;
   client = Stomp.over(socket);
@@ -137,7 +126,6 @@ const Home: NextPage = () => {
       setTimeout(() => {
         getPartlist();
         socket = connect();
-        partlist;
       }, 1000);
     };
 
@@ -207,8 +195,13 @@ const Home: NextPage = () => {
                 <Button
                   className="mt-32 cursor-pointer"
                   onClick={() => {
-                    client.send("/pub/room/" + pin + "/start", {});
-                    router.push(`/display/${pin}`);
+                    router.push(`/display/${router.query.pin}`);
+                    setTimeout(() => {
+                      client.send(
+                        "/pub/room/" + router.query.pin + "/start",
+                        {}
+                      );
+                    }, 3000);
                   }}
                   size="xl"
                   color="orange"
@@ -230,8 +223,8 @@ const Home: NextPage = () => {
                 <p className="font-semibold text-3xl">{room.roomName}</p>
                 <p className="p-8 font-bold text-2xl text-center">
                   입장 인원 &nbsp;
-                  <strong className="text-blue-500">{partlist.length}</strong>
-                  /30명
+                  <strong className="text-blue-500">{partlist.length}</strong>/
+                  {room.maxParticipantCount}명
                 </p>
               </Group>
               {

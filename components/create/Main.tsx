@@ -239,10 +239,11 @@ export const Main = () => {
   };
 
   useEffect(() => {
-    console.log(problem[0].score);
-
-    // alert(problem[curIdx].picture);
-  }, [problem]);
+    viewport.current.scrollTo({
+      top: (viewport.current.scrollHeight * curIdx) / problem.length,
+      behavior: "smooth",
+    });
+  }, [problem, curIdx]);
 
   const changeSliderValue = (value: any, idx: number) => {
     console.log(problem[idx].score);
@@ -266,15 +267,11 @@ export const Main = () => {
               return (
                 <Stack
                   onClick={() => {
-                    viewport.current.scrollTo({
-                      top: (viewport.current.scrollHeight * i) / problem.length,
-                      behavior: "smooth",
-                    });
                     setCurIdx(i);
                   }}
                   className={`${
                     curIdx === i ? "bg-[#85b6ff]/[0.15]" : ""
-                  } cursor-pointer border-0 border-b-2 border-gray-500 border-dotted hover:bg-[#85b6ff]/[0.15]`}
+                  } cursor-pointer animate-fadeIn border-0 border-b-2 border-gray-500 border-dotted hover:bg-[#85b6ff]/[0.15]`}
                   key={i}
                 >
                   <Grid gutter={0} columns={10}>
@@ -443,13 +440,13 @@ export const Main = () => {
             onClick={() => {
               problemPlus();
               setTimeout(() => {
-                viewport.current.scrollTo({
-                  top:
-                    (viewport.current.scrollHeight * (curIdx + 1)) /
-                    problem.length,
-                  behavior: "smooth",
-                });
-              }, 200);
+                console.log(
+                  (viewport.current.scrollHeight * curIdx) / problem.length
+                );
+                console.log("총 높이: " + viewport.current.scrollHeight);
+                console.log("curIdx: " + curIdx);
+                console.log("problem length: " + problem.length);
+              }, 100);
             }}
             size={"xl"}
             leftIcon={<Plus></Plus>}

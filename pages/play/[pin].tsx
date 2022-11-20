@@ -7,116 +7,101 @@ import axios from "axios";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 
-import {
-  Button,
-  Group,
-  useMantineTheme,
-  Stack,
-  Grid,
-  Container,
-  Divider,
-  Loader,
-  Center,
-  ActionIcon,
-  MantineProvider,
-  Progress,
-} from "@mantine/core";
-
-import { useScrollIntoView } from "@mantine/hooks";
+import { Button, Stack, Grid, Container, Loader, Center } from "@mantine/core";
 
 import {
-  avatarAnimal,
   connectMainServerApiAddress,
-  testPlayOption,
-  testPlayProblem,
+  playOption,
+  playProblem,
 } from "../../components/ConstValues";
 import { Alarm } from "tabler-icons-react";
 
 const Home: NextPage = () => {
+  /* initialization */
   const router = useRouter();
-  const pin = router.query.pin;
+  /* *** core initialization *** */
 
+  /* *** web socket *** */
+  var socket = new SockJS(connectMainServerApiAddress + "stomp");
   let client: Stomp.Client;
-  let socket = new SockJS(connectMainServerApiAddress + "stomp");
   client = Stomp.over(socket);
 
   let connect = () => {
     const headers = {};
-
-    let reconnect = 0;
+    var reconnect = 0;
     client.connect(
       {},
       function (frame) {
-        client.subscribe("/topic/room/" + pin ?? "000000", function (message) {
+        console.log(router.query.pin);
+        if (router.query.pin === undefined) router.push("/404");
+
+        client.subscribe("/topic/room/" + router.query.pin, function (message) {
           if (JSON.parse(message.body).messageType === "NEW_PROBLEM") {
+            setProblemOption(JSON.parse(message.body));
+            getRoomOpened();
             setStep(1);
+          } else if (JSON.parse(message.body).messageType === "STOP") {
+            setStep(0);
           }
         });
       },
-      function (error) {
-        console.log("websocket error");
-      }
+      function (error) {}
     );
+
+    socket.onclose = function () {
+      setTimeout(() => {
+        socket = connect();
+      }, 1000);
+    };
+
+    return socket;
   };
+
+  /* *** use-state *** */
+  const [step, setStep] = useState(0);
+  const [problemOption, setProblemOption] = useState({
+    messageType: "",
+    fromSession: "",
+    id: "",
+    title: "",
+    description: "",
+    dtype: "",
+    timelimit: 0,
+    score: 0,
+    picture: "",
+    answer: "",
+    idx: 0,
+    problemOptions: [
+      {
+        id: 0,
+        idx: 0,
+        description: "",
+        picture: "",
+        pickCount: 0,
+      },
+    ],
+  });
+  const [answer, setAnswer] = useState(-1);
+  const [uuid, setUuid] = useState("");
+  const [curIdx, setCurIdx] = useState(0);
+
+  /* *** use-effect *** */
   useEffect(() => {
     if (!router.isReady) return;
     connect();
-    // setTimeout(() => {
-    //   var cat = localStorage.getItem("fromSession");
-    //   client.send(
-    //     "/pub/room/" + pin + "/submit",
-    //     {},
-    //     JSON.stringify({
-    //       messageType: "ANSWER", // 반드시 "ANSWER"
-    //       fromSession: cat, // 사용자 session id - google login시 발급
-    //       problemIdx: 0, // 제출한 문제의 번호
-    //       answerText: answer.toString(),
-    //     })
-    //   );
-    // }, 500);
   }, [router.isReady]);
 
-  let [curIdx, setCurIdx] = useState(0);
-  const [step, setStep] = useState(0);
-  {
-    /* *** main state *** */
-  }
-  let [problemSet, setProblemSet] = useState({
-    closingMent: "",
-    description: "",
-    hostId: 1,
-    title: "",
-  });
-
-  let [problem, setProblem] = useState(testPlayProblem);
-  let [option, setOption] = useState(testPlayOption);
-  const { scrollIntoView, targetRef, scrollableRef } = useScrollIntoView();
-  const [answer, setAnswer] = useState(-1);
-
-  {
-    /* mantine statement */
-  }
-  const theme = useMantineTheme();
-  const getColor = (color: string) =>
-    theme.colors[color][theme.colorScheme === "dark" ? 5 : 7];
-
-  {
-    /* 2. 문제 추가 - subNav - tab */
-  }
-
-  {
-    /* 1. 퀴즈 설정 - 메인 #과목 선택 */
-  }
-
-  {
-    /* 1. 퀴즈 설정 - 사이드바 - #stepper */
-  }
-
-  /* submit form */
-  let submitForm = {
-    answerText: "1",
-    problemIdx: 1,
-    uuid: "d7a23266-6fc7-421a-9ed8-aad169013e52",
+  /* *** axios call *** */
+  const getRoomOpened = () => {
+    axios
+      .get(connectMainServerApiAddress + `api/room/${router.query.pin}/open`)
+      .then((result) => {
+        setCurIdx(result.data.currentProblemNum);
+        // validation
+        if (result.data.currentState !== "READY") return;
+      })
+      .catch((error) => {});
+    return;
   };
 
   const getLeaderboard = async () => {
@@ -126,23 +111,14 @@ const Home: NextPage = () => {
     return result.data;
   };
 
-  const getProblemsets = () => {
-    let rt = [{ id: -1, title: "", description: "", closingMent: "" }];
-    axios
-      .get("https://api.exquiz.me/api/problemsets/1")
-      .then((result) => {
-        setProblemSet(result.data);
-      })
-      .catch((error) => {
-        alert(error);
-      });
-    return;
-  };
-
   const submit = async () => {
     const { data: result } = await axios.post(
       "https://dist.exquiz.me/api/room/100310/mq/submit",
-      submitForm
+      {
+        answerText: answer,
+        problemIdx: curIdx,
+        uuid: uuid,
+      }
     );
     return result.data;
   };
@@ -164,7 +140,7 @@ const Home: NextPage = () => {
               <Loader color="yellow" size="xl" />
             </Center>
             <p className="text-center text-xl text-white font-semibold">
-              퀴즈 시작 대기 중...
+              다음 퀴즈 대기 중...
             </p>
           </Stack>
           {/* <Button
@@ -181,37 +157,7 @@ const Home: NextPage = () => {
 
       {step === 1 ? (
         <>
-          <Stack className="bg-[#ffd178]">
-            <Stack spacing={0} className="rounded-b-xl bg-[#273248] h-[10vh]">
-              <Group className="my-2" position="center">
-                <ActionIcon variant="transparent" size={40}>
-                  <Alarm size={40} color="orange"></Alarm>
-                </ActionIcon>
-
-                <p className="font-semibold text-amber-500 text-3xl">30</p>
-              </Group>
-              <Center>
-                <MantineProvider
-                  inherit
-                  theme={{
-                    defaultGradient: { from: "red", to: "orange", deg: 45 },
-                  }}
-                >
-                  <Progress
-                    className="w-[70vw]"
-                    size="xl"
-                    color="orange"
-                    // color={theme.fn.gradient({
-                    //   from: "red",
-                    //   to: "orange",
-                    //   deg: 45,
-                    // })}
-                    value={50}
-                  />
-                </MantineProvider>
-              </Center>
-            </Stack>
-          </Stack>
+          <Stack className="bg-[#ffd178]"></Stack>
           <Container className="bg-[#ffd178] h-[100vh]" size={1200}>
             <Stack className="h-8"></Stack>
             <Stack className="relative p-8 rounded-xl shadow-lg bg-white">
@@ -220,22 +166,22 @@ const Home: NextPage = () => {
                 className=" absolute -top-6 rounded-full bg-orange-500 h-12 w-40"
               >
                 <p className="m-auto text-center text-2xl text-white font-semibold">
-                  문제 1/5
+                  문제 {curIdx + 1}
                 </p>
               </Stack>
               <p className=" text-4xl text-orange-500 font-bold">Q. </p>
               <p className="m-auto text-center text-2xl font-semibold">
-                우리나라에서 가장 높은 산은?
+                {problemOption.description || ""}
               </p>
               <Image
-                src="/halla_mountain.svg"
+                src={problemOption.picture || "/white.png"}
                 alt="logo"
                 width={232}
                 height={145}
               />
               <Grid className="" justify="center" gutter="sm">
-                {option[curIdx].map(
-                  ({ description, idx, picture, problemId }, i) => {
+                {problemOption.problemOptions.map(
+                  ({ description, idx, picture }, i) => {
                     let color = ["red", "blue", "green", "orange"];
                     let bgColor = "hover:bg-" + color[i] + "-500";
                     return (
@@ -267,10 +213,11 @@ const Home: NextPage = () => {
               <Button
                 onClick={() => {
                   //connect();
+                  setStep(0);
                   setTimeout(() => {
                     var cat = localStorage.getItem("fromSession");
                     client.send(
-                      "/pub/room/" + pin + "/submit",
+                      "/pub/room/" + router.query.pin + "/submit",
                       {},
                       JSON.stringify({
                         messageType: "ANSWER", // 반드시 "ANSWER"
@@ -296,14 +243,6 @@ const Home: NextPage = () => {
               >
                 제출하기
               </Button>
-              {/* <Button
-              onClick={() => {
-                var cat = localStorage.getItem("fromSession");
-                alert(cat);
-              }}
-            >
-              세션 값 확인
-            </Button> */}
             </Stack>
           </Container>
         </>
@@ -313,8 +252,18 @@ const Home: NextPage = () => {
     </div>
   );
 };
-
 export default Home;
-function sleep(arg0: number) {
-  throw new Error("Function not implemented.");
-}
+
+// setTimeout(() => {
+//   var cat = localStorage.getItem("fromSession");
+//   client.send(
+//     "/pub/room/" + pin + "/submit",
+//     {},
+//     JSON.stringify({
+//       messageType: "ANSWER", // 반드시 "ANSWER"
+//       fromSession: cat, // 사용자 session id - google login시 발급
+//       problemIdx: 0, // 제출한 문제의 번호
+//       answerText: answer.toString(),
+//     })
+//   );
+// }, 500);

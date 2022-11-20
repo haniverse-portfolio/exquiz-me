@@ -581,3 +581,108 @@ export const inboxRoomInput = {
   currentState: "NOT READY",
   currentProblemNum: -1,
 };
+
+/* *** display constvalue *** */
+export const displayProblem = {
+  id: 0,
+  title: "",
+  description: "",
+  dtype: "MultipleChoiceProblem",
+  timelimit: 30,
+  score: 0,
+  picture: null,
+  videoUrl: null,
+  answer: "0",
+  idx: 1,
+};
+
+export const displayOption = [
+  {
+    id: 0,
+    idx: 0,
+    description: "",
+    picture: null,
+    pickCount: 0,
+  },
+  {
+    id: 0,
+    idx: 0,
+    description: "",
+    picture: null,
+    pickCount: 0,
+  },
+  {
+    id: 0,
+    idx: 0,
+    description: "",
+    picture: null,
+    pickCount: 0,
+  },
+  {
+    id: 0,
+    idx: 0,
+    description: "",
+    picture: null,
+    pickCount: 0,
+  },
+];
+
+export const displayParticipants = [
+  {
+    colorNumber: 0,
+    currentScore: 0,
+    entryDate: "",
+    id: 0,
+    imageNumber: 0,
+    name: "",
+    nickname: "",
+    sessionId: "",
+  },
+];
+
+
+/* *** display constvalue *** */
+
+export const playProblem = {
+  id: 0,
+  title: "",
+  description: "",
+  dtype: "MultipleChoiceProblem",
+  timelimit: 30,
+  score: 0,
+  picture: null,
+  videoUrl: null,
+  answer: "0",
+  idx: 1,
+};
+
+export const playOption =[
+  {
+    id: 0,
+    idx: 0,
+    description: "",
+    picture: null,
+    pickCount: 0,
+  },
+  {
+    id: 0,
+    idx: 0,
+    description: "",
+    picture: null,
+    pickCount: 0,
+  },
+  {
+    id: 0,
+    idx: 0,
+    description: "",
+    picture: null,
+    pickCount: 0,
+  },
+  {
+    id: 0,
+    idx: 0,
+    description: "",
+    picture: null,
+    pickCount: 0,
+  },
+];
