@@ -704,3 +704,20 @@ export const playSubjectiveOption = [
   false,
   false,
 ];
+
+export const playCorrectAnswerList = {
+  totalCorrectCount: 0,
+  participantInfo: [
+    {
+      id: 0,
+      sessionId: "",
+      name: "",
+      nickname: "",
+      entryDate: "",
+      currentScore: 0,
+      imageNumber: 0,
+      colorNumber: 0,
+    },
+  ],
+  isCorrect: [false],
+};

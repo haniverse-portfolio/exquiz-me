@@ -221,7 +221,7 @@ export const playProblemset = atom({
 });
 
 export const playProblem = atom({
-  key: "playProblemset",
+  key: "playProblem",
   default: [],
 });
 
@@ -231,7 +231,7 @@ export const playPin = atom({
 });
 
 export const playOption = atom({
-  key: "playProblemset",
+  key: "playOption",
   default: [],
 });
 

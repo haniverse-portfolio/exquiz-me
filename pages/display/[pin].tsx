@@ -29,10 +29,13 @@ import { Alarm, Pencil } from "tabler-icons-react";
 import { useRecoilState } from "recoil";
 import { useInterval } from "@mantine/hooks";
 import {
+  avatarAnimal,
+  avatarColor,
   connectMainServerApiAddress,
   displayOption,
   displayParticipants,
   displayProblem,
+  playCorrectAnswerList,
 } from "../../components/ConstValues";
 import axios from "axios";
 import { indexIsLogined } from "../../components/States";
@@ -81,6 +84,7 @@ const Home: NextPage = () => {
                 setCurIdx(JSON.parse(message.body).idx);
               }, 1500);
             } else if (JSON.parse(message.body).messageType === "STOP") {
+              getCorrectAnswerList();
               setProblemOption(JSON.parse(message.body));
               setSeconds(JSON.parse(message.body).timelimit);
             }
@@ -105,7 +109,9 @@ const Home: NextPage = () => {
   const [messagetypestate, setPlaymessagetypestate] = useState("");
   const [step, setStep] = useState(-1);
   const [submitCount, setSubmitCount] = useState(0);
-  const [correctAnswerList, setCorrectAnswerList] = useState([]);
+  const [correctAnswerList, setCorrectAnswerList] = useState(
+    playCorrectAnswerList
+  );
 
   const [curIdx, setCurIdx] = useState(0);
   const [problemOption, setProblemOption] = useState({
@@ -474,36 +480,36 @@ const Home: NextPage = () => {
         >
           <Stack>
             <ScrollArea style={{ height: "calc(100vh - 70px)" }}>
-              {/* <Grid columns={6}>
-                    {correctAnswerList.map((cur: any, i) => {
-                      return (
-                        <Grid.Col
-                          className=" flex items-center justify-center h-60"
-                          span={1}
-                          key={i}
+              <Grid columns={6}>
+                {correctAnswerList.participantInfo.map((cur: any, i) => {
+                  return (
+                    <Grid.Col
+                      className=" flex items-center justify-center h-60"
+                      span={1}
+                      key={i}
+                    >
+                      <Stack className="w-[400px] rounded-xl bg-white shadow-lg">
+                        <Center
+                          className={` rounded-t-xl h-[160px] ${
+                            avatarColor[cur.colorNumber]
+                          }  shadow-lg`}
                         >
-                          <Stack className="w-[400px] rounded-xl bg-white shadow-lg">
-                            <Center
-                              className={` rounded-t-xl h-[160px] ${
-                                avatarColor[cur.colorNumber]
-                              }  shadow-lg`}
-                            >
-                              <Image
-                                alt="hello"
-                                className={`cursor-pointer rounded-full`}
-                                src={avatarAnimal[cur.imageNumber]}
-                                width={"120px"}
-                                height={"120px"}
-                              ></Image>
-                            </Center>
-                            <p className="font-semibold 2xl:text-lg md:text-sm pb-4 text-center text-black">
-                              {cur.nickname}
-                            </p>
-                          </Stack>
-                        </Grid.Col>
-                      );
-                    })}
-                  </Grid> */}
+                          <Image
+                            alt="hello"
+                            className={`cursor-pointer rounded-full`}
+                            src={avatarAnimal[cur.imageNumber]}
+                            width={"120px"}
+                            height={"120px"}
+                          ></Image>
+                        </Center>
+                        <p className="font-semibold 2xl:text-lg md:text-sm pb-4 text-center text-black">
+                          {cur.nickname}
+                        </p>
+                      </Stack>
+                    </Grid.Col>
+                  );
+                })}
+              </Grid>
             </ScrollArea>
           </Stack>
         </Grid.Col>

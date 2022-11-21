@@ -301,10 +301,7 @@ const Home: NextPage = () => {
                 <Group position="right">
                   <Select
                     placeholder="정렬 필터"
-                    data={[
-                      { value: "시간 순", label: "시간 순" },
-                      { value: "인기 순", label: "인기 순" },
-                    ]}
+                    data={[{ value: "시간 순", label: "시간 순" }]}
                   />
                 </Group>
                 <Divider size="sm"></Divider>
