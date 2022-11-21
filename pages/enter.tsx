@@ -155,11 +155,13 @@ const Home: NextPage = () => {
       function (frame) {
         client.subscribe("/topic/room/" + pin + "/host", function (message) {
           if (JSON.parse(message.body).messageType === "PARTICIPANT") {
-            setUserCurInfo(JSON.parse(message.body));
-            localStorage.setItem(
-              "fromSession",
-              JSON.parse(message.body).fromSession
-            );
+            if (userCurInfo.nickname === "") {
+              setUserCurInfo(JSON.parse(message.body));
+              localStorage.setItem(
+                "fromSession",
+                JSON.parse(message.body).fromSession
+              );
+            }
           }
         });
       },

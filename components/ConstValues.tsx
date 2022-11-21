@@ -715,6 +715,7 @@ export const playCorrectAnswerList = {
       nickname: "",
       entryDate: "",
       currentScore: 0,
+      beforeScore: 0,
       imageNumber: 0,
       colorNumber: 0,
     },

@@ -139,7 +139,7 @@ const Home: NextPage = () => {
       {step === 0 ? (
         <Stack
           align="center"
-          className="flex items-center justify-center bg-orange-400 h-[100vh]"
+          className="flex items-center justify-center bg-[#FF9B3F] h-[100vh]"
         >
           <Stack>
             <Center>

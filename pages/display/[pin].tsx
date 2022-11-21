@@ -84,9 +84,12 @@ const Home: NextPage = () => {
                 setCurIdx(JSON.parse(message.body).idx);
               }, 1500);
             } else if (JSON.parse(message.body).messageType === "STOP") {
-              getCorrectAnswerList();
               setProblemOption(JSON.parse(message.body));
               setSeconds(JSON.parse(message.body).timelimit);
+              setTimeout(() => {
+                getCorrectAnswerList();
+                setStep(1);
+              }, 1500);
             }
           }
         );
@@ -157,7 +160,6 @@ const Home: NextPage = () => {
   useEffect(() => {
     if (Math.floor(seconds) === 0) {
       interval.stop();
-      setStep(1);
       socketManager.send("/pub/room/" + router.query.pin + "/stop", {});
       bgAudio.current.pause();
       endingEffectAudio.current.play();
@@ -187,6 +189,7 @@ const Home: NextPage = () => {
           "/submit_list"
       )
       .then((result) => {
+        alert(JSON.stringify(result.data));
         setCorrectAnswerList(result.data);
       })
       .catch((error) => {
@@ -310,7 +313,7 @@ const Home: NextPage = () => {
     return (
       <Stack
         align="center"
-        className="flex items-center justify-center bg-orange-400 h-[100vh]"
+        className="flex items-center justify-center bg-[#FF9B3F] h-[100vh]"
       >
         <Stack>
           <Center>
