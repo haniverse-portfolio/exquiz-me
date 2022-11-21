@@ -51,8 +51,11 @@ const Home: NextPage = () => {
           if (JSON.parse(message.body).messageType === "NEW_PROBLEM") {
             setProblemOption(JSON.parse(message.body));
             setCurIdx(JSON.parse(message.body).idx);
-            setStep(1);
+            setTimeout(() => {
+              setStep(1);
+            }, 1500);
           } else if (JSON.parse(message.body).messageType === "STOP") {
+            setAnswer("");
             setStep(0);
           }
         });
@@ -120,19 +123,8 @@ const Home: NextPage = () => {
 
   const getLeaderboard = async () => {
     const { data: result } = await axios.get(
-      "https://api.exquiz.me/api/room/100310/mq/leaderboard"
-    );
-    return result.data;
-  };
-
-  const submit = async () => {
-    const { data: result } = await axios.post(
-      "https://dist.exquiz.me/api/room/100310/mq/submit",
-      {
-        answerText: answer,
-        problemIdx: curIdx,
-        uuid: uuid,
-      }
+      connectMainServerApiAddress +
+        `api/room/${router.query.pin}/mq/leaderboard`
     );
     return result.data;
   };

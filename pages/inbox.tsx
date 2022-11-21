@@ -82,7 +82,10 @@ const Home: NextPage = () => {
       return;
     }
     // access_token validation
-    if (router.query.access_token) {
+    if (
+      router.query.access_token !== null &&
+      router.query.access_token !== undefined
+    ) {
       localStorage.setItem("access_token", router.query.access_token as string);
       localStorage.setItem("host_id", router.query.host_id as string);
       setTimeout(() => {
@@ -91,7 +94,10 @@ const Home: NextPage = () => {
     }
 
     // not logined
-    if (localStorage.getItem("access_token") === null) {
+    if (
+      localStorage.getItem("access_token") === null ||
+      localStorage.getItem("access_token") === "undefined"
+    ) {
       router.push("/");
       return;
     }
@@ -417,6 +423,7 @@ const Home: NextPage = () => {
 
           <p className="m-0 font-bold">참가 인원</p>
           <Select
+            size="md"
             onChange={(event) => {
               let copy = JSON.parse(JSON.stringify(room));
               copy.maxParticipantCount = event;

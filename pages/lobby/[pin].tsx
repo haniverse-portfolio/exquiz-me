@@ -13,6 +13,7 @@ import Stomp from "stompjs";
 import { useRecoilState } from "recoil";
 import {
   inboxRoom,
+  indexIsLogined,
   lobbyParticipants,
   playProblem,
 } from "../../components/States";
@@ -39,6 +40,8 @@ import IndexNavigation from "../../components/index/IndexNavigation";
 const Home: NextPage = () => {
   const [partlist, setPartlist] = useRecoilState(lobbyParticipants);
   const [problem, setProblem] = useRecoilState(playProblem);
+
+  const [isLogined, setIsLogined] = useRecoilState(indexIsLogined);
   // const addParticipant = (cur: object) => {
   //   // console.log("추가전 직전 참가자 정보");
   //   // console.log(partlist);
@@ -79,6 +82,7 @@ const Home: NextPage = () => {
   const theme = useMantineTheme();
 
   useEffect(() => {
+    if (isLogined === false) router.push("/401");
     if (!router.isReady) return;
     connect();
     getPartlist();
@@ -236,13 +240,13 @@ const Home: NextPage = () => {
                     {partlist.map((cur: any, i) => {
                       return (
                         <Grid.Col
-                          className="flex items-center justify-center h-60"
+                          className=" flex items-center justify-center h-60"
                           span={1}
                           key={i}
                         >
-                          <Stack className=" flex items-center justify-center rounded-xl bg-white shadow-lg">
+                          <Stack className="w-[400px] rounded-xl bg-white shadow-lg">
                             <Center
-                              className={` rounded-t-xl w-[200px] h-[160px] ${
+                              className={` rounded-t-xl h-[160px] ${
                                 avatarColor[cur.colorNumber]
                               }  shadow-lg`}
                             >
@@ -254,7 +258,7 @@ const Home: NextPage = () => {
                                 height={"120px"}
                               ></Image>
                             </Center>
-                            <p className="font-semibold text-lg pb-4 text-center text-black">
+                            <p className="font-semibold 2xl:text-lg md:text-sm pb-4 text-center text-black">
                               {cur.nickname}
                             </p>
                           </Stack>

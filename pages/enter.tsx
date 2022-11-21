@@ -442,13 +442,11 @@ const Home: NextPage = () => {
                             noun[
                               Math.floor(Math.random() * (noun.length - 1)) + 1
                             ];
-                          let randNum1 =
-                            Math.floor(Math.random() * (99 - 1)) + 1;
+                          // let randNum1 =
+                          //   Math.floor(Math.random() * (99 - 1)) + 1;
                           let randNum2 =
                             Math.floor(Math.random() * (100 - 1)) + 1;
-                          setNickname(
-                            randNum1 + randAdjective + randNoun + randNum2
-                          );
+                          setNickname(randAdjective + randNoun + randNum2);
                         }}
                         variant="outline"
                         color="orange"
@@ -456,7 +454,7 @@ const Home: NextPage = () => {
                         <Refresh></Refresh>
                       </ActionIcon>
                     }
-                    maxLength={14}
+                    maxLength={10}
                     size="lg"
                     value={nickname}
                     onChange={(event) => {

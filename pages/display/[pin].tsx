@@ -35,6 +35,7 @@ import {
   displayProblem,
 } from "../../components/ConstValues";
 import axios from "axios";
+import { indexIsLogined } from "../../components/States";
 
 const Home: NextPage = () => {
   /* initialization */
@@ -44,6 +45,7 @@ const Home: NextPage = () => {
   const router = useRouter();
   /* *** core initialization *** */
   const bgAudio = useRef(null) as any;
+  const endingEffectAudio = useRef(null) as any;
   const interval = useInterval(() => setSeconds((s) => s - 0.05), 50);
   /* *** web socket *** */
 
@@ -65,6 +67,8 @@ const Home: NextPage = () => {
             if (JSON.parse(message.body).messageType === "ANSWER") {
               setSubmitCount(submitCount + 1);
             } else if (JSON.parse(message.body).messageType === "NEW_PROBLEM") {
+              bgAudio.currentTime = 0;
+              bgAudio.current.play();
               if (JSON.parse(message.body).idx === 0) {
                 setStep(-1);
                 setProblemOption(JSON.parse(message.body));
@@ -101,6 +105,7 @@ const Home: NextPage = () => {
   const [messagetypestate, setPlaymessagetypestate] = useState("");
   const [step, setStep] = useState(-1);
   const [submitCount, setSubmitCount] = useState(0);
+  const [correctAnswerList, setCorrectAnswerList] = useState([]);
 
   const [curIdx, setCurIdx] = useState(0);
   const [problemOption, setProblemOption] = useState({
@@ -129,13 +134,13 @@ const Home: NextPage = () => {
   const [participants, setParticipants] = useState(displayParticipants);
   const [socketManager, setSocketManager] = useState<any>(null);
 
+  const [isLogined, setIsLogined] = useRecoilState(indexIsLogined);
+
   /* *** useeffect start *** */
 
   useEffect(() => {
     if (!router.isReady) return;
     connect();
-
-    // const promise = bgAudio.current.play();
     getParticipants();
   }, [router.isReady]);
 
@@ -148,21 +153,39 @@ const Home: NextPage = () => {
       interval.stop();
       setStep(1);
       socketManager.send("/pub/room/" + router.query.pin + "/stop", {});
+      bgAudio.current.pause();
+      endingEffectAudio.current.play();
     }
   }, [seconds]);
 
   /* *** axios call *** */
-  const getRoomOpened = () => {
+  // const getRoomOpened = () => {
+  //   axios
+  //     .get(connectMainServerApiAddress + `api/room/${router.query.pin}/open`)
+  //     .then((result) => {
+  //       setCurIdx(result.data.currentProblemNum);
+  //       // validation
+  //       if (result.data.currentState !== "READY") return;
+  //       setStep((prevstate) => step + 1);
+  //     })
+  //     .catch((error) => {});
+  //   return;
+  // };
+
+  const getCorrectAnswerList = () => {
     axios
-      .get(connectMainServerApiAddress + `api/room/${router.query.pin}/open`)
+      .get(
+        connectMainServerApiAddress +
+          "api/room/" +
+          router.query.pin +
+          "/submit_list"
+      )
       .then((result) => {
-        setCurIdx(result.data.currentProblemNum);
-        alert(result.data.idx);
-        // validation
-        if (result.data.currentState !== "READY") return;
-        setStep((prevstate) => step + 1);
+        setCorrectAnswerList(result.data);
       })
-      .catch((error) => {});
+      .catch((error) => {
+        alert(error);
+      });
     return;
   };
 
@@ -324,7 +347,9 @@ const Home: NextPage = () => {
                     className="w-[70vw]"
                     size="xl"
                     color="orange"
-                    value={(seconds / problemOption.timelimit || 30) * 100.0}
+                    value={
+                      ((seconds - 1) / problemOption.timelimit || 30) * 100.0
+                    }
                   />
                 </MantineProvider>
               </Grid.Col>
@@ -449,7 +474,36 @@ const Home: NextPage = () => {
         >
           <Stack>
             <ScrollArea style={{ height: "calc(100vh - 70px)" }}>
-              <Stack style={{ height: "400vh" }}></Stack>
+              {/* <Grid columns={6}>
+                    {correctAnswerList.map((cur: any, i) => {
+                      return (
+                        <Grid.Col
+                          className=" flex items-center justify-center h-60"
+                          span={1}
+                          key={i}
+                        >
+                          <Stack className="w-[400px] rounded-xl bg-white shadow-lg">
+                            <Center
+                              className={` rounded-t-xl h-[160px] ${
+                                avatarColor[cur.colorNumber]
+                              }  shadow-lg`}
+                            >
+                              <Image
+                                alt="hello"
+                                className={`cursor-pointer rounded-full`}
+                                src={avatarAnimal[cur.imageNumber]}
+                                width={"120px"}
+                                height={"120px"}
+                              ></Image>
+                            </Center>
+                            <p className="font-semibold 2xl:text-lg md:text-sm pb-4 text-center text-black">
+                              {cur.nickname}
+                            </p>
+                          </Stack>
+                        </Grid.Col>
+                      );
+                    })}
+                  </Grid> */}
             </ScrollArea>
           </Stack>
         </Grid.Col>
@@ -593,6 +647,11 @@ const Home: NextPage = () => {
         ref={bgAudio}
         className="invisible"
         src="/sounds/play_music.wav"
+      ></audio>
+      <audio
+        ref={endingEffectAudio}
+        className="invisible"
+        src="/sounds/boom_short.mp3"
       ></audio>
       {/* audio */}
       <main className="h-[100vh] bg-[#EDF4F7]">
