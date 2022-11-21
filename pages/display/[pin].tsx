@@ -46,7 +46,6 @@ const Home: NextPage = () => {
   const bgAudio = useRef(null) as any;
   const interval = useInterval(() => setSeconds((s) => s - 0.05), 50);
   /* *** web socket *** */
-  console.log("display 소켓 생성");
 
   let connect = () => {
     var socket = new SockJS(connectMainServerApiAddress + "stomp");
@@ -66,11 +65,17 @@ const Home: NextPage = () => {
             if (JSON.parse(message.body).messageType === "ANSWER") {
               setSubmitCount(submitCount + 1);
             } else if (JSON.parse(message.body).messageType === "NEW_PROBLEM") {
-              if (JSON.parse(message.body).idx === 0) setStep(0);
-              setSeconds(JSON.parse(message.body).timelimit);
-              interval.start();
-              setProblemOption(JSON.parse(message.body));
-              getRoomOpened();
+              if (JSON.parse(message.body).idx === 0) {
+                setStep(-1);
+                setProblemOption(JSON.parse(message.body));
+                setSeconds(JSON.parse(message.body).timelimit);
+              }
+
+              setTimeout(() => {
+                setStep(0);
+                interval.start();
+                setCurIdx(JSON.parse(message.body).idx);
+              }, 1500);
             } else if (JSON.parse(message.body).messageType === "STOP") {
               setProblemOption(JSON.parse(message.body));
               setSeconds(JSON.parse(message.body).timelimit);
@@ -152,6 +157,7 @@ const Home: NextPage = () => {
       .get(connectMainServerApiAddress + `api/room/${router.query.pin}/open`)
       .then((result) => {
         setCurIdx(result.data.currentProblemNum);
+        alert(result.data.idx);
         // validation
         if (result.data.currentState !== "READY") return;
         setStep((prevstate) => step + 1);
@@ -324,7 +330,7 @@ const Home: NextPage = () => {
               </Grid.Col>
               <Grid.Col className="flex items-center jusitfy-center" span={2}>
                 <Group className="w-[40px] flex items-center jusitfy-center">
-                  <p className="font-semibold text-amber-500 text-3xl">
+                  <p className="font-semibold text-amber-500 text-4xl">
                     {Math.floor(seconds)}
                   </p>
                 </Group>
@@ -391,65 +397,60 @@ const Home: NextPage = () => {
 
   let displayLeaderboardScene = () => {
     return (
-      <Grid style={{ height: "calc(100vh - 70px)" }} gutter={0} columns={20}>
+      <Grid style={{ height: "calc(100vh)" }} gutter={0} columns={20}>
         <Grid.Col
-          style={{ height: "calc(100vh - 70px)" }}
+          style={{ height: "calc(100vh)" }}
           className="bg-[#273248]"
           span={6}
         >
-          <Center>
-            <Stack align="apart" spacing={0}>
-              <Stack>
-                <p className="text-white py-16 m-0 font-semibold text-4xl text-center">
-                  정답자 수는?
-                </p>
-                <p className="text-white font-bold text-4xl text-center">
-                  35명 중{" "}
-                  <strong className="text-4xl text-orange-500 font-bold">
-                    10명
-                  </strong>
-                </p>
-              </Stack>
-              <Stack>
-                <Button
-                  onClick={() => {
-                    setStep(2);
-                  }}
-                  color="orange"
-                  variant="light"
-                  size="xl"
-                >
-                  해설하기
-                </Button>
-                <Button
-                  onClick={() => {
-                    socketManager.send(
-                      "/pub/room/" + router.query.pin + "/next",
-                      {}
-                    );
-                    setStep(0);
-                  }}
-                  color="orange"
-                  variant="filled"
-                  size="xl"
-                >
-                  다음으로
-                </Button>
-              </Stack>
+          <Stack justify="space-around">
+            <Stack>
+              <p className="text-white py-16 m-0 font-semibold text-6xl text-center">
+                정답자 수는?
+              </p>
+              <p className="text-white font-bold text-6xl text-center">
+                35명 중{" "}
+                <strong className="text-6xl text-orange-500 font-bold">
+                  10명
+                </strong>
+              </p>
+              <Button
+                className="mx-16"
+                onClick={() => {
+                  setStep(2);
+                }}
+                color="orange"
+                variant="outline"
+                size="xl"
+              >
+                퀴즈 결과 씬
+              </Button>
             </Stack>
-          </Center>
+            <Button
+              className="mx-16 mt-[50vh]"
+              onClick={() => {
+                socketManager.send(
+                  "/pub/room/" + router.query.pin + "/next",
+                  {}
+                );
+              }}
+              color="orange"
+              variant="filled"
+              size="xl"
+            >
+              다음으로
+            </Button>
+          </Stack>
         </Grid.Col>
         <Grid.Col
-          style={{ height: "calc(100vh - 70px)" }}
+          style={{ height: "calc(100vh)" }}
           className="bg-[#F9F5F4]"
           span={14}
         >
-          <Stack className="px-8">
-            {
-              <ScrollArea style={{ height: "calc(100vh - 70px)" }}>
-                <Stack style={{ height: "400vh" }}></Stack>
-              </ScrollArea>
-            }
+          <Stack>
+            <ScrollArea style={{ height: "calc(100vh - 70px)" }}>
+              <Stack style={{ height: "400vh" }}></Stack>
+            </ScrollArea>
           </Stack>
         </Grid.Col>
       </Grid>
@@ -471,14 +472,111 @@ const Home: NextPage = () => {
             <p className="text-4xl text-white font-semibold">퀴즈 결과</p>
           </Group>
         </header>
+
         <Stack
+          align="center"
           style={{
             height: "calc(100vh - 140px)",
           }}
-          className=" bg-[#FFD178]"
+          className="flex items-center justify-center bg-[#ffd178]"
         >
-          <Stack className="h-[50vh] bg-opacity-50">e</Stack>
+          <Stack className=" h-[76vh] w-[50vw] rounded-xl bg-[#ffffff] bg-opacity-50">
+            <Stack className="m-8">
+              <Stack className="h-[10vh]">
+                <p className="text-4xl font-semibold text-center">
+                  <strong className=" text-[#447EFF]">입체적인 피카소</strong>님
+                  축하드립니다!
+                </p>
+                <p className="text-2xl text-center">
+                  더 많은 정답을 맞춰서 상위 자리를 노려보세요!
+                </p>
+              </Stack>
+              <Stack>
+                <Group
+                  className="animate-fadeIn bg-white rounded-xl p-4"
+                  position="apart"
+                >
+                  <Image
+                    src="/medal_first.svg"
+                    width={103}
+                    height={126}
+                  ></Image>
+                  <p className="text-4xl font-semibold text-center text-[#DA662C]">
+                    입체적인 피카소
+                  </p>
+                  <Image
+                    className="rounded-xl"
+                    src="/dog.png"
+                    width={120}
+                    height={120}
+                  ></Image>
+                </Group>
+                <Group
+                  className="animate-fadeIn bg-white rounded-xl p-4"
+                  position="apart"
+                >
+                  <Image
+                    src="/medal_second.svg"
+                    width={103}
+                    height={126}
+                  ></Image>
+                  <p className="text-4xl font-semibold text-center text-[#EF8E54]">
+                    독보적인 내쉬
+                  </p>
+                  <Image
+                    className="rounded-xl"
+                    src="/rabbit.png"
+                    width={120}
+                    height={120}
+                  ></Image>
+                </Group>
+                <Group
+                  className="animate-fadeIn bg-white rounded-xl p-4"
+                  position="apart"
+                >
+                  <Image
+                    src="/medal_third.svg"
+                    width={103}
+                    height={126}
+                  ></Image>
+                  <p className="text-4xl font-semibold text-center text-[#E7A276]">
+                    고뇌하는 니체
+                  </p>
+                  <Image
+                    className="rounded-xl"
+                    src="/panda.png"
+                    width={120}
+                    height={120}
+                  ></Image>
+                </Group>
+              </Stack>
+            </Stack>
+          </Stack>
         </Stack>
+        <img
+          className="absolute top-40 left-0 z-50"
+          src="/confetti.gif"
+          width={300}
+          height={300}
+        ></img>
+        <img
+          className="absolute bottom-20 left-20 z-50"
+          src="/confetti.gif"
+          width={240}
+          height={240}
+        ></img>
+        <img
+          className="absolute top-40 right-10 z-50"
+          src="/confetti.gif"
+          width={240}
+          height={240}
+        ></img>
+        <img
+          className="absolute bottom-0 right-0 z-50"
+          src="/confetti.gif"
+          width={350}
+          height={350}
+        ></img>
       </Stack>
     );
   };

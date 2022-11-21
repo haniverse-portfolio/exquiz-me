@@ -26,6 +26,7 @@ export const dtypeFullName = [
   "MultipleChoiceProblem",
   "SubjectiveProblem",
   "OXProblem",
+  "SubjectiveProblem",
 ];
 
 export const slideProblemInput = [
@@ -640,7 +641,6 @@ export const displayParticipants = [
   },
 ];
 
-
 /* *** display constvalue *** */
 
 export const playProblem = {
@@ -656,7 +656,7 @@ export const playProblem = {
   idx: 1,
 };
 
-export const playOption =[
+export const playOption = [
   {
     id: 0,
     idx: 0,
@@ -685,4 +685,22 @@ export const playOption =[
     picture: null,
     pickCount: 0,
   },
+];
+
+export const playSubjectiveOption = [
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
+  false,
 ];

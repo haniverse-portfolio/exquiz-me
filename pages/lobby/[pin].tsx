@@ -90,29 +90,29 @@ const Home: NextPage = () => {
 
   const [active, setActive] = useState(0);
   const [room, setRoom] = useRecoilState(inboxRoom);
+  const [socketManager, setSocketManager] = useState<any>(null);
 
   {
     /* webSocket */
   }
-  console.log("로비 소켓 생성 위치");
-  var socket = new SockJS(connectMainServerApiAddress + "stomp");
-  let client: Stomp.Client;
-  client = Stomp.over(socket);
 
   let connect = () => {
+    var socket = new SockJS(connectMainServerApiAddress + "stomp");
+    let client: Stomp.Client;
+    client = Stomp.over(socket);
+
     const headers = {};
     var reconnect = 0;
     client.connect(
       {},
       function (frame) {
-        console.log(router.query.pin);
         if (router.query.pin === undefined) router.push("/404");
-        // getRoomOpened(router.query.pin as string);
         client.subscribe(
           "/topic/room/" + router.query.pin + "/host",
           function (message) {
             if (JSON.parse(message.body).messageType === "PARTICIPANT") {
               setPartlist(JSON.parse(message.body).participantList);
+            } else if (JSON.parse(message.body).messageType === "NEW_PROBLEM") {
             }
           }
         );
@@ -121,7 +121,7 @@ const Home: NextPage = () => {
         // connect();
       }
     );
-
+    setSocketManager(client);
     socket.onclose = function () {
       setTimeout(() => {
         getPartlist();
@@ -193,15 +193,15 @@ const Home: NextPage = () => {
                   </Group>
                 </Stack>
                 <Button
-                  className="mt-32 cursor-pointer"
+                  className="mt-16 cursor-pointer"
                   onClick={() => {
                     router.push(`/display/${router.query.pin}`);
                     setTimeout(() => {
-                      client.send(
+                      socketManager.send(
                         "/pub/room/" + router.query.pin + "/start",
                         {}
                       );
-                    }, 3000);
+                    }, 1500);
                   }}
                   size="xl"
                   color="orange"
@@ -232,40 +232,36 @@ const Home: NextPage = () => {
                   className="px-8"
                   style={{ height: "calc(100vh - 60px)" }}
                 >
-                  <Stack>
-                    <Grid columns={6}>
-                      {partlist.map((cur: any, i) => {
-                        return (
-                          <Grid.Col
-                            className="flex items-center justify-center h-60 rounded-xl bg-white shadow-lg"
-                            span={1}
-                            key={i}
-                          >
-                            <Center>
-                              <Stack>
-                                <Center
-                                  className={`w-[120px] h-[120px] ${
-                                    avatarColor[cur.colorNumber]
-                                  } rounded-full shadow-lg`}
-                                >
-                                  <Image
-                                    alt="hello"
-                                    className={`cursor-pointer rounded-full`}
-                                    src={avatarAnimal[cur.imageNumber]}
-                                    width={"100px"}
-                                    height={"100px"}
-                                  ></Image>
-                                </Center>
-                                <p className="text-center text-black">
-                                  {cur.nickname}
-                                </p>
-                              </Stack>
+                  <Grid columns={6}>
+                    {partlist.map((cur: any, i) => {
+                      return (
+                        <Grid.Col
+                          className="flex items-center justify-center h-60"
+                          span={1}
+                          key={i}
+                        >
+                          <Stack className=" flex items-center justify-center rounded-xl bg-white shadow-lg">
+                            <Center
+                              className={` rounded-t-xl w-[200px] h-[160px] ${
+                                avatarColor[cur.colorNumber]
+                              }  shadow-lg`}
+                            >
+                              <Image
+                                alt="hello"
+                                className={`cursor-pointer rounded-full`}
+                                src={avatarAnimal[cur.imageNumber]}
+                                width={"120px"}
+                                height={"120px"}
+                              ></Image>
                             </Center>
-                          </Grid.Col>
-                        );
-                      })}
-                    </Grid>
-                  </Stack>
+                            <p className="font-semibold text-lg pb-4 text-center text-black">
+                              {cur.nickname}
+                            </p>
+                          </Stack>
+                        </Grid.Col>
+                      );
+                    })}
+                  </Grid>
                 </ScrollArea>
               }
             </Stack>

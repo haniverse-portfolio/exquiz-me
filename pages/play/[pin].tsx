@@ -7,14 +7,25 @@ import axios from "axios";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 
-import { Button, Stack, Grid, Container, Loader, Center } from "@mantine/core";
+import {
+  Button,
+  Stack,
+  Grid,
+  Container,
+  Loader,
+  Center,
+  Group,
+  TextInput,
+  ActionIcon,
+} from "@mantine/core";
 
 import {
   connectMainServerApiAddress,
   playOption,
   playProblem,
+  playSubjectiveOption,
 } from "../../components/ConstValues";
-import { Alarm } from "tabler-icons-react";
+import { Alarm, Trash } from "tabler-icons-react";
 
 const Home: NextPage = () => {
   /* initialization */
@@ -22,11 +33,12 @@ const Home: NextPage = () => {
   /* *** core initialization *** */
 
   /* *** web socket *** */
-  var socket = new SockJS(connectMainServerApiAddress + "stomp");
-  let client: Stomp.Client;
-  client = Stomp.over(socket);
-
+  const [socketManager, setSocketManager] = useState<any>(null);
   let connect = () => {
+    var socket = new SockJS(connectMainServerApiAddress + "stomp");
+    let client: Stomp.Client;
+    client = Stomp.over(socket);
+
     const headers = {};
     var reconnect = 0;
     client.connect(
@@ -38,7 +50,7 @@ const Home: NextPage = () => {
         client.subscribe("/topic/room/" + router.query.pin, function (message) {
           if (JSON.parse(message.body).messageType === "NEW_PROBLEM") {
             setProblemOption(JSON.parse(message.body));
-            getRoomOpened();
+            setCurIdx(JSON.parse(message.body).idx);
             setStep(1);
           } else if (JSON.parse(message.body).messageType === "STOP") {
             setStep(0);
@@ -47,7 +59,7 @@ const Home: NextPage = () => {
       },
       function (error) {}
     );
-
+    setSocketManager(client);
     socket.onclose = function () {
       setTimeout(() => {
         socket = connect();
@@ -81,9 +93,11 @@ const Home: NextPage = () => {
       },
     ],
   });
-  const [answer, setAnswer] = useState(-1);
+  const [answer, setAnswer] = useState("");
   const [uuid, setUuid] = useState("");
   const [curIdx, setCurIdx] = useState(0);
+  const [subjectiveOption, setSubjectiveOption] =
+    useState(playSubjectiveOption);
 
   /* *** use-effect *** */
   useEffect(() => {
@@ -174,75 +188,241 @@ const Home: NextPage = () => {
                 {problemOption.description || ""}
               </p>
               <Image
+                className="rounded-xl"
                 src={problemOption.picture || "/white.png"}
                 alt="logo"
                 width={232}
                 height={145}
               />
-              <Grid className="" justify="center" gutter="sm">
-                {problemOption.problemOptions.map(
-                  ({ description, idx, picture }, i) => {
-                    let color = ["red", "blue", "green", "orange"];
-                    let bgColor = "hover:bg-" + color[i] + "-500";
-                    return (
-                      <Grid.Col
-                        className="!max-w-[50%] !basis-2/4"
-                        key={i}
-                        span={5}
-                        offset={0}
+              {problemOption.dtype === "MultipleChoiceProblem" ? (
+                <>
+                  <Grid className="" justify="center" gutter="sm">
+                    {problemOption.problemOptions.map(
+                      ({ description, idx, picture }, i) => {
+                        let color = ["red", "blue", "green", "orange"];
+                        let bgColor = "hover:bg-" + color[i] + "-500";
+                        return (
+                          <Grid.Col
+                            className="!max-w-[50%] !basis-2/4"
+                            key={i}
+                            span={5}
+                            offset={0}
+                          >
+                            <Button
+                              fullWidth
+                              style={{ height: "150px" }}
+                              onClick={() => {
+                                setAnswer(
+                                  answer === i.toString() ? "-1" : i.toString()
+                                );
+                              }}
+                              color="blue"
+                              className={`${
+                                answer === i.toString()
+                                  ? "shadow-inner text-white"
+                                  : ""
+                              } shadow-md`}
+                              variant={
+                                answer === i.toString() ? "filled" : "outline"
+                              }
+                            >
+                              <p className="text-lg"> {description}</p>
+                            </Button>
+                          </Grid.Col>
+                        );
+                      }
+                    )}
+                  </Grid>
+                  <Button
+                    onClick={() => {
+                      //connect();
+                      setStep(0);
+                      setTimeout(() => {
+                        var cat = localStorage.getItem("fromSession");
+                        socketManager.send(
+                          "/pub/room/" + router.query.pin + "/submit",
+                          {},
+                          JSON.stringify({
+                            messageType: "ANSWER", // 반드시 "ANSWER"
+                            fromSession: cat, // 사용자 session id - google login시 발급
+                            problemIdx: curIdx, // 제출한 문제의 번호
+                            answerText: answer.toString(),
+                          })
+                        );
+                      }, 500);
+                      // client.send(
+                      //   "/pub/room/" + pin + "/submit",
+                      //   {},
+                      //   JSON.stringify({
+                      //     messageType: "ANSWER", // 반드시 "ANSWER"
+                      //     fromSession: "", // 사용자 session id - google login시 발급
+                      //     problemIdx: 0, // 제출한 문제의 번호
+                      //     answerText: answer.toString,
+                      //   })
+                      // );
+                    }}
+                    size="lg"
+                    color="blue"
+                  >
+                    제출하기
+                  </Button>
+                </>
+              ) : (
+                <></>
+              )}
+              {problemOption.dtype === "OXProblem" ? (
+                <>
+                  <Stack spacing={10}>
+                    <Button
+                      fullWidth
+                      style={{ height: "150px" }}
+                      onClick={() => {
+                        setAnswer(answer === "0" ? "-1" : "0");
+                      }}
+                      color="blue.6"
+                      className={`!max-w-[100%] !basis-4/4 ${
+                        answer === "0" ? "shadow-inner text-white" : ""
+                      } shadow-md`}
+                      variant={answer === "0" ? "filled" : "outline"}
+                    >
+                      <span className="text-6xl font-bold">O</span>
+                    </Button>
+                    <Button
+                      fullWidth
+                      style={{ height: "150px" }}
+                      onClick={() => {
+                        setAnswer(answer === "1" ? "-1" : "1");
+                      }}
+                      color="red.6"
+                      className={`${
+                        answer === "1" ? "shadow-inner text-white" : ""
+                      } shadow-md`}
+                      variant={answer === "1" ? "filled" : "outline"}
+                    >
+                      <span className="text-6xl font-bold">X</span>
+                    </Button>
+                  </Stack>
+                  <Button
+                    onClick={() => {
+                      //connect();
+                      setStep(0);
+                      setTimeout(() => {
+                        var cat = localStorage.getItem("fromSession");
+                        socketManager.send(
+                          "/pub/room/" + router.query.pin + "/submit",
+                          {},
+                          JSON.stringify({
+                            messageType: "ANSWER", // 반드시 "ANSWER"
+                            fromSession: cat, // 사용자 session id - google login시 발급
+                            problemIdx: curIdx, // 제출한 문제의 번호
+                            answerText: answer.toString(),
+                          })
+                        );
+                      }, 500);
+                    }}
+                    size="lg"
+                    color="orange"
+                  >
+                    제출하기
+                  </Button>
+                </>
+              ) : (
+                <></>
+              )}
+              {problemOption.dtype === "SubjectiveProblem" ? (
+                <>
+                  <TextInput
+                    size="xl"
+                    rightSection={
+                      <ActionIcon
+                        onClick={() => {
+                          setAnswer("");
+                          setSubjectiveOption(playSubjectiveOption);
+                        }}
                       >
-                        <Button
-                          fullWidth
-                          style={{ height: "150px" }}
-                          onClick={() => {
-                            setAnswer(answer === i ? -1 : i);
-                          }}
-                          color="blue"
-                          className={`${
-                            answer === i ? "shadow-inner text-white" : ""
-                          } shadow-md`}
-                          variant={answer === i ? "filled" : "outline"}
-                        >
-                          <p className="text-lg"> {description}</p>
-                        </Button>
-                      </Grid.Col>
-                    );
-                  }
-                )}
-              </Grid>
-              <Button
-                onClick={() => {
-                  //connect();
-                  setStep(0);
-                  setTimeout(() => {
-                    var cat = localStorage.getItem("fromSession");
-                    client.send(
-                      "/pub/room/" + router.query.pin + "/submit",
-                      {},
-                      JSON.stringify({
-                        messageType: "ANSWER", // 반드시 "ANSWER"
-                        fromSession: cat, // 사용자 session id - google login시 발급
-                        problemIdx: 0, // 제출한 문제의 번호
-                        answerText: answer.toString(),
-                      })
-                    );
-                  }, 500);
-                  // client.send(
-                  //   "/pub/room/" + pin + "/submit",
-                  //   {},
-                  //   JSON.stringify({
-                  //     messageType: "ANSWER", // 반드시 "ANSWER"
-                  //     fromSession: "", // 사용자 session id - google login시 발급
-                  //     problemIdx: 0, // 제출한 문제의 번호
-                  //     answerText: answer.toString,
-                  //   })
-                  // );
-                }}
-                size="lg"
-                color="blue"
-              >
-                제출하기
-              </Button>
+                        <Trash></Trash>
+                      </ActionIcon>
+                    }
+                    value={answer}
+                    placeholder="아래 자판에서 정답을 완성해보세요"
+                  ></TextInput>
+                  <Grid columns={5} className="" justify="center" gutter="sm">
+                    {problemOption.problemOptions.map(
+                      ({ description, idx, picture }, i) => {
+                        let color = ["red", "blue", "green", "orange"];
+                        let bgColor = "hover:bg-" + color[i] + "-500";
+                        return (
+                          <>
+                            <Grid.Col
+                              className="!max-w-[20%] !basis-1/5"
+                              key={i}
+                              span={1}
+                              offset={0}
+                            >
+                              <Button
+                                fullWidth
+                                style={{ height: "150px" }}
+                                onClick={() => {
+                                  if (subjectiveOption[i] === false)
+                                    setAnswer(answer + description);
+                                }}
+                                color="blue"
+                                className={`${
+                                  subjectiveOption[i] === true
+                                    ? "shadow-inner text-white"
+                                    : ""
+                                } shadow-md`}
+                                variant={
+                                  subjectiveOption[i] === true
+                                    ? "filled"
+                                    : "outline"
+                                }
+                              >
+                                <p className="text-lg"> {description}</p>
+                              </Button>
+                            </Grid.Col>
+                          </>
+                        );
+                      }
+                    )}
+                  </Grid>
+                  <Button
+                    onClick={() => {
+                      //connect();
+                      setStep(0);
+                      setTimeout(() => {
+                        var cat = localStorage.getItem("fromSession");
+                        socketManager.send(
+                          "/pub/room/" + router.query.pin + "/submit",
+                          {},
+                          JSON.stringify({
+                            messageType: "ANSWER", // 반드시 "ANSWER"
+                            fromSession: cat, // 사용자 session id - google login시 발급
+                            problemIdx: curIdx, // 제출한 문제의 번호
+                            answerText: answer.toString(),
+                          })
+                        );
+                      }, 500);
+                      // client.send(
+                      //   "/pub/room/" + pin + "/submit",
+                      //   {},
+                      //   JSON.stringify({
+                      //     messageType: "ANSWER", // 반드시 "ANSWER"
+                      //     fromSession: "", // 사용자 session id - google login시 발급
+                      //     problemIdx: 0, // 제출한 문제의 번호
+                      //     answerText: answer.toString,
+                      //   })
+                      // );
+                    }}
+                    size="lg"
+                    color="blue"
+                  >
+                    제출하기
+                  </Button>
+                </>
+              ) : (
+                <></>
+              )}
             </Stack>
           </Container>
         </>

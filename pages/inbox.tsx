@@ -177,7 +177,7 @@ const Home: NextPage = () => {
     let rt = Infinity;
     await axios
       .post(connectMainServerApiAddress + "api/room/newRoom", {
-        maxParticipantCount: 30,
+        maxParticipantCount: room.maxParticipantCount,
         problemsetId: (problemsets[problemsetIdx] as any).id,
         roomName: room.roomName,
       })
@@ -416,16 +416,13 @@ const Home: NextPage = () => {
           ></Textarea>
 
           <p className="m-0 font-bold">참가 인원</p>
-          {/* <Select
+          <Select
             onChange={(event) => {
-              let num = [10, 20, 30, 40, 50];
-              let nxt = num[parseInt(event || "") / 25];
               let copy = JSON.parse(JSON.stringify(room));
-              copy.maxParticipantCount = nxt;
+              copy.maxParticipantCount = event;
               setRoom(copy);
-              alert(room.maxParticipantCount);
             }}
-            label="참가 인원"
+            label=""
             placeholder="참가 인원을 선택하세요"
             value={room.maxParticipantCount.toString()}
             data={[
@@ -435,7 +432,7 @@ const Home: NextPage = () => {
               { value: "40", label: "40명" },
               { value: "50", label: "50명" },
             ]}
-          /> */}
+          />
           <br></br>
           <Button
             size="lg"
