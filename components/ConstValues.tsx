@@ -182,15 +182,19 @@ export const noun = [
 ];
 
 export const avatarAnimal = [
-  "https://www.exquiz.me/dog.png",
-  "https://www.exquiz.me/dog2.png",
-  "https://www.exquiz.me/fox.png",
-  "https://www.exquiz.me/koala.png",
-  "https://www.exquiz.me/monkey.png",
-  "https://www.exquiz.me/panda.png",
-  "https://www.exquiz.me/rabbit.png",
-  "https://www.exquiz.me/rat.png",
-  "https://www.exquiz.me/wolf.png",
+  "/dog.png",
+  "/dog2.png",
+  "/fox.png",
+  "/koala.png",
+  "/monkey.png",
+  "/panda.png",
+  "/rabbit.png",
+  "/rat.png",
+  "/wolf.png",
+  "/boar.png",
+  "/cat.png",
+  "/cow.png",
+  "/hamster.png",
 ];
 
 export const avatarColor = [
@@ -205,189 +209,6 @@ export const avatarColor = [
   "bg-yellow-500",
   "bg-teal-500",
   "bg-indigo-500",
-];
-
-export const testUserData = [
-  {
-    nickname: "성찰하는 소크라테스",
-    animal: "Panda",
-    color: "orange",
-    answer: false,
-  },
-  {
-    nickname: "고뇌하는 니체",
-    animal: "Panda",
-    color: "orange",
-    answer: true,
-  },
-  {
-    nickname: "엉뚱한 튜링",
-    animal: "Panda",
-    color: "orange",
-    answer: false,
-  },
-  {
-    nickname: "활기찬 뉴턴",
-    animal: "Panda",
-    color: "orange",
-    answer: false,
-  },
-  {
-    nickname: "명랑한 브라헤",
-    animal: "Panda",
-    color: "orange",
-    answer: true,
-  },
-  {
-    nickname: "정의로운 보어",
-    animal: "Panda",
-    color: "orange",
-    answer: false,
-  },
-  {
-    nickname: "창의적인 레오나르도",
-    animal: "Panda",
-    color: "orange",
-    answer: false,
-  },
-  {
-    nickname: "사색하는 공자",
-    animal: "Panda",
-    color: "orange",
-    answer: true,
-  },
-  {
-    nickname: "부유한 스미스",
-    animal: "Panda",
-    color: "orange",
-    answer: false,
-  },
-  {
-    nickname: "정직한 데카르트",
-    animal: "Panda",
-    color: "orange",
-    answer: true,
-  },
-  {
-    nickname: "슬기로운 세종",
-    animal: "Panda",
-    color: "orange",
-    answer: false,
-  },
-  {
-    nickname: "유능한 한신",
-    animal: "Panda",
-    color: "orange",
-    answer: false,
-  },
-  {
-    nickname: "전설적인 칸",
-    animal: "Panda",
-    color: "orange",
-    answer: false,
-  },
-  {
-    nickname: "전략적인 제갈공명",
-    animal: "Panda",
-    color: "orange",
-    answer: true,
-  },
-  {
-    nickname: "신박한 유레카",
-    animal: "Panda",
-    color: "orange",
-    answer: false,
-  },
-  {
-    nickname: "듬직한 테슬라",
-    animal: "Panda",
-    color: "orange",
-    answer: true,
-  },
-  {
-    nickname: "명석한 칼세이건",
-    animal: "Panda",
-    color: "orange",
-    answer: true,
-  },
-  {
-    nickname: "건강한 클레오파트라",
-    animal: "Panda",
-    color: "orange",
-    answer: false,
-  },
-  {
-    nickname: "용감한 이순신",
-    animal: "Panda",
-    color: "orange",
-    answer: false,
-  },
-  {
-    nickname: "공평한 링컨",
-    animal: "Panda",
-    color: "orange",
-    answer: false,
-  },
-  {
-    nickname: "신속한 나폴레옹",
-    animal: "Panda",
-    color: "orange",
-    answer: false,
-  },
-  {
-    nickname: "뛰어난 워렌버핏",
-    animal: "Panda",
-    color: "orange",
-    answer: true,
-  },
-  {
-    nickname: "비장한 스티브잡스",
-    animal: "Panda",
-    color: "orange",
-    answer: false,
-  },
-  {
-    nickname: "신들린 모차르트",
-    animal: "Panda",
-    color: "orange",
-    answer: false,
-  },
-  {
-    nickname: "감각적인 고흐",
-    animal: "Panda",
-    color: "orange",
-    answer: false,
-  },
-  {
-    nickname: "독보적인 내쉬",
-    animal: "Panda",
-    color: "orange",
-    answer: true,
-  },
-  {
-    nickname: "헌신적인 테레사",
-    animal: "Panda",
-    color: "orange",
-    answer: false,
-  },
-  {
-    nickname: "위대한 스티븐호킹",
-    animal: "Panda",
-    color: "orange",
-    answer: false,
-  },
-  {
-    nickname: "입체적인 피카소",
-    animal: "Panda",
-    color: "orange",
-    answer: true,
-  },
-  {
-    nickname: "성스러운 잔다르크",
-    animal: "Panda",
-    color: "orange",
-    answer: false,
-  },
 ];
 
 export const tabColor = [

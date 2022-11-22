@@ -488,7 +488,7 @@ const Home: NextPage = () => {
                         randAvatarColor.toString()
                       );
                     }}
-                    className={`w-[140px] h-[140px] ${avatarColor[color]} rounded-full shadow-lg`}
+                    className={`w-[160px] h-[160px] ${avatarColor[color]} rounded-full shadow-lg`}
                   >
                     <Image
                       alt="hello"

@@ -409,7 +409,7 @@ const Home: NextPage = () => {
               <X></X>
             </ActionIcon>
           </Group>
-          <p className="m-0 font-bold">추가 정보</p>
+          <p className="m-0 font-bold">방 정보</p>
           <Textarea
             onChange={(event) => {
               let copy = { ...room, roomName: event.currentTarget.value };
