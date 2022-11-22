@@ -287,22 +287,7 @@ const Home: NextPage = () => {
         ) : (
           <></>
         )}
-        {problemOption.dtype === "SubjectiveProblem" ? (
-          <Grid columns={2} gutter="xl">
-            {problemOption.problemOptions.map(({ description }, i) => {
-              return (
-                <Grid.Col className="h-[35vh]" key={i} span={1}>
-                  <Group className="!h-60 bg-white rounded-xl">
-                    <p className="text-2xl text-left">{i + 1}. </p>
-                    <p className="text-2xl text-center">{description}</p>
-                  </Group>
-                </Grid.Col>
-              );
-            })}
-          </Grid>
-        ) : (
-          <></>
-        )}
+        {problemOption.dtype === "SubjectiveProblem" ? <></> : <></>}
       </>
     );
   };

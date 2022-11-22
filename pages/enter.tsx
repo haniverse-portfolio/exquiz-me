@@ -60,8 +60,8 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     localStorage.removeItem("fromSession");
-    localStorage.removeItem("imageNumber");
-    localStorage.removeItem("colorNumber");
+    localStorage.setItem("imageNumber", "0");
+    localStorage.setItem("colorNumber", "0");
     localStorage.removeItem("name");
     localStorage.removeItem("nickname");
   }, [router.isReady]);
@@ -109,15 +109,15 @@ const Home: NextPage = () => {
   const [pinStep, setPinStep] = useState(0);
 
   const [playRoom, setPlayRoom] = useRecoilState(playRoomInfo);
+
+  const [socketManager, setSocketManager] = useState<any>(null);
   let createRand = () => {};
 
-  let client: Stomp.Client;
-  let socket = new SockJS(connectMainServerApiAddress + "stomp");
-  client = Stomp.over(socket);
-
   let connect = () => {
+    let client: Stomp.Client;
+    let socket = new SockJS(connectMainServerApiAddress + "stomp");
+    client = Stomp.over(socket);
     const headers = {};
-
     let reconnect = 0;
     client.connect(
       {},
@@ -157,10 +157,15 @@ const Home: NextPage = () => {
           }
         });
       },
-      function (error) {
-        console.log("websocket error");
-      }
+      function (error) {}
     );
+    setSocketManager(client);
+    socket.onclose = function () {
+      setTimeout(() => {
+        socket = connect();
+      }, 1000);
+    };
+    return socket;
   };
 
   return (
@@ -487,7 +492,7 @@ const Home: NextPage = () => {
                 <Button
                   size="lg"
                   onClick={() => {
-                    client.send(
+                    socketManager.send(
                       "/pub/room/" + pin + "/signup",
                       {},
                       JSON.stringify({
