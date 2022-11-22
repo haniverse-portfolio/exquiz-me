@@ -60,6 +60,10 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     localStorage.removeItem("fromSession");
+    localStorage.removeItem("imageNumber");
+    localStorage.removeItem("colorNumber");
+    localStorage.removeItem("name");
+    localStorage.removeItem("nickname");
   }, [router.isReady]);
 
   /* 2. modal */
@@ -91,7 +95,7 @@ const Home: NextPage = () => {
         setPlayRoom(result.data);
         // validation
         if (result.data.currentState !== "READY") return;
-        setStep((prevstate) => step + 1);
+        setStep((prevstate) => 1);
       })
       .catch((error) => {});
     return;
@@ -121,10 +125,25 @@ const Home: NextPage = () => {
         client.subscribe("/topic/room/" + pin + "/host", function (message) {
           if (JSON.parse(message.body).messageType === "PARTICIPANT") {
             if (localStorage.getItem("fromSession") === null) {
-              if (JSON.parse(message.body).name !== name) return;
-              if (JSON.parse(message.body).nickname !== nickname) return;
-              if (JSON.parse(message.body).imageNumber !== animal) return;
-              if (JSON.parse(message.body).colorNumber !== color) return;
+              if (
+                JSON.parse(message.body).name !== localStorage.getItem("name")
+              )
+                return;
+              if (
+                JSON.parse(message.body).nickname !==
+                localStorage.getItem("nickname")
+              )
+                return;
+              if (
+                JSON.parse(message.body).imageNumber.toString() !==
+                localStorage.getItem("imageNumber")
+              )
+                return;
+              if (
+                JSON.parse(message.body).colorNumber.toString() !==
+                localStorage.getItem("colorNumber")
+              )
+                return;
               setUserCurInfo(JSON.parse(message.body));
               localStorage.setItem(
                 "fromSession",
@@ -132,8 +151,8 @@ const Home: NextPage = () => {
               );
               setTimeout(() => {
                 Router.push(`/play/${pin}`);
-              }, 500);
-              setVisible(false);
+                setVisible(false);
+              }, 2000);
             }
           }
         });
@@ -385,6 +404,14 @@ const Home: NextPage = () => {
                         1;
                       setAnimal(randAnimal);
                       setColor(randAvatarColor);
+                      localStorage.setItem(
+                        "imageNumber",
+                        randAnimal.toString()
+                      );
+                      localStorage.setItem(
+                        "colorNumber",
+                        randAvatarColor.toString()
+                      );
                     }}
                     className={`w-[140px] h-[140px] ${avatarColor[color]} rounded-full shadow-lg`}
                   >
@@ -407,6 +434,7 @@ const Home: NextPage = () => {
                     value={name}
                     onChange={(event) => {
                       setName((prevState) => event.target.value);
+                      localStorage.setItem("name", event.target.value);
                     }}
                     placeholder="본인 확인을 위한 이름을 적어주세요"
                   ></TextInput>
@@ -432,6 +460,10 @@ const Home: NextPage = () => {
                           let randNum2 =
                             Math.floor(Math.random() * (100 - 1)) + 1;
                           setNickname(randAdjective + randNoun + randNum2);
+                          localStorage.setItem(
+                            "nickname",
+                            randAdjective + randNoun + randNum2
+                          );
                         }}
                         variant="outline"
                         color="orange"
@@ -444,6 +476,7 @@ const Home: NextPage = () => {
                     value={nickname}
                     onChange={(event) => {
                       setNickname((prevState) => event.target.value);
+                      localStorage.setItem("nickname", event.target.value);
                     }}
                     placeholder="퀴즈에 사용될 닉네임을 입력해주세요"
                   ></TextInput>
