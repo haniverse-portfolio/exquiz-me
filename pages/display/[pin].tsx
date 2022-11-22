@@ -67,6 +67,8 @@ const Home: NextPage = () => {
         client.subscribe(
           "/topic/room/" + router.query.pin + "/host",
           function (message) {
+            // socket ready?
+            if (socket.readyState !== 1) return;
             if (JSON.parse(message.body).messageType === "ANSWER") {
               setSubmitCount(submitCount + 1);
             } else if (JSON.parse(message.body).messageType === "NEW_PROBLEM") {
@@ -99,7 +101,7 @@ const Home: NextPage = () => {
       setTimeout(() => {
         getParticipants();
         socket = connect();
-      }, 1000);
+      }, 1);
     };
 
     return socket;
@@ -463,7 +465,11 @@ const Home: NextPage = () => {
                 {correctAnswerList.participantInfo.map((cur: any, i) => {
                   return (
                     <Grid.Col
-                      className=" flex items-center justify-center h-60"
+                      className={`${
+                        correctAnswerList.isCorrect[i] === false
+                          ? "opacity-60"
+                          : ""
+                      } flex items-center justify-center h-60"`}
                       span={1}
                       key={i}
                     >

@@ -114,9 +114,10 @@ const Home: NextPage = () => {
         client.subscribe(
           "/topic/room/" + router.query.pin + "/host",
           function (message) {
+            // socket ready?
+            if (socket.readyState !== 1) return;
             if (JSON.parse(message.body).messageType === "PARTICIPANT") {
               setPartlist(JSON.parse(message.body).participantList);
-            } else if (JSON.parse(message.body).messageType === "NEW_PROBLEM") {
             }
           }
         );
@@ -130,7 +131,7 @@ const Home: NextPage = () => {
       setTimeout(() => {
         getPartlist();
         socket = connect();
-      }, 1000);
+      }, 1);
     };
 
     return socket;
@@ -256,7 +257,7 @@ const Home: NextPage = () => {
                                 src={avatarAnimal[cur.imageNumber]}
                                 width={"120px"}
                                 height={"120px"}
-                              ></Image>
+                              />
                             </Center>
                             <p className="font-semibold 2xl:text-lg md:text-sm pb-4 text-center text-black">
                               {cur.nickname}

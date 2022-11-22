@@ -44,10 +44,11 @@ const Home: NextPage = () => {
     client.connect(
       {},
       function (frame) {
-        console.log(router.query.pin);
         if (router.query.pin === undefined) router.push("/404");
 
         client.subscribe("/topic/room/" + router.query.pin, function (message) {
+          // socket ready?
+          if (socket.readyState !== 1) return;
           if (JSON.parse(message.body).messageType === "NEW_PROBLEM") {
             setProblemOption(JSON.parse(message.body));
             setCurIdx(JSON.parse(message.body).idx);
@@ -66,7 +67,7 @@ const Home: NextPage = () => {
     socket.onclose = function () {
       setTimeout(() => {
         socket = connect();
-      }, 1000);
+      }, 1);
     };
 
     return socket;

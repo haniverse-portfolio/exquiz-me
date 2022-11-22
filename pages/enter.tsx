@@ -41,6 +41,7 @@ import {
 import { useScrollIntoView } from "@mantine/hooks";
 import { Refresh, ZoomQuestion } from "tabler-icons-react";
 import { useRef } from "react";
+import { runInNewContext } from "vm";
 
 const Home: NextPage = () => {
   const router = useRouter();
@@ -111,6 +112,7 @@ const Home: NextPage = () => {
   const [playRoom, setPlayRoom] = useRecoilState(playRoomInfo);
 
   const [socketManager, setSocketManager] = useState<any>(null);
+
   let createRand = () => {};
 
   let connect = () => {
@@ -123,6 +125,12 @@ const Home: NextPage = () => {
       {},
       function (frame) {
         client.subscribe("/topic/room/" + pin + "/host", function (message) {
+          // socket ready?
+          if (socket.readyState !== 1) {
+            setVisible(false);
+            return;
+          }
+
           if (JSON.parse(message.body).messageType === "PARTICIPANT") {
             if (localStorage.getItem("fromSession") === null) {
               if (
@@ -163,7 +171,7 @@ const Home: NextPage = () => {
     socket.onclose = function () {
       setTimeout(() => {
         socket = connect();
-      }, 1000);
+      }, 1);
     };
     return socket;
   };
