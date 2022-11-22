@@ -43,3 +43,14 @@ body {
   /* overflow: auto; */
   scroll-snap-type: y mandatory;
 }
+
+input:focus {
+  outline: none;
+}
+button:focus {
+  outline: none;
+}
+
+img:focus {
+  outline: none;
+}

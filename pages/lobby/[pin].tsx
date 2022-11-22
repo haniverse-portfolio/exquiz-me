@@ -119,7 +119,8 @@ const Home: NextPage = () => {
             if (JSON.parse(message.body).messageType === "PARTICIPANT") {
               setPartlist(JSON.parse(message.body).participantList);
             }
-          }
+          },
+          { id: "lobby" }
         );
       },
       function (error) {
@@ -241,7 +242,7 @@ const Home: NextPage = () => {
                     {partlist.map((cur: any, i) => {
                       return (
                         <Grid.Col
-                          className="fadeUp flex items-center justify-center h-60"
+                          className="animate-fadeUp flex items-center justify-center h-60"
                           span={1}
                           key={i}
                         >

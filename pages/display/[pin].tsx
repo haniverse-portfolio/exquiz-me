@@ -467,9 +467,9 @@ const Home: NextPage = () => {
                     <Grid.Col
                       className={`${
                         correctAnswerList.isCorrect[i] === false
-                          ? "opacity-60"
+                          ? "opacity-80"
                           : ""
-                      } flex items-center justify-center h-60"`}
+                      } flex items-center justify-center h-60 animate-fadeUp`}
                       span={1}
                       key={i}
                     >

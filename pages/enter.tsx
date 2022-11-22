@@ -124,46 +124,53 @@ const Home: NextPage = () => {
     client.connect(
       {},
       function (frame) {
-        client.subscribe("/topic/room/" + pin + "/host", function (message) {
-          // socket ready?
-          if (socket.readyState !== 1) {
-            setVisible(false);
-            return;
-          }
-
-          if (JSON.parse(message.body).messageType === "PARTICIPANT") {
-            if (localStorage.getItem("fromSession") === null) {
-              if (
-                JSON.parse(message.body).name !== localStorage.getItem("name")
-              )
-                return;
-              if (
-                JSON.parse(message.body).nickname !==
-                localStorage.getItem("nickname")
-              )
-                return;
-              if (
-                JSON.parse(message.body).imageNumber.toString() !==
-                localStorage.getItem("imageNumber")
-              )
-                return;
-              if (
-                JSON.parse(message.body).colorNumber.toString() !==
-                localStorage.getItem("colorNumber")
-              )
-                return;
-              setUserCurInfo(JSON.parse(message.body));
-              localStorage.setItem(
-                "fromSession",
-                JSON.parse(message.body).fromSession
-              );
-              setTimeout(() => {
-                Router.push(`/play/${pin}`);
-                setVisible(false);
-              }, 2000);
+        client.subscribe(
+          "/topic/room/" + pin + "/host",
+          function (message) {
+            // socket ready?
+            if (socket.readyState !== 1) {
+              alert("아직 준비안됐어!");
+              setVisible(false);
+              return;
             }
-          }
-        });
+
+            if (JSON.parse(message.body).messageType === "PARTICIPANT") {
+              alert("참가자 메세지");
+              if (localStorage.getItem("fromSession") === null) {
+                if (
+                  JSON.parse(message.body).name !== localStorage.getItem("name")
+                )
+                  return;
+                if (
+                  JSON.parse(message.body).nickname !==
+                  localStorage.getItem("nickname")
+                )
+                  return;
+                if (
+                  JSON.parse(message.body).imageNumber.toString() !==
+                  localStorage.getItem("imageNumber")
+                )
+                  return;
+                if (
+                  JSON.parse(message.body).colorNumber.toString() !==
+                  localStorage.getItem("colorNumber")
+                )
+                  return;
+                setUserCurInfo(JSON.parse(message.body));
+                localStorage.setItem(
+                  "fromSession",
+                  JSON.parse(message.body).fromSession
+                );
+                client.unsubscribe("enter");
+                setTimeout(() => {
+                  Router.push(`/play/${pin}`);
+                  setVisible(false);
+                }, 2000);
+              }
+            }
+          },
+          { id: "enter" }
+        );
       },
       function (error) {}
     );
