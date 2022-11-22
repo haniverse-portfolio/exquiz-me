@@ -88,6 +88,7 @@ export const CompleteModal = () => {
           setCompleteModalOpened("0");
 
           let psId = await postProblemsetId();
+          let timeSum = 0;
 
           /* *** problem loop start *** */
           problem.forEach(async (curProblem, problemIdx) => {

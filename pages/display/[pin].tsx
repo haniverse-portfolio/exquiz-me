@@ -86,10 +86,8 @@ const Home: NextPage = () => {
             } else if (JSON.parse(message.body).messageType === "STOP") {
               setProblemOption(JSON.parse(message.body));
               setSeconds(JSON.parse(message.body).timelimit);
-              setTimeout(() => {
-                getCorrectAnswerList();
-                setStep(1);
-              }, 1500);
+              getCorrectAnswerList();
+              setStep(1);
             }
           }
         );
@@ -323,13 +321,6 @@ const Home: NextPage = () => {
             잠시 후 퀴즈가 시작됩니다...
           </p>
         </Stack>
-        {/* <Button
-            onClick={() => {
-              setStep(1);
-            }}
-          >
-            다음 스텝으로
-          </Button> */}
       </Stack>
     );
   };

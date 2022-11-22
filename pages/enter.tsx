@@ -50,8 +50,6 @@ const Home: NextPage = () => {
 
   const { scrollIntoView, targetRef, scrollableRef } = useScrollIntoView();
   const [step, setStep] = useState(0);
-  const [animal, setAnimal] = useRecoilState(playAnimal);
-  const [color, setColor] = useRecoilState(playColor);
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -99,9 +97,11 @@ const Home: NextPage = () => {
     return;
   };
 
-  const [nickname, setNickname] = useState("");
   const [userCurInfo, setUserCurInfo] = useRecoilState(playUserCurInfo);
+  const [nickname, setNickname] = useState("");
   const [name, setName] = useState("");
+  const [animal, setAnimal] = useState(0);
+  const [color, setColor] = useState(0);
   const [pinStep, setPinStep] = useState(0);
 
   const [playRoom, setPlayRoom] = useRecoilState(playRoomInfo);
@@ -121,6 +121,10 @@ const Home: NextPage = () => {
         client.subscribe("/topic/room/" + pin + "/host", function (message) {
           if (JSON.parse(message.body).messageType === "PARTICIPANT") {
             if (localStorage.getItem("fromSession") === null) {
+              if (JSON.parse(message.body).name !== name) return;
+              if (JSON.parse(message.body).nickname !== nickname) return;
+              if (JSON.parse(message.body).imageNumber !== animal) return;
+              if (JSON.parse(message.body).colorNumber !== color) return;
               setUserCurInfo(JSON.parse(message.body));
               localStorage.setItem(
                 "fromSession",
