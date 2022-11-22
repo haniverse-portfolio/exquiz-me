@@ -613,7 +613,7 @@ export const Main = () => {
                             >
                               <Stack>
                                 <TextInput
-                                  label="유튜브 URL"
+                                  label="유튜브 공유 URL"
                                   placeholder="링크를 입력해주세요"
                                   size="md"
                                   onChange={(event) => {

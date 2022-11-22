@@ -142,6 +142,7 @@ const IndexNavigation = () => {
                     로그아웃
                   </Button>
                   <Button
+                    disabled
                     onClick={() => {
                       router.push("/mypage");
                     }}

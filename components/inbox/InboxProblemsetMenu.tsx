@@ -149,7 +149,7 @@ export let InboxProblemsetMenu = () => {
             </Stack>
           </Group>
           <Group className="" position="apart">
-            <ActionIcon radius="md" color="blue" variant="light">
+            <ActionIcon disabled radius="md" color="blue" variant="light">
               <Pencil></Pencil>
             </ActionIcon>
             <Group>

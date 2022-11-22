@@ -345,7 +345,7 @@ const Home: NextPage = () => {
                       <></>
                     ) : (
                       <ActionIcon
-                        className=" mr-8"
+                        className="mr-8"
                         size="xl"
                         onClick={() => {
                           let copy = pin;
@@ -505,13 +505,13 @@ const Home: NextPage = () => {
                 {
                   <TextInput
                     maxLength={14}
-                    size="lg"
+                    size="xl"
                     value={name}
                     onChange={(event) => {
                       setName((prevState) => event.target.value);
                       localStorage.setItem("name", event.target.value);
                     }}
-                    placeholder="본인 확인을 위한 이름을 적어주세요"
+                    placeholder="이름을 적어주세요"
                   ></TextInput>
                 }
                 <p className="m-0 font-bold text-md text-left text-gray-400">
@@ -521,6 +521,9 @@ const Home: NextPage = () => {
                   <TextInput
                     rightSection={
                       <ActionIcon
+                        radius="xl"
+                        className="mr-8"
+                        size="xl"
                         onClick={() => {
                           let randAdjective =
                             adj[
@@ -540,20 +543,20 @@ const Home: NextPage = () => {
                             randAdjective + randNoun + randNum2
                           );
                         }}
-                        variant="outline"
+                        variant="transparent"
                         color="orange"
                       >
-                        <Refresh></Refresh>
+                        <Refresh size="xl"></Refresh>
                       </ActionIcon>
                     }
                     maxLength={10}
-                    size="lg"
+                    size="xl"
                     value={nickname}
                     onChange={(event) => {
                       setNickname((prevState) => event.target.value);
                       localStorage.setItem("nickname", event.target.value);
                     }}
-                    placeholder="퀴즈에 사용될 닉네임을 입력해주세요"
+                    placeholder="닉네임을 적어주세요"
                   ></TextInput>
                 }
 

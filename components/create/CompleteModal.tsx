@@ -1,8 +1,8 @@
 import { useRouter } from "next/router";
 import { useRecoilState } from "recoil";
 
-import { Stack, Group, Button, Modal } from "@mantine/core";
-import { AlertOctagon } from "tabler-icons-react";
+import { Stack, Group, Button, Modal, ActionIcon } from "@mantine/core";
+import { AlertCircle, AlertOctagon } from "tabler-icons-react";
 
 import {
   createOption,
@@ -76,72 +76,83 @@ export const CompleteModal = () => {
 
   return (
     <Modal
+      title={
+        <ActionIcon>
+          <AlertCircle color="orange"></AlertCircle>
+        </ActionIcon>
+      }
       centered
       opened={completeModalOpened === "0" ? false : true}
       onClose={() => setCompleteModalOpened("0")}
     >
-      <Button
-        variant="outline"
-        color="orange"
-        onClick={async () => {
-          setStep(1);
-          setCompleteModalOpened("0");
+      <Stack align="center">
+        <p>퀴즈 제작을 완료하시겠습니까?</p>
+        <Button
+          variant="outline"
+          color="orange"
+          onClick={async () => {
+            setStep(1);
+            setCompleteModalOpened("0");
 
-          let psId = await postProblemsetId();
-          let timeSum = 0;
+            let psId = await postProblemsetId();
+            let timeSum = 0;
 
-          /* *** problem loop start *** */
-          problem.forEach(async (curProblem, problemIdx) => {
-            const slicedProblem = { ...curProblem } as any;
+            /* *** problem loop start *** */
+            problem.forEach(async (curProblem, problemIdx) => {
+              const slicedProblem = { ...curProblem } as any;
 
-            slicedProblem["idx"] = problemIdx;
-            slicedProblem["problemsetId"] = psId;
-            slicedProblem["dtype"] =
-              dtypeFullName[parseInt(slicedProblem.dtype)];
-            console.log(problemIdx + " : " + slicedProblem);
+              slicedProblem["idx"] = problemIdx;
+              slicedProblem["problemsetId"] = psId;
+              slicedProblem["dtype"] =
+                dtypeFullName[parseInt(slicedProblem.dtype)];
+              console.log(problemIdx + " : " + slicedProblem);
 
-            /* *** problem axios *** */
-            const prId = await axios
-              .post(connectMainServerApiAddress + "api/problem", slicedProblem)
-              .then((result) => {
-                return result.data.id;
-              })
-              .catch((error) => {
-                alert("problem_error");
-              });
-
-            /* *** option loop start *** */
-            option[problemIdx].forEach((curOption, optionIdx) => {
-              const slicedOption = { ...curOption } as any;
-              slicedOption["idx"] = optionIdx;
-              slicedOption["problemId"] = prId;
-
-              console.log(optionIdx + " : " + slicedOption);
-              /* *** option axios *** */
-              axios
+              /* *** problem axios *** */
+              const prId = await axios
                 .post(
-                  connectMainServerApiAddress + "api/problem_option",
-                  slicedOption
+                  connectMainServerApiAddress + "api/problem",
+                  slicedProblem
                 )
                 .then((result) => {
-                  setStep(2);
-                  setTimeout(() => {
-                    setStep(0);
-                    router.push("/inbox");
-                  }, 500);
+                  return result.data.id;
                 })
                 .catch((error) => {
-                  // setError()
+                  alert("problem_error");
                 });
+
+              /* *** option loop start *** */
+              option[problemIdx].forEach((curOption, optionIdx) => {
+                const slicedOption = { ...curOption } as any;
+                slicedOption["idx"] = optionIdx;
+                slicedOption["problemId"] = prId;
+
+                console.log(optionIdx + " : " + slicedOption);
+                /* *** option axios *** */
+                axios
+                  .post(
+                    connectMainServerApiAddress + "api/problem_option",
+                    slicedOption
+                  )
+                  .then((result) => {
+                    setStep(2);
+                    setTimeout(() => {
+                      setStep(0);
+                      router.push("/inbox");
+                    }, 500);
+                  })
+                  .catch((error) => {
+                    // setError()
+                  });
+              });
             });
-          });
-          localStorage.removeItem("problemSet");
-          localStorage.removeItem("problem");
-          localStorage.removeItem("option");
-        }}
-      >
-        배포하기
-      </Button>
+            localStorage.removeItem("problemSet");
+            localStorage.removeItem("problem");
+            localStorage.removeItem("option");
+          }}
+        >
+          완료
+        </Button>
+      </Stack>
     </Modal>
   );
 };
