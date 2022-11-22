@@ -23,6 +23,7 @@ import {
   MantineProvider,
   Container,
   Loader,
+  TextInput,
 } from "@mantine/core";
 import { Alarm, Pencil } from "tabler-icons-react";
 
@@ -38,7 +39,7 @@ import {
   playCorrectAnswerList,
 } from "../../components/ConstValues";
 import axios from "axios";
-import { indexIsLogined } from "../../components/States";
+import { indexIsLogined, lobbyParticipants } from "../../components/States";
 
 const Home: NextPage = () => {
   /* initialization */
@@ -48,6 +49,7 @@ const Home: NextPage = () => {
   const router = useRouter();
   /* *** core initialization *** */
   const bgAudio = useRef(null) as any;
+  // bgAudio.loop = true;
   const endingEffectAudio = useRef(null) as any;
   const interval = useInterval(() => setSeconds((s) => s - 0.05), 50);
   /* *** web socket *** */
@@ -70,9 +72,11 @@ const Home: NextPage = () => {
             // socket ready?
             if (socket.readyState !== 1) return;
             if (JSON.parse(message.body).messageType === "ANSWER") {
-              if (submitCount + 1 === participants.length) {
-                setSeconds(0);
-              } else setSubmitCount(submitCount + 1);
+              // if (submitCount + 1 === partlist.length) {
+              //   setSeconds(0);
+              // } else {
+              //   setSubmitCount(submitCount + 1);
+              // }
             } else if (JSON.parse(message.body).messageType === "NEW_PROBLEM") {
               setSubmitCount(0);
               bgAudio.currentTime = 0;
@@ -143,7 +147,7 @@ const Home: NextPage = () => {
     ],
   });
 
-  const [participants, setParticipants] = useState(displayParticipants);
+  const [partlist, setPartlist] = useRecoilState(lobbyParticipants);
   const [socketManager, setSocketManager] = useState<any>(null);
 
   const [isLogined, setIsLogined] = useRecoilState(indexIsLogined);
@@ -208,12 +212,71 @@ const Home: NextPage = () => {
           "/participants"
       )
       .then((result) => {
-        setParticipants(result.data);
+        setPartlist(result.data);
       })
       .catch((error) => {
         // alert(error);
       });
     return;
+  };
+
+  let alternativeImage = () => {
+    return (
+      <Stack align="center" className="flex items-center justify-center">
+        <Stack className="mt-12">
+          <Group spacing={8} align="flex-start">
+            <img
+              className="!overflow-visible animate-[spin_4s_ease-in-out_infinite]"
+              src="/index/rectangle_right.svg"
+              alt="rectangle"
+              width={200}
+              height={200}
+            ></img>
+            <Stack spacing={8}>
+              <img
+                className="!overflow-visible animate-[bounce_2s_ease-in-out_infinite]"
+                src="/index/circle.svg"
+                alt="circle"
+                width={30}
+                height={30}
+              ></img>
+              <img
+                className="!overflow-visible animate-[bounce_3s_ease-in-out_infinite]"
+                src="/index/circle.svg"
+                alt="circle"
+                width={50}
+                height={50}
+              ></img>
+            </Stack>
+          </Group>
+          <Group align="flex-end">
+            <Stack>
+              <img
+                className="!overflow-visible animate-[bounce_2s_ease-in-out_infinite]"
+                src="/index/circle.svg"
+                alt="rectangle"
+                width={30}
+                height={30}
+              ></img>
+              <img
+                className="!overflow-visible animate-[bounce_3s_ease-in-out_infinite]"
+                src="/index/circle.svg"
+                alt="rectangle"
+                width={50}
+                height={50}
+              ></img>
+            </Stack>
+            <img
+              className="!overflow-visible animate-[spin_3s_ease-in-out_infinite]"
+              src="/index/rectangle_left.svg"
+              alt="rectangle"
+              width={120}
+              height={120}
+            ></img>
+          </Group>
+        </Stack>
+      </Stack>
+    );
   };
 
   let displayOptionComponent = () => {
@@ -259,38 +322,65 @@ const Home: NextPage = () => {
           <></>
         )}
         {problemOption.dtype === "SubjectiveProblem" ? (
-          <Grid columns={5} gutter="xl">
-            {problemOption.problemOptions.map(({ description }, i) => {
-              return (
-                <Grid.Col className="h-[23vh]" key={i} span={1}>
-                  <Group className="!h-60 bg-white rounded-xl">
-                    <p className="text-2xl text-left">{i + 1}. </p>
-                    <p className="text-2xl text-center">{description}</p>
-                  </Group>
-                </Grid.Col>
-              );
-            })}
-          </Grid>
+          <Stack spacing={120}>
+            <Grid
+              className="rounded-xl bg-[#85B6FF] border-2 border-solid border-[#447EFF]"
+              columns={problemOption.answer.length}
+              gutter={"xl"}
+            >
+              {problemOption.answer
+                .split("")
+                .map((i: React.Key | null | undefined) => {
+                  return (
+                    <Grid.Col key={i} span={1}>
+                      <Group
+                        position="center"
+                        className="border-2 border-solid border-gray-300 h-36 w-36 bg-white rounded-xl"
+                      >
+                        <p className="text-6xl text-center text-gray-300"></p>
+                      </Group>
+                    </Grid.Col>
+                  );
+                })}
+            </Grid>
+            <Grid columns={5} gutter="xl">
+              {problemOption.problemOptions.map(({ description }, i) => {
+                return (
+                  <Grid.Col key={i} span={1}>
+                    <Group
+                      position="center"
+                      className="border-2 border-solid border-gray-300 h-36 w-36 bg-white rounded-xl"
+                    >
+                      <p className="text-6xl text-center">{description}</p>
+                    </Group>
+                  </Grid.Col>
+                );
+              })}
+            </Grid>
+          </Stack>
         ) : (
           <></>
         )}
         {problemOption.dtype === "OXProblem" ? (
-          <Grid columns={2} gutter="xl">
-            <Grid.Col className="h-[70vh]" span={1}>
-              <Group className="!h-60 bg-white rounded-xl">
-                <p className="text-2xl text-left">O</p>
-              </Group>
+          <Grid gutter="xl" className="h-[50vh]" columns={2}>
+            <Grid.Col
+              span={1}
+              color="blue.6"
+              className=" flex items-center justify-center border-2 border-solid border-blue-500 rounded-xl bg-white shadow-md"
+            >
+              <span className="text-9xl font-bold text-blue-500">O</span>
             </Grid.Col>
-            <Grid.Col className="h-[70vh]" span={1}>
-              <Group className="!h-60 bg-white rounded-xl">
-                <p className="text-2xl text-left">X</p>
-              </Group>
+            <Grid.Col
+              span={1}
+              color="red.6"
+              className=" flex items-center justify-center border-2 border-solid border-red-500 rounded-xl bg-white shadow-md"
+            >
+              <span className="text-9xl font-bold text-red-500">X</span>
             </Grid.Col>
           </Grid>
         ) : (
           <></>
         )}
-        {problemOption.dtype === "SubjectiveProblem" ? <></> : <></>}
       </>
     );
   };
@@ -333,7 +423,7 @@ const Home: NextPage = () => {
                 >
                   <Progress
                     className="w-[70vw]"
-                    size="xl"
+                    size={30}
                     color="orange"
                     value={
                       ((seconds - 1) / problemOption.timelimit || 30) * 100.0
@@ -342,8 +432,8 @@ const Home: NextPage = () => {
                 </MantineProvider>
               </Grid.Col>
               <Grid.Col className="flex items-center jusitfy-center" span={2}>
-                <Group className="w-[40px] flex items-center jusitfy-center">
-                  <p className="font-semibold text-amber-500 text-4xl">
+                <Group className="ml-8 w-[40px] flex items-center jusitfy-center">
+                  <p className="font-semibold text-amber-500 text-5xl">
                     {Math.floor(seconds)}
                   </p>
                 </Group>
@@ -391,12 +481,17 @@ const Home: NextPage = () => {
                     {problemOption.description || ""}
                   </p>
                 </Group>
-                <Image
-                  className="rounded-xl"
-                  src={problemOption.picture || "/white.png"}
-                  width={300}
-                  height={500}
-                ></Image>
+                {problemOption.picture === "" ? (
+                  alternativeImage()
+                ) : (
+                  <Image
+                    layout="responsive"
+                    className="rounded-xl"
+                    src={problemOption.picture || "/white.png"}
+                    width={300}
+                    height={500}
+                  ></Image>
+                )}
               </Stack>
             </Grid.Col>
             <Grid.Col className="my-auto" span={1}>
@@ -422,7 +517,7 @@ const Home: NextPage = () => {
                 정답자 수는?
               </p>
               <p className="text-white font-bold text-6xl text-center">
-                {participants.length}명 중{" "}
+                {partlist.length}명 중{" "}
                 <strong className="text-6xl text-orange-500 font-bold">
                   {correctAnswerList.totalCorrectCount}명
                 </strong>
@@ -468,7 +563,7 @@ const Home: NextPage = () => {
                     <Grid.Col
                       className={`${
                         correctAnswerList.isCorrect[i] === false
-                          ? "opacity-80"
+                          ? "opacity-25"
                           : ""
                       } flex items-center justify-center h-60 animate-fadeUp`}
                       span={1}
@@ -645,6 +740,71 @@ const Home: NextPage = () => {
         className="invisible"
         src="/sounds/boom_short.mp3"
       ></audio>
+      <Group className="absolute top-0 right-0 z-50">
+        <Button
+          className="shadow-xl"
+          color="orange"
+          onClick={() => {
+            setStep(-1);
+          }}
+        >
+          대기중
+        </Button>
+        <Button
+          className="shadow-xl"
+          color="orange"
+          onClick={() => {
+            setStep(0);
+          }}
+        >
+          문제 표시
+        </Button>
+        <Button
+          className="shadow-xl"
+          color="orange"
+          onClick={() => {
+            setStep(1);
+          }}
+        >
+          정답자 표시
+        </Button>
+        <Button
+          className="shadow-xl"
+          color="orange"
+          onClick={() => {
+            setStep(2);
+          }}
+        >
+          결과 표시
+        </Button>
+        <Button
+          className="shadow-xl"
+          color="blue"
+          onClick={() => {
+            setSeconds(10000);
+          }}
+        >
+          시간 정지
+        </Button>
+        <Button
+          className="shadow-xl"
+          color="blue"
+          onClick={() => {
+            setSeconds(0);
+          }}
+        >
+          시간 종료
+        </Button>
+        <Button
+          className="shadow-xl"
+          color="green"
+          onClick={() => {
+            alert(submitCount);
+          }}
+        >
+          제출자 수
+        </Button>
+      </Group>
       {/* audio */}
       <main className="h-[100vh] bg-[#EDF4F7]">
         <section>

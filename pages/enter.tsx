@@ -29,6 +29,7 @@ import {
   Container,
   Divider,
   Loader,
+  Grid,
 } from "@mantine/core";
 
 import {
@@ -39,7 +40,7 @@ import {
   avatarColor,
 } from "../components/ConstValues";
 import { useScrollIntoView } from "@mantine/hooks";
-import { Refresh, ZoomQuestion } from "tabler-icons-react";
+import { Backspace, Refresh, ZoomQuestion } from "tabler-icons-react";
 import { useRef } from "react";
 import { runInNewContext } from "vm";
 
@@ -60,9 +61,23 @@ const Home: NextPage = () => {
   }, [step]);
 
   useEffect(() => {
+    let len = pin.length;
+    if (len === 0) setPinStep(0);
+    else if (len >= 1 && len <= 5) setPinStep(1);
+    else if (len === 6) {
+      getPinValid(pin);
+    }
+  }, [pin]);
+
+  useEffect(() => {
+    let randAnimal = Math.floor(Math.random() * (avatarAnimal.length - 1)) + 1;
+    let randAvatarColor =
+      Math.floor(Math.random() * (avatarColor.length - 1)) + 1;
+    setAnimal(randAnimal);
+    setColor(randAvatarColor);
     localStorage.removeItem("fromSession");
-    localStorage.setItem("imageNumber", "0");
-    localStorage.setItem("colorNumber", "0");
+    localStorage.setItem("imageNumber", randAnimal.toString());
+    localStorage.setItem("colorNumber", randAvatarColor.toString());
     localStorage.removeItem("name");
     localStorage.removeItem("nickname");
   }, [router.isReady]);
@@ -110,6 +125,19 @@ const Home: NextPage = () => {
   const [pinStep, setPinStep] = useState(0);
 
   const [playRoom, setPlayRoom] = useRecoilState(playRoomInfo);
+
+  const [enterOption, setEnterOption] = useState([
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
 
   const [socketManager, setSocketManager] = useState<any>(null);
 
@@ -324,6 +352,22 @@ const Home: NextPage = () => {
                   )}
                 </Stack>
                 <TextInput
+                  rightSection={
+                    pin === "" ? (
+                      <></>
+                    ) : (
+                      <ActionIcon
+                        className=" mr-8"
+                        size="xl"
+                        onClick={() => {
+                          let copy = pin;
+                          setPin(copy.slice(0, copy.length - 1));
+                        }}
+                      >
+                        <Backspace size="xl"></Backspace>
+                      </ActionIcon>
+                    )
+                  }
                   maxLength={6}
                   size="xl"
                   value={pin}
@@ -335,13 +379,6 @@ const Home: NextPage = () => {
                     //     e.target.value.length
                     // ) {
                     // }
-                    let len = e.target.value.length;
-                    if (len === 0) setPinStep(0);
-                    else if (len >= 1 && len <= 5) setPinStep(1);
-                    else if (len === 6) {
-                      getPinValid(e.target.value);
-                    }
-                    setPin(e.target.value);
                   }}
                   ref={ref}
                   placeholder="6자리 숫자를 입력하세요"
@@ -365,6 +402,41 @@ const Home: NextPage = () => {
                   입장하기
                 </Button>
               </Stack>
+            </Stack>
+            <Stack
+              spacing={0}
+              className=" w-full bg-white fixed bottom-0 left-0 rounded-t-xl"
+            >
+              <Stack align="center" justify="center">
+                <Group className="mb-4 mt-2 w-12 h-2 bg-gray-300 rounded-xl"></Group>
+              </Stack>
+              <Grid className="p-4 pt-0" columns={5} gutter="sm">
+                {"0123456789".split("").map((cur, i) => {
+                  let color = ["red", "blue", "green", "orange"];
+                  let bgColor = "hover:bg-" + color[i] + "-500";
+                  return (
+                    <>
+                      <Grid.Col key={i} span={1} offset={0}>
+                        <Button
+                          fullWidth
+                          style={{ height: "100px" }}
+                          onClick={() => {
+                            setPin(pin + cur);
+                            let copy = enterOption;
+                            copy[i] = true;
+                            setEnterOption(copy);
+                          }}
+                          color="orange"
+                          className="shadow-md"
+                          variant="light"
+                        >
+                          <p className="text-3xl font-bold">{cur}</p>
+                        </Button>
+                      </Grid.Col>
+                    </>
+                  );
+                })}
+              </Grid>
             </Stack>
           </Container>
         </>
