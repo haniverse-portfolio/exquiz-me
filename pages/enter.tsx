@@ -129,13 +129,11 @@ const Home: NextPage = () => {
           function (message) {
             // socket ready?
             if (socket.readyState !== 1) {
-              alert("아직 준비안됐어!");
               setVisible(false);
               return;
             }
 
             if (JSON.parse(message.body).messageType === "PARTICIPANT") {
-              alert("참가자 메세지");
               if (localStorage.getItem("fromSession") === null) {
                 if (
                   JSON.parse(message.body).name !== localStorage.getItem("name")

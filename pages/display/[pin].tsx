@@ -70,8 +70,11 @@ const Home: NextPage = () => {
             // socket ready?
             if (socket.readyState !== 1) return;
             if (JSON.parse(message.body).messageType === "ANSWER") {
-              setSubmitCount(submitCount + 1);
+              if (submitCount + 1 === participants.length) {
+                setSeconds(0);
+              } else setSubmitCount(submitCount + 1);
             } else if (JSON.parse(message.body).messageType === "NEW_PROBLEM") {
+              setSubmitCount(0);
               bgAudio.currentTime = 0;
               bgAudio.current.play();
               if (JSON.parse(message.body).idx === 0) {
@@ -189,12 +192,10 @@ const Home: NextPage = () => {
           "/submit_list"
       )
       .then((result) => {
-        alert(JSON.stringify(result.data));
+        console.log(result.data);
         setCorrectAnswerList(result.data);
       })
-      .catch((error) => {
-        alert(error);
-      });
+      .catch((error) => {});
     return;
   };
 
@@ -258,10 +259,10 @@ const Home: NextPage = () => {
           <></>
         )}
         {problemOption.dtype === "SubjectiveProblem" ? (
-          <Grid columns={2} gutter="xl">
+          <Grid columns={5} gutter="xl">
             {problemOption.problemOptions.map(({ description }, i) => {
               return (
-                <Grid.Col className="h-[35vh]" key={i} span={1}>
+                <Grid.Col className="h-[23vh]" key={i} span={1}>
                   <Group className="!h-60 bg-white rounded-xl">
                     <p className="text-2xl text-left">{i + 1}. </p>
                     <p className="text-2xl text-center">{description}</p>
@@ -421,9 +422,9 @@ const Home: NextPage = () => {
                 정답자 수는?
               </p>
               <p className="text-white font-bold text-6xl text-center">
-                35명 중{" "}
+                {participants.length}명 중{" "}
                 <strong className="text-6xl text-orange-500 font-bold">
-                  10명
+                  {correctAnswerList.totalCorrectCount}명
                 </strong>
               </p>
               <Button
