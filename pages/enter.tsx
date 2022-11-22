@@ -126,19 +126,6 @@ const Home: NextPage = () => {
 
   const [playRoom, setPlayRoom] = useRecoilState(playRoomInfo);
 
-  const [enterOption, setEnterOption] = useState([
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-  ]);
-
   const [socketManager, setSocketManager] = useState<any>(null);
 
   let createRand = () => {};
@@ -422,10 +409,7 @@ const Home: NextPage = () => {
                           fullWidth
                           style={{ height: "80px" }}
                           onClick={() => {
-                            setPin(pin + cur);
-                            let copy = enterOption;
-                            copy[i] = true;
-                            setEnterOption(copy);
+                            if (pin.length < 6) setPin(pin + cur);
                           }}
                           color="orange"
                           className="shadow-inner"
