@@ -149,7 +149,7 @@ const Home: NextPage = () => {
         <Grid style={{ height: "calc(100vh - 60px)" }} gutter={0} columns={20}>
           <Grid.Col
             style={{ height: "calc(100vh - 60px)" }}
-            className="bg-[#FFD178]"
+            className="animate-textSlow bg-gradient-to-r from-[#FF9B3F] to-[#ffd178]"
             span={6}
           >
             <Center>

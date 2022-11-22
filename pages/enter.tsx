@@ -8,7 +8,6 @@ import Image from "next/image";
 import axios from "axios";
 import { useRecoilState } from "recoil";
 import {
-  inboxRoom,
   playAnimal,
   playColor,
   playPin,
@@ -21,19 +20,14 @@ import Stomp from "stompjs";
 
 import {
   Button,
-  ScrollArea,
   Center,
   Group,
   Stack,
   TextInput,
   Modal,
   ActionIcon,
-  Grid,
   Container,
-  NumberInput,
-  Notification,
   Divider,
-  Tooltip,
   Loader,
 } from "@mantine/core";
 
@@ -45,13 +39,7 @@ import {
   avatarColor,
 } from "../components/ConstValues";
 import { useScrollIntoView } from "@mantine/hooks";
-import {
-  Refresh,
-  ArrowNarrowLeft,
-  StepInto,
-  Dice2,
-  ZoomQuestion,
-} from "tabler-icons-react";
+import { Refresh, ZoomQuestion } from "tabler-icons-react";
 import { useRef } from "react";
 
 const Home: NextPage = () => {
@@ -64,6 +52,7 @@ const Home: NextPage = () => {
   const [step, setStep] = useState(0);
   const [animal, setAnimal] = useRecoilState(playAnimal);
   const [color, setColor] = useRecoilState(playColor);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     if (!router.isReady) return;
@@ -71,38 +60,14 @@ const Home: NextPage = () => {
     connect();
   }, [step]);
 
+  useEffect(() => {
+    localStorage.removeItem("fromSession");
+  }, [router.isReady]);
+
   /* 2. modal */
   const [modalOpened, setModalOpened] = useState(false);
   /* submit form */
-  let submitForm = {
-    answerText: "1",
-    problemIdx: 1,
-    uuid: "d7a23266-6fc7-421a-9ed8-aad169013e52",
-  };
 
-  const getLeaderboard = async () => {
-    const { data: result } = await axios.get(
-      connectMainServerApiAddress + "api/room/100310/mq/leaderboard"
-    );
-    return result.data;
-  };
-
-  const getProblemsets = () => {
-    let rt = [{ id: -1, title: "", description: "", closingMent: "" }];
-    axios
-      .get(connectMainServerApiAddress + "api/problemsets/1")
-      .then((result) => {
-        setProblemsets(result.data);
-      })
-      .catch((error) => {
-        alert(error);
-      });
-    return;
-  };
-
-  let [problemsets, setProblemsets] = useState([
-    { id: -1, title: "", description: "", closingMent: "" },
-  ]);
   const getPinValid = (pin: string) => {
     axios
       .get(connectMainServerApiAddress + `api/room/${pin.toString()}/open`)
@@ -155,12 +120,16 @@ const Home: NextPage = () => {
       function (frame) {
         client.subscribe("/topic/room/" + pin + "/host", function (message) {
           if (JSON.parse(message.body).messageType === "PARTICIPANT") {
-            if (userCurInfo.nickname === "") {
+            if (localStorage.getItem("fromSession") === null) {
               setUserCurInfo(JSON.parse(message.body));
               localStorage.setItem(
                 "fromSession",
                 JSON.parse(message.body).fromSession
               );
+              setTimeout(() => {
+                Router.push(`/play/${pin}`);
+              }, 500);
+              setVisible(false);
             }
           }
         });
@@ -366,6 +335,24 @@ const Home: NextPage = () => {
       {step === 1 ? (
         <>
           <Container className="h-[100vh] animate-textSlow bg-gradient-to-r from-[#FF9B3F] to-[#ffd178]">
+            <Modal
+              withCloseButton={false}
+              overlayOpacity={0.55}
+              overlayBlur={3}
+              centered
+              opened={visible}
+              onClose={() => {}}
+              className="animate-fadeIn"
+            >
+              <Center>
+                <Stack align="center">
+                  <Loader color="orange" />
+                  <p className="text-center text-xl text-gray-500">
+                    {(playRoom as any).problemsetDto.title}에 입장하는 중...
+                  </p>
+                </Stack>
+              </Center>
+            </Modal>
             <Stack>
               <Group className="my-8 cursor-pointer">
                 <Image
@@ -383,13 +370,8 @@ const Home: NextPage = () => {
                   프로필 설정
                 </p>
                 <Center>
-                  <Tooltip
-                    className="animate-fadeIn"
-                    position="bottom"
-                    offset={20}
-                    opened={true}
-                    label="⚡️이미지를 클릭해 랜덤 프로필을 생성하세요!⚡️"
-                    withArrow
+                  {/* "⚡️이미지를 클릭해 랜덤 프로필을 생성하세요!⚡️" */}
+                  <Center
                     onClick={() => {
                       let randAnimal =
                         Math.floor(Math.random() * (avatarAnimal.length - 1)) +
@@ -400,19 +382,16 @@ const Home: NextPage = () => {
                       setAnimal(randAnimal);
                       setColor(randAvatarColor);
                     }}
+                    className={`w-[140px] h-[140px] ${avatarColor[color]} rounded-full shadow-lg`}
                   >
-                    <Center
-                      className={`w-[140px] h-[140px] ${avatarColor[color]} rounded-full shadow-lg`}
-                    >
-                      <Image
-                        alt="hello"
-                        className={`cursor-pointer rounded-full`}
-                        src={avatarAnimal[animal]}
-                        width={"120px"}
-                        height={"120px"}
-                      ></Image>
-                    </Center>
-                  </Tooltip>
+                    <Image
+                      alt="hello"
+                      className={`cursor-pointer rounded-full`}
+                      src={avatarAnimal[animal]}
+                      width={"120px"}
+                      height={"120px"}
+                    ></Image>
+                  </Center>
                 </Center>
                 <p className="m-0 mt-16 font-bold text-md text-left text-gray-400">
                   이름
@@ -481,9 +460,7 @@ const Home: NextPage = () => {
                         colorNumber: color,
                       })
                     );
-                    setTimeout(() => {
-                      Router.push(`/play/${pin}`);
-                    }, 500);
+                    setVisible(true);
                   }}
                   color="orange"
                   variant="filled"
@@ -497,6 +474,7 @@ const Home: NextPage = () => {
       ) : (
         <></>
       )}
+
       <Group className="h-0 w-0 bg-amber-500"></Group>
     </div>
   );
