@@ -390,6 +390,7 @@ const Home: NextPage = () => {
               {problemOption.dtype === "SubjectiveProblem" ? (
                 <>
                   <TextInput
+                    disabled
                     size="xl"
                     rightSection={
                       <ActionIcon
@@ -433,7 +434,7 @@ const Home: NextPage = () => {
                               <Grid.Col key={i} span={1} offset={0}>
                                 <Button
                                   fullWidth
-                                  style={{ height: "100px" }}
+                                  style={{ height: "80px" }}
                                   onClick={() => {
                                     if (subjectiveOption[i] === false) {
                                       setAnswer(answer + description);

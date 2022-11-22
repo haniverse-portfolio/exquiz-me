@@ -229,7 +229,7 @@ const Home: NextPage = () => {
           {/* size={800} */}
           <Container className="animate-textSlow bg-gradient-to-r from-[#FF9B3F] to-[#ffd178] h-[100vh]">
             <Stack className="flex">
-              <Group className="my-8 cursor-pointer">
+              <Group className="mt-6 my-2 cursor-pointer">
                 <Image
                   src="/logo_all_white.png"
                   alt="logo"
@@ -352,6 +352,7 @@ const Home: NextPage = () => {
                   )}
                 </Stack>
                 <TextInput
+                  disabled
                   rightSection={
                     pin === "" ? (
                       <></>
@@ -419,7 +420,7 @@ const Home: NextPage = () => {
                       <Grid.Col key={i} span={1} offset={0}>
                         <Button
                           fullWidth
-                          style={{ height: "100px" }}
+                          style={{ height: "80px" }}
                           onClick={() => {
                             setPin(pin + cur);
                             let copy = enterOption;
@@ -427,7 +428,7 @@ const Home: NextPage = () => {
                             setEnterOption(copy);
                           }}
                           color="orange"
-                          className="shadow-md"
+                          className="shadow-inner"
                           variant="light"
                         >
                           <p className="text-3xl font-bold">{cur}</p>
@@ -467,7 +468,7 @@ const Home: NextPage = () => {
               </Center>
             </Modal>
             <Stack>
-              <Group className="my-8 cursor-pointer">
+              <Group className="mt-6 my-2 cursor-pointer">
                 <Image
                   onClick={() => {
                     location.replace("/enter");
