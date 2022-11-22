@@ -241,7 +241,7 @@ const Home: NextPage = () => {
                     {partlist.map((cur: any, i) => {
                       return (
                         <Grid.Col
-                          className=" flex items-center justify-center h-60"
+                          className="fadeUp flex items-center justify-center h-60"
                           span={1}
                           key={i}
                         >
