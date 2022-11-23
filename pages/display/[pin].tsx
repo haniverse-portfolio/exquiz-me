@@ -123,7 +123,7 @@ const Home: NextPage = () => {
         setPartlist(result.data);
       })
       .catch((error) => {
-        // alert(error);
+        alert(error);
       });
     return;
   };
@@ -235,7 +235,7 @@ const Home: NextPage = () => {
           <></>
         )}
         {problemOption.dtype === "SubjectiveProblem" ? (
-          <Stack spacing={120}>
+          <Stack align="flex-start" spacing={120}>
             <Grid
               className="rounded-xl bg-[#85B6FF] border-2 border-solid border-[#447EFF]"
               columns={problemOption.answer.length}
@@ -352,7 +352,7 @@ const Home: NextPage = () => {
                   <p
                     className={`font-semibold ${
                       seconds <= 11 ? "text-red-500" : "text-amber-500"
-                    } text-4xl"`}
+                    } text-4xl`}
                   >
                     {Math.floor(seconds)}
                   </p>
@@ -484,13 +484,17 @@ const Home: NextPage = () => {
                             avatarColor[cur.colorNumber]
                           }  shadow-lg`}
                         >
-                          <Image
+                          <img
                             alt="hello"
-                            className="cursor-pointer rounded-full !overflow-visible animate-[bounce_1.5s_ease-in-out_infinite]"
+                            className={`cursor-pointer rounded-full ${
+                              correctAnswerList.isCorrect[i] === false
+                                ? "!overflow-visible animate-[bounce_1.5s_ease-in-out_infinite]"
+                                : ""
+                            }`}
                             src={avatarAnimal[cur.imageNumber]}
                             width={"120px"}
                             height={"120px"}
-                          ></Image>
+                          ></img>
                         </Center>
                         <p className="font-semibold 2xl:text-lg md:text-sm pb-4 text-center text-black">
                           {cur.nickname}

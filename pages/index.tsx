@@ -150,36 +150,44 @@ const Home: NextPage = () => {
                 slidesToScroll={1}
               >
                 <Carousel.Slide>
-                  <Image
-                    src="/index/demo1.svg"
-                    alt="demo1"
-                    width={477}
-                    height={339}
-                  ></Image>
+                  <Center>
+                    <Image
+                      src="/index/demo1.svg"
+                      alt="demo1"
+                      width={477}
+                      height={339}
+                    ></Image>
+                  </Center>
                 </Carousel.Slide>
                 <Carousel.Slide>
-                  <Image
-                    src="/index/demo2.svg"
-                    alt="demo2"
-                    width={476}
-                    height={338}
-                  ></Image>
+                  <Center>
+                    <Image
+                      src="/index/demo2.svg"
+                      alt="demo2"
+                      width={476}
+                      height={338}
+                    ></Image>
+                  </Center>
                 </Carousel.Slide>
                 <Carousel.Slide>
-                  <Image
-                    src="/index/demo3.svg"
-                    alt="demo3"
-                    width={477}
-                    height={339}
-                  ></Image>
+                  <Center>
+                    <Image
+                      src="/index/demo3.svg"
+                      alt="demo3"
+                      width={477}
+                      height={339}
+                    ></Image>
+                  </Center>
                 </Carousel.Slide>
                 <Carousel.Slide>
-                  <Image
-                    src="/index/demo4.svg"
-                    alt="demo4"
-                    width={477}
-                    height={339}
-                  ></Image>
+                  <Center>
+                    <Image
+                      src="/index/demo4.svg"
+                      alt="demo4"
+                      width={477}
+                      height={339}
+                    ></Image>
+                  </Center>
                 </Carousel.Slide>
                 {/* ...other slides */}
               </Carousel>

@@ -16,6 +16,12 @@ body {
   margin: 0;
 }
 
+img {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
 * {
   transition: 500ms all ease;
   padding: 0;

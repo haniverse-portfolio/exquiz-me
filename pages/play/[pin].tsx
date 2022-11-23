@@ -359,14 +359,14 @@ const Home: NextPage = () => {
                                     subjectiveOption[i] === true
                                       ? "shadow-inner text-white"
                                       : ""
-                                  } shadow-md`}
+                                  } shadow-md !overflow-visible`}
                                   variant={
                                     subjectiveOption[i] === true
                                       ? "filled"
                                       : "default"
                                   }
                                 >
-                                  <p className="text-3xl font-bold">
+                                  <p className="!overflow-visible text-3xl font-bold">
                                     {" "}
                                     {description}
                                   </p>
