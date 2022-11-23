@@ -182,26 +182,23 @@ const Home: NextPage = () => {
       </Head>
 
       <IndexNavigation />
-      <main style={{ height: "calc(100vh - 60px)" }}>
-        <section style={{ height: "calc(100vh - 60px)" }}>
+      <main>
+        <section>
           <Stack className="h-[20vh] bg-gradient-to-r from-[#ffc069] to-[#fa751e] text-slow"></Stack>
-          <Grid gutter={0} columns={24}>
+          <Grid className="relative -top-36" gutter={0} columns={24}>
             {/* left margin */}
             <Grid.Col span={3} />
             {/* profile, problemSet vertical */}
             <Grid.Col span={4}>
-              <Stack className="relative bottom-32">
+              <Stack className="">
                 <InboxProfileMenu />
                 <InboxProblemsetMenu />
               </Stack>
             </Grid.Col>
             {/* main */}
             <Grid.Col span={14}>
-              <Stack
-                style={{ height: "calc(80vh - 60px)" }}
-                className="ml-8 relative bottom-32"
-              >
-                <Stack className="h-[260px]"></Stack>
+              <Stack className="ml-8 relative -top-32">
+                <Stack className="h-[270px]"></Stack>
                 {/* search textinput */}
                 {/* <MantineProvider
                   inherit
@@ -247,7 +244,7 @@ const Home: NextPage = () => {
                 </Group>
                 <Divider size="sm"></Divider>
                 {/* problemset grid */}
-                <ScrollArea style={{ height: 1000 }} scrollbarSize={0}>
+                <ScrollArea style={{ height: 500 }} scrollbarSize={0}>
                   <Grid gutter={0} columns={3}>
                     {problemsets.map(
                       ({ title, description, closingMent }, i) => {

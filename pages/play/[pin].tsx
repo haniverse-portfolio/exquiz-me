@@ -18,12 +18,14 @@ import {
   ActionIcon,
   Divider,
   Group,
+  RingProgress,
 } from "@mantine/core";
 
 import {
   avatarAnimal,
   avatarColor,
   connectMainServerApiAddress,
+  playCorrectAnswerList,
   playSubjectiveOption,
   problemOptionInput,
 } from "../../components/ConstValues";
@@ -43,6 +45,10 @@ const Home: NextPage = () => {
   const [subjectiveOption, setSubjectiveOption] =
     useState(playSubjectiveOption);
 
+  const [correctAnswerList, setCorrectAnswerList] = useState(
+    playCorrectAnswerList
+  );
+
   /* *** use-effect *** */
   useEffect(() => {
     connect();
@@ -61,13 +67,29 @@ const Home: NextPage = () => {
     return;
   };
 
-  const getLeaderboard = async () => {
-    const { data: result } = await axios.get(
-      connectMainServerApiAddress +
-        `api/room/${router.query.pin}/mq/leaderboard`
-    );
-    return result.data;
+  const getCorrectAnswerList = () => {
+    axios
+      .get(
+        connectMainServerApiAddress +
+          "api/room/" +
+          router.query.pin +
+          "/submit_list"
+      )
+      .then((result) => {
+        console.log(result.data);
+        setCorrectAnswerList(result.data);
+      })
+      .catch((error) => {});
+    return;
   };
+
+  // const getLeaderboard = async () => {
+  //   const { data: result } = await axios.get(
+  //     connectMainServerApiAddress +
+  //       `api/room/${router.query.pin}/mq/leaderboard`
+  //   );
+  //   return result.data;
+  // };
 
   /* *** web socket *** */
   const [socketManager, setSocketManager] = useState<any>(null);
@@ -87,13 +109,33 @@ const Home: NextPage = () => {
           // socket ready?
           if (socket.readyState !== 1) return;
           if (JSON.parse(message.body).messageType === "NEW_PROBLEM") {
-            setSubjectiveOption(playSubjectiveOption);
+            setSubjectiveOption([
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+            ]);
             setProblemOption(JSON.parse(message.body));
             setCurIdx(JSON.parse(message.body).idx);
             setTimeout(() => {
               setStep(1);
             }, 1500);
           } else if (JSON.parse(message.body).messageType === "STOP") {
+            setAnswer("");
+            setStep(2);
+            getCorrectAnswerList();
+          } else if (JSON.parse(message.body).messageType === "FINISH") {
             setAnswer("");
             setStep(2);
           }
@@ -121,11 +163,11 @@ const Home: NextPage = () => {
       {step === 0 ? (
         <Stack
           align="center"
-          className="flex items-center justify-center bg-[#FF9B3F] h-[100vh]"
+          className="flex items-center justify-center animate-textSlow bg-gradient-to-r from-[#FF9B3F] to-[#ffd178] h-[100vh]"
         >
           <Stack>
             <Center>
-              <Loader color="yellow" size="xl" />
+              <Loader color="orange" size="xl" />
             </Center>
             <p className="text-center text-xl text-white font-semibold">
               다음 퀴즈 대기 중...
@@ -153,7 +195,7 @@ const Home: NextPage = () => {
               <p className="m-auto text-center text-2xl font-semibold">
                 {problemOption.description || ""}
               </p>
-              {problemOption.picture === "" ? (
+              {/* {problemOption.picture === "" ? (
                 alternativeImage()
               ) : (
                 <Image
@@ -164,7 +206,7 @@ const Home: NextPage = () => {
                   width={232}
                   height={145}
                 />
-              )}
+              )} */}
               {problemOption.dtype === "MultipleChoiceProblem" ? (
                 <>
                   <Grid className="" justify="center" gutter="sm">
@@ -422,23 +464,32 @@ const Home: NextPage = () => {
                 맞았습니다!!
               </p>
             </Stack>
-            <Stack className="relative p-8 rounded-xl shadow-lg bg-white">
-              <Group className=" m-2 rounded-xl bg-white shadow-lg">
-                <Center
-                  className={` rounded-t-xl h-[160px] ${avatarColor[0]}  shadow-lg`}
-                >
-                  <Image
-                    alt="hello"
-                    className="cursor-pointer rounded-full !overflow-visible animate-[bounce_1.5s_ease-in-out_infinite]"
-                    src={avatarAnimal[0]}
-                    width={"120px"}
-                    height={"120px"}
-                  ></Image>
-                </Center>
-                <p className="font-semibold 2xl:text-lg md:text-sm pb-4 text-center text-black">
-                  입체적인 피카소
-                </p>
-              </Group>
+            <Stack className="relative p-8 mt-8 rounded-xl shadow-lg bg-white">
+              <Center>
+                <Stack className="w-6/12 m-2 rounded-xl bg-white shadow-lg">
+                  <Center
+                    className={` rounded-t-xl h-[160px] ${avatarColor[0]}  shadow-lg`}
+                  >
+                    <img
+                      alt="hello"
+                      className={`cursor-pointer rounded-full`}
+                      src={avatarAnimal[0]}
+                      width={"120px"}
+                      height={"120px"}
+                    ></img>
+                  </Center>
+                  <p className="font-semibold 2xl:text-lg md:text-sm pb-4 text-center text-black">
+                    창의적인튜링
+                  </p>
+                  <RingProgress
+                    sections={[
+                      { value: 40, color: "#68b5e8" },
+                      { value: 15, color: "#6888e8" },
+                      { value: 15, color: "#8468e8" },
+                    ]}
+                  />
+                </Stack>
+              </Center>
             </Stack>
           </Container>
         </>

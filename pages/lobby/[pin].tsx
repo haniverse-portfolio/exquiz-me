@@ -19,7 +19,16 @@ import {
   inboxRoomInput,
 } from "../../components/ConstValues";
 
-import { Button, Group, Stack, Center, Grid, ScrollArea } from "@mantine/core";
+import {
+  Button,
+  Group,
+  Stack,
+  Center,
+  Grid,
+  ScrollArea,
+  Loader,
+  Modal,
+} from "@mantine/core";
 import IndexNavigation from "../../components/index/IndexNavigation";
 
 const Home: NextPage = () => {
@@ -28,6 +37,7 @@ const Home: NextPage = () => {
   const [partlist, setPartlist] = useState([]);
   const [isLogined, setIsLogined] = useRecoilState(indexIsLogined);
 
+  const [visible, setVisible] = useState(false);
   const [room, setRoom] = useState(inboxRoomInput);
 
   useEffect(() => {
@@ -75,6 +85,9 @@ const Home: NextPage = () => {
     client.connect(
       {},
       function (frame) {
+        if (socket.readyState !== 1) {
+          return;
+        }
         if (router.query.pin === undefined) router.push("/404");
         client.subscribe(
           "/topic/room/" + router.query.pin + "/host",
@@ -110,6 +123,24 @@ const Home: NextPage = () => {
         <meta name="description" content="exquiz.me" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <Modal
+        withCloseButton={false}
+        overlayOpacity={0.55}
+        overlayBlur={3}
+        centered
+        opened={visible}
+        onClose={() => {}}
+        className="animate-fadeIn"
+      >
+        <Center>
+          <Stack align="center">
+            <Loader color="orange" />
+            <p className="text-center text-xl text-gray-500">
+              {room.roomName}에 입장하는 중...
+            </p>
+          </Stack>
+        </Center>
+      </Modal>
       <section className="h-[100vh]">
         <IndexNavigation></IndexNavigation>
         {/* 메인 배너 */}
@@ -159,12 +190,16 @@ const Home: NextPage = () => {
                 <Button
                   className="mt-16 cursor-pointer"
                   onClick={() => {
-                    router.push(`/display/${router.query.pin}`);
+                    setVisible(true);
                     setTimeout(() => {
-                      socketManager.send(
-                        "/pub/room/" + router.query.pin + "/start",
-                        {}
-                      );
+                      router.push(`/display/${router.query.pin}`);
+                      setVisible(false);
+                      setTimeout(() => {
+                        socketManager.send(
+                          "/pub/room/" + router.query.pin + "/start",
+                          {}
+                        );
+                      }, 1500);
                     }, 1500);
                   }}
                   size="xl"

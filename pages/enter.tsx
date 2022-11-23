@@ -55,6 +55,7 @@ const Home: NextPage = () => {
   const ref = useRef<HTMLInputElement>(null);
 
   const [step, setStep] = useState(0);
+  const [pinInputBar, setPinInputBar] = useState(true);
   const [visible, setVisible] = useState(false);
 
   const [userCurInfo, setUserCurInfo] = useState(enterUserInfoInput);
@@ -376,32 +377,41 @@ const Home: NextPage = () => {
               className=" w-full bg-white fixed bottom-0 left-0 rounded-t-xl"
             >
               <Stack align="center" justify="center">
-                <Group className="mb-4 mt-2 w-12 h-2 bg-gray-300 rounded-xl"></Group>
+                <Group
+                  onClick={() => {
+                    setPinInputBar(!pinInputBar);
+                  }}
+                  className="mb-4 mt-2 w-12 h-2 bg-gray-300 rounded-xl cursor-pointer"
+                ></Group>
               </Stack>
-              <Grid className="p-4 pt-0" columns={5} gutter="sm">
-                {"0123456789".split("").map((cur, i) => {
-                  let color = ["red", "blue", "green", "orange"];
-                  let bgColor = "hover:bg-" + color[i] + "-500";
-                  return (
-                    <>
-                      <Grid.Col key={i} span={1} offset={0}>
-                        <Button
-                          fullWidth
-                          style={{ height: "80px" }}
-                          onClick={() => {
-                            if (pin.length < 6) setPin(pin + cur);
-                          }}
-                          color="orange"
-                          className="shadow-inner"
-                          variant="light"
-                        >
-                          <p className="text-3xl font-bold">{cur}</p>
-                        </Button>
-                      </Grid.Col>
-                    </>
-                  );
-                })}
-              </Grid>
+              {pinInputBar === true ? (
+                <Grid className="p-4 pt-0" columns={5} gutter="sm">
+                  {"1234567890".split("").map((cur, i) => {
+                    let color = ["red", "blue", "green", "orange"];
+                    let bgColor = "hover:bg-" + color[i] + "-500";
+                    return (
+                      <>
+                        <Grid.Col key={i} span={1} offset={0}>
+                          <Button
+                            fullWidth
+                            style={{ height: "80px" }}
+                            onClick={() => {
+                              if (pin.length < 6) setPin(pin + cur);
+                            }}
+                            color="orange"
+                            className="shadow-inner"
+                            variant="light"
+                          >
+                            <p className="text-3xl font-bold">{cur}</p>
+                          </Button>
+                        </Grid.Col>
+                      </>
+                    );
+                  })}
+                </Grid>
+              ) : (
+                <></>
+              )}
             </Stack>
           </Container>
         </>

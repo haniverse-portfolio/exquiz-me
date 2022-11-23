@@ -275,7 +275,7 @@ const Home: NextPage = () => {
           <></>
         )}
         {problemOption.dtype === "OXProblem" ? (
-          <Grid gutter="xl" className="h-[50vh]" columns={2}>
+          <Grid gutter="xl" className="!m-0 h-[50vh]" columns={2}>
             <Grid.Col
               span={1}
               color="blue.6"
@@ -382,7 +382,7 @@ const Home: NextPage = () => {
           style={{ height: "calc(100vh - 140px)" }}
           className="flex justify-center"
         >
-          <Grid className="flex  justify-center" columns={2}>
+          <Grid className="!m-0 flex  justify-center" columns={2}>
             <Grid.Col span={1}>
               <Stack className="h-[70vh] relative bg-white mx-16 rounded-xl shadow-xl">
                 <Stack
@@ -487,7 +487,7 @@ const Home: NextPage = () => {
                           <img
                             alt="hello"
                             className={`cursor-pointer rounded-full ${
-                              correctAnswerList.isCorrect[i] === false
+                              correctAnswerList.isCorrect[i] === true
                                 ? "!overflow-visible animate-[bounce_1.5s_ease-in-out_infinite]"
                                 : ""
                             }`}
@@ -689,6 +689,15 @@ const Home: NextPage = () => {
           }}
         >
           결과 표시
+        </Button>
+        <Button
+          className="shadow-xl"
+          color="blue"
+          onClick={() => {
+            setSeconds(seconds + 30);
+          }}
+        >
+          시간 추가
         </Button>
         <Button
           className="shadow-xl"

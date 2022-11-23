@@ -114,35 +114,35 @@ export const ImageSection = () => {
         <Stack className="!h-[300px]">
           <Grid columns={6}>
             <Grid.Col span={2}>
-              <Skeleton height={150} radius="md" />
+              <Skeleton className="shadow-lg" height={150} radius="md" />
             </Grid.Col>
             <Grid.Col span={2}>
-              <Skeleton height={150} radius="md" />
+              <Skeleton className="shadow-lg" height={150} radius="md" />
             </Grid.Col>
             <Grid.Col span={2}>
-              <Skeleton height={150} radius="md" />
-            </Grid.Col>
-          </Grid>
-          <Grid columns={6}>
-            <Grid.Col span={2}>
-              <Skeleton height={150} radius="md" />
-            </Grid.Col>
-            <Grid.Col span={2}>
-              <Skeleton height={150} radius="md" />
-            </Grid.Col>
-            <Grid.Col span={2}>
-              <Skeleton height={150} radius="md" />
+              <Skeleton className="shadow-lg" height={150} radius="md" />
             </Grid.Col>
           </Grid>
           <Grid columns={6}>
             <Grid.Col span={2}>
-              <Skeleton height={150} radius="md" />
+              <Skeleton className="shadow-lg" height={150} radius="md" />
             </Grid.Col>
             <Grid.Col span={2}>
-              <Skeleton height={150} radius="md" />
+              <Skeleton className="shadow-lg" height={150} radius="md" />
             </Grid.Col>
             <Grid.Col span={2}>
-              <Skeleton height={150} radius="md" />
+              <Skeleton className="shadow-lg" height={150} radius="md" />
+            </Grid.Col>
+          </Grid>
+          <Grid columns={6}>
+            <Grid.Col span={2}>
+              <Skeleton className="shadow-lg" height={150} radius="md" />
+            </Grid.Col>
+            <Grid.Col className="shadow-lg" span={2}>
+              <Skeleton className="shadow-lg" height={150} radius="md" />
+            </Grid.Col>
+            <Grid.Col span={2}>
+              <Skeleton className="shadow-lg" height={150} radius="md" />
             </Grid.Col>
           </Grid>
         </Stack>
@@ -152,24 +152,29 @@ export const ImageSection = () => {
             <p className="text-gray-500">이미지를 검색하세요.</p>
           ) : (
             <Stack className="h-[300px]">
-              <Grid
-                columns={3}
-                className="cursor-pointer w-full rounded-xl shadow-lg"
-              >
+              <Grid columns={3} className="cursor-pointer w-full rounded-xl">
                 {imageList.map((link, i) => {
                   return (
-                    <Grid.Col key={i} span={1}>
-                      <img
-                        height={"200px"}
-                        className="max-w-full cursor-pointer"
-                        onClick={async () => {
-                          await postImage(imageList[i], i);
-                          setImageModalOpened(false);
-                        }}
-                        src={link}
-                        alt="alt"
-                      ></img>
-                    </Grid.Col>
+                    <>
+                      {(link as any).slice(-3) === "CAU" ? (
+                        <Grid.Col key={i} span={1}>
+                          <Center>
+                            <img
+                              height={"200px"}
+                              className="max-w-full cursor-pointer shadow-lg rounded-xl"
+                              onClick={async () => {
+                                await postImage(imageList[i], i);
+                                setImageModalOpened(false);
+                              }}
+                              src={link}
+                              alt="alt"
+                            ></img>
+                          </Center>
+                        </Grid.Col>
+                      ) : (
+                        <></>
+                      )}
+                    </>
                   );
                 })}
               </Grid>
