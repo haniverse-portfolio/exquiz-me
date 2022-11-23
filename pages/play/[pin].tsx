@@ -216,7 +216,6 @@ const Home: NextPage = () => {
                           "/pub/room/" + router.query.pin + "/submit",
                           {},
                           JSON.stringify({
-                            messageType: "ANSWER", // 반드시 "ANSWER"
                             fromSession: cat, // 사용자 session id - google login시 발급
                             problemIdx: curIdx, // 제출한 문제의 번호
                             answerText: answer.toString(),

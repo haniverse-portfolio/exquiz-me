@@ -173,6 +173,8 @@ const Home: NextPage = () => {
               setSeconds(JSON.parse(message.body).timelimit);
               getCorrectAnswerList();
               setStep(1);
+            } else if (JSON.parse(message.body).messageType === "FINISH") {
+              setStep(2);
             }
           }
         );

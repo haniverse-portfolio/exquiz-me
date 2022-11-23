@@ -513,14 +513,10 @@ const Home: NextPage = () => {
                             noun[
                               Math.floor(Math.random() * (noun.length - 1)) + 1
                             ];
-                          // let randNum1 =
-                          //   Math.floor(Math.random() * (99 - 1)) + 1;
-                          let randNum2 =
-                            Math.floor(Math.random() * (100 - 1)) + 1;
-                          setNickname(randAdjective + randNoun + randNum2);
+                          setNickname(randAdjective + randNoun);
                           localStorage.setItem(
                             "nickname",
-                            randAdjective + randNoun + randNum2
+                            randAdjective + randNoun
                           );
                         }}
                         variant="transparent"

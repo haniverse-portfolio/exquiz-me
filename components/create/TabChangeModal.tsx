@@ -50,7 +50,7 @@ import {
   createCompleteModal,
   createProblemsetDrawer,
 } from "../States";
-import { dtypeName, tabTooltip, MARKSCORE, MARKSTIME } from "../ConstValues";
+import { dtypeName } from "../ConstValues";
 import { useDebouncedState } from "@mantine/hooks";
 
 export const TabChangeModal = () => {
