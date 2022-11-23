@@ -105,7 +105,8 @@ export const CompleteModal = () => {
               slicedProblem["problemsetId"] = psId;
               slicedProblem["dtype"] =
                 dtypeFullName[parseInt(slicedProblem.dtype)];
-              console.log(problemIdx + " : " + slicedProblem);
+              console.log("answer: " + curProblem.answer);
+              console.log("idx: " + curProblem.idx);
 
               /* *** problem axios *** */
               const prId = await axios

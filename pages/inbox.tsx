@@ -85,7 +85,7 @@ const Home: NextPage = () => {
       localStorage.setItem("host_id", router.query.host_id as string);
       setTimeout(() => {
         router.push("/inbox");
-      }, 100);
+      }, 1000);
     }
 
     // not logined
