@@ -72,15 +72,7 @@ import {
   createImageModal,
   createNonsense,
 } from "../States";
-import {
-  dtypeName,
-  tabTooltip,
-  MARKSCORE,
-  MARKSTIME,
-  tabColor,
-  tabIcon,
-  connectMainServerApiAddress,
-} from "../ConstValues";
+import { dtypeName, connectMainServerApiAddress } from "../ConstValues";
 import { useDebouncedState } from "@mantine/hooks";
 import { useEffect, useRef, useState } from "react";
 import { Dropzone, FileWithPath, IMAGE_MIME_TYPE } from "@mantine/dropzone";

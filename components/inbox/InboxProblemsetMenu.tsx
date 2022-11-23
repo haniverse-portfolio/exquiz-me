@@ -21,7 +21,6 @@ import {
 } from "tabler-icons-react";
 import {
   inboxIsModalOpened,
-  inboxProblem,
   inboxProblemset,
   inboxProblemsetIdx,
 } from "../States";
@@ -48,7 +47,6 @@ export let InboxProblemsetMenu = () => {
   const [problemsetIdx, setProblemsetIdx] = useRecoilState(inboxProblemsetIdx);
   /* *** problem *** */
   const [problemsets, setProblemsets] = useRecoilState(inboxProblemset);
-  const [problem, setProblem] = useRecoilState(inboxProblem);
 
   const deleteProblemset = () => {
     axios

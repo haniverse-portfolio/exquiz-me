@@ -38,18 +38,15 @@ import { useRecoilState } from "recoil";
 import {
   inboxIsDeleteAlertModalOpened,
   inboxIsModalOpened,
-  inboxMaxpart,
-  inboxOption,
-  inboxProblem,
   inboxProblemset,
   inboxProblemsetIdx,
-  inboxRoom,
   indexIsLogined,
   indexUserInfo,
-  playOption,
-  playProblem,
 } from "../components/States";
-import { connectMainServerApiAddress } from "../components/ConstValues";
+import {
+  connectMainServerApiAddress,
+  inboxRoomInput,
+} from "../components/ConstValues";
 import { InboxProblemsetMenu } from "../components/inbox/InboxProblemsetMenu";
 import { InboxProfileMenu } from "../components/inbox/InboxProfileMenu";
 
@@ -70,10 +67,8 @@ const Home: NextPage = () => {
   const [userInfo, setUserInfo] = useRecoilState(indexUserInfo);
   // problem
   const [problemsets, setProblemsets] = useRecoilState(inboxProblemset);
-  const [problem, setProblem] = useRecoilState(playProblem);
-  const [option, setOption] = useRecoilState(playOption);
   // room
-  const [room, setRoom] = useRecoilState(inboxRoom);
+  const [room, setRoom] = useState(inboxRoomInput);
 
   useEffect(() => {
     // already logined
@@ -138,79 +133,25 @@ const Home: NextPage = () => {
     return;
   };
 
-  const getProblem = (id: number) => {
-    axios
-      .get(connectMainServerApiAddress + "api/problems/" + id?.toString())
-      .then((result) => {
-        setProblem(result.data);
-        getOption(result.data[0].id);
-        // setOption
-      })
-      .catch((error) => {
-        alert(error.data);
-      });
-    return;
-  };
-
-  const getOption = (id: number) => {
-    axios
-      .get(
-        connectMainServerApiAddress + "api/problem_options/" + id?.toString()
-      )
-      .then((result) => {
-        setOption(result.data);
-        // setOption
-      })
-      .catch((error) => {
-        alert(error.data);
-      });
-    return;
-  };
-
-  // const getProblem = (idx: number) => {
-  //   axios
-  //     .get(connectMainServerApiAddress + "api/problems/" + idx)
-  //     .then((result) => {
-  //       setProblem(result.data);
-  //     })
-  //     .catch((error) => {
-  //       alert(error);
-  //     });
-  //   return;
-  // };
-
   const postRoom = async () => {
     let rt = Infinity;
     await axios
       .post(connectMainServerApiAddress + "api/room/newRoom", {
         maxParticipantCount: room.maxParticipantCount,
         problemsetId: (problemsets[problemsetIdx] as any).id,
-        roomName: room.roomName,
+        roomName:
+          room.roomName === ""
+            ? `${userInfo.nickname}님의 퀴즈방`
+            : room.roomName,
       })
       .then((result) => {
         setRoom(result.data);
         setTimeout(() => {
-          // alert(room.problemsetDto.id);
-          getProblem(result.data.problemsetDto.id);
-        }, 500);
-        console.log(`/lobby/${result.data.pin}`);
-        console.log(result);
-        setTimeout(() => {
           router.push(`/lobby/${result.data.pin}`);
         }, 1500);
       })
-      .catch((error) => {
-        alert("newRoom_error");
-      });
+      .catch((error) => {});
     return rt;
-  };
-
-  let validateQueryString = (p_string: string) => {
-    var field = p_string;
-    var url = window.location.href;
-    if (url.indexOf("?" + field + "=") != -1) return true;
-    else if (url.indexOf("&" + field + "=") != -1) return true;
-    return false;
   };
 
   const login = async (tk: string) => {
@@ -412,7 +353,8 @@ const Home: NextPage = () => {
           <p className="m-0 font-bold">방 정보</p>
           <Textarea
             onChange={(event) => {
-              let copy = { ...room, roomName: event.currentTarget.value };
+              let copy = JSON.parse(JSON.stringify(room));
+              copy.roomName = event.currentTarget.value;
               setRoom(copy);
             }}
             placeholder={`${userInfo.nickname}님의 퀴즈`}
@@ -443,13 +385,6 @@ const Home: NextPage = () => {
             className="mx-12"
             onClick={async () => {
               setModalOpened(false);
-              // if (room.roomName === "") {
-              //   let copy = {
-              //     ...room,
-              //     roomName: `${userInfo.nickname}님의 퀴즈`,
-              //   };
-              //   setRoom(JSON.parse(JSON.stringify(copy)));
-              // }
               setTimeout(() => {
                 postRoom();
               }, 500);
@@ -496,3 +431,32 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+
+// const getProblem = (id: number) => {
+//   axios
+//     .get(connectMainServerApiAddress + "api/problems/" + id?.toString())
+//     .then((result) => {
+//       setProblem(result.data);
+//       getOption(result.data[0].id);
+//       // setOption
+//     })
+//     .catch((error) => {
+//       alert(error.data);
+//     });
+//   return;
+// };
+
+// const getOption = (id: number) => {
+//   axios
+//     .get(
+//       connectMainServerApiAddress + "api/problem_options/" + id?.toString()
+//     )
+//     .then((result) => {
+//       setOption(result.data);
+//       // setOption
+//     })
+//     .catch((error) => {
+//       alert(error.data);
+//     });
+//   return;
+// };

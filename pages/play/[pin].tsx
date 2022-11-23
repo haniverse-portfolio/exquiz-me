@@ -14,24 +14,60 @@ import {
   Container,
   Loader,
   Center,
-  Group,
   TextInput,
   ActionIcon,
   Divider,
+  Group,
 } from "@mantine/core";
 
 import {
+  avatarAnimal,
+  avatarColor,
   connectMainServerApiAddress,
-  playOption,
-  playProblem,
   playSubjectiveOption,
+  problemOptionInput,
 } from "../../components/ConstValues";
-import { Alarm, Trash, X } from "tabler-icons-react";
+import { X } from "tabler-icons-react";
+import { alternativeImage } from "../../components/play/alternativeImage";
 
 const Home: NextPage = () => {
   /* initialization */
   const router = useRouter();
   /* *** core initialization *** */
+
+  /* *** use-state *** */
+  const [step, setStep] = useState(0);
+  const [problemOption, setProblemOption] = useState(problemOptionInput);
+  const [answer, setAnswer] = useState("");
+  const [curIdx, setCurIdx] = useState(0);
+  const [subjectiveOption, setSubjectiveOption] =
+    useState(playSubjectiveOption);
+
+  /* *** use-effect *** */
+  useEffect(() => {
+    connect();
+  }, [router.isReady]);
+
+  /* *** axios call *** */
+  const getRoomOpened = () => {
+    axios
+      .get(connectMainServerApiAddress + `api/room/${router.query.pin}/open`)
+      .then((result) => {
+        setCurIdx(result.data.currentProblemNum);
+        // validation
+        if (result.data.currentState !== "READY") return;
+      })
+      .catch((error) => {});
+    return;
+  };
+
+  const getLeaderboard = async () => {
+    const { data: result } = await axios.get(
+      connectMainServerApiAddress +
+        `api/room/${router.query.pin}/mq/leaderboard`
+    );
+    return result.data;
+  };
 
   /* *** web socket *** */
   const [socketManager, setSocketManager] = useState<any>(null);
@@ -59,7 +95,7 @@ const Home: NextPage = () => {
             }, 1500);
           } else if (JSON.parse(message.body).messageType === "STOP") {
             setAnswer("");
-            setStep(0);
+            setStep(2);
           }
         });
       },
@@ -73,122 +109,6 @@ const Home: NextPage = () => {
     };
 
     return socket;
-  };
-
-  /* *** use-state *** */
-  const [step, setStep] = useState(0);
-  const [problemOption, setProblemOption] = useState({
-    messageType: "",
-    fromSession: "",
-    id: "",
-    title: "",
-    description: "",
-    dtype: "",
-    timelimit: 0,
-    score: 0,
-    picture: "",
-    answer: "",
-    idx: 0,
-    problemOptions: [
-      {
-        id: 0,
-        idx: 0,
-        description: "",
-        picture: "",
-        pickCount: 0,
-      },
-    ],
-  });
-  const [answer, setAnswer] = useState("");
-  const [uuid, setUuid] = useState("");
-  const [curIdx, setCurIdx] = useState(0);
-  const [subjectiveOption, setSubjectiveOption] =
-    useState(playSubjectiveOption);
-
-  /* *** use-effect *** */
-  useEffect(() => {
-    if (!router.isReady) return;
-    connect();
-  }, [router.isReady]);
-
-  /* *** axios call *** */
-  const getRoomOpened = () => {
-    axios
-      .get(connectMainServerApiAddress + `api/room/${router.query.pin}/open`)
-      .then((result) => {
-        setCurIdx(result.data.currentProblemNum);
-        // validation
-        if (result.data.currentState !== "READY") return;
-      })
-      .catch((error) => {});
-    return;
-  };
-
-  const getLeaderboard = async () => {
-    const { data: result } = await axios.get(
-      connectMainServerApiAddress +
-        `api/room/${router.query.pin}/mq/leaderboard`
-    );
-    return result.data;
-  };
-
-  let alternativeImage = () => {
-    return (
-      <Stack align="center" className="my-4 flex items-center justify-center">
-        <Stack>
-          <Group spacing={8} align="flex-start">
-            <img
-              className="!overflow-visible animate-[spin_4s_ease-in-out_infinite]"
-              src="/index/rectangle_right.svg"
-              alt="rectangle"
-              width={100}
-              height={100}
-            ></img>
-            <Stack spacing={8}>
-              <img
-                className="!overflow-visible animate-[bounce_2s_ease-in-out_infinite]"
-                src="/index/circle.svg"
-                alt="circle"
-                width={15}
-                height={15}
-              ></img>
-              <img
-                className="!overflow-visible animate-[bounce_3s_ease-in-out_infinite]"
-                src="/index/circle.svg"
-                alt="circle"
-                width={25}
-                height={25}
-              ></img>
-            </Stack>
-          </Group>
-          <Group align="flex-end">
-            <Stack>
-              <img
-                className="!overflow-visible animate-[bounce_2s_ease-in-out_infinite]"
-                src="/index/circle.svg"
-                alt="rectangle"
-                width={15}
-                height={15}
-              ></img>
-              <img
-                className="!overflow-visible animate-[bounce_3s_ease-in-out_infinite]"
-                src="/index/circle.svg"
-                alt="rectangle"
-                width={25}
-                height={25}
-              ></img>
-            </Stack>
-            <img
-              className="!overflow-visible animate-[spin_3s_ease-in-out_infinite]"
-              src="/index/rectangle_left.svg"
-              alt="rectangle"
-              width={60}
-              height={60}
-            ></img>
-          </Group>
-        </Stack>
-      </Stack>
-    );
   };
 
   return (
@@ -211,13 +131,6 @@ const Home: NextPage = () => {
               다음 퀴즈 대기 중...
             </p>
           </Stack>
-          {/* <Button
-            onClick={() => {
-              setStep(1);
-            }}
-          >
-            다음 스텝으로
-          </Button> */}
         </Stack>
       ) : (
         <></>
@@ -225,7 +138,6 @@ const Home: NextPage = () => {
 
       {step === 1 ? (
         <>
-          <Stack className="bg-[#ffd178]"></Stack>
           <Container className="bg-[#ffd178] h-[100vh]" size={1200}>
             <Stack className="h-8"></Stack>
             <Stack className="relative p-8 rounded-xl shadow-lg bg-white">
@@ -496,6 +408,38 @@ const Home: NextPage = () => {
               ) : (
                 <></>
               )}
+            </Stack>
+          </Container>
+        </>
+      ) : (
+        <></>
+      )}
+      {step === 2 ? (
+        <>
+          <Container className="bg-[#ffd178] h-[100vh]" size={1200}>
+            <Stack className="h-8"></Stack>
+            <Stack className="relative p-8 rounded-xl shadow-lg bg-white">
+              <p className="m-auto text-center text-2xl font-semibold text-green-700">
+                맞았습니다!!
+              </p>
+            </Stack>
+            <Stack className="relative p-8 rounded-xl shadow-lg bg-white">
+              <Group className=" m-2 rounded-xl bg-white shadow-lg">
+                <Center
+                  className={` rounded-t-xl h-[160px] ${avatarColor[0]}  shadow-lg`}
+                >
+                  <Image
+                    alt="hello"
+                    className="cursor-pointer rounded-full !overflow-visible animate-[bounce_1.5s_ease-in-out_infinite]"
+                    src={avatarAnimal[0]}
+                    width={"120px"}
+                    height={"120px"}
+                  ></Image>
+                </Center>
+                <p className="font-semibold 2xl:text-lg md:text-sm pb-4 text-center text-black">
+                  입체적인 피카소
+                </p>
+              </Group>
             </Stack>
           </Container>
         </>

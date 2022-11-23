@@ -1,7 +1,10 @@
-import { useRouter } from "next/router";
 import type { NextPage } from "next";
+import { useRouter } from "next/router";
 import Head from "next/head";
 import Image from "next/image";
+{
+  /* ui Library*/
+}
 import { Button, Group, Stack, Container } from "@mantine/core";
 import { BrandGoogle } from "tabler-icons-react";
 
@@ -40,14 +43,6 @@ const Home: NextPage = () => {
                 width={150}
                 height={30}
               />
-              {/* <Image
-                className="rounded-full"
-                src="/index/bulb_bg.png"
-                alt="logo"
-                width={50}
-                height={50}
-              />
-              <span className="font-semibold text-[24px]">exquiz.me</span> */}
             </Group>
             <h3 className="font-normal text-[#818181] text-[20px] text-center">
               <p>퀴즈에 새로운 경험을 더하다</p>

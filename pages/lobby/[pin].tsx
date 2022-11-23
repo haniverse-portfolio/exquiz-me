@@ -5,50 +5,37 @@ import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import Link from "next/link";
 import { useState } from "react";
-import { useRef } from "react";
 import React, { useEffect } from "react";
 import axios from "axios";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 import { useRecoilState } from "recoil";
-import {
-  inboxRoom,
-  indexIsLogined,
-  lobbyParticipants,
-  playProblem,
-} from "../../components/States";
-
-import { avatarAnimal, avatarColor } from "../../components/ConstValues";
-
-const connectMainServerApiAddress = "https://api.exquiz.me/";
+import { indexIsLogined } from "../../components/States";
 
 import {
-  Button,
-  Group,
-  useMantineTheme,
-  Stack,
-  CopyButton,
-  Divider,
-  Center,
-  ActionIcon,
-  Grid,
-  ScrollArea,
-} from "@mantine/core";
-import { ArrowBigRightLines, Qrcode, Copy } from "tabler-icons-react";
+  avatarAnimal,
+  avatarColor,
+  connectMainServerApiAddress,
+  inboxRoomInput,
+} from "../../components/ConstValues";
+
+import { Button, Group, Stack, Center, Grid, ScrollArea } from "@mantine/core";
 import IndexNavigation from "../../components/index/IndexNavigation";
 
 const Home: NextPage = () => {
-  const [partlist, setPartlist] = useRecoilState(lobbyParticipants);
-  const [problem, setProblem] = useRecoilState(playProblem);
+  const router = useRouter();
 
+  const [partlist, setPartlist] = useState([]);
   const [isLogined, setIsLogined] = useRecoilState(indexIsLogined);
-  // const addParticipant = (cur: object) => {
-  //   // console.log("추가전 직전 참가자 정보");
-  //   // console.log(partlist);
-  //   let newParticipant = cur;
-  //   // JSON.parse(message.body)
-  //   setPartlist([...partlist, curParticipant]);
-  // };
+
+  const [room, setRoom] = useState(inboxRoomInput);
+
+  useEffect(() => {
+    if (isLogined === false) router.push("/401");
+    connect();
+    getPartlist();
+    getRoomOpened(router.query.pin as string);
+  }, [router.isReady]);
 
   const getRoomOpened = (pin: string) => {
     axios
@@ -76,30 +63,8 @@ const Home: NextPage = () => {
       .catch((error) => {});
     return;
   };
-  const router = useRouter();
 
-  const pin = router.query.pin;
-  const theme = useMantineTheme();
-
-  useEffect(() => {
-    if (isLogined === false) router.push("/401");
-    if (!router.isReady) return;
-    connect();
-    getPartlist();
-    getRoomOpened(router.query.pin as string);
-  }, [router.isReady]);
-
-  const secondaryColor =
-    theme.colorScheme === "dark" ? theme.colors.dark[1] : theme.colors.gray[7];
-
-  const [active, setActive] = useState(0);
-  const [room, setRoom] = useRecoilState(inboxRoom);
   const [socketManager, setSocketManager] = useState<any>(null);
-
-  {
-    /* webSocket */
-  }
-
   let connect = () => {
     var socket = new SockJS(connectMainServerApiAddress + "stomp");
     let client: Stomp.Client;
@@ -189,13 +154,6 @@ const Home: NextPage = () => {
                         {router.query.pin}
                       </strong>
                     </p>
-                    {/* <CopyButton value={pin as string}>
-                    {({ copied, copy }) => (
-                      <ActionIcon color="orange" variant="light" onClick={copy}>
-                        <Copy></Copy>
-                      </ActionIcon>
-                    )}
-                  </CopyButton> */}
                   </Group>
                 </Stack>
                 <Button
@@ -279,15 +237,3 @@ const Home: NextPage = () => {
 };
 
 export default Home;
-
-// {
-//   colorNumber: 0,
-//   imageNumber: 0,
-//   flag: "",
-//   fromSession: "",
-//   id: 0,
-//   name: "test_index_0",
-//   nickname: "초대해보세요",
-//   entryDate: 0,
-//   currentScore: 0,
-// },

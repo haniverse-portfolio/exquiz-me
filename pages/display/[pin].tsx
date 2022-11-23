@@ -1,15 +1,15 @@
+import { useState, useRef } from "react";
+import React, { useEffect } from "react";
+import { useRecoilState } from "recoil";
 import { useRouter } from "next/router";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
-import Link from "next/link";
 
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
-import { useState } from "react";
-import { useRef } from "react";
-import React, { useEffect } from "react";
+import axios from "axios";
 import {
   Button,
   Group,
@@ -21,25 +21,20 @@ import {
   ActionIcon,
   ScrollArea,
   MantineProvider,
-  Container,
   Loader,
-  TextInput,
 } from "@mantine/core";
-import { Alarm, Pencil } from "tabler-icons-react";
+import { Alarm } from "tabler-icons-react";
 
-import { useRecoilState } from "recoil";
 import { useInterval } from "@mantine/hooks";
 import {
   avatarAnimal,
   avatarColor,
   connectMainServerApiAddress,
-  displayOption,
-  displayParticipants,
-  displayProblem,
   playCorrectAnswerList,
+  problemOptionInput,
 } from "../../components/ConstValues";
-import axios from "axios";
-import { indexIsLogined, lobbyParticipants } from "../../components/States";
+import { indexIsLogined } from "../../components/States";
+import { alternativeImage } from "../../components/display/alternativeImage";
 
 const Home: NextPage = () => {
   /* initialization */
@@ -52,6 +47,87 @@ const Home: NextPage = () => {
   // bgAudio.loop = true;
   const endingEffectAudio = useRef(null) as any;
   const interval = useInterval(() => setSeconds((s) => s - 0.05), 50);
+
+  /* *** usestate start *** */
+  const [seconds, setSeconds] = useState<number>(30);
+  const [step, setStep] = useState(-1);
+  const [submitCount, setSubmitCount] = useState(0);
+  const [correctAnswerList, setCorrectAnswerList] = useState(
+    playCorrectAnswerList
+  );
+
+  const [curIdx, setCurIdx] = useState(0);
+  const [problemOption, setProblemOption] = useState(problemOptionInput);
+
+  const [partlist, setPartlist] = useState([]);
+  const [socketManager, setSocketManager] = useState<any>(null);
+
+  const [isLogined, setIsLogined] = useRecoilState(indexIsLogined);
+
+  /* *** useeffect start *** */
+
+  useEffect(() => {
+    if (!router.isReady) return;
+    connect();
+    getParticipants();
+  }, [router.isReady]);
+
+  useEffect(() => {
+    if (Math.floor(seconds) === 0) {
+      interval.stop();
+      socketManager.send("/pub/room/" + router.query.pin + "/stop", {});
+      bgAudio.current.pause();
+      endingEffectAudio.current.play();
+    }
+  }, [seconds]);
+
+  /* *** axios call *** */
+  // const getRoomOpened = () => {
+  //   axios
+  //     .get(connectMainServerApiAddress + `api/room/${router.query.pin}/open`)
+  //     .then((result) => {
+  //       setCurIdx(result.data.currentProblemNum);
+  //       // validation
+  //       if (result.data.currentState !== "READY") return;
+  //       setStep((prevstate) => step + 1);
+  //     })
+  //     .catch((error) => {});
+  //   return;
+  // };
+
+  const getCorrectAnswerList = () => {
+    axios
+      .get(
+        connectMainServerApiAddress +
+          "api/room/" +
+          router.query.pin +
+          "/submit_list"
+      )
+      .then((result) => {
+        console.log(result.data);
+        setCorrectAnswerList(result.data);
+      })
+      .catch((error) => {});
+    return;
+  };
+
+  const getParticipants = () => {
+    axios
+      .get(
+        connectMainServerApiAddress +
+          "api/room/" +
+          router.query.pin +
+          "/participants"
+      )
+      .then((result) => {
+        setPartlist(result.data);
+      })
+      .catch((error) => {
+        // alert(error);
+      });
+    return;
+  };
+
   /* *** web socket *** */
 
   let connect = () => {
@@ -112,171 +188,6 @@ const Home: NextPage = () => {
     };
 
     return socket;
-  };
-
-  /* *** usestate start *** */
-  const [seconds, setSeconds] = useState<number>(30);
-  const [messagetypestate, setPlaymessagetypestate] = useState("");
-  const [step, setStep] = useState(-1);
-  const [submitCount, setSubmitCount] = useState(0);
-  const [correctAnswerList, setCorrectAnswerList] = useState(
-    playCorrectAnswerList
-  );
-
-  const [curIdx, setCurIdx] = useState(0);
-  const [problemOption, setProblemOption] = useState({
-    messageType: "",
-    fromSession: "",
-    id: "",
-    title: "",
-    description: "",
-    dtype: "",
-    timelimit: 0,
-    score: 0,
-    picture: "",
-    answer: "",
-    idx: 0,
-    problemOptions: [
-      {
-        id: 0,
-        idx: 0,
-        description: "",
-        picture: "",
-        pickCount: 0,
-      },
-    ],
-  });
-
-  const [partlist, setPartlist] = useRecoilState(lobbyParticipants);
-  const [socketManager, setSocketManager] = useState<any>(null);
-
-  const [isLogined, setIsLogined] = useRecoilState(indexIsLogined);
-
-  /* *** useeffect start *** */
-
-  useEffect(() => {
-    if (!router.isReady) return;
-    connect();
-    getParticipants();
-  }, [router.isReady]);
-
-  useEffect(() => {
-    // getOption((problem[curIdx] as any).id);
-  }, [curIdx]);
-
-  useEffect(() => {
-    if (Math.floor(seconds) === 0) {
-      interval.stop();
-      socketManager.send("/pub/room/" + router.query.pin + "/stop", {});
-      bgAudio.current.pause();
-      endingEffectAudio.current.play();
-    }
-  }, [seconds]);
-
-  /* *** axios call *** */
-  // const getRoomOpened = () => {
-  //   axios
-  //     .get(connectMainServerApiAddress + `api/room/${router.query.pin}/open`)
-  //     .then((result) => {
-  //       setCurIdx(result.data.currentProblemNum);
-  //       // validation
-  //       if (result.data.currentState !== "READY") return;
-  //       setStep((prevstate) => step + 1);
-  //     })
-  //     .catch((error) => {});
-  //   return;
-  // };
-
-  const getCorrectAnswerList = () => {
-    axios
-      .get(
-        connectMainServerApiAddress +
-          "api/room/" +
-          router.query.pin +
-          "/submit_list"
-      )
-      .then((result) => {
-        console.log(result.data);
-        setCorrectAnswerList(result.data);
-      })
-      .catch((error) => {});
-    return;
-  };
-
-  const getParticipants = () => {
-    axios
-      .get(
-        connectMainServerApiAddress +
-          "api/room/" +
-          router.query.pin +
-          "/participants"
-      )
-      .then((result) => {
-        setPartlist(result.data);
-      })
-      .catch((error) => {
-        // alert(error);
-      });
-    return;
-  };
-
-  let alternativeImage = () => {
-    return (
-      <Stack align="center" className="flex items-center justify-center">
-        <Stack className="mt-12">
-          <Group spacing={8} align="flex-start">
-            <img
-              className="!overflow-visible animate-[spin_4s_ease-in-out_infinite]"
-              src="/index/rectangle_right.svg"
-              alt="rectangle"
-              width={200}
-              height={200}
-            ></img>
-            <Stack spacing={8}>
-              <img
-                className="!overflow-visible animate-[bounce_2s_ease-in-out_infinite]"
-                src="/index/circle.svg"
-                alt="circle"
-                width={30}
-                height={30}
-              ></img>
-              <img
-                className="!overflow-visible animate-[bounce_3s_ease-in-out_infinite]"
-                src="/index/circle.svg"
-                alt="circle"
-                width={50}
-                height={50}
-              ></img>
-            </Stack>
-          </Group>
-          <Group align="flex-end">
-            <Stack>
-              <img
-                className="!overflow-visible animate-[bounce_2s_ease-in-out_infinite]"
-                src="/index/circle.svg"
-                alt="rectangle"
-                width={30}
-                height={30}
-              ></img>
-              <img
-                className="!overflow-visible animate-[bounce_3s_ease-in-out_infinite]"
-                src="/index/circle.svg"
-                alt="rectangle"
-                width={50}
-                height={50}
-              ></img>
-            </Stack>
-            <img
-              className="!overflow-visible animate-[spin_3s_ease-in-out_infinite]"
-              src="/index/rectangle_left.svg"
-              alt="rectangle"
-              width={120}
-              height={120}
-            ></img>
-          </Group>
-        </Stack>
-      </Stack>
-    );
   };
 
   let displayOptionComponent = () => {
@@ -389,11 +300,11 @@ const Home: NextPage = () => {
     return (
       <Stack
         align="center"
-        className="flex items-center justify-center bg-[#FF9B3F] h-[100vh]"
+        className="flex items-center justify-center bg-gradient-to-r from-[#ffc069] to-[#FF9B3F] text h-[100vh]"
       >
         <Stack>
           <Center>
-            <Loader color="yellow" size="xl" />
+            <Loader color="orange" size="xl" />
           </Center>
           <p className="text-center text-xl text-white font-semibold">
             잠시 후 퀴즈가 시작됩니다...
@@ -411,7 +322,10 @@ const Home: NextPage = () => {
             <Grid columns={20}>
               <Grid.Col span={2}>
                 <ActionIcon variant="transparent" size={60}>
-                  <Alarm size={60} color="orange"></Alarm>
+                  <Alarm
+                    size={60}
+                    color={seconds <= 11 ? "red" : "orange"}
+                  ></Alarm>
                 </ActionIcon>
               </Grid.Col>
               <Grid.Col className="flex items-center jusitfy-center" span={16}>
@@ -424,7 +338,7 @@ const Home: NextPage = () => {
                   <Progress
                     className="w-[70vw]"
                     size={30}
-                    color="orange"
+                    color={seconds <= 11 ? "red" : "orange"}
                     value={
                       ((seconds - 1) / problemOption.timelimit || 30) * 100.0
                     }
@@ -433,7 +347,11 @@ const Home: NextPage = () => {
               </Grid.Col>
               <Grid.Col className="flex items-center jusitfy-center" span={2}>
                 <Group className="ml-8 w-[40px] flex items-center jusitfy-center">
-                  <p className="font-semibold text-amber-500 text-5xl">
+                  <p
+                    className={`font-semibold ${
+                      seconds <= 11 ? "text-red-500" : "text-amber-500"
+                    } text-4xl"`}
+                  >
                     {Math.floor(seconds)}
                   </p>
                 </Group>
@@ -522,20 +440,9 @@ const Home: NextPage = () => {
                   {correctAnswerList.totalCorrectCount}명
                 </strong>
               </p>
-              <Button
-                className="mx-16"
-                onClick={() => {
-                  setStep(2);
-                }}
-                color="orange"
-                variant="outline"
-                size="xl"
-              >
-                퀴즈 결과 씬
-              </Button>
             </Stack>
             <Button
-              className="mx-16 mt-[50vh]"
+              className="mx-16 mt-[55vh]"
               onClick={() => {
                 socketManager.send(
                   "/pub/room/" + router.query.pin + "/next",
@@ -557,7 +464,7 @@ const Home: NextPage = () => {
         >
           <Stack>
             <ScrollArea style={{ height: "calc(100vh - 70px)" }}>
-              <Grid columns={6}>
+              <Grid columns={6} gutter={0}>
                 {correctAnswerList.participantInfo.map((cur: any, i) => {
                   return (
                     <Grid.Col
@@ -569,7 +476,7 @@ const Home: NextPage = () => {
                       span={1}
                       key={i}
                     >
-                      <Stack className="w-[400px] rounded-xl bg-white shadow-lg">
+                      <Stack className="w-full m-2 rounded-xl bg-white shadow-lg">
                         <Center
                           className={` rounded-t-xl h-[160px] ${
                             avatarColor[cur.colorNumber]
@@ -577,7 +484,7 @@ const Home: NextPage = () => {
                         >
                           <Image
                             alt="hello"
-                            className={`cursor-pointer rounded-full`}
+                            className="cursor-pointer rounded-full !overflow-visible animate-[bounce_1.5s_ease-in-out_infinite]"
                             src={avatarAnimal[cur.imageNumber]}
                             width={"120px"}
                             height={"120px"}
@@ -740,7 +647,7 @@ const Home: NextPage = () => {
         className="invisible"
         src="/sounds/boom_short.mp3"
       ></audio>
-      <Group className="absolute top-0 right-0 z-50">
+      <Group className="absolute bottom-0 right-0 z-50">
         <Button
           className="shadow-xl"
           color="orange"
@@ -820,52 +727,3 @@ const Home: NextPage = () => {
 };
 
 export default Home;
-
-//!max-w-[25%] !basis-1/4
-
-{
-  /* <Group className="bg-[#273248]" position="right">
-            <Button
-              onClick={() => {
-                client.send("/pub/room/" + router.query.pin + "/next", {});
-              }}
-            >
-              next 버튼
-            </Button>
-            <Button
-              variant="outline"
-              color="purple"
-              onClick={() => {
-                console.log(problem);
-              }}
-            >
-              문제를 보자
-            </Button>
-            <Button
-              variant="outline"
-              color="orange"
-              onClick={() => {
-                setStep(step - 1);
-              }}
-            >
-              테스트용 이전 씬
-            </Button>
-            <Button
-              variant="outline"
-              color="orange"
-              onClick={() => {
-                setStep(step + 1);
-              }}
-            >
-              테스트용 다음 씬
-            </Button>
-            <Button
-              variant="outline"
-              onClick={() => {
-                setPlaymessagetypestate("NEW_PROBLEM");
-              }}
-            >
-              문제 시간 스타트
-            </Button>
-          </Group> */
-}

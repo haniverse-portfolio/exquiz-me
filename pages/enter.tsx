@@ -1,23 +1,22 @@
+import { useEffect, useState, useRef } from "react";
+import styles from "../styles/Home.module.css";
+{
+  /* next */
+}
 import Router, { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
-import styles from "../styles/Home.module.css";
 import Link from "next/link";
 import Image from "next/image";
+{
+  /* call */
+}
 import axios from "axios";
-import { useRecoilState } from "recoil";
-import {
-  playAnimal,
-  playColor,
-  playPin,
-  playRoomInfo,
-  playUserCurInfo,
-} from "../components/States";
-
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
-
+{
+  /* ui Library */
+}
 import {
   Button,
   Center,
@@ -31,44 +30,48 @@ import {
   Loader,
   Grid,
 } from "@mantine/core";
-
+import { Backspace, Refresh, ZoomQuestion } from "tabler-icons-react";
+{
+  /* imbedding value */
+}
 import {
   connectMainServerApiAddress,
   adj,
   noun,
   avatarAnimal,
   avatarColor,
+  enterUserInfoInput,
 } from "../components/ConstValues";
-import { useScrollIntoView } from "@mantine/hooks";
-import { Backspace, Refresh, ZoomQuestion } from "tabler-icons-react";
-import { useRef } from "react";
-import { runInNewContext } from "vm";
 
 const Home: NextPage = () => {
   const router = useRouter();
 
-  const [pin, setPin] = useRecoilState(playPin);
+  {
+    /* *** usestate start *** */
+  }
+
+  const [pin, setPin] = useState("");
+  const [pinStep, setPinStep] = useState(0);
   const ref = useRef<HTMLInputElement>(null);
 
-  const { scrollIntoView, targetRef, scrollableRef } = useScrollIntoView();
   const [step, setStep] = useState(0);
   const [visible, setVisible] = useState(false);
 
-  useEffect(() => {
-    if (!router.isReady) return;
-    if (step !== 1) return;
-    connect();
-  }, [step]);
+  const [userCurInfo, setUserCurInfo] = useState(enterUserInfoInput);
+  const [nickname, setNickname] = useState("");
+  const [name, setName] = useState("");
+  const [animal, setAnimal] = useState(0);
+  const [color, setColor] = useState(0);
 
-  useEffect(() => {
-    let len = pin.length;
-    if (len === 0) setPinStep(0);
-    else if (len >= 1 && len <= 5) setPinStep(1);
-    else if (len === 6) {
-      getPinValid(pin);
-    }
-  }, [pin]);
+  const [playRoom, setPlayRoom] = useState({});
 
+  const [socketManager, setSocketManager] = useState<any>(null);
+
+  const [modalOpened, setModalOpened] = useState(false);
+
+  {
+    /* localstorage removeItem userInfo */
+  }
   useEffect(() => {
     let randAnimal = Math.floor(Math.random() * (avatarAnimal.length - 1)) + 1;
     let randAvatarColor =
@@ -82,10 +85,29 @@ const Home: NextPage = () => {
     localStorage.removeItem("nickname");
   }, [router.isReady]);
 
-  /* 2. modal */
-  const [modalOpened, setModalOpened] = useState(false);
-  /* submit form */
+  {
+    /* websocekt connect */
+  }
+  useEffect(() => {
+    if (step !== 1) return;
+    connect();
+  }, [step]);
 
+  {
+    /* pin validation */
+  }
+  useEffect(() => {
+    let len = pin.length;
+    if (len === 0) setPinStep(0);
+    else if (len >= 1 && len <= 5) setPinStep(1);
+    else if (len === 6) {
+      getPinValid(pin);
+    }
+  }, [pin]);
+
+  {
+    /* axios call */
+  }
   const getPinValid = (pin: string) => {
     axios
       .get(connectMainServerApiAddress + `api/room/${pin.toString()}/open`)
@@ -117,19 +139,6 @@ const Home: NextPage = () => {
     return;
   };
 
-  const [userCurInfo, setUserCurInfo] = useRecoilState(playUserCurInfo);
-  const [nickname, setNickname] = useState("");
-  const [name, setName] = useState("");
-  const [animal, setAnimal] = useState(0);
-  const [color, setColor] = useState(0);
-  const [pinStep, setPinStep] = useState(0);
-
-  const [playRoom, setPlayRoom] = useRecoilState(playRoomInfo);
-
-  const [socketManager, setSocketManager] = useState<any>(null);
-
-  let createRand = () => {};
-
   let connect = () => {
     let client: Stomp.Client;
     let socket = new SockJS(connectMainServerApiAddress + "stomp");
@@ -147,33 +156,23 @@ const Home: NextPage = () => {
               setVisible(false);
               return;
             }
-
-            if (JSON.parse(message.body).messageType === "PARTICIPANT") {
+            let data = JSON.parse(message.body);
+            if (data.messageType === "PARTICIPANT") {
               if (localStorage.getItem("fromSession") === null) {
+                if (data.name !== localStorage.getItem("name")) return;
+                if (data.nickname !== localStorage.getItem("nickname")) return;
                 if (
-                  JSON.parse(message.body).name !== localStorage.getItem("name")
-                )
-                  return;
-                if (
-                  JSON.parse(message.body).nickname !==
-                  localStorage.getItem("nickname")
-                )
-                  return;
-                if (
-                  JSON.parse(message.body).imageNumber.toString() !==
+                  data.imageNumber.toString() !==
                   localStorage.getItem("imageNumber")
                 )
                   return;
                 if (
-                  JSON.parse(message.body).colorNumber.toString() !==
+                  data.colorNumber.toString() !==
                   localStorage.getItem("colorNumber")
                 )
                   return;
-                setUserCurInfo(JSON.parse(message.body));
-                localStorage.setItem(
-                  "fromSession",
-                  JSON.parse(message.body).fromSession
-                );
+                setUserCurInfo(data);
+                localStorage.setItem("fromSession", data.fromSession);
                 client.unsubscribe("enter");
                 setTimeout(() => {
                   Router.push(`/play/${pin}`);
@@ -224,9 +223,6 @@ const Home: NextPage = () => {
                   height={30}
                 />
               </Group>
-              {/* <Notification disallowClose color="orange" title="알림">
-                6자리의 숫자로 된 핀 번호를 입력하세요.
-              </Notification> */}
               <Stack className="p-8 rounded-xl shadow-lg bg-white">
                 <p className="animate-fadeIn text-center text-2xl font-bold text-black">
                   퀴즈방 입장하기
@@ -310,12 +306,11 @@ const Home: NextPage = () => {
                   )}
                   {pinStep === 2 ? (
                     <Stack className="animate-fadeIn px-4 rounded-3xl h-[160px] w-[260px] bg-contain bg-no-repeat bg-center bg-[url('/inbox/folder.svg')]">
-                      {/* h-[220px] w-[310px] */}
                       <Stack className="h-[3px]"></Stack>
                       <Stack className="h-[100px]"></Stack>
                       <Stack className="ml-4 mb-4">
                         <p className="text-[24px] text-[#5E5E5E]">
-                          {(playRoom as any).problemsetDto.title || ""}
+                          {(playRoom as any).roomName || ""}
                           {/* {playRoom === undefined
                             ? ""
                             : (playRoom as any).problemsetDto.title} */}
@@ -359,30 +354,15 @@ const Home: NextPage = () => {
                   maxLength={6}
                   size="xl"
                   value={pin}
-                  onChange={(e) => {
-                    /* validation */
-                    // if (
-                    //   e.target.value !== "" &&
-                    //   parseInt(e.target.value).toString().length !==
-                    //     e.target.value.length
-                    // ) {
-                    // }
-                  }}
                   ref={ref}
                   placeholder="6자리 숫자를 입력하세요"
                 ></TextInput>
-                {/* <p className="text-center text-lg font-semibold cursor-pointer text-orange-500 underline">
-                  QR코드로 입장하기
-                </p> */}
                 <Button
                   disabled={pinStep === 2 ? false : true}
                   size="lg"
                   fullWidth
                   onClick={() => {
                     getRoomOpened(pin);
-                    // connect();
-
-                    // is room exist : validation check needed
                   }}
                   color="orange"
                   variant="light"

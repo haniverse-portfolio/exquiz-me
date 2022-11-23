@@ -4,7 +4,6 @@ import {
   optionInput,
   problemsetInput,
   slideProblemInput,
-  inboxRoomInput,
 } from "./ConstValues";
 
 /* *** common *** */
@@ -19,7 +18,7 @@ export const indexUserInfo = atom({
     accessToken: null,
     email: "",
     nickname: "",
-    picture: "/dog.png",
+    picture: "/white.png",
     role: "",
     username: "",
   },
@@ -48,25 +47,6 @@ export const inboxProblemset = atom({
   default: [],
 });
 
-export const inboxProblem = atom({
-  key: "inboxProblem",
-  default: [],
-});
-
-export const inboxOption = atom({
-  key: "inboxOption",
-  default: optionInput,
-}); // usestate
-
-export const inboxMaxpart = atom({
-  key: "inboxMaxpart",
-  default: 30,
-}); // usestate
-
-export const inboxRoom = atom({
-  key: "inboxRoom",
-  default: inboxRoomInput,
-});
 /* *** inbox *** */
 
 /* *** index *** */
@@ -210,69 +190,7 @@ export const createImageStep = atom({
 /* *** create *** */
 
 /* *** play *** */
-export const playRoomInfo = atom({
-  key: "playRoomInfo",
-  default: {},
-});
 
-export const playProblemset = atom({
-  key: "playProblemset",
-  default: {},
-});
-
-export const playProblem = atom({
-  key: "playProblem",
-  default: [],
-});
-
-export const playPin = atom({
-  key: "playPin",
-  default: "",
-});
-
-export const playOption = atom({
-  key: "playOption",
-  default: [],
-});
-
-export const playMessagetype = atom({
-  key: "playMessagetype",
-  default: "o",
-});
-
-export const playUserCurInfo = atom({
-  key: "playUserCurInfo",
-  default: {
-    messageType: "", // "PARTICIPANT"
-    fromSession: "", // 사용자 session id - google login시 발급
-    id: "", // 사용자 id
-    name: "", // 사용자 구분 이름
-    nickname: "", // 사용자 닉네임
-    entryDate: "", // 생성일(입장시간)
-    currentScore: 0, // 점수
-    imageNumber: 0, // 사용자 이미지
-    colorNumber: 0, // 사용자 배경색
-  },
-});
 /* *** lobby *** */
-export const lobbyParticipants = atom({
-  key: "lobbyParticipants",
-  default: [],
-});
-
-export const playAnimal = atom({
-  key: "playAnimal",
-  default: 0,
-});
-
-export const playColor = atom({
-  key: "playColor",
-  default: 0,
-});
-
-export const playIsDrawerOpened = atom({
-  key: "playIsDrawerOpened",
-  default: "0",
-});
 
 /* *** play *** */

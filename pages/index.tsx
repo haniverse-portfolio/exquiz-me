@@ -61,13 +61,7 @@ const Home: NextPage = () => {
   /* *** effect start *** */
 
   /* *** function start *** */
-  let validateQueryString = (p_string: string) => {
-    var field = p_string;
-    var url = window.location.href;
-    if (url.indexOf("?" + field + "=") != -1) return true;
-    else if (url.indexOf("&" + field + "=") != -1) return true;
-    return false;
-  };
+
   /* *** function end *** */
 
   /* *** axios start *** */

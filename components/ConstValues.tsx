@@ -11,8 +11,9 @@ import { IconSquareCheck } from "@tabler/icons";
 
 /* common */
 export const connectMainServerApiAddress = "https://api.exquiz.me/";
-/* create */
-
+{
+  /* *** create *** */
+}
 export const dtypeName = [
   "객관식",
   "주관식",
@@ -90,31 +91,18 @@ export const problemsetInput = {
   title: "",
 };
 
-export const tabTooltip = [
-  "여러개의 선지로 이루어진 단일 답안형 문제 유형입니다",
-  "여러개의 선지로 이루어진 복수 답안형 문제 유형입니다",
-  "두개의 선지로 이루어진 단일 답안형 문제 유형입니다",
-  "exquiz.me가 제공하는 랜덤 넌센스 문제 유형입니다",
-  "exquiz.me가 제공하는 엔터테인먼트형 다이나믹 문제 유형입니다",
-  "텍스트나 이미지를 통해 설명할 수 있는 설명 유형입니다",
-];
-
-export const MARKSTIME = [
-  { value: 0, label: "10" },
-  { value: 25, label: "20" },
-  { value: 50, label: "30" },
-  { value: 75, label: "40" },
-  { value: 100, label: "50" },
-];
-
-export const MARKSCORE = [
-  { value: 0, label: "100" },
-  { value: 25, label: "200" },
-  { value: 50, label: "300" },
-  { value: 75, label: "400" },
-  { value: 100, label: "500" },
-];
-
+/* *** enter *** */
+export const enterUserInfoInput = {
+  messageType: "", // "PARTICIPANT"
+  fromSession: "", // 사용자 session id - google login시 발급
+  id: "", // 사용자 id
+  name: "", // 사용자 구분 이름
+  nickname: "", // 사용자 닉네임
+  entryDate: "", // 생성일(입장시간)
+  currentScore: 0, // 점수
+  imageNumber: 0, // 사용자 이미지
+  colorNumber: 0, // 사용자 배경색
+};
 export const adj = [
   "성찰하는",
   "고뇌하는",
@@ -211,182 +199,22 @@ export const avatarColor = [
   "bg-indigo-500",
 ];
 
-export const tabColor = [
-  "bg-gradient-to-r from-red-500 to-orange-500",
-  "bg-gradient-to-r from-orange-500 to-amber-500",
-  "bg-gradient-to-r from-green-500 to-green-500",
-  "bg-gradient-to-r from-blue-700 to-blue-500",
-  "bg-gradient-to-r from-purple-500 to-pink-500",
-  "bg-gradient-to-r from-gray-500 to-gray-400",
-];
+// export function tabIcon(idx: number) {
+//   if (idx == 0)
+//     return <SquareCheck color="white" className="m-auto" size={"30px"} />;
+//   if (idx == 1)
+//     return <Parentheses color="white" className="m-auto" size={"30px"} />;
+//   if (idx == 2) return <AB color="white" className="m-auto" size={"30px"} />;
+//   if (idx == 3)
+//     return <QuestionMark color="white" className="m-auto" size={"30px"} />;
+//   if (idx == 4) return <Apps color="white" className="m-auto" size={"30px"} />;
+//   if (idx == 5)
+//     return <MathAvg color="white" className="m-auto" size={"30px"} />;
+// }
 
-export function tabIcon(idx: number) {
-  if (idx == 0)
-    return <SquareCheck color="white" className="m-auto" size={"30px"} />;
-  if (idx == 1)
-    return <Parentheses color="white" className="m-auto" size={"30px"} />;
-  if (idx == 2) return <AB color="white" className="m-auto" size={"30px"} />;
-  if (idx == 3)
-    return <QuestionMark color="white" className="m-auto" size={"30px"} />;
-  if (idx == 4) return <Apps color="white" className="m-auto" size={"30px"} />;
-  if (idx == 5)
-    return <MathAvg color="white" className="m-auto" size={"30px"} />;
+{
+  /* *** inbox *** */
 }
-
-export const testPlayProblem = [
-  {
-    answer: "0",
-    description: "우리나라에서 가장 높은 산은?",
-    dtype: "MultipleChoiceProblem",
-    idx: 0,
-    picture: "",
-    problemsetId: 0,
-    score: 125,
-    timelimit: 30,
-    title: "",
-  },
-  {
-    answer: "0",
-    description: "아이스크림을 영어로 하면?",
-    dtype: "MultipleChoiceProblem",
-    idx: 0,
-    picture: "",
-    problemsetId: 0,
-    score: 125,
-    timelimit: 30,
-    title: "",
-  },
-  {
-    answer: "0",
-    description: "소프트웨어 마에스트로가 있는 빌딩은?",
-    dtype: "MultipleChoiceProblem",
-    idx: 0,
-    picture: "",
-    problemsetId: 0,
-    score: 125,
-    timelimit: 30,
-    title: "",
-  },
-  {
-    answer: "0",
-    description: "🌋이 중 가장 무시무시한 공룡은?🏔",
-    dtype: "MultipleChoiceProblem",
-    idx: 0,
-    picture: "",
-    problemsetId: 0,
-    score: 125,
-    timelimit: 30,
-    title: "",
-  },
-];
-
-export const testPlayOption = [
-  [
-    {
-      description: "설악산",
-      idx: 0,
-      picture: "",
-      problemId: 0,
-    },
-    {
-      description: "지리산",
-      idx: 1,
-      picture: "",
-      problemId: 0,
-    },
-    {
-      description: "한라산",
-      idx: 2,
-      picture: "",
-      problemId: 0,
-    },
-    {
-      description: "백두산",
-      idx: 3,
-      picture: "",
-      problemId: 0,
-    },
-  ],
-  [
-    {
-      description: "icecoffee",
-      idx: 0,
-      picture: "",
-      problemId: 0,
-    },
-    {
-      description: "icekekki",
-      idx: 1,
-      picture: "",
-      problemId: 0,
-    },
-    {
-      description: "icecream",
-      idx: 2,
-      picture: "",
-      problemId: 0,
-    },
-    {
-      description: "iceball",
-      idx: 3,
-      picture: "",
-      problemId: 0,
-    },
-  ],
-  [
-    {
-      description: "황해주택",
-      idx: 0,
-      picture: "",
-      problemId: 0,
-    },
-    {
-      description: "인하주택",
-      idx: 1,
-      picture: "",
-      problemId: 0,
-    },
-    {
-      description: "아남타워",
-      idx: 2,
-      picture: "",
-      problemId: 0,
-    },
-    {
-      description: "코엑스",
-      idx: 3,
-      picture: "",
-      problemId: 0,
-    },
-  ],
-  [
-    {
-      description: "티라노사우루스",
-      idx: 0,
-      picture: "",
-      problemId: 0,
-    },
-    {
-      description: "트리케라톱스",
-      idx: 1,
-      picture: "",
-      problemId: 0,
-    },
-    {
-      description: "랩터",
-      idx: 2,
-      picture: "",
-      problemId: 0,
-    },
-    {
-      description: "스피노사우루스",
-      idx: 3,
-      picture: "",
-      problemId: 0,
-    },
-  ],
-];
-
 export const inboxRoomInput = {
   roomName: "",
   id: -1,
@@ -404,50 +232,31 @@ export const inboxRoomInput = {
   currentProblemNum: -1,
 };
 
-/* *** display constvalue *** */
-export const displayProblem = {
-  id: 0,
+{
+  /* *** display *** */
+}
+export const problemOptionInput = {
+  messageType: "",
+  fromSession: "",
+  id: "",
   title: "",
   description: "",
-  dtype: "MultipleChoiceProblem",
-  timelimit: 30,
+  dtype: "",
+  timelimit: 0,
   score: 0,
-  picture: null,
-  videoUrl: null,
-  answer: "0",
-  idx: 1,
+  picture: "",
+  answer: "",
+  idx: 0,
+  problemOptions: [
+    {
+      id: 0,
+      idx: 0,
+      description: "",
+      picture: "",
+      pickCount: 0,
+    },
+  ],
 };
-
-export const displayOption = [
-  {
-    id: 0,
-    idx: 0,
-    description: "",
-    picture: null,
-    pickCount: 0,
-  },
-  {
-    id: 0,
-    idx: 0,
-    description: "",
-    picture: null,
-    pickCount: 0,
-  },
-  {
-    id: 0,
-    idx: 0,
-    description: "",
-    picture: null,
-    pickCount: 0,
-  },
-  {
-    id: 0,
-    idx: 0,
-    description: "",
-    picture: null,
-    pickCount: 0,
-  },
-];
 
 export const displayParticipants = [
   {
@@ -462,52 +271,7 @@ export const displayParticipants = [
   },
 ];
 
-/* *** display constvalue *** */
-
-export const playProblem = {
-  id: 0,
-  title: "",
-  description: "",
-  dtype: "MultipleChoiceProblem",
-  timelimit: 30,
-  score: 0,
-  picture: null,
-  videoUrl: null,
-  answer: "0",
-  idx: 1,
-};
-
-export const playOption = [
-  {
-    id: 0,
-    idx: 0,
-    description: "",
-    picture: null,
-    pickCount: 0,
-  },
-  {
-    id: 0,
-    idx: 0,
-    description: "",
-    picture: null,
-    pickCount: 0,
-  },
-  {
-    id: 0,
-    idx: 0,
-    description: "",
-    picture: null,
-    pickCount: 0,
-  },
-  {
-    id: 0,
-    idx: 0,
-    description: "",
-    picture: null,
-    pickCount: 0,
-  },
-];
-
+/* *** play *** */
 export const playSubjectiveOption = [
   false,
   false,
