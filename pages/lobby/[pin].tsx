@@ -97,6 +97,9 @@ const Home: NextPage = () => {
             if (JSON.parse(message.body).messageType === "PARTICIPANT") {
               setPartlist(JSON.parse(message.body).participantList);
             }
+            if (JSON.parse(message.body).messageType === "NEW_PROBLEM") {
+              client.unsubscribe("lobby");
+            }
           },
           { id: "lobby" }
         );

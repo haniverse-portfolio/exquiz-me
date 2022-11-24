@@ -181,6 +181,9 @@ const Home: NextPage = () => {
                 }, 2000);
               }
             }
+            if (data.messageType === "ERROR") {
+              Router.push("/enter");
+            }
           },
           { id: "enter" }
         );
@@ -557,18 +560,21 @@ const Home: NextPage = () => {
 
                 <Button
                   size="lg"
+                  disabled={name === "" || nickname === "" ? true : false}
                   onClick={() => {
-                    socketManager.send(
-                      "/pub/room/" + pin + "/signup",
-                      {},
-                      JSON.stringify({
-                        name: name,
-                        nickname: nickname,
-                        imageNumber: animal,
-                        colorNumber: color,
-                      })
-                    );
-                    setVisible(true);
+                    setTimeout(() => {
+                      socketManager.send(
+                        "/pub/room/" + pin + "/signup",
+                        {},
+                        JSON.stringify({
+                          name: name,
+                          nickname: nickname,
+                          imageNumber: animal,
+                          colorNumber: color,
+                        })
+                      );
+                      setVisible(true);
+                    }, 500);
                   }}
                   color="orange"
                   variant="filled"
