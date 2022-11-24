@@ -573,6 +573,7 @@ const Home: NextPage = () => {
               {userCurrentInfo.correct === true ? (
                 <p className="m-auto text-center text-2xl font-semibold text-green-700">
                   +{userCurrentInfo.currentScore - userCurrentInfo.beforeScore}
+                  점
                 </p>
               ) : (
                 <></>
@@ -609,7 +610,7 @@ const Home: NextPage = () => {
                       className={` cursor-pointer rounded-full ${
                         userCurrentInfo.correct === true
                           ? "!overflow-visible animate-bounce"
-                          : ""
+                          : "animate-dropCustomSpin"
                         // animate-[bounce_1.5s_ease-in-out_infinite]
                       }`}
                       src={avatarAnimal[userCurrentInfo.imageNumber]}
@@ -624,7 +625,7 @@ const Home: NextPage = () => {
               </Center>
               {userCurrentInfo.correct === true ? (
                 <p className="m-auto text-center text-2xl font-semibold text-green-700">
-                  +{userCurrentInfo.currentScore - userCurrentInfo.beforeScore}
+                  {userCurrentInfo.totalCorrect}점
                 </p>
               ) : (
                 <></>

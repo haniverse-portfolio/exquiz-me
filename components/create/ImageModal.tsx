@@ -161,6 +161,7 @@ export const ImageModal = () => {
               </ActionIcon>
             }
             onChange={(event) => {
+              setImageList([]);
               setImageLoading(true);
               setImageWord(event.currentTarget.value);
               setImageDebouncedWord(event.currentTarget.value);

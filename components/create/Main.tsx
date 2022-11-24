@@ -111,6 +111,7 @@ export const Main = () => {
   const [option, setOption] = useRecoilState(createOption);
   /* score, time */
   /* image */
+  const [imageWord, setImageWord] = useRecoilState(createImageWord);
   // const [imageTmpWord, setImageTmpWord] = useDebouncedState("", 500);
 
   const getNonsense = (idx: number) => {
@@ -570,6 +571,7 @@ export const Main = () => {
                           <Button
                             variant="outline"
                             onClick={() => {
+                              setImageWord("");
                               setImageModalOpened(true);
                             }}
                             size="md"

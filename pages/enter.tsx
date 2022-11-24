@@ -167,22 +167,32 @@ const Home: NextPage = () => {
             let data = JSON.parse(message.body);
             if (data.messageType === "PARTICIPANT") {
               if (localStorage.getItem("fromSession") === null) {
-                if (data.name !== localStorage.getItem("name")) return;
-                if (data.nickname !== localStorage.getItem("nickname")) return;
+                if (data.name !== localStorage.getItem("name")) {
+                  setVisible(false);
+                  return;
+                }
+                if (data.nickname !== localStorage.getItem("nickname")) {
+                  setVisible(false);
+                  return;
+                }
                 if (
                   data.imageNumber.toString() !==
                   localStorage.getItem("imageNumber")
-                )
+                ) {
+                  setVisible(false);
                   return;
+                }
                 if (
                   data.colorNumber.toString() !==
                   localStorage.getItem("colorNumber")
-                )
+                ) {
+                  setVisible(false);
                   return;
+                }
                 setUserCurInfo(data);
                 localStorage.setItem("fromSession", data.fromSession);
-                client.unsubscribe("enter");
                 setTimeout(() => {
+                  client.unsubscribe("enter");
                   Router.push(`/play/${pin}`);
                   setVisible(false);
                 }, 2000);
@@ -564,7 +574,7 @@ const Home: NextPage = () => {
                             noun[
                               Math.floor(Math.random() * (noun.length - 1)) + 1
                             ];
-                          setNickname(randAdjective + randNoun);
+                          setNickname(randAdjective + " " + randNoun);
                           localStorage.setItem(
                             "nickname",
                             randAdjective + " " + randNoun

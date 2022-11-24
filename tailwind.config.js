@@ -13,6 +13,9 @@ module.exports = {
         fadeIn: "fadeIn 1s ease",
         fadeOut: "fadeOut 1s ease",
         drop: "drop 2s ease-in forwards",
+        customSpin: "customSpin 1s linear infinite",
+        dropCustomSpin:
+          "drop 2s ease in forwards customSpin 1s linear infinite",
       },
       keyframes: {
         fadeUp: {
@@ -66,8 +69,12 @@ module.exports = {
           },
         },
         drop: {
-          "0%": { transform: "translateY(0px)", opacity: 1 },
-          "100%": { transform: "translateY(2200px)", opacity: 1 },
+          "0%": { transform: "translateY(0px)" },
+          "100%": { transform: "translateY(2600px)" },
+        },
+        customSpin: {
+          "0%": { transform: "rotate(0deg)" },
+          "100%": { transform: "rotate(360deg)" },
         },
       },
     },
