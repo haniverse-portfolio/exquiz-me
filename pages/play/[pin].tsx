@@ -142,7 +142,7 @@ const Home: NextPage = () => {
           "/topic/room/" + router.query.pin,
           function (message) {
             // socket ready?
-            if (socket.readyState !== 1) return;
+            // if (socket.readyState !== 1) return;
             if (JSON.parse(message.body).messageType === "NEW_PROBLEM") {
               setSubjectiveOption([
                 false,

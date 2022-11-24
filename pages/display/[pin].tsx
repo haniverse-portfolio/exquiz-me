@@ -141,7 +141,6 @@ const Home: NextPage = () => {
     client.connect(
       {},
       function (frame) {
-        console.log("web socket connected");
         if (router.query.pin === undefined) router.push("/404");
         client.subscribe(
           "/topic/room/" + router.query.pin + "/host",
@@ -150,8 +149,9 @@ const Home: NextPage = () => {
             //if (socket.readyState !== 1) return;
             if (JSON.parse(message.body).messageType === "ANSWER") {
               if (submitCount + 1 >= partlist.length) {
+                alert("submitCount" + submitCount);
                 // setSeconds(0);
-                alert("cex");
+                alert("partilist" + partlist.length);
               } else {
                 setSubmitCount(submitCount + 1);
               }
@@ -164,12 +164,12 @@ const Home: NextPage = () => {
                 setProblemOption(JSON.parse(message.body));
                 setSeconds(JSON.parse(message.body).timelimit);
               }
-              setCorrectStep(0);
               setTimeout(() => {
                 setStep(0);
                 interval.start();
                 setCurIdx(JSON.parse(message.body).idx);
               }, 1500);
+              setCorrectStep(0);
             } else if (JSON.parse(message.body).messageType === "STOP") {
               setProblemOption(JSON.parse(message.body));
               setSeconds(JSON.parse(message.body).timelimit);
@@ -479,9 +479,9 @@ const Home: NextPage = () => {
                       (cur: any, i) => {
                         return (
                           <Grid.Col
-                            className={`${
-                              cur.correct === false ? "opacity-25" : ""
-                            } flex items-center justify-center h-60 animate-fadeOut`}
+                            className={
+                              "flex items-center justify-center h-60 animate-fadeOut"
+                            }
                             span={1}
                             key={i}
                           >

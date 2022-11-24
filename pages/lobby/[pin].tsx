@@ -85,9 +85,9 @@ const Home: NextPage = () => {
     client.connect(
       {},
       function (frame) {
-        if (socket.readyState !== 1) {
-          return;
-        }
+        // if (socket.readyState !== 1) {
+        //   return;
+        // }
         if (router.query.pin === undefined) router.push("/404");
         client.subscribe(
           "/topic/room/" + router.query.pin + "/host",
