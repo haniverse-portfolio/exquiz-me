@@ -46,6 +46,7 @@ const Home: NextPage = () => {
   const bgAudio = useRef(null) as any;
   // bgAudio.loop = true;
   const endingEffectAudio = useRef(null) as any;
+  const correctEffectAudio = useRef(null) as any;
   const interval = useInterval(() => {
     if (seconds > 0) setSeconds((s) => s - 0.05);
   }, 50);
@@ -107,6 +108,7 @@ const Home: NextPage = () => {
           "/submit_list"
       )
       .then((result) => {
+        alert(JSON.stringify(result.data));
         console.log(result.data);
         setCorrectAnswerList(result.data);
       })
@@ -148,23 +150,22 @@ const Home: NextPage = () => {
             // socket ready?
             //if (socket.readyState !== 1) return;
             if (JSON.parse(message.body).messageType === "ANSWER") {
-              if (submitCount + 1 >= partlist.length) {
-                alert("submitCount" + submitCount);
-                // setSeconds(0);
-                alert("partilist" + partlist.length);
-              } else {
-                setSubmitCount(submitCount + 1);
+              if (
+                JSON.parse(message.body).totalSubmitCount >=
+                JSON.parse(message.body).totalPartList
+              ) {
+                setSeconds(0);
               }
             } else if (JSON.parse(message.body).messageType === "NEW_PROBLEM") {
+              setStep(-1);
               setSubmitCount(0);
               bgAudio.currentTime = 0;
-              bgAudio.current.play();
               if (JSON.parse(message.body).idx === 0) {
-                setStep(-1);
                 setProblemOption(JSON.parse(message.body));
                 setSeconds(JSON.parse(message.body).timelimit);
               }
               setTimeout(() => {
+                bgAudio.current.play();
                 setStep(0);
                 interval.start();
                 setCurIdx(JSON.parse(message.body).idx);
@@ -177,10 +178,22 @@ const Home: NextPage = () => {
               /* 정답자 씬 전환 */
               setStep(1);
               setTimeout(() => {
+                correctEffectAudio.current.play();
                 setCorrectStep(1);
               }, 1000);
             } else if (JSON.parse(message.body).messageType === "FINISH") {
-              setStep(2);
+              setProblemOption(JSON.parse(message.body));
+              setSeconds(JSON.parse(message.body).timelimit);
+              getCorrectAnswerList();
+              /* 정답자 씬 전환 */
+              setStep(1);
+              setTimeout(() => {
+                setCorrectStep(1);
+              }, 1000);
+
+              setTimeout(() => {
+                setStep(2);
+              }, 5000);
             }
           },
           { id: "display" }
@@ -487,7 +500,7 @@ const Home: NextPage = () => {
                           >
                             <Stack className="w-full m-2 rounded-xl bg-white shadow-lg">
                               <Center
-                                className={` rounded-t-xl h-[160px] ${
+                                className={`rounded-t-xl h-[160px] ${
                                   avatarColor[cur.colorNumber]
                                 }  shadow-lg`}
                               >
@@ -577,11 +590,16 @@ const Home: NextPage = () => {
             <Stack className="m-8">
               <Stack className="h-[10vh]">
                 <p className="text-4xl font-semibold text-center">
-                  <strong className=" text-[#447EFF]">입체적인 피카소</strong>님
-                  축하드립니다!
+                  <strong className=" text-[#447EFF]">
+                    {(correctAnswerList.participantInfo[0] || { nickname: "" })
+                      .nickname || ""}
+                  </strong>
+                  님 축하드립니다!
                 </p>
                 <p className="text-2xl text-center">
-                  더 많은 정답을 맞춰서 상위 자리를 노려보세요!
+                  <strong className="text-indigo-400 text-2xl">
+                    당신은 오늘의 퀴즈왕!
+                  </strong>
                 </p>
               </Stack>
               <Stack>
@@ -595,11 +613,20 @@ const Home: NextPage = () => {
                     height={126}
                   ></Image>
                   <p className="text-4xl font-semibold text-center text-[#DA662C]">
-                    입체적인 피카소
+                    {(correctAnswerList.participantInfo[0] || { nickname: "" })
+                      .nickname || ""}
                   </p>
                   <Image
                     className="rounded-xl"
-                    src="/dog.png"
+                    src={
+                      avatarAnimal[
+                        (
+                          correctAnswerList.participantInfo[0] || {
+                            nickname: "",
+                          }
+                        ).imageNumber || 0
+                      ]
+                    }
                     width={120}
                     height={120}
                   ></Image>
@@ -614,11 +641,20 @@ const Home: NextPage = () => {
                     height={126}
                   ></Image>
                   <p className="text-4xl font-semibold text-center text-[#EF8E54]">
-                    독보적인 내쉬
+                    {(correctAnswerList.participantInfo[1] || { nickname: "" })
+                      .nickname || ""}
                   </p>
                   <Image
                     className="rounded-xl"
-                    src="/rabbit.png"
+                    src={
+                      avatarAnimal[
+                        (
+                          correctAnswerList.participantInfo[1] || {
+                            nickname: "",
+                          }
+                        ).imageNumber || 0
+                      ]
+                    }
                     width={120}
                     height={120}
                   ></Image>
@@ -633,11 +669,20 @@ const Home: NextPage = () => {
                     height={126}
                   ></Image>
                   <p className="text-4xl font-semibold text-center text-[#E7A276]">
-                    고뇌하는 니체
+                    {(correctAnswerList.participantInfo[2] || { nickname: "" })
+                      .nickname || ""}
                   </p>
                   <Image
                     className="rounded-xl"
-                    src="/panda.png"
+                    src={
+                      avatarAnimal[
+                        (
+                          correctAnswerList.participantInfo[2] || {
+                            nickname: "",
+                          }
+                        ).imageNumber || 0
+                      ]
+                    }
                     width={120}
                     height={120}
                   ></Image>
@@ -692,6 +737,11 @@ const Home: NextPage = () => {
         className="invisible"
         src="/sounds/boom_short.mp3"
       ></audio>
+      <audio
+        ref={correctEffectAudio}
+        className="invisible"
+        src="/sounds/yeah.mp3"
+      ></audio>
       <Group className="absolute bottom-0 right-0 z-50">
         <Button
           className="shadow-xl"
@@ -737,15 +787,6 @@ const Home: NextPage = () => {
           }}
         >
           시간 추가
-        </Button>
-        <Button
-          className="shadow-xl"
-          color="blue"
-          onClick={() => {
-            setSeconds(10000);
-          }}
-        >
-          시간 정지
         </Button>
         <Button
           className="shadow-xl"

@@ -223,9 +223,9 @@ const Home: NextPage = () => {
             <p>퀴즈 제작의 모든 기능이 갖추어져 있습니다.</p>
           </h3>
           <Stack className="h-[107px]" />
-          <Container
+          <Group
             style={{ overflow: "inherit" }}
-            className="h-[300px] w-full relative m-0 p-0"
+            className="h-[300px] relative m-0 p-0"
           >
             <img
               className="m-0 p-0 !z-0  !absolute"
@@ -241,7 +241,7 @@ const Home: NextPage = () => {
               width={435}
               height={310}
             />
-          </Container>
+          </Group>
         </section>
         <section className="h-screen">
           <Stack className="bg-[#EDF4F7] h-[363px]">

@@ -202,7 +202,8 @@ const Home: NextPage = () => {
               setStep(2);
             } else if (JSON.parse(message.body).messageType === "FINISH") {
               setAnswer("");
-              setStep(2);
+              getCorrectAnswerList();
+              setStep(3);
             }
           },
           { id: "play" }

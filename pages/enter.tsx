@@ -567,7 +567,7 @@ const Home: NextPage = () => {
                           setNickname(randAdjective + randNoun);
                           localStorage.setItem(
                             "nickname",
-                            randAdjective + randNoun
+                            randAdjective + " " + randNoun
                           );
                         }}
                         variant="transparent"
