@@ -138,77 +138,81 @@ const Home: NextPage = () => {
       {},
       function (frame) {
         if (router.query.pin === undefined) router.push("/404");
-
-        client.subscribe("/topic/room/" + router.query.pin, function (message) {
-          // socket ready?
-          if (socket.readyState !== 1) return;
-          if (JSON.parse(message.body).messageType === "NEW_PROBLEM") {
-            setSubjectiveOption([
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-            ]);
-            setProblemOption(JSON.parse(message.body));
-            setCurIdx(JSON.parse(message.body).idx);
-            setTimeout(() => {
-              setUserBeforeInfo({
-                id: 0,
-                sessionId: "",
-                name: "",
-                nickname: "",
-                entryDate: "",
-                currentScore: 0,
-                beforeScore: 0,
-                imageNumber: 0,
-                colorNumber: 0,
-                correct: false,
-                totalCorrect: 0,
-                continuousCorrect: 0,
-                continuousFailure: 0,
-              });
-              setUserCurrentInfo({
-                id: 0,
-                sessionId: "",
-                name: "",
-                nickname: "",
-                entryDate: "",
-                currentScore: 0,
-                beforeScore: 0,
-                imageNumber: 0,
-                colorNumber: 0,
-                correct: false,
-                totalCorrect: 0,
-                continuousCorrect: 0,
-                continuousFailure: 0,
-              });
-              setStep(1);
-            }, 1500);
-          } else if (JSON.parse(message.body).messageType === "STOP") {
-            setAnswer("");
-            getCorrectAnswerList();
-            setStep(2);
-          } else if (JSON.parse(message.body).messageType === "FINISH") {
-            setAnswer("");
-            setStep(2);
-          }
-        });
+        client.subscribe(
+          "/topic/room/" + router.query.pin,
+          function (message) {
+            // socket ready?
+            if (socket.readyState !== 1) return;
+            if (JSON.parse(message.body).messageType === "NEW_PROBLEM") {
+              setSubjectiveOption([
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+                false,
+              ]);
+              setProblemOption(JSON.parse(message.body));
+              setCurIdx(JSON.parse(message.body).idx);
+              setTimeout(() => {
+                setUserBeforeInfo({
+                  id: 0,
+                  sessionId: "",
+                  name: "",
+                  nickname: "",
+                  entryDate: "",
+                  currentScore: 0,
+                  beforeScore: 0,
+                  imageNumber: 0,
+                  colorNumber: 0,
+                  correct: false,
+                  totalCorrect: 0,
+                  continuousCorrect: 0,
+                  continuousFailure: 0,
+                });
+                setUserCurrentInfo({
+                  id: 0,
+                  sessionId: "",
+                  name: "",
+                  nickname: "",
+                  entryDate: "",
+                  currentScore: 0,
+                  beforeScore: 0,
+                  imageNumber: 0,
+                  colorNumber: 0,
+                  correct: false,
+                  totalCorrect: 0,
+                  continuousCorrect: 0,
+                  continuousFailure: 0,
+                });
+                setStep(1);
+              }, 1500);
+            } else if (JSON.parse(message.body).messageType === "STOP") {
+              setAnswer("");
+              getCorrectAnswerList();
+              setStep(2);
+            } else if (JSON.parse(message.body).messageType === "FINISH") {
+              setAnswer("");
+              setStep(2);
+            }
+          },
+          { id: "play" }
+        );
       },
       function (error) {}
     );
     setSocketManager(client);
     socket.onclose = function () {
+      client.unsubscribe("play");
       setTimeout(() => {
         socket = connect();
       }, 1);

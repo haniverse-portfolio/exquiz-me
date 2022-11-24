@@ -150,7 +150,8 @@ const Home: NextPage = () => {
             //if (socket.readyState !== 1) return;
             if (JSON.parse(message.body).messageType === "ANSWER") {
               if (submitCount + 1 >= partlist.length) {
-                setSeconds(0);
+                // setSeconds(0);
+                alert("cex");
               } else {
                 setSubmitCount(submitCount + 1);
               }
@@ -181,7 +182,8 @@ const Home: NextPage = () => {
             } else if (JSON.parse(message.body).messageType === "FINISH") {
               setStep(2);
             }
-          }
+          },
+          { id: "display" }
         );
       },
       function (error) {}
@@ -491,12 +493,7 @@ const Home: NextPage = () => {
                               >
                                 <img
                                   alt="hello"
-                                  className={` cursor-pointer rounded-full ${
-                                    cur.correct === true
-                                      ? "!overflow-visible animate-bounce"
-                                      : "animate-drop"
-                                    // animate-[bounce_1.5s_ease-in-out_infinite]
-                                  }`}
+                                  className="cursor-pointer rounded-full"
                                   src={avatarAnimal[cur.imageNumber]}
                                   width={"120px"}
                                   height={"120px"}

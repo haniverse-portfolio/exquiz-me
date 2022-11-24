@@ -30,7 +30,12 @@ import {
   Loader,
   Grid,
 } from "@mantine/core";
-import { Backspace, Refresh, ZoomQuestion } from "tabler-icons-react";
+import {
+  AlertCircle,
+  Backspace,
+  Refresh,
+  ZoomQuestion,
+} from "tabler-icons-react";
 {
   /* imbedding value */
 }
@@ -63,6 +68,8 @@ const Home: NextPage = () => {
   const [name, setName] = useState("");
   const [animal, setAnimal] = useState(0);
   const [color, setColor] = useState(0);
+
+  const [modalStep, setModalStep] = useState(0);
 
   const [playRoom, setPlayRoom] = useState({});
 
@@ -174,7 +181,7 @@ const Home: NextPage = () => {
                   return;
                 setUserCurInfo(data);
                 localStorage.setItem("fromSession", data.fromSession);
-                //client.unsubscribe("enter");
+                client.unsubscribe("enter");
                 setTimeout(() => {
                   Router.push(`/play/${pin}`);
                   setVisible(false);
@@ -182,7 +189,11 @@ const Home: NextPage = () => {
               }
             }
             if (data.messageType === "ERROR") {
-              Router.push("/enter");
+              setModalStep(1);
+              setTimeout(() => {
+                setVisible(false);
+                setModalStep(0);
+              }, 1500);
             }
           },
           { id: "enter" }
@@ -401,7 +412,12 @@ const Home: NextPage = () => {
                     let bgColor = "hover:bg-" + color[i] + "-500";
                     return (
                       <>
-                        <Grid.Col key={i} span={1} offset={0}>
+                        <Grid.Col
+                          className="!overflow-visible m-0 p-0"
+                          key={i}
+                          span={1}
+                          offset={0}
+                        >
                           <Button
                             fullWidth
                             style={{ height: "80px" }}
@@ -409,10 +425,12 @@ const Home: NextPage = () => {
                               if (pin.length < 6) setPin(pin + cur);
                             }}
                             color="orange"
-                            className="shadow-inner"
+                            className="!overflow-visible shadow-inner m-0 p-0"
                             variant="light"
                           >
-                            <p className="text-3xl font-bold">{cur}</p>
+                            <span className="!overflow-visible m-0 p-0 text-3xl font-bold">
+                              {cur}
+                            </span>
                           </Button>
                         </Grid.Col>
                       </>
@@ -442,14 +460,27 @@ const Home: NextPage = () => {
               onClose={() => {}}
               className="animate-fadeIn"
             >
-              <Center>
-                <Stack align="center">
-                  <Loader color="orange" />
-                  <p className="text-center text-xl text-gray-500">
-                    {(playRoom as any).roomName}에 입장하는 중...
-                  </p>
-                </Stack>
-              </Center>
+              {modalStep === 0 ? (
+                <Center>
+                  <Stack align="center">
+                    <Loader color="orange" />
+                    <p className="text-center text-xl text-gray-500">
+                      {(playRoom as any).roomName}에 입장하는 중...
+                    </p>
+                  </Stack>
+                </Center>
+              ) : (
+                <Center>
+                  <Stack align="center">
+                    <ActionIcon>
+                      <AlertCircle color="red"></AlertCircle>
+                    </ActionIcon>
+                    <p className="text-center text-xl text-gray-500">
+                      중복되는 이름입니다. 다시 설정해주세요
+                    </p>
+                  </Stack>
+                </Center>
+              )}
             </Modal>
             <Stack>
               <Group className="mt-6 my-2 cursor-pointer">
@@ -573,8 +604,8 @@ const Home: NextPage = () => {
                           colorNumber: color,
                         })
                       );
-                      setVisible(true);
                     }, 500);
+                    setVisible(true);
                   }}
                   color="orange"
                   variant="filled"
