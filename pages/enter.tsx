@@ -422,12 +422,7 @@ const Home: NextPage = () => {
                     let bgColor = "hover:bg-" + color[i] + "-500";
                     return (
                       <>
-                        <Grid.Col
-                          className="!overflow-visible m-0 p-0"
-                          key={i}
-                          span={1}
-                          offset={0}
-                        >
+                        <Grid.Col className="" key={i} span={1} offset={0}>
                           <Button
                             fullWidth
                             style={{ height: "80px" }}
@@ -435,7 +430,7 @@ const Home: NextPage = () => {
                               if (pin.length < 6) setPin(pin + cur);
                             }}
                             color="orange"
-                            className="!overflow-visible shadow-inner m-0 p-0"
+                            className=" shadow-inner"
                             variant="light"
                           >
                             <span className="!overflow-visible m-0 p-0 text-3xl font-bold">

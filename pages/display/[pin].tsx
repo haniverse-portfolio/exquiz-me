@@ -43,10 +43,19 @@ const Home: NextPage = () => {
     theme.colorScheme === "dark" ? theme.colors.dark[1] : theme.colors.gray[7];
   const router = useRouter();
   /* *** core initialization *** */
-  const bgAudio = useRef(null) as any;
+  const bgAudio0 = useRef(null) as any;
+  const bgAudio1 = useRef(null) as any;
+  const bgAudio2 = useRef(null) as any;
+  const bgAudio3 = useRef(null) as any;
+  const bgAudio4 = useRef(null) as any;
+  const bgAudio5 = useRef(null) as any;
+  const bgAudio6 = useRef(null) as any;
+  const bgAudio7 = useRef(null) as any;
+
   // bgAudio.loop = true;
   const endingEffectAudio = useRef(null) as any;
   const correctEffectAudio = useRef(null) as any;
+  const resultEffectAudio = useRef(null) as any;
   const interval = useInterval(() => {
     if (seconds > 0) setSeconds((s) => s - 0.05);
   }, 50);
@@ -68,6 +77,28 @@ const Home: NextPage = () => {
 
   const [isLogined, setIsLogined] = useRecoilState(indexIsLogined);
 
+  let playMusic = (idx: number) => {
+    if (idx % 8 === 0) bgAudio0.current.play();
+    if (idx % 8 === 1) bgAudio1.current.play();
+    if (idx % 8 === 2) bgAudio2.current.play();
+    if (idx % 8 === 3) bgAudio3.current.play();
+    if (idx % 8 === 4) bgAudio4.current.play();
+    if (idx % 8 === 5) bgAudio5.current.play();
+    if (idx % 8 === 6) bgAudio6.current.play();
+    if (idx % 8 === 7) bgAudio7.current.play();
+  };
+
+  let pauseMusic = (idx: number) => {
+    bgAudio0.current.pause();
+    bgAudio1.current.pause();
+    bgAudio2.current.pause();
+    bgAudio3.current.pause();
+    bgAudio4.current.pause();
+    bgAudio5.current.pause();
+    bgAudio6.current.pause();
+    bgAudio7.current.pause();
+  };
+
   /* *** useeffect start *** */
 
   useEffect(() => {
@@ -78,9 +109,10 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     if (Math.floor(seconds) === 0) {
+      setSeconds(0);
       interval.stop();
+      pauseMusic(problemOption.idx);
       socketManager.send("/pub/room/" + router.query.pin + "/stop", {});
-      bgAudio.current.pause();
       endingEffectAudio.current.play();
     }
   }, [seconds]);
@@ -108,8 +140,6 @@ const Home: NextPage = () => {
           "/submit_list"
       )
       .then((result) => {
-        alert(JSON.stringify(result.data));
-        console.log(result.data);
         setCorrectAnswerList(result.data);
       })
       .catch((error) => {});
@@ -158,14 +188,24 @@ const Home: NextPage = () => {
               }
             } else if (JSON.parse(message.body).messageType === "NEW_PROBLEM") {
               setStep(-1);
+              setSeconds(JSON.parse(message.body).timelimit);
               setSubmitCount(0);
-              bgAudio.currentTime = 0;
               if (JSON.parse(message.body).idx === 0) {
                 setProblemOption(JSON.parse(message.body));
                 setSeconds(JSON.parse(message.body).timelimit);
               }
               setTimeout(() => {
-                bgAudio.current.play();
+                let bgAudios = [
+                  bgAudio0,
+                  bgAudio1,
+                  bgAudio2,
+                  bgAudio3,
+                  bgAudio4,
+                  bgAudio5,
+                  bgAudio6,
+                  bgAudio7,
+                ];
+                playMusic(JSON.parse(message.body).idx);
                 setStep(0);
                 interval.start();
                 setCurIdx(JSON.parse(message.body).idx);
@@ -192,6 +232,7 @@ const Home: NextPage = () => {
               }, 1000);
 
               setTimeout(() => {
+                resultEffectAudio.current.play();
                 setStep(2);
               }, 5000);
             }
@@ -255,7 +296,7 @@ const Home: NextPage = () => {
           <></>
         )}
         {problemOption.dtype === "SubjectiveProblem" ? (
-          <Stack align="flex-start" spacing={120}>
+          <Stack align="center" spacing={120}>
             <Grid
               className="rounded-xl bg-[#85B6FF] border-2 border-solid border-[#447EFF]"
               columns={problemOption.answer.length}
@@ -728,9 +769,44 @@ const Home: NextPage = () => {
       </Head>
       {/* audio */}
       <audio
-        ref={bgAudio}
+        ref={bgAudio0}
         className="invisible"
-        src="/sounds/play_music.wav"
+        src="/sounds/play_music0.wav"
+      ></audio>
+      <audio
+        ref={bgAudio1}
+        className="invisible"
+        src="/sounds/play_music1.wav"
+      ></audio>
+      <audio
+        ref={bgAudio2}
+        className="invisible"
+        src="/sounds/play_music2.wav"
+      ></audio>
+      <audio
+        ref={bgAudio3}
+        className="invisible"
+        src="/sounds/play_music3.wav"
+      ></audio>
+      <audio
+        ref={bgAudio4}
+        className="invisible"
+        src="/sounds/play_music4.wav"
+      ></audio>
+      <audio
+        ref={bgAudio5}
+        className="invisible"
+        src="/sounds/play_music5.wav"
+      ></audio>
+      <audio
+        ref={bgAudio6}
+        className="invisible"
+        src="/sounds/play_music6.wav"
+      ></audio>
+      <audio
+        ref={bgAudio7}
+        className="invisible"
+        src="/sounds/play_music7.wav"
       ></audio>
       <audio
         ref={endingEffectAudio}
@@ -742,7 +818,12 @@ const Home: NextPage = () => {
         className="invisible"
         src="/sounds/yeah.mp3"
       ></audio>
-      <Group className="absolute bottom-0 right-0 z-50">
+      <audio
+        ref={resultEffectAudio}
+        className="invisible"
+        src="/sounds/firework.mp3"
+      ></audio>
+      {/* <Group className="absolute bottom-0 right-0 z-50">
         <Button
           className="shadow-xl"
           color="orange"
@@ -806,7 +887,7 @@ const Home: NextPage = () => {
         >
           제출자 수
         </Button>
-      </Group>
+      </Group> */}
       {/* audio */}
       <main className="h-[100vh] bg-[#EDF4F7]">
         <section>

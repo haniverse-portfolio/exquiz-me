@@ -45,6 +45,7 @@ const Home: NextPage = () => {
   const [curIdx, setCurIdx] = useState(0);
   const [subjectiveOption, setSubjectiveOption] =
     useState(playSubjectiveOption);
+  const [pinInputBar, setPinInputBar] = useState(true);
 
   const [correctAnswerList, setCorrectAnswerList] = useState(
     playCorrectAnswerList
@@ -161,6 +162,7 @@ const Home: NextPage = () => {
                 false,
                 false,
               ]);
+              setStep(0);
               setProblemOption(JSON.parse(message.body));
               setCurIdx(JSON.parse(message.body).idx);
               setTimeout(() => {
@@ -203,7 +205,10 @@ const Home: NextPage = () => {
             } else if (JSON.parse(message.body).messageType === "FINISH") {
               setAnswer("");
               getCorrectAnswerList();
-              setStep(3);
+              setStep(2);
+              setTimeout(() => {
+                setStep(3);
+              }, 5000);
             }
           },
           { id: "play" }
@@ -444,51 +449,65 @@ const Home: NextPage = () => {
                       </ActionIcon>
                     }
                     value={answer}
-                    placeholder="글자를 터치해서 조합해보세요"
+                    placeholder="글자를 조합해보세요"
                   ></TextInput>
                   <Stack className=" w-full bg-[#273248] fixed bottom-0 left-0 rounded-t-xl">
-                    <Grid className="p-4" columns={5} gutter="sm">
-                      {problemOption.problemOptions.map(
-                        ({ description, idx, picture }, i) => {
-                          let color = ["red", "blue", "green", "orange"];
-                          let bgColor = "hover:bg-" + color[i] + "-500";
-                          return (
-                            <>
-                              <Grid.Col key={i} span={1} offset={0}>
-                                <Button
-                                  fullWidth
-                                  style={{ height: "80px" }}
-                                  onClick={() => {
-                                    if (subjectiveOption[i] === false) {
-                                      setAnswer(answer + description);
+                    <Stack
+                      onClick={() => {
+                        setPinInputBar(!pinInputBar);
+                      }}
+                      className="cursor-pointer"
+                      align="center"
+                      justify="center"
+                    >
+                      <Group className="bg-[#273248] mb-4 mt-2 w-14 h-2 bg-gray-300 rounded-xl"></Group>
+                    </Stack>
+                    {pinInputBar === true ? (
+                      <Grid className="p-4" columns={5} gutter="sm">
+                        {problemOption.problemOptions.map(
+                          ({ description, idx, picture }, i) => {
+                            let color = ["red", "blue", "green", "orange"];
+                            let bgColor = "hover:bg-" + color[i] + "-500";
+                            return (
+                              <>
+                                <Grid.Col key={i} span={1} offset={0}>
+                                  <Button
+                                    fullWidth
+                                    style={{ height: "80px" }}
+                                    onClick={() => {
+                                      if (subjectiveOption[i] === false) {
+                                        setAnswer(answer + description);
+                                      }
+                                      let copy = subjectiveOption;
+                                      copy[i] = true;
+                                      setSubjectiveOption(copy);
+                                    }}
+                                    color="orange"
+                                    className={`${
+                                      subjectiveOption[i] === true
+                                        ? "shadow-inner text-white"
+                                        : ""
+                                    } shadow-md !overflow-visible`}
+                                    variant={
+                                      subjectiveOption[i] === true
+                                        ? "filled"
+                                        : "default"
                                     }
-                                    let copy = subjectiveOption;
-                                    copy[i] = true;
-                                    setSubjectiveOption(copy);
-                                  }}
-                                  color="orange"
-                                  className={`${
-                                    subjectiveOption[i] === true
-                                      ? "shadow-inner text-white"
-                                      : ""
-                                  } shadow-md !overflow-visible`}
-                                  variant={
-                                    subjectiveOption[i] === true
-                                      ? "filled"
-                                      : "default"
-                                  }
-                                >
-                                  <p className="!overflow-visible text-3xl font-bold">
-                                    {" "}
-                                    {description}
-                                  </p>
-                                </Button>
-                              </Grid.Col>
-                            </>
-                          );
-                        }
-                      )}
-                    </Grid>
+                                  >
+                                    <p className="!overflow-visible text-3xl font-bold">
+                                      {" "}
+                                      {description}
+                                    </p>
+                                  </Button>
+                                </Grid.Col>
+                              </>
+                            );
+                          }
+                        )}
+                      </Grid>
+                    ) : (
+                      <></>
+                    )}
                   </Stack>
                   <Divider size="xs"></Divider>
                   <Button
@@ -541,7 +560,7 @@ const Home: NextPage = () => {
               )}
             </Stack>
             <Stack className="relative p-8 mt-8 rounded-xl shadow-lg bg-white">
-              <Center>
+              {/* <Center>
                 <Stack
                   className={`w-6/12 m-2 rounded-xl bg-white shadow-lg ${
                     userCurrentInfo.correct === true ? "" : "opacity-25"
@@ -569,7 +588,34 @@ const Home: NextPage = () => {
                     {userCurrentInfo.nickname}
                   </p>
                 </Stack>
-              </Center>
+              </Center> */}
+              <Image
+                layout="responsive"
+                className="rounded-xl"
+                src={problemOption.picture || "/white.png"}
+                width={150}
+                height={100}
+              ></Image>
+              <p className="m-auto text-center text-2xl font-semibold ">
+                정답은{" "}
+                <strong className="text-orange-500">
+                  {problemOption.dtype !== "OXProblem"
+                    ? problemOption.answer
+                    : ""}
+                  {problemOption.dtype === "MultipleChoiceProblem"
+                    ? `번 ${
+                        problemOption.problemOptions[
+                          parseInt(problemOption.answer)
+                        ].description
+                      }`
+                    : ""}
+                  {problemOption.dtype === "OXProblem"
+                    ? `${problemOption.answer === "0" ? "O" : "X"}`
+                    : ""}
+                </strong>
+                입니다.
+              </p>
+              <Divider size="xs"></Divider>
               {userCurrentInfo.correct === true ? (
                 <p className="m-auto text-center text-2xl font-semibold text-green-700">
                   +{userCurrentInfo.currentScore - userCurrentInfo.beforeScore}
@@ -589,7 +635,7 @@ const Home: NextPage = () => {
           <Container className="bg-[#ffd178] h-[100vh]" size={1200}>
             <Stack className="h-8"></Stack>
             <Stack className="relative p-8 rounded-xl shadow-lg bg-white">
-              <p className="m-auto text-center text-2xl font-semibold text-green-700">
+              <p className="m-auto text-center text-2xl font-semibold">
                 퀴즈 결과
               </p>
             </Stack>
@@ -623,13 +669,36 @@ const Home: NextPage = () => {
                   </p>
                 </Stack>
               </Center>
-              {userCurrentInfo.correct === true ? (
-                <p className="m-auto text-center text-2xl font-semibold text-green-700">
-                  {userCurrentInfo.totalCorrect}점
+              <p className="m-auto text-center text-2xl font-semibold ">
+                총 점수 :{" "}
+                <strong className="text-green-700">
+                  {userCurrentInfo.currentScore}
+                </strong>
+                &nbsp;점
+              </p>
+              <Divider size="xs"></Divider>
+              <Group className="shadow-lg rounded-xl p-4">
+                <Image src="/medal_first.svg" width={50} height={50} />
+                <p className="m-auto text-center text-xl font-semibold ">
+                  퀴즈 전문가
                 </p>
-              ) : (
-                <></>
-              )}
+                <Image src="/medal_first.svg" width={50} height={50} />
+              </Group>
+              {}
+              <Group className="shadow-lg rounded-xl p-4">
+                <Image src="/medal_first.svg" width={50} height={50} />
+                <p className="m-auto text-center text-xl font-semibold ">
+                  연속 득점자
+                </p>
+                <Image src="/medal_first.svg" width={50} height={50} />
+              </Group>
+              <Group className="shadow-lg rounded-xl p-4">
+                <Image src="/medal_first.svg" width={50} height={50} />
+                <p className="m-auto text-center text-xl font-semibold ">
+                  연속 득점자
+                </p>
+                <Image src="/medal_first.svg" width={50} height={50} />
+              </Group>
             </Stack>
           </Container>
         </>

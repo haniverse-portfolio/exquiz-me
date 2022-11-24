@@ -225,7 +225,8 @@ const Home: NextPage = () => {
                 <p className="font-semibold text-3xl">{room.roomName}</p>
                 <p className="p-8 font-bold text-2xl text-center">
                   입장 인원 &nbsp;
-                  <strong className="text-blue-500">{partlist.length}</strong>/
+                  <strong className="text-blue-500">{partlist.length}</strong>
+                  &nbsp;/
                   {room.maxParticipantCount}명
                 </p>
               </Group>

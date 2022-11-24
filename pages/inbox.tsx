@@ -112,9 +112,7 @@ const Home: NextPage = () => {
         setProblemsetIdx(-1);
         getProblemsets();
       })
-      .catch((error) => {
-        alert(error);
-      });
+      .catch((error) => {});
     return;
   };
 
@@ -128,9 +126,7 @@ const Home: NextPage = () => {
       .then((result) => {
         setProblemsets(result.data);
       })
-      .catch((error) => {
-        alert(error);
-      });
+      .catch((error) => {});
     return;
   };
 
