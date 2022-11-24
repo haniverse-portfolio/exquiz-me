@@ -41,7 +41,7 @@ const Home: NextPage = () => {
   const [room, setRoom] = useState(inboxRoomInput);
 
   useEffect(() => {
-    if (isLogined === false) router.push("/401");
+    // if (isLogined === false) router.push("/401");
     connect();
     getPartlist();
     getRoomOpened(router.query.pin as string);

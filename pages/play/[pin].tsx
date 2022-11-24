@@ -58,14 +58,33 @@ const Home: NextPage = () => {
   const [userBeforeInfo, setUserBeforeInfo] = useState(playUserInfoInput);
   const [userCurrentInfo, setUserCurrentInfo] = useState(playUserInfoInput);
   let getUserProgress = (userProgress: any) => {
-    correctAnswerList.beforeParticipantInfo.forEach((cur, i) => {
-      if (cur.sessionId === localStorage.getItem("fromSession")) {
-        setUserBeforeInfo(cur);
+    userProgress.participantInfo.forEach(
+      (
+        cur: SetStateAction<{
+          id: number;
+          sessionId: string;
+          name: string;
+          nickname: string;
+          entryDate: string;
+          currentScore: number;
+          beforeScore: number;
+          imageNumber: number;
+          colorNumber: number;
+          correct: boolean;
+          totalCorrect: number;
+          continuousCorrect: number;
+          continuousFailure: number;
+        }>,
+        i: any
+      ) => {
+        if ((cur as any).sessionId === localStorage.getItem("fromSession")) {
+          setUserBeforeInfo(cur);
+        }
+        if ((cur as any).sessionId === localStorage.getItem("fromSession")) {
+          setUserCurrentInfo(cur);
+        }
       }
-      if (cur.sessionId === localStorage.getItem("fromSession")) {
-        setUserCurrentInfo(cur);
-      }
-    });
+    );
   };
 
   /* *** axios call *** */
@@ -144,6 +163,36 @@ const Home: NextPage = () => {
             setProblemOption(JSON.parse(message.body));
             setCurIdx(JSON.parse(message.body).idx);
             setTimeout(() => {
+              setUserBeforeInfo({
+                id: 0,
+                sessionId: "",
+                name: "",
+                nickname: "",
+                entryDate: "",
+                currentScore: 0,
+                beforeScore: 0,
+                imageNumber: 0,
+                colorNumber: 0,
+                correct: false,
+                totalCorrect: 0,
+                continuousCorrect: 0,
+                continuousFailure: 0,
+              });
+              setUserCurrentInfo({
+                id: 0,
+                sessionId: "",
+                name: "",
+                nickname: "",
+                entryDate: "",
+                currentScore: 0,
+                beforeScore: 0,
+                imageNumber: 0,
+                colorNumber: 0,
+                correct: false,
+                totalCorrect: 0,
+                continuousCorrect: 0,
+                continuousFailure: 0,
+              });
               setStep(1);
             }, 1500);
           } else if (JSON.parse(message.body).messageType === "STOP") {
@@ -273,6 +322,7 @@ const Home: NextPage = () => {
                           "/pub/room/" + router.query.pin + "/submit",
                           {},
                           JSON.stringify({
+                            messageType: "ANSWER",
                             fromSession: cat, // 사용자 session id - google login시 발급
                             problemIdx: curIdx, // 제출한 문제의 번호
                             answerText: answer.toString(),

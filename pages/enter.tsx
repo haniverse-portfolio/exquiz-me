@@ -153,10 +153,10 @@ const Home: NextPage = () => {
           "/topic/room/" + pin + "/host",
           function (message) {
             // socket ready?
-            if (socket.readyState !== 1) {
-              setVisible(false);
-              return;
-            }
+            // if (socket.readyState !== 1) {
+            //   setVisible(false);
+            //   return;
+            // }
             let data = JSON.parse(message.body);
             if (data.messageType === "PARTICIPANT") {
               if (localStorage.getItem("fromSession") === null) {
@@ -174,7 +174,7 @@ const Home: NextPage = () => {
                   return;
                 setUserCurInfo(data);
                 localStorage.setItem("fromSession", data.fromSession);
-                client.unsubscribe("enter");
+                //client.unsubscribe("enter");
                 setTimeout(() => {
                   Router.push(`/play/${pin}`);
                   setVisible(false);

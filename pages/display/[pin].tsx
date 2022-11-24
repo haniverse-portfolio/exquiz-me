@@ -46,7 +46,9 @@ const Home: NextPage = () => {
   const bgAudio = useRef(null) as any;
   // bgAudio.loop = true;
   const endingEffectAudio = useRef(null) as any;
-  const interval = useInterval(() => setSeconds((s) => s - 0.05), 50);
+  const interval = useInterval(() => {
+    if (seconds > 0) setSeconds((s) => s - 0.05);
+  }, 50);
 
   /* *** usestate start *** */
   const [seconds, setSeconds] = useState<number>(30);
@@ -146,13 +148,13 @@ const Home: NextPage = () => {
           "/topic/room/" + router.query.pin + "/host",
           function (message) {
             // socket ready?
-            if (socket.readyState !== 1) return;
+            //if (socket.readyState !== 1) return;
             if (JSON.parse(message.body).messageType === "ANSWER") {
-              // if (submitCount + 1 === partlist.length) {
-              //   setSeconds(0);
-              // } else {
-              //   setSubmitCount(submitCount + 1);
-              // }
+              if (submitCount + 1 >= partlist.length) {
+                setSeconds(0);
+              } else {
+                setSubmitCount(submitCount + 1);
+              }
             } else if (JSON.parse(message.body).messageType === "NEW_PROBLEM") {
               setSubmitCount(0);
               bgAudio.currentTime = 0;
