@@ -45,15 +45,11 @@ const Home: NextPage = () => {
   /* *** effect start *** */
   useEffect(() => {
     console.log(router.query);
+    console.log(router.query.access_token);
 
     // mobile
     if (navigator.userAgent.match(/iPhone|iPad|iPod|Android/i)) {
       location.replace("/enter");
-    }
-    // already logined
-    if (isLogined === true) {
-      router.push("/inbox");
-      return;
     }
     // auto login
     login(localStorage.getItem("access_token") as string);

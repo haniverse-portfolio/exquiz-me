@@ -77,10 +77,7 @@ const Home: NextPage = () => {
       return;
     }
     // access_token validation
-    if (
-      router.query.access_token !== null &&
-      router.query.access_token !== "undefined"
-    ) {
+    if (router.query.access_token !== "undefined") {
       localStorage.setItem("access_token", router.query.access_token as string);
       localStorage.setItem("host_id", router.query.host_id as string);
       setTimeout(() => {
