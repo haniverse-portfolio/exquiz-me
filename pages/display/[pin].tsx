@@ -57,6 +57,7 @@ const Home: NextPage = () => {
   const [correctAnswerList, setCorrectAnswerList] = useState(
     playCorrectAnswerList
   );
+  const [correctStep, setCorrectStep] = useState(0);
 
   const [curIdx, setCurIdx] = useState(0);
   const [problemOption, setProblemOption] = useState(problemOptionInput);
@@ -124,9 +125,7 @@ const Home: NextPage = () => {
       .then((result) => {
         setPartlist(result.data);
       })
-      .catch((error) => {
-        alert(error);
-      });
+      .catch((error) => {});
     return;
   };
 
@@ -164,7 +163,7 @@ const Home: NextPage = () => {
                 setProblemOption(JSON.parse(message.body));
                 setSeconds(JSON.parse(message.body).timelimit);
               }
-
+              setCorrectStep(0);
               setTimeout(() => {
                 setStep(0);
                 interval.start();
@@ -174,7 +173,11 @@ const Home: NextPage = () => {
               setProblemOption(JSON.parse(message.body));
               setSeconds(JSON.parse(message.body).timelimit);
               getCorrectAnswerList();
+              /* 정답자 씬 전환 */
               setStep(1);
+              setTimeout(() => {
+                setCorrectStep(1);
+              }, 1000);
             } else if (JSON.parse(message.body).messageType === "FINISH") {
               setStep(2);
             }
@@ -469,41 +472,79 @@ const Home: NextPage = () => {
           <Stack>
             <ScrollArea style={{ height: "calc(100vh)" }}>
               <Grid columns={6} gutter={0}>
-                {correctAnswerList.participantInfo.map((cur: any, i) => {
-                  return (
-                    <Grid.Col
-                      className={`${
-                        cur.correct === false ? "opacity-25" : ""
-                      } flex items-center justify-center h-60 animate-fadeUp`}
-                      span={1}
-                      key={i}
-                    >
-                      <Stack className="w-full m-2 rounded-xl bg-white shadow-lg">
-                        <Center
-                          className={` rounded-t-xl h-[160px] ${
-                            avatarColor[cur.colorNumber]
-                          }  shadow-lg`}
+                {correctStep === 0
+                  ? correctAnswerList.beforeParticipantInfo.map(
+                      (cur: any, i) => {
+                        return (
+                          <Grid.Col
+                            className={`${
+                              cur.correct === false ? "opacity-25" : ""
+                            } flex items-center justify-center h-60 animate-fadeOut`}
+                            span={1}
+                            key={i}
+                          >
+                            <Stack className="w-full m-2 rounded-xl bg-white shadow-lg">
+                              <Center
+                                className={` rounded-t-xl h-[160px] ${
+                                  avatarColor[cur.colorNumber]
+                                }  shadow-lg`}
+                              >
+                                <img
+                                  alt="hello"
+                                  className={` cursor-pointer rounded-full ${
+                                    cur.correct === true
+                                      ? "!overflow-visible animate-bounce"
+                                      : "animate-drop"
+                                    // animate-[bounce_1.5s_ease-in-out_infinite]
+                                  }`}
+                                  src={avatarAnimal[cur.imageNumber]}
+                                  width={"120px"}
+                                  height={"120px"}
+                                ></img>
+                              </Center>
+                              <p className="font-semibold 2xl:text-lg md:text-sm pb-4 text-center text-black">
+                                {cur.nickname}
+                              </p>
+                            </Stack>
+                          </Grid.Col>
+                        );
+                      }
+                    )
+                  : correctAnswerList.participantInfo.map((cur: any, i) => {
+                      return (
+                        <Grid.Col
+                          className={`${
+                            cur.correct === false ? "opacity-25" : ""
+                          } flex items-center justify-center h-60 animate-fadeIn`}
+                          span={1}
+                          key={i}
                         >
-                          <img
-                            alt="hello"
-                            className={` cursor-pointer rounded-full ${
-                              cur.correct === true
-                                ? "!overflow-visible animate-bounce"
-                                : "animate-drop"
-                              // animate-[bounce_1.5s_ease-in-out_infinite]
-                            }`}
-                            src={avatarAnimal[cur.imageNumber]}
-                            width={"120px"}
-                            height={"120px"}
-                          ></img>
-                        </Center>
-                        <p className="font-semibold 2xl:text-lg md:text-sm pb-4 text-center text-black">
-                          {cur.nickname}
-                        </p>
-                      </Stack>
-                    </Grid.Col>
-                  );
-                })}
+                          <Stack className="w-full m-2 rounded-xl bg-white shadow-lg">
+                            <Center
+                              className={` rounded-t-xl h-[160px] ${
+                                avatarColor[cur.colorNumber]
+                              }  shadow-lg`}
+                            >
+                              <img
+                                alt="hello"
+                                className={` cursor-pointer rounded-full ${
+                                  cur.correct === true
+                                    ? "!overflow-visible animate-bounce"
+                                    : "animate-drop"
+                                  // animate-[bounce_1.5s_ease-in-out_infinite]
+                                }`}
+                                src={avatarAnimal[cur.imageNumber]}
+                                width={"120px"}
+                                height={"120px"}
+                              ></img>
+                            </Center>
+                            <p className="font-semibold 2xl:text-lg md:text-sm pb-4 text-center text-black">
+                              {cur.nickname}
+                            </p>
+                          </Stack>
+                        </Grid.Col>
+                      );
+                    })}
               </Grid>
             </ScrollArea>
           </Stack>

@@ -11,6 +11,7 @@ module.exports = {
         textSlow: "textSlow 8s ease infinite",
         fadeUp: "fadeUp 1s ease",
         fadeIn: "fadeIn 1s ease",
+        fadeOut: "fadeOut 1s ease",
         drop: "drop 2s ease-in forwards",
       },
       keyframes: {
@@ -32,6 +33,15 @@ module.exports = {
 
           "100%": {
             opacity: "1",
+          },
+        },
+        fadeOut: {
+          "0%": {
+            opacity: "1",
+          },
+
+          "100%": {
+            opacity: "0",
           },
         },
 

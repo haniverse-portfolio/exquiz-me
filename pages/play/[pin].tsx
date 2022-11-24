@@ -578,6 +578,58 @@ const Home: NextPage = () => {
       ) : (
         <></>
       )}
+      {step === 3 ? (
+        <>
+          <Container className="bg-[#ffd178] h-[100vh]" size={1200}>
+            <Stack className="h-8"></Stack>
+            <Stack className="relative p-8 rounded-xl shadow-lg bg-white">
+              <p className="m-auto text-center text-2xl font-semibold text-green-700">
+                퀴즈 결과
+              </p>
+            </Stack>
+            <Stack className="relative p-8 mt-8 rounded-xl shadow-lg bg-white">
+              <Center>
+                <Stack
+                  className={`w-6/12 m-2 rounded-xl bg-white shadow-lg ${
+                    userCurrentInfo.correct === true ? "" : "opacity-25"
+                  }`}
+                >
+                  <Center
+                    className={` rounded-t-xl h-[160px] ${
+                      avatarColor[userCurrentInfo.colorNumber]
+                    }  shadow-lg`}
+                  >
+                    <img
+                      alt="hello"
+                      className={` cursor-pointer rounded-full ${
+                        userCurrentInfo.correct === true
+                          ? "!overflow-visible animate-bounce"
+                          : ""
+                        // animate-[bounce_1.5s_ease-in-out_infinite]
+                      }`}
+                      src={avatarAnimal[userCurrentInfo.imageNumber]}
+                      width={"120px"}
+                      height={"120px"}
+                    ></img>
+                  </Center>
+                  <p className="font-semibold 2xl:text-lg md:text-sm pb-4 text-center text-black">
+                    {userCurrentInfo.nickname}
+                  </p>
+                </Stack>
+              </Center>
+              {userCurrentInfo.correct === true ? (
+                <p className="m-auto text-center text-2xl font-semibold text-green-700">
+                  +{userCurrentInfo.currentScore - userCurrentInfo.beforeScore}
+                </p>
+              ) : (
+                <></>
+              )}
+            </Stack>
+          </Container>
+        </>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };
