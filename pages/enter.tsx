@@ -376,13 +376,15 @@ const Home: NextPage = () => {
               spacing={0}
               className=" w-full bg-white fixed bottom-0 left-0 rounded-t-xl"
             >
-              <Stack align="center" justify="center">
-                <Group
-                  onClick={() => {
-                    setPinInputBar(!pinInputBar);
-                  }}
-                  className="mb-4 mt-2 w-12 h-2 bg-gray-300 rounded-xl cursor-pointer"
-                ></Group>
+              <Stack
+                onClick={() => {
+                  setPinInputBar(!pinInputBar);
+                }}
+                className="cursor-pointer"
+                align="center"
+                justify="center"
+              >
+                <Group className="mb-4 mt-2 w-14 h-2 bg-gray-300 rounded-xl"></Group>
               </Stack>
               {pinInputBar === true ? (
                 <Grid className="p-4 pt-0" columns={5} gutter="sm">
@@ -436,7 +438,7 @@ const Home: NextPage = () => {
                 <Stack align="center">
                   <Loader color="orange" />
                   <p className="text-center text-xl text-gray-500">
-                    {(playRoom as any).problemsetDto.title}에 입장하는 중...
+                    {(playRoom as any).roomName}에 입장하는 중...
                   </p>
                 </Stack>
               </Center>

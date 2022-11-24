@@ -11,6 +11,7 @@ module.exports = {
         textSlow: "textSlow 8s ease infinite",
         fadeUp: "fadeUp 1s ease",
         fadeIn: "fadeIn 1s ease",
+        drop: "drop 2s ease-in forwards",
       },
       keyframes: {
         fadeUp: {
@@ -53,6 +54,10 @@ module.exports = {
             "background-size": "200% 200%",
             "background-position": "right center",
           },
+        },
+        drop: {
+          "0%": { transform: "translateY(0px)", opacity: 1 },
+          "100%": { transform: "translateY(2200px)", opacity: 1 },
         },
       },
     },

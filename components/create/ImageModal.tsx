@@ -152,7 +152,11 @@ export const ImageModal = () => {
           <Space h="xs" />
           <TextInput
             rightSection={
-              <ActionIcon>
+              <ActionIcon
+                onClick={() => {
+                  setImageWord("");
+                }}
+              >
                 <Trash></Trash>
               </ActionIcon>
             }

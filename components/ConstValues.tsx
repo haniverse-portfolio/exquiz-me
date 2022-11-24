@@ -292,6 +292,19 @@ export const playSubjectiveOption = [
 
 export const playCorrectAnswerList = {
   totalCorrectCount: 0,
+  beforeParticipantInfo: [
+    {
+      id: 0,
+      sessionId: "",
+      name: "",
+      nickname: "",
+      entryDate: "",
+      currentScore: 0,
+      beforeScore: 0,
+      imageNumber: 0,
+      colorNumber: 0,
+    },
+  ],
   participantInfo: [
     {
       id: 0,

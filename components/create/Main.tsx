@@ -735,7 +735,7 @@ export const Main = () => {
             return (
               <Grid.Col className=" h-[20vh]" key={j} span={1}>
                 <Stack className="h-[19vh] p-4 bg-blue-100 rounded-lg border-solid border-2 border-blue-500">
-                  <Group position="apart">
+                  <Group position="left">
                     <Checkbox
                       className="pl-2"
                       defaultChecked={false}
@@ -754,13 +754,13 @@ export const Main = () => {
                       color="blue"
                       size="xl"
                     />
-                    <ActionIcon
+                    {/* <ActionIcon
                       variant="transparent"
                       color="indigo.8"
                       size={30}
                     >
                       <Photo size={30}></Photo>
-                    </ActionIcon>
+                    </ActionIcon> */}
                   </Group>
                   <Textarea
                     size="xl"

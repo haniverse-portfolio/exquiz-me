@@ -227,10 +227,7 @@ const Home: NextPage = () => {
                 </p>
               </Group>
               {
-                <ScrollArea
-                  className="px-8"
-                  style={{ height: "calc(100vh - 60px)" }}
-                >
+                <ScrollArea className="px-8" style={{ height: "calc(83vh)" }}>
                   <Grid columns={6}>
                     {partlist.map((cur: any, i) => {
                       return (

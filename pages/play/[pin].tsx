@@ -1,6 +1,6 @@
 import Router, { useRouter } from "next/router";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import type { NextPage } from "next";
 import Head from "next/head";
 import axios from "axios";
@@ -54,6 +54,42 @@ const Home: NextPage = () => {
     connect();
   }, [router.isReady]);
 
+  const [userBeforeInfo, setUserBeforeInfo] = useState({
+    id: 0,
+    sessionId: "",
+    name: "",
+    nickname: "",
+    entryDate: "",
+    currentScore: 0,
+    beforeScore: 0,
+    imageNumber: 0,
+    colorNumber: 0,
+  });
+  const [userCurrentInfo, setUserCurrentInfo] = useState({
+    id: 0,
+    sessionId: "",
+    name: "",
+    nickname: "",
+    entryDate: "",
+    currentScore: 0,
+    beforeScore: 0,
+    imageNumber: 0,
+    colorNumber: 0,
+  });
+  let getUserProgress = (userProgress: any) => {
+    correctAnswerList.beforeParticipantInfo.forEach((cur, i) => {
+      if (cur.sessionId === localStorage.getItem("fromSession")) {
+        setUserBeforeInfo(cur);
+      }
+    });
+
+    correctAnswerList.participantInfo.forEach((cur, i) => {
+      if (cur.sessionId === localStorage.getItem("fromSession")) {
+        setUserCurrentInfo(cur);
+      }
+    });
+  };
+
   /* *** axios call *** */
   const getRoomOpened = () => {
     axios
@@ -76,8 +112,9 @@ const Home: NextPage = () => {
           "/submit_list"
       )
       .then((result) => {
-        console.log(result.data);
         setCorrectAnswerList(result.data);
+        getUserProgress(result.data);
+        console.log(result.data);
       })
       .catch((error) => {});
     return;
@@ -133,8 +170,8 @@ const Home: NextPage = () => {
             }, 1500);
           } else if (JSON.parse(message.body).messageType === "STOP") {
             setAnswer("");
-            setStep(2);
             getCorrectAnswerList();
+            setStep(2);
           } else if (JSON.parse(message.body).messageType === "FINISH") {
             setAnswer("");
             setStep(2);
@@ -460,36 +497,56 @@ const Home: NextPage = () => {
           <Container className="bg-[#ffd178] h-[100vh]" size={1200}>
             <Stack className="h-8"></Stack>
             <Stack className="relative p-8 rounded-xl shadow-lg bg-white">
-              <p className="m-auto text-center text-2xl font-semibold text-green-700">
-                맞았습니다!!
-              </p>
+              {userCurrentInfo.currentScore > userCurrentInfo.beforeScore ? (
+                <p className="m-auto text-center text-2xl font-semibold text-green-700">
+                  맞았습니다!!
+                </p>
+              ) : (
+                <p className="m-auto text-center text-2xl font-semibold text-red-700">
+                  틀렸습니다
+                </p>
+              )}
             </Stack>
             <Stack className="relative p-8 mt-8 rounded-xl shadow-lg bg-white">
               <Center>
-                <Stack className="w-6/12 m-2 rounded-xl bg-white shadow-lg">
+                <Stack
+                  className={`w-6/12 m-2 rounded-xl bg-white shadow-lg ${
+                    userCurrentInfo.currentScore > userCurrentInfo.beforeScore
+                      ? ""
+                      : "opacity-25"
+                  }`}
+                >
                   <Center
-                    className={` rounded-t-xl h-[160px] ${avatarColor[0]}  shadow-lg`}
+                    className={` rounded-t-xl h-[160px] ${
+                      avatarColor[userCurrentInfo.colorNumber]
+                    }  shadow-lg`}
                   >
                     <img
                       alt="hello"
-                      className={`cursor-pointer rounded-full`}
-                      src={avatarAnimal[0]}
+                      className={` cursor-pointer rounded-full ${
+                        userCurrentInfo.currentScore >
+                        userCurrentInfo.beforeScore
+                          ? "!overflow-visible animate-bounce"
+                          : ""
+                        // animate-[bounce_1.5s_ease-in-out_infinite]
+                      }`}
+                      src={avatarAnimal[userCurrentInfo.imageNumber]}
                       width={"120px"}
                       height={"120px"}
                     ></img>
                   </Center>
                   <p className="font-semibold 2xl:text-lg md:text-sm pb-4 text-center text-black">
-                    창의적인튜링
+                    {userCurrentInfo.nickname}
                   </p>
-                  <RingProgress
-                    sections={[
-                      { value: 40, color: "#68b5e8" },
-                      { value: 15, color: "#6888e8" },
-                      { value: 15, color: "#8468e8" },
-                    ]}
-                  />
                 </Stack>
               </Center>
+              {userCurrentInfo.currentScore > userCurrentInfo.beforeScore ? (
+                <p className="m-auto text-center text-2xl font-semibold text-green-700">
+                  +{userCurrentInfo.currentScore - userCurrentInfo.beforeScore}
+                </p>
+              ) : (
+                <></>
+              )}
             </Stack>
           </Container>
         </>

@@ -465,7 +465,7 @@ const Home: NextPage = () => {
           span={14}
         >
           <Stack>
-            <ScrollArea style={{ height: "calc(100vh - 70px)" }}>
+            <ScrollArea style={{ height: "calc(100vh)" }}>
               <Grid columns={6} gutter={0}>
                 {correctAnswerList.participantInfo.map((cur: any, i) => {
                   return (
@@ -486,10 +486,11 @@ const Home: NextPage = () => {
                         >
                           <img
                             alt="hello"
-                            className={`cursor-pointer rounded-full ${
+                            className={` cursor-pointer rounded-full ${
                               correctAnswerList.isCorrect[i] === true
-                                ? "!overflow-visible animate-[bounce_1.5s_ease-in-out_infinite]"
-                                : ""
+                                ? "!overflow-visible animate-bounce"
+                                : "animate-drop"
+                              // animate-[bounce_1.5s_ease-in-out_infinite]
                             }`}
                             src={avatarAnimal[cur.imageNumber]}
                             width={"120px"}
