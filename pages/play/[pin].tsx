@@ -81,9 +81,6 @@ const Home: NextPage = () => {
       if (cur.sessionId === localStorage.getItem("fromSession")) {
         setUserBeforeInfo(cur);
       }
-    });
-
-    correctAnswerList.participantInfo.forEach((cur, i) => {
       if (cur.sessionId === localStorage.getItem("fromSession")) {
         setUserCurrentInfo(cur);
       }

@@ -98,7 +98,7 @@ const IndexNavigation = () => {
               <HoverCard.Target>
                 <span
                   onClick={() => {
-                    router.push("/mypage");
+                    // router.push("/mypage");
                   }}
                   className="p-4 text-lg font-bold cursor-pointer transition ease-in-out"
                 >
