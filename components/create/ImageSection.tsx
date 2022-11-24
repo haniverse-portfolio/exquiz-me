@@ -138,7 +138,7 @@ export const ImageSection = () => {
             <Grid.Col span={2}>
               <Skeleton className="shadow-lg" height={150} radius="md" />
             </Grid.Col>
-            <Grid.Col className="shadow-lg" span={2}>
+            <Grid.Col span={2}>
               <Skeleton className="shadow-lg" height={150} radius="md" />
             </Grid.Col>
             <Grid.Col span={2}>

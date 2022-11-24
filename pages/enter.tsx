@@ -306,7 +306,12 @@ const Home: NextPage = () => {
                     <></>
                   )}
                   {pinStep === 2 ? (
-                    <Stack className="animate-fadeIn px-4 rounded-3xl h-[160px] w-[260px] bg-contain bg-no-repeat bg-center bg-[url('/inbox/folder.svg')]">
+                    <Stack
+                      onClick={() => {
+                        getRoomOpened(pin);
+                      }}
+                      className="cursor-pointer animate-fadeIn px-4 rounded-3xl h-[160px] w-[260px] bg-contain bg-no-repeat bg-center bg-[url('/inbox/folder_orange_highlight.svg')]"
+                    >
                       <Stack className="h-[3px]"></Stack>
                       <Stack className="h-[100px]"></Stack>
                       <Stack className="ml-4 mb-4">

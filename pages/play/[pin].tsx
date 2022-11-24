@@ -27,6 +27,7 @@ import {
   connectMainServerApiAddress,
   playCorrectAnswerList,
   playSubjectiveOption,
+  playUserInfoInput,
   problemOptionInput,
 } from "../../components/ConstValues";
 import { X } from "tabler-icons-react";
@@ -54,28 +55,8 @@ const Home: NextPage = () => {
     connect();
   }, [router.isReady]);
 
-  const [userBeforeInfo, setUserBeforeInfo] = useState({
-    id: 0,
-    sessionId: "",
-    name: "",
-    nickname: "",
-    entryDate: "",
-    currentScore: 0,
-    beforeScore: 0,
-    imageNumber: 0,
-    colorNumber: 0,
-  });
-  const [userCurrentInfo, setUserCurrentInfo] = useState({
-    id: 0,
-    sessionId: "",
-    name: "",
-    nickname: "",
-    entryDate: "",
-    currentScore: 0,
-    beforeScore: 0,
-    imageNumber: 0,
-    colorNumber: 0,
-  });
+  const [userBeforeInfo, setUserBeforeInfo] = useState(playUserInfoInput);
+  const [userCurrentInfo, setUserCurrentInfo] = useState(playUserInfoInput);
   let getUserProgress = (userProgress: any) => {
     correctAnswerList.beforeParticipantInfo.forEach((cur, i) => {
       if (cur.sessionId === localStorage.getItem("fromSession")) {
@@ -494,7 +475,7 @@ const Home: NextPage = () => {
           <Container className="bg-[#ffd178] h-[100vh]" size={1200}>
             <Stack className="h-8"></Stack>
             <Stack className="relative p-8 rounded-xl shadow-lg bg-white">
-              {userCurrentInfo.currentScore > userCurrentInfo.beforeScore ? (
+              {userCurrentInfo.correct === true ? (
                 <p className="m-auto text-center text-2xl font-semibold text-green-700">
                   맞았습니다!!
                 </p>
@@ -508,9 +489,7 @@ const Home: NextPage = () => {
               <Center>
                 <Stack
                   className={`w-6/12 m-2 rounded-xl bg-white shadow-lg ${
-                    userCurrentInfo.currentScore > userCurrentInfo.beforeScore
-                      ? ""
-                      : "opacity-25"
+                    userCurrentInfo.correct === true ? "" : "opacity-25"
                   }`}
                 >
                   <Center
@@ -521,8 +500,7 @@ const Home: NextPage = () => {
                     <img
                       alt="hello"
                       className={` cursor-pointer rounded-full ${
-                        userCurrentInfo.currentScore >
-                        userCurrentInfo.beforeScore
+                        userCurrentInfo.correct === true
                           ? "!overflow-visible animate-bounce"
                           : ""
                         // animate-[bounce_1.5s_ease-in-out_infinite]
@@ -537,7 +515,7 @@ const Home: NextPage = () => {
                   </p>
                 </Stack>
               </Center>
-              {userCurrentInfo.currentScore > userCurrentInfo.beforeScore ? (
+              {userCurrentInfo.correct === true ? (
                 <p className="m-auto text-center text-2xl font-semibold text-green-700">
                   +{userCurrentInfo.currentScore - userCurrentInfo.beforeScore}
                 </p>

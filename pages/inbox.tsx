@@ -77,6 +77,7 @@ const Home: NextPage = () => {
       return;
     }
     // access_token validation
+
     if (router.query.access_token !== "undefined") {
       localStorage.setItem("access_token", router.query.access_token as string);
       localStorage.setItem("host_id", router.query.host_id as string);
@@ -85,14 +86,17 @@ const Home: NextPage = () => {
       }, 1000);
     }
 
-    // not logined
-    if (
-      localStorage.getItem("access_token") === null ||
-      localStorage.getItem("access_token") === "undefined"
-    ) {
-      router.push("/");
-      return;
-    }
+    setTimeout(() => {
+      // not logined
+      if (
+        localStorage.getItem("access_token") === null ||
+        localStorage.getItem("access_token") === "undefined" ||
+        (localStorage.getItem("access_token") as string).length < 10
+      ) {
+        router.push("/");
+        return;
+      }
+    }, 1500);
     // auto login(access token validation)
     login(localStorage.getItem("access_token") as string);
   }, [router.isReady]);

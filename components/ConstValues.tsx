@@ -303,6 +303,10 @@ export const playCorrectAnswerList = {
       beforeScore: 0,
       imageNumber: 0,
       colorNumber: 0,
+      correct: false,
+      totalCorrect: 0,
+      continuousCorrect: 0,
+      continuousFailure: 0,
     },
   ],
   participantInfo: [
@@ -316,7 +320,26 @@ export const playCorrectAnswerList = {
       beforeScore: 0,
       imageNumber: 0,
       colorNumber: 0,
+      correct: false,
+      totalCorrect: 0,
+      continuousCorrect: 0,
+      continuousFailure: 0,
     },
   ],
-  isCorrect: [false],
+};
+
+export const playUserInfoInput = {
+  id: 0,
+  sessionId: "",
+  name: "",
+  nickname: "",
+  entryDate: "",
+  currentScore: 0,
+  beforeScore: 0,
+  imageNumber: 0,
+  colorNumber: 0,
+  correct: false,
+  totalCorrect: 0,
+  continuousCorrect: 0,
+  continuousFailure: 0,
 };

@@ -471,9 +471,7 @@ const Home: NextPage = () => {
                   return (
                     <Grid.Col
                       className={`${
-                        correctAnswerList.isCorrect[i] === false
-                          ? "opacity-25"
-                          : ""
+                        cur.correct === false ? "opacity-25" : ""
                       } flex items-center justify-center h-60 animate-fadeUp`}
                       span={1}
                       key={i}
@@ -487,7 +485,7 @@ const Home: NextPage = () => {
                           <img
                             alt="hello"
                             className={` cursor-pointer rounded-full ${
-                              correctAnswerList.isCorrect[i] === true
+                              cur.correct === true
                                 ? "!overflow-visible animate-bounce"
                                 : "animate-drop"
                               // animate-[bounce_1.5s_ease-in-out_infinite]

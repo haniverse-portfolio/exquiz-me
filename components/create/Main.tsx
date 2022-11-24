@@ -587,6 +587,7 @@ export const Main = () => {
                           >
                             <Popover.Target>
                               <Button
+                                disabled
                                 variant="outline"
                                 size="md"
                                 color="orange"
@@ -786,6 +787,7 @@ export const Main = () => {
     if (optionType === "1")
       return (
         <TextInput
+          maxLength={5}
           size="xl"
           className="h-[200px] bg-blue-100 rounded-lg border-solid border-2 border-blue-500"
           variant="unstyled"
