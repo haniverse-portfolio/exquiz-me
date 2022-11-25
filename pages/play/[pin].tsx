@@ -30,7 +30,7 @@ import {
   playUserInfoInput,
   problemOptionInput,
 } from "../../components/ConstValues";
-import { X } from "tabler-icons-react";
+import { Checks, X } from "tabler-icons-react";
 import { alternativeImage } from "../../components/play/alternativeImage";
 
 const Home: NextPage = () => {
@@ -47,6 +47,7 @@ const Home: NextPage = () => {
     useState(playSubjectiveOption);
   const [pinInputBar, setPinInputBar] = useState(true);
 
+  const [ranking, setRanking] = useState(0);
   const [correctAnswerList, setCorrectAnswerList] = useState(
     playCorrectAnswerList
   );
@@ -76,13 +77,12 @@ const Home: NextPage = () => {
           continuousCorrect: number;
           continuousFailure: number;
         }>,
-        i: any
+        i: number
       ) => {
         if ((cur as any).sessionId === localStorage.getItem("fromSession")) {
           setUserBeforeInfo(cur);
-        }
-        if ((cur as any).sessionId === localStorage.getItem("fromSession")) {
           setUserCurrentInfo(cur);
+          setRanking(i);
         }
       }
     );
@@ -494,8 +494,7 @@ const Home: NextPage = () => {
                                         : "default"
                                     }
                                   >
-                                    <p className="!overflow-visible text-3xl font-bold">
-                                      {" "}
+                                    <p className="!overflow-visible text-2xl font-bold">
                                       {description}
                                     </p>
                                   </Button>
@@ -599,15 +598,15 @@ const Home: NextPage = () => {
               <p className="m-auto text-center text-2xl font-semibold ">
                 정답은{" "}
                 <strong className="text-orange-500">
-                  {problemOption.dtype !== "OXProblem"
-                    ? problemOption.answer
-                    : ""}
                   {problemOption.dtype === "MultipleChoiceProblem"
-                    ? `번 ${
-                        problemOption.problemOptions[
-                          parseInt(problemOption.answer)
-                        ].description
-                      }`
+                    ? parseInt(problemOption.answer) +
+                      1 +
+                      problemOption.problemOptions[
+                        parseInt(problemOption.answer)
+                      ].description
+                    : ""}
+                  {problemOption.dtype === "SubjectiveProblem"
+                    ? problemOption.answer
                     : ""}
                   {problemOption.dtype === "OXProblem"
                     ? `${problemOption.answer === "0" ? "O" : "X"}`
@@ -677,28 +676,39 @@ const Home: NextPage = () => {
                 &nbsp;점
               </p>
               <Divider size="xs"></Divider>
-              <Group className="shadow-lg rounded-xl p-4">
-                <Image src="/medal_first.svg" width={50} height={50} />
-                <p className="m-auto text-center text-xl font-semibold ">
-                  퀴즈 전문가
-                </p>
-                <Image src="/medal_first.svg" width={50} height={50} />
-              </Group>
-              {}
-              <Group className="shadow-lg rounded-xl p-4">
-                <Image src="/medal_first.svg" width={50} height={50} />
-                <p className="m-auto text-center text-xl font-semibold ">
-                  연속 득점자
-                </p>
-                <Image src="/medal_first.svg" width={50} height={50} />
-              </Group>
-              <Group className="shadow-lg rounded-xl p-4">
-                <Image src="/medal_first.svg" width={50} height={50} />
-                <p className="m-auto text-center text-xl font-semibold ">
-                  연속 득점자
-                </p>
-                <Image src="/medal_first.svg" width={50} height={50} />
-              </Group>
+              {ranking === 0 ? (
+                <Group className="shadow-lg rounded-xl p-4">
+                  <Image src="/medal_first.svg" width={50} height={50} />
+                  <p className="m-auto text-center text-xl font-semibold ">
+                    압도적인 1등
+                  </p>
+                  <Image src="/medal_first.svg" width={50} height={50} />
+                </Group>
+              ) : (
+                <></>
+              )}
+              {ranking === 1 ? (
+                <Group className="shadow-lg rounded-xl p-4">
+                  <Image src="/medal_second.svg" width={50} height={50} />
+                  <p className="m-auto text-center text-xl font-semibold ">
+                    뛰어난 2등
+                  </p>
+                  <Image src="/medal_second.svg" width={50} height={50} />
+                </Group>
+              ) : (
+                <></>
+              )}
+              {ranking === 2 ? (
+                <Group className="shadow-lg rounded-xl p-4">
+                  <Image src="/medal_third.svg" width={50} height={50} />
+                  <p className="m-auto text-center text-xl font-semibold ">
+                    선방한 3등
+                  </p>
+                  <Image src="/medal_third.svg" width={50} height={50} />
+                </Group>
+              ) : (
+                <></>
+              )}
             </Stack>
           </Container>
         </>

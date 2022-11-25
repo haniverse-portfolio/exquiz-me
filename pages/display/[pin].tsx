@@ -384,7 +384,13 @@ const Home: NextPage = () => {
           <header className="flex items-center jusitfy-center h-[140px] bg-[#273248]">
             <Grid columns={20}>
               <Grid.Col span={2}>
-                <ActionIcon variant="transparent" size={60}>
+                <ActionIcon
+                  onClick={() => {
+                    setSeconds(0);
+                  }}
+                  variant="transparent"
+                  size={60}
+                >
                   <Alarm
                     size={60}
                     color={seconds <= 11 ? "red" : "orange"}
