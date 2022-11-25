@@ -601,6 +601,7 @@ const Home: NextPage = () => {
                   {problemOption.dtype === "MultipleChoiceProblem"
                     ? parseInt(problemOption.answer) +
                       1 +
+                      "번 " +
                       problemOption.problemOptions[
                         parseInt(problemOption.answer)
                       ].description
@@ -705,6 +706,21 @@ const Home: NextPage = () => {
                     선방한 3등
                   </p>
                   <Image src="/medal_third.svg" width={50} height={50} />
+                </Group>
+              ) : (
+                <></>
+              )}
+              {userCurrentInfo.continuousCorrect >= 3 ? (
+                <Group className="shadow-lg rounded-xl p-4">
+                  <ActionIcon variant="transparent" color="green" size={50}>
+                    <Checks color="green" size={50}></Checks>
+                  </ActionIcon>
+                  <p className="m-auto text-center text-xl font-semibold ">
+                    연속 득점자
+                  </p>
+                  <ActionIcon variant="transparent" color="green" size={50}>
+                    <Checks color="green" size={50}></Checks>
+                  </ActionIcon>
                 </Group>
               ) : (
                 <></>
