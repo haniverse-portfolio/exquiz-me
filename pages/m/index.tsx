@@ -46,7 +46,7 @@ import {
   avatarAnimal,
   avatarColor,
   enterUserInfoInput,
-} from "../components/ConstValues";
+} from "../../components/ConstValues";
 
 const Home: NextPage = () => {
   const router = useRouter();
@@ -80,38 +80,16 @@ const Home: NextPage = () => {
   {
     /* localstorage removeItem userInfo */
   }
-  useEffect(() => {
-    let randAnimal = Math.floor(Math.random() * (avatarAnimal.length - 1)) + 1;
-    let randAvatarColor =
-      Math.floor(Math.random() * (avatarColor.length - 1)) + 1;
-    setAnimal(randAnimal);
-    setColor(randAvatarColor);
-    localStorage.removeItem("fromSession");
-    localStorage.setItem("imageNumber", randAnimal.toString());
-    localStorage.setItem("colorNumber", randAvatarColor.toString());
-    localStorage.removeItem("name");
-    localStorage.removeItem("nickname");
-  }, [router.isReady]);
+  useEffect(() => {}, [router.isReady]);
 
   {
     /* websocekt connect */
   }
-  useEffect(() => {
-    if (step !== 1) return;
-    connect();
-  }, [step]);
 
   {
     /* pin validation */
   }
-  useEffect(() => {
-    let len = pin.length;
-    if (len === 0) setPinStep(0);
-    else if (len >= 1 && len <= 5) setPinStep(1);
-    else if (len === 6) {
-      getPinValid(pin);
-    }
-  }, [pin]);
+  useEffect(() => {}, [pin]);
 
   {
     /* axios call */
@@ -400,6 +378,20 @@ const Home: NextPage = () => {
                   입장하기
                 </Button>
               </Stack>
+              <Group className="mt-6 my-2 cursor-pointer">
+                <Button
+                  onClick={() => {
+                    router.push("/m/index");
+                  }}
+                  radius="xl"
+                  fullWidth
+                  size="xl"
+                  color="orange"
+                  variant="light"
+                >
+                  익스퀴즈미 홈페이지로
+                </Button>
+              </Group>
             </Stack>
             <Stack
               spacing={0}

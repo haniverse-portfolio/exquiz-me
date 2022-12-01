@@ -29,9 +29,9 @@ import {
   playSubjectiveOption,
   playUserInfoInput,
   problemOptionInput,
-} from "../../components/ConstValues";
+} from "../../../components/ConstValues";
 import { Checks, X } from "tabler-icons-react";
-import { alternativeImage } from "../../components/play/alternativeImage";
+import { alternativeImage } from "../../../components/play/alternativeImage";
 
 const Home: NextPage = () => {
   /* initialization */

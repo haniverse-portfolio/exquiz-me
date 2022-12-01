@@ -6,7 +6,9 @@ import { useState } from "react";
 import axios from "axios";
 import React, { useEffect } from "react";
 import Image from "next/image";
-import IndexNavigation from "../components/index/IndexNavigation";
+import IndexNavigation from "../../components/m/index/IndexNavigation";
+
+import { IconPlus } from "@tabler/icons";
 
 import { IconSearch } from "@tabler/icons";
 
@@ -42,13 +44,13 @@ import {
   inboxProblemsetIdx,
   indexIsLogined,
   indexUserInfo,
-} from "../components/States";
+} from "../../components/States";
 import {
   connectMainServerApiAddress,
   inboxRoomInput,
-} from "../components/ConstValues";
-import { InboxProblemsetMenu } from "../components/inbox/InboxProblemsetMenu";
-import { InboxProfileMenu } from "../components/inbox/InboxProfileMenu";
+} from "../../components/ConstValues";
+import { InboxProblemsetMenu } from "../../components/inbox/InboxProblemsetMenu";
+import { InboxProfileMenu } from "../../components/inbox/InboxProfileMenu";
 
 const Home: NextPage = () => {
   const router = useRouter();
@@ -82,7 +84,6 @@ const Home: NextPage = () => {
       localStorage.setItem("access_token", router.query.access_token as string);
       localStorage.setItem("host_id", router.query.host_id as string);
       setTimeout(() => {
-        router.push("/inbox");
         if (navigator.userAgent.match(/iPhone|iPad|iPod|Android/i)) {
           router.push("/m/inbox");
         } else {
@@ -186,146 +187,146 @@ const Home: NextPage = () => {
       <IndexNavigation />
       <main>
         <section>
-          <Stack className="h-[20vh] bg-gradient-to-r from-[#ffc069] to-[#fa751e] text-slow"></Stack>
-          <Grid className="relative -top-36" gutter={0} columns={24}>
-            {/* left margin */}
-            <Grid.Col span={3} />
-            {/* profile, problemSet vertical */}
-            <Grid.Col span={4}>
-              <Stack className="">
-                <InboxProfileMenu />
-                <InboxProblemsetMenu />
-              </Stack>
-            </Grid.Col>
-            {/* main */}
-            <Grid.Col span={14}>
-              <Stack className="ml-8 relative -top-32">
-                <Stack className="h-[125px]"></Stack>
-                {/* search textinput */}
-                <MantineProvider
-                  inherit
-                  theme={{
-                    components: {
-                      InputWrapper: {
-                        styles: (theme) => ({
-                          label: {
-                            backgroundColor:
-                              theme.colorScheme === "dark"
-                                ? "rgba(255, 255, 255, .1)"
-                                : "rgba(0, 0, 0, .1)",
-                          },
-                        }),
-                      },
-
-                      Input: {
-                        styles: (theme) => ({
-                          input: {
-                            color: "white",
-                            fontSize: "32px",
-                            fontWeight: "bold",
-                          },
-                        }),
-                      },
-                    },
-                  }}
+          <Stack className="h-[20vh] bg-gradient-to-r from-[#ffc069] to-[#fa751e] text-slow">
+            <Button
+              onClick={() => {
+                router.push("/create");
+              }}
+              leftIcon={
+                <ThemeIcon
+                  size={32}
+                  radius="xl"
+                  color="orange"
+                  variant="filled"
                 >
-                  <TextInput
-                    id="inbox_textinput"
-                    className="!placeholder-white py-12"
-                    icon={<IconSearch color="white" size={30} />}
-                    variant="unstyled"
-                    placeholder="찾으시는 퀴즈를 검색해보세요"
-                  ></TextInput>
-                </MantineProvider>
-                {/* filter select */}
-                <Group position="right">
-                  <Select
-                    placeholder="정렬 필터"
-                    data={[{ value: "시간 순", label: "시간 순" }]}
-                  />
-                </Group>
-                <Divider size="sm"></Divider>
-                {/* problemset grid */}
-                <ScrollArea style={{ height: 500 }} scrollbarSize={0}>
-                  <Grid gutter={0} columns={3}>
-                    {problemsets.map(
-                      ({ title, description, closingMent }, i) => {
-                        return (
-                          <Grid.Col
-                            span={1}
-                            key={i}
-                            className="animate-fadeUp h-[240px] cursor-pointer"
-                          >
-                            {/* 208 298 */}
-                            <Stack
-                              onClick={async () => {
+                  <IconPlus size={18} stroke={1.5} />
+                </ThemeIcon>
+              }
+              fullWidth
+              radius="xl"
+              mt="xl"
+              size="md"
+              color={theme.colorScheme === "dark" ? undefined : "orange"}
+            >
+              퀴즈 만들기
+            </Button>
+            <Button variant="light" size="lg" radius="xl" color="orange">
+              방 만들기
+            </Button>
+          </Stack>
+          <Stack className="">
+            {/* search textinput */}
+            <MantineProvider
+              inherit
+              theme={{
+                components: {
+                  InputWrapper: {
+                    styles: (theme) => ({
+                      label: {
+                        backgroundColor:
+                          theme.colorScheme === "dark"
+                            ? "rgba(255, 255, 255, .1)"
+                            : "rgba(0, 0, 0, .1)",
+                      },
+                    }),
+                  },
+
+                  Input: {
+                    styles: (theme) => ({
+                      input: {
+                        color: "white",
+                        fontSize: "32px",
+                        fontWeight: "bold",
+                      },
+                    }),
+                  },
+                },
+              }}
+            >
+              <TextInput
+                id="inbox_textinput"
+                className="!placeholder-white py-12"
+                icon={<IconSearch color="white" size={30} />}
+                variant="unstyled"
+                placeholder=""
+              ></TextInput>
+            </MantineProvider>
+            {/* filter select */}
+            {/* problemset grid */}
+            <ScrollArea style={{ height: 500 }} scrollbarSize={0}>
+              <Grid gutter={0} columns={1}>
+                {problemsets.map(({ title, description, closingMent }, i) => {
+                  return (
+                    <Grid.Col
+                      span={1}
+                      key={i}
+                      className="animate-fadeUp h-[240px] cursor-pointer"
+                    >
+                      {/* 208 298 */}
+                      <Stack
+                        onClick={async () => {
+                          setProblemsetIdx(i);
+                        }}
+                        className={`px-4 rounded-3xl h-[220px] w-[310px] bg-no-repeat bg-center ${
+                          problemsetIdx === i
+                            ? "bg-[url('/inbox/folder_highlight.svg')] "
+                            : "bg-[url('/inbox/folder.svg')]"
+                        } hover:bg-[url('/inbox/folder_highlight.svg')]`}
+                      >
+                        <Stack className="h-[3px]"></Stack>
+                        <Group position="right">
+                          <Tooltip label="삭제하기">
+                            <ActionIcon
+                              onClick={() => {
+                                setProblemsetIdx(i);
+                                setDeleteAlertModalOpened(true);
+                              }}
+                              size={20}
+                              color="red"
+                              radius="xl"
+                              variant="filled"
+                            ></ActionIcon>
+                          </Tooltip>
+                          <Tooltip label="수정하기">
+                            <ActionIcon
+                              onClick={() => {
                                 setProblemsetIdx(i);
                               }}
-                              className={`px-4 rounded-3xl h-[220px] w-[310px] bg-no-repeat bg-center ${
-                                problemsetIdx === i
-                                  ? "bg-[url('/inbox/folder_highlight.svg')] "
-                                  : "bg-[url('/inbox/folder.svg')]"
-                              } hover:bg-[url('/inbox/folder_highlight.svg')]`}
-                            >
-                              <Stack className="h-[3px]"></Stack>
-                              <Group position="right">
-                                <Tooltip label="삭제하기">
-                                  <ActionIcon
-                                    onClick={() => {
-                                      setProblemsetIdx(i);
-                                      setDeleteAlertModalOpened(true);
-                                    }}
-                                    size={20}
-                                    color="red"
-                                    radius="xl"
-                                    variant="filled"
-                                  ></ActionIcon>
-                                </Tooltip>
-                                <Tooltip label="수정하기">
-                                  <ActionIcon
-                                    onClick={() => {
-                                      setProblemsetIdx(i);
-                                    }}
-                                    size={20}
-                                    color="yellow"
-                                    radius="xl"
-                                    variant="filled"
-                                  ></ActionIcon>
-                                </Tooltip>
-                                <Tooltip label="방 만들기">
-                                  <ActionIcon
-                                    onClick={() => {
-                                      setProblemsetIdx(i);
-                                      setModalOpened(true);
-                                    }}
-                                    size={20}
-                                    color="green"
-                                    radius="xl"
-                                    variant="filled"
-                                  ></ActionIcon>
-                                </Tooltip>
-                              </Group>
-                              <Stack className="h-[40px]"></Stack>
-                              <Stack className="ml-2">
-                                <p className="text-[14px] text-[#818181]">
-                                  2022/11/25
-                                </p>
-                                <p className="text-[24px] text-[#5E5E5E]">
-                                  {(problemsets[i] as any)?.title}
-                                </p>
-                              </Stack>
-                            </Stack>
-                          </Grid.Col>
-                        );
-                      }
-                    )}
-                  </Grid>
-                </ScrollArea>
-              </Stack>
-            </Grid.Col>
-            {/* margin right */}
-            <Grid.Col span={3} />
-          </Grid>
+                              size={20}
+                              color="yellow"
+                              radius="xl"
+                              variant="filled"
+                            ></ActionIcon>
+                          </Tooltip>
+                          <Tooltip label="방 만들기">
+                            <ActionIcon
+                              onClick={() => {
+                                setProblemsetIdx(i);
+                                setModalOpened(true);
+                              }}
+                              size={20}
+                              color="green"
+                              radius="xl"
+                              variant="filled"
+                            ></ActionIcon>
+                          </Tooltip>
+                        </Group>
+                        <Stack className="h-[40px]"></Stack>
+                        <Stack className="ml-2">
+                          <p className="text-[14px] text-[#818181]">
+                            2022/11/25
+                          </p>
+                          <p className="text-[24px] text-[#5E5E5E]">
+                            {(problemsets[i] as any)?.title}
+                          </p>
+                        </Stack>
+                      </Stack>
+                    </Grid.Col>
+                  );
+                })}
+              </Grid>
+            </ScrollArea>
+          </Stack>
         </section>
       </main>
       {/* postRoom modal */}

@@ -44,12 +44,9 @@ const Home: NextPage = () => {
   console.log(router.query);
   /* *** effect start *** */
   useEffect(() => {
-    console.log(router.query);
-    console.log(router.query.access_token);
-
     // mobile
     if (navigator.userAgent.match(/iPhone|iPad|iPod|Android/i)) {
-      location.replace("/enter");
+      location.replace("/m/enter");
     }
     // auto login
     login(localStorage.getItem("access_token") as string);

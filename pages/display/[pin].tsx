@@ -23,7 +23,7 @@ import {
   MantineProvider,
   Loader,
 } from "@mantine/core";
-import { Alarm } from "tabler-icons-react";
+import { Alarm, Pencil } from "tabler-icons-react";
 
 import { useInterval } from "@mantine/hooks";
 import {
@@ -429,8 +429,8 @@ const Home: NextPage = () => {
           </header>
         </Stack>
 
-        {/* <Group position="right">
-          <Group
+        <Group position="right">
+          {/* <Group
             position="center"
             className="mr-16 h-16 w-72 bg-white rounded-b-xl shaodw-2xl"
           >
@@ -441,10 +441,10 @@ const Home: NextPage = () => {
             <p className="text-xl font-bold text-center">
               <strong className="text-orange-500">{submitCount}</strong>
               &nbsp;/&nbsp;
-              {participants.length}명
+              {partlist.length}명
             </p>
-          </Group>
-        </Group> */}
+          </Group> */}
+        </Group>
         <Stack
           style={{ height: "calc(100vh - 140px)" }}
           className="flex justify-center"

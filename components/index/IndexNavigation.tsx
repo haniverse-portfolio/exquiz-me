@@ -12,6 +12,7 @@ import {
   Group,
   HoverCard,
   Stack,
+  Switch,
 } from "@mantine/core";
 import { World } from "tabler-icons-react";
 
@@ -155,22 +156,6 @@ const IndexNavigation = () => {
               </HoverCard.Dropdown>
             </HoverCard>
           )}
-          {membershipComponent(membership)}
-          {/* <Switch
-            checked={langValue == "KO" ? true : false}
-            onChange={(event) => {
-              setLangValue(event.currentTarget.checked == true ? "KO" : "EN");
-            }}
-            defaultChecked={true}
-            onLabel="KO"
-            offLabel="EN"
-            className="text-lg font-bold cursor-pointer transition ease-in-out"
-            size="lg"
-            color="orange"
-          /> */}
-          <ActionIcon size={40}>
-            <World color="gray" size={40}></World>
-          </ActionIcon>
         </Group>
       </Group>
     </header>
