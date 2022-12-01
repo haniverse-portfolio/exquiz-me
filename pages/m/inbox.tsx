@@ -8,7 +8,7 @@ import React, { useEffect } from "react";
 import Image from "next/image";
 import IndexNavigation from "../../components/m/index/IndexNavigation";
 
-import { IconPlus } from "@tabler/icons";
+import { IconPlus, IconBrandAsana } from "@tabler/icons";
 
 import { IconSearch } from "@tabler/icons";
 
@@ -187,10 +187,11 @@ const Home: NextPage = () => {
       <IndexNavigation />
       <main>
         <section>
-          <Stack className="h-[20vh] bg-gradient-to-r from-[#ffc069] to-[#fa751e] text-slow">
+          <Stack align="center" className="h-[20vh] bg-[#ffc069]">
             <Button
+              className="mx-16"
               onClick={() => {
-                router.push("/create");
+                router.push("/m/create");
               }}
               leftIcon={
                 <ThemeIcon
@@ -202,65 +203,44 @@ const Home: NextPage = () => {
                   <IconPlus size={18} stroke={1.5} />
                 </ThemeIcon>
               }
-              fullWidth
               radius="xl"
               mt="xl"
-              size="md"
+              size="xl"
               color={theme.colorScheme === "dark" ? undefined : "orange"}
             >
               퀴즈 만들기
             </Button>
-            <Button variant="light" size="lg" radius="xl" color="orange">
-              방 만들기
+            <Button
+              onClick={() => {
+                router.push("/m/play");
+              }}
+              variant="light"
+              leftIcon={
+                <ThemeIcon variant="light" color="orange" size={32} radius="xl">
+                  <IconBrandAsana size={18} stroke={1.5} />
+                </ThemeIcon>
+              }
+              radius="xl"
+              mt="xl"
+              size="xl"
+              color="orange"
+            >
+              오프라인 퀴즈 풀기
             </Button>
           </Stack>
-          <Stack className="">
+          <Stack align="center" className="">
             {/* search textinput */}
-            <MantineProvider
-              inherit
-              theme={{
-                components: {
-                  InputWrapper: {
-                    styles: (theme) => ({
-                      label: {
-                        backgroundColor:
-                          theme.colorScheme === "dark"
-                            ? "rgba(255, 255, 255, .1)"
-                            : "rgba(0, 0, 0, .1)",
-                      },
-                    }),
-                  },
 
-                  Input: {
-                    styles: (theme) => ({
-                      input: {
-                        color: "white",
-                        fontSize: "32px",
-                        fontWeight: "bold",
-                      },
-                    }),
-                  },
-                },
-              }}
-            >
-              <TextInput
-                id="inbox_textinput"
-                className="!placeholder-white py-12"
-                icon={<IconSearch color="white" size={30} />}
-                variant="unstyled"
-                placeholder=""
-              ></TextInput>
-            </MantineProvider>
             {/* filter select */}
             {/* problemset grid */}
-            <ScrollArea style={{ height: 500 }} scrollbarSize={0}>
-              <Grid gutter={0} columns={1}>
+            <ScrollArea style={{ height: 480 }} scrollbarSize={0}>
+              <Grid className="" gutter={0} columns={1}>
                 {problemsets.map(({ title, description, closingMent }, i) => {
                   return (
                     <Grid.Col
                       span={1}
                       key={i}
-                      className="animate-fadeUp h-[240px] cursor-pointer"
+                      className=" animate-fadeUp h-[240px] cursor-pointer"
                     >
                       {/* 208 298 */}
                       <Stack
