@@ -245,6 +245,9 @@ const Home: NextPage = () => {
             <Stack className="flex">
               <Group position="apart" className="mt-6 my-2 cursor-pointer">
                 <Image
+                  onClick={() => {
+                    router.push("/m/english");
+                  }}
                   src="/logo_all_white.png"
                   alt="logo"
                   width={150}
@@ -254,7 +257,7 @@ const Home: NextPage = () => {
                   <Button
                     onClick={() => {
                       router.push(
-                        "https://api.exquiz.me/api/google/login/prod"
+                        "https://api.exquiz.me/api/google/login/local"
                       );
                     }}
                     size="lg"
