@@ -171,11 +171,27 @@ const Home: NextPage = () => {
                 size="xl"
               ></Progress>
               <Group position="apart">
-                <Button color="orange">이전 문제</Button>
+                <Button
+                  onClick={() => {
+                    if (curIdx !== 0) setCurIdx(curIdx - 1);
+                  }}
+                  size="md"
+                  color="orange"
+                >
+                  이전 문제
+                </Button>
                 <span className=" text-2xl text-gray-400 font-bold">
                   {curIdx + 1}/{problem.length}
                 </span>
-                <Button color="orange">다음 문제</Button>
+                <Button
+                  onClick={() => {
+                    if (curIdx !== problem.length) setCurIdx(curIdx + 1);
+                  }}
+                  size="md"
+                  color="orange"
+                >
+                  다음 문제
+                </Button>
               </Group>
               <Divider size="xs"></Divider>
 
