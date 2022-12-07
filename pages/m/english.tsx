@@ -96,7 +96,7 @@ const Home: NextPage = () => {
   const [answerIdx, setAnswerIdx] = useState("");
   const [option, setOption] = useState(["Tmp", "tmp", "tmp", "tmp"]);
   const [answer, setAnswer] = useState("");
-  const [curIdx, setCurIdx] = useState(56);
+  const [curIdx, setCurIdx] = useState(0);
 
   useEffect(() => {
     let ans = problem[curIdx].answer;
@@ -171,11 +171,16 @@ const Home: NextPage = () => {
                 size="xl"
               ></Progress>
               <Group position="apart">
-                <span className=" text-4xl text-orange-500 font-bold">Q. </span>
+                <Button color="orange">이전 문제</Button>
                 <span className=" text-2xl text-gray-400 font-bold">
                   {curIdx + 1}/{problem.length}
                 </span>
+                <Button color="orange">다음 문제</Button>
               </Group>
+              <Divider size="xs"></Divider>
+
+              <span className=" text-4xl text-orange-500 font-bold">Q. </span>
+
               <p className="m-auto text-center text-2xl font-semibold">
                 {problem[curIdx].description || ""}
               </p>
