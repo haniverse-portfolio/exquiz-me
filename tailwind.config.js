@@ -10,6 +10,7 @@ module.exports = {
         text: "text 5s ease infinite",
         textSlow: "textSlow 8s ease infinite",
         fadeUp: "fadeUp 1s ease",
+        fadeLessUp: "fadeLessUp 1s ease",
         fadeIn: "fadeIn 1s ease",
         fadeOut: "fadeOut 1s ease",
         drop: "drop 2s ease-in forwards",
@@ -21,6 +22,17 @@ module.exports = {
         fadeUp: {
           "0%": {
             transform: "translateY(50px)",
+            opacity: "0",
+          },
+
+          "100%": {
+            transform: "translateY(0)",
+            opacity: "1",
+          },
+        },
+        fadeLessUp: {
+          "0%": {
+            transform: "translateY(20px)",
             opacity: "0",
           },
 

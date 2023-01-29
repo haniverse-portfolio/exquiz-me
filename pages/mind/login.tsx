@@ -20,12 +20,13 @@ import {
 import { BrandGoogle, BrandKickstarter, Checks, X } from "tabler-icons-react";
 import { alternativeImage } from "../../components/display/alternativeImage";
 import { avatarAnimal, avatarColor } from "../../components/ConstValues";
+import router from "next/router";
 
 const Home: NextPage = () => {
   return (
     <div>
       <Head>
-        <title>토닥이</title>
+        <title>mamind - 심리 상담 플랫폼</title>
         <meta name="description" content="tordoc" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -46,6 +47,9 @@ const Home: NextPage = () => {
           </Stack>
           <Stack className="mt-36">
             <Button
+              onClick={() => {
+                router.push("/mind/test");
+              }}
               size="lg"
               radius="md"
               color="gray"
@@ -54,6 +58,9 @@ const Home: NextPage = () => {
               Google 계정으로 로그인
             </Button>
             <Button
+              onClick={() => {
+                router.push("/mind/test");
+              }}
               size="lg"
               radius="md"
               color="yellow"
