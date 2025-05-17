@@ -1,7 +1,5 @@
 # exquiz.me - 실시간 퀴즈 플랫폼
 
-![exquiz.me](https://api.exquiz.me/image/logo.png)
-
 exquiz.me는 실시간으로 퀴즈를 출제하고 참여할 수 있는 인터랙티브 퀴즈 플랫폼입니다. 데스크톱에서 퀴즈를 출제하고, 모바일 기기에서 참여자들이 실시간으로 퀴즈를 풀 수 있습니다.
 
 ## 시연 영상
@@ -133,8 +131,6 @@ npm run build
 ```
 
 # exquiz.me - Real-time Quiz Platform
-
-![exquiz.me](https://api.exquiz.me/image/logo.png)
 
 exquiz.me is an interactive quiz platform that allows real-time quiz creation and participation. Teachers can create quizzes on desktop devices, while students can solve them in real-time on mobile devices.
 
