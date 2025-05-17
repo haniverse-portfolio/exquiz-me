@@ -5,7 +5,9 @@ exquiz.me는 실시간으로 퀴즈를 출제하고 참여할 수 있는 인터�
 ## 시연 영상
 
 - [교사용 시연영상](https://youtu.be/2gNm6TRiCKs) - 퀴즈 출제 및 관리 기능
+[![교사용 시연영상](http://img.youtube.com/vi/2gNm6TRiCKs/0.jpg)](https://youtu.be/2gNm6TRiCKs)
 - [학생용 시연영상](https://youtu.be/6wPXgYKShcM) - 퀴즈 참여 및 풀이 기능
+[![교사용 시연영상](http://img.youtube.com/vi/6wPXgYKShcM/0.jpg)](https://youtu.be/6wPXgYKShcM)
 
 ## 주요 기능
 
